@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="none">
+        <item
+            android:id="@+id/nav_management"
+            android:icon="@drawable/ic_management"
+            android:title="@string/title_activity_management" />
+        <item
+            android:id="@+id/nav_history"
+            android:icon="@drawable/ic_load"
+            android:title="@string/title_activity_history" />
+        <item
+            android:id="@+id/nav_app_info"
+            android:icon="@drawable/ic_app_info"
+            android:title="@string/title_activity_app_info" />
+    </group>
+
+    <item android:title="@string/feedback">
+        <menu>
+            <item
+                android:id="@+id/nav_rate"
+                android:icon="@drawable/ic_rate"
+                android:title="@string/rate" />
+            <item
+                android:id="@+id/nav_email"
+                android:icon="@drawable/ic_email"
+                android:title="@string/email" />
+        </menu>
+    </item>
+
+</menu>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:compat="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_saveTournament"
+        android:title="@string/saveTournament"
+        android:icon="@drawable/ic_save"
+        compat:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_currentRanking"
+        android:title="@string/currentRanking"
+        compat:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_saveAsTournament"
+        android:title="@string/saveAsTournament"
+        compat:showAsAction="never" />
+    <item
+        android:id="@+id/action_exportTournament"
+        android:title="@string/exportTournament"
+        compat:showAsAction="never" />
+    <item
+        android:id="@+id/action_editTournament"
+        android:title="@string/editTournament"
+        compat:showAsAction="never" />
+    <item
+        android:id="@+id/action_rebuildTournament"
+        android:title="@string/rebuildTournament"
+        compat:showAsAction="never" />
+    <item
+        android:id="@+id/action_editARound"
+        android:title="@string/editARound"
+        compat:showAsAction="never" />
+    <item
+        android:id="@+id/action_editAMatchUp"
+        android:title="@string/editAMatchUp"
+        compat:showAsAction="never" />
+    <item
+        android:id="@+id/action_editAParticipant"
+        android:title="@string/editAParticipant"
+        compat:showAsAction="never" />
+
+</menu>

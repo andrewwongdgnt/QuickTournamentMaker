@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/participant1Group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/p1_default"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/participant1_tv"
+                android:layout_width="@dimen/participant_tv_width"
+                android:layout_height="@dimen/participant_tv_height"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:paddingLeft="@dimen/participant_padding_horizontal"
+                android:paddingRight="@dimen/participant_padding_horizontal"
+                android:singleLine="true"
+                android:text="Medium Text"
+                android:textColor="@android:color/black"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/participant1Record_tv"
+                android:layout_width="@dimen/participant_tv_width"
+                android:layout_height="@dimen/participantRecord_tv_height"
+                android:ellipsize="end"
+                android:gravity="center_horizontal"
+                android:paddingLeft="@dimen/participant_padding_horizontal"
+                android:paddingRight="@dimen/participant_padding_horizontal"
+                android:singleLine="true"
+                android:text="Medium Text"
+                android:textColor="@android:color/black"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/participant2Group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/p2_default"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/participant2_tv"
+                android:layout_width="@dimen/participant_tv_width"
+                android:layout_height="@dimen/participant_tv_height"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:paddingLeft="@dimen/participant_padding_horizontal"
+                android:paddingRight="@dimen/participant_padding_horizontal"
+                android:singleLine="true"
+                android:text="Mediusm Text"
+                android:textColor="@android:color/black"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/participant2Record_tv"
+                android:layout_width="@dimen/participant_tv_width"
+                android:layout_height="@dimen/participantRecord_tv_height"
+                android:ellipsize="end"
+                android:gravity="center_horizontal"
+                android:paddingLeft="@dimen/participant_padding_horizontal"
+                android:paddingRight="@dimen/participant_padding_horizontal"
+                android:singleLine="true"
+                android:text="Mediusm Text"
+                android:textColor="@android:color/black"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/matchUpIndicator_tv"
+        android:layout_width="@dimen/matchUpIndicator_width"
+        android:layout_height="wrap_content"
+        android:text="*"
+        android:visibility="invisible"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+</LinearLayout>
