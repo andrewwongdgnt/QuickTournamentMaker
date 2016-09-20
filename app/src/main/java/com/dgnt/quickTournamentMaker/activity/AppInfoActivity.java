@@ -8,6 +8,8 @@ import android.text.method.LinkMovementMethod;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.dgnt.quickTournamentMaker.R;
+
 public class AppInfoActivity extends AppCompatActivity {
 
     @Override

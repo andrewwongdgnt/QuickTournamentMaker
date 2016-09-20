@@ -10,8 +10,9 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,14 +26,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.dgnt.quickTournamentMaker.R;
 import com.dgnt.quickTournamentMaker.activity.tournament.TournamentActivity;
 import com.dgnt.quickTournamentMaker.model.management.Group;
 import com.dgnt.quickTournamentMaker.model.management.Person;
 import com.dgnt.quickTournamentMaker.model.tournament.Participant;
 import com.dgnt.quickTournamentMaker.model.tournament.Seeder;
 import com.dgnt.quickTournamentMaker.model.tournament.Tournament;
+import com.dgnt.quickTournamentMaker.util.AdsUtil;
 import com.dgnt.quickTournamentMaker.util.DatabaseHelper;
 import com.dgnt.quickTournamentMaker.util.EmailUtil;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,11 +46,20 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends InAppBillingActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     final DatabaseHelper dh = new DatabaseHelper(this);
     private Set<Person> personSelectedSet = new HashSet<>();
+
+    AdRequest adRequest = AdsUtil.buildAdRequestWithTestDevices();
+    AdView adView;
+
+    public AdView getAdView() {
+        if (adView == null)
+            adView = (AdView) findViewById(R.id.adView);
+        return adView;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +67,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -164,15 +179,17 @@ public class MainActivity extends AppCompatActivity
                         : swiss_rb.isChecked() ? Tournament.TournamentType.SWISS
                         : Tournament.TournamentType.SURVIVAL;
 
-                TournamentActivity.startTournamentActivity(MainActivity.this, 0, seedType, tournamentType, tournamentType, title, description, participantList, null, null, Tournament.NULL_TIME_VALUE, Tournament.NULL_TIME_VALUE,false);
+                TournamentActivity.startTournamentActivity(MainActivity.this, 0, seedType, tournamentType, tournamentType, title, description, participantList, null, null, Tournament.NULL_TIME_VALUE, Tournament.NULL_TIME_VALUE, false);
 
             }
         });
+
+        handleIfIABSetUpFailed();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode==ManagementActivity.REQUEST_CODE)
+        if (requestCode == ManagementActivity.REQUEST_CODE)
             handlePersonsFromDB();
     }
 
@@ -245,6 +262,28 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu items for use in the action bar
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.actions_main, menu);
+
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.action_upgrade:
+                upgrade();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -269,5 +308,44 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected boolean silentComplainOnStartUp() {
+        return false;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (!isPremium())
+            getAdView().destroy();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (!isPremium())
+            getAdView().pause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!isPremium())
+            getAdView().resume();
+    }
+
+    @Override
+    protected void handleAfterIABResolution() {
+        super.handleAfterIABResolution();
+
+        final AdView adView = getAdView();
+        adView.setVisibility(isPremium() ? View.GONE : View.VISIBLE);
+        if (!isPremium()) {
+            adView.loadAd(adRequest);
+        } else {
+            adView.destroy();
+        }
     }
 }

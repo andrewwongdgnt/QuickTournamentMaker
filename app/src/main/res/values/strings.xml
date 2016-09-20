@@ -199,4 +199,17 @@
     <string name="unSavedChangesWarningMsg">Unsaved changes detected. Do you want to save?</string>
     <string name="save">Save</string>
     <string name="dontSave">Don\'t save</string>
+
+    <!-- IAP -->
+    <string name="verifyingPremiumStatus">Verifying premium status&#8230;</string>
+    <string name="upgradeTitle">Disable ads</string>
+    <string name="upgradeMsg">Ads is a source of revenue for this app. If you would like have ads disabled, please support my work.</string>
+    <string name="upgradeSuccessfulMsg">Thank you for the support!</string>
+
+    <string name="unknown_errorMsg">An unknown error has occurred when processing your in app purchase.</string>
+    <string name="service_unavailable_errorMsg">Billing service unavailable at this time, please try again later.</string>
+    <string name="item_already_owned_errorMsg">This item is already owned.</string>
+    <string name="initialization_errorMsg">An error has occurred during billing initialization, please restart app to try again later.</string>
+    <string name="verification_errorMsg">An error has occurred while trying to verify a purchase.</string>
+
 </resources>

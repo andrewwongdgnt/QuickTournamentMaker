@@ -12,6 +12,15 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/app_bar_main">
 
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        app:adSize="BANNER"
+        app:adUnitId="@string/main_ad_id"></com.google.android.gms.ads.AdView>
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -67,6 +76,7 @@
                     android:layout_height="wrap_content"
                     android:checked="false"
                     android:text="@string/swiss" />
+
                 <RadioButton
                     android:id="@+id/survival_rb"
                     android:layout_width="wrap_content"

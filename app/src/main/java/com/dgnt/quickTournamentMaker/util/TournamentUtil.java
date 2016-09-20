@@ -2,7 +2,7 @@ package com.dgnt.quickTournamentMaker.util;
 
 import android.content.Context;
 
-import com.dgnt.quickTournamentMaker.activity.R;
+import com.dgnt.quickTournamentMaker.R;
 import com.dgnt.quickTournamentMaker.model.history.HistoricalMatchUp;
 import com.dgnt.quickTournamentMaker.model.history.HistoricalRound;
 import com.dgnt.quickTournamentMaker.model.tournament.MatchUp;

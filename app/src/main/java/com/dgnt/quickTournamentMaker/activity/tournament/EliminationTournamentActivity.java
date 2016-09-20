@@ -2,7 +2,7 @@ package com.dgnt.quickTournamentMaker.activity.tournament;
 
 import android.graphics.Point;
 
-import com.dgnt.quickTournamentMaker.activity.R;
+import com.dgnt.quickTournamentMaker.R;
 import com.dgnt.quickTournamentMaker.model.tournament.Round;
 import com.dgnt.quickTournamentMaker.model.tournament.EliminationTournament;
 

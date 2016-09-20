@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.dgnt.quickTournamentMaker.activity.R;
+import com.dgnt.quickTournamentMaker.R;
 import com.dgnt.quickTournamentMaker.model.history.HistoricalTournament;
 import com.dgnt.quickTournamentMaker.util.PreferenceUtil;
 import com.dgnt.quickTournamentMaker.util.TournamentUtil;

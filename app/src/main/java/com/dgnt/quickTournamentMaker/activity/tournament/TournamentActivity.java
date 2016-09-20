@@ -11,7 +11,6 @@ import android.os.Environment;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.util.Pair;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.Menu;
@@ -29,8 +28,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dgnt.quickTournamentMaker.R;
 import com.dgnt.quickTournamentMaker.activity.DirectoryPickerActivity;
-import com.dgnt.quickTournamentMaker.activity.R;
+import com.dgnt.quickTournamentMaker.activity.InAppBillingActivity;
 import com.dgnt.quickTournamentMaker.adapter.ColorAdapter;
 import com.dgnt.quickTournamentMaker.adapter.RankingAdapter;
 import com.dgnt.quickTournamentMaker.eventListener.OnMatchUpUpdateListener;
@@ -51,8 +51,11 @@ import com.dgnt.quickTournamentMaker.model.tournament.Seeder;
 import com.dgnt.quickTournamentMaker.model.tournament.SingleMatchUpTournament;
 import com.dgnt.quickTournamentMaker.model.tournament.Tournament;
 import com.dgnt.quickTournamentMaker.task.ExportTournamentTask;
+import com.dgnt.quickTournamentMaker.util.AdsUtil;
 import com.dgnt.quickTournamentMaker.util.DatabaseHelper;
 import com.dgnt.quickTournamentMaker.util.TournamentUtil;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
@@ -65,7 +68,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-abstract public class TournamentActivity extends AppCompatActivity implements OnRoundUpdateListener, OnMatchUpUpdateListener, OnParticipantUpdateListener, OnTournamentUpdateListener {
+abstract public class TournamentActivity extends InAppBillingActivity implements OnRoundUpdateListener, OnMatchUpUpdateListener, OnParticipantUpdateListener, OnTournamentUpdateListener {
 
     public static final String INTENT_HISTORICAL_ROUNDS_KEY = "historicalRoundsKey";
     public static final String INTENT_HISTORICAL_MATCH_UPS_KEY = "historicalMatchUpsKey";
@@ -98,11 +101,19 @@ abstract public class TournamentActivity extends AppCompatActivity implements On
     protected TournamentLayout tournamentLayout;
     private TextView description_tv;
 
+    AdRequest adRequest = AdsUtil.buildAdRequestWithTestDevices();
+    AdView adView;
+
+    public AdView getAdView() {
+        if (adView == null)
+            adView = (AdView) findViewById(R.id.adView);
+        return adView;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tournament);
-
 
         findAndSetAllViewIds();
         createTournament();
@@ -119,6 +130,7 @@ abstract public class TournamentActivity extends AppCompatActivity implements On
         actionBar.setDisplayUseLogoEnabled(true);
 
         setUnSavedChanges(getIntent().getBooleanExtra(INTENT_TOURNAMENT_IS_REBUILT_KEY, false));
+        handleIfIABSetUpFailed();
     }
 
     private DatabaseHelper getDb() {
@@ -126,7 +138,6 @@ abstract public class TournamentActivity extends AppCompatActivity implements On
             db = new DatabaseHelper(this);
         return db;
     }
-
 
     private void findAndSetAllViewIds() {
         tournamentView_root = findViewById(R.id.tournamentView_root);
@@ -586,7 +597,7 @@ abstract public class TournamentActivity extends AppCompatActivity implements On
                         : swiss_rb.isChecked() ? Tournament.TournamentType.SWISS
                         : Tournament.TournamentType.SURVIVAL;
 
-                startTournamentActivity(TournamentActivity.this, 0, seedType, tournament.getType(), tournamentType, tournament.getTitle(), tournament.getDescription(), (ArrayList<Participant>) tournament.getSeededParticipants(), null, null, tournament.getCreationTimeInEpoch(), Tournament.NULL_TIME_VALUE,true);
+                startTournamentActivity(TournamentActivity.this, 0, seedType, tournament.getType(), tournamentType, tournament.getTitle(), tournament.getDescription(), (ArrayList<Participant>) tournament.getSeededParticipants(), null, null, tournament.getCreationTimeInEpoch(), Tournament.NULL_TIME_VALUE, true);
                 finish();
 
             }
@@ -1203,5 +1214,38 @@ abstract public class TournamentActivity extends AppCompatActivity implements On
         }
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (!isPremium())
+            getAdView().destroy();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (!isPremium())
+            getAdView().pause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!isPremium())
+            getAdView().resume();
+    }
+
+    @Override
+    protected void handleAfterIABResolution() {
+        super.handleAfterIABResolution();
+
+        final AdView adView = getAdView();
+        adView.setVisibility(isPremium() ? View.GONE : View.VISIBLE);
+        if (!isPremium()) {
+            adView.loadAd(adRequest);
+        } else {
+            adView.destroy();
+        }
+    }
 
 }

@@ -31,6 +31,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dgnt.quickTournamentMaker.R;
 import com.dgnt.quickTournamentMaker.activity.tournament.TournamentActivity;
 import com.dgnt.quickTournamentMaker.adapter.HistoryAdapter;
 import com.dgnt.quickTournamentMaker.model.history.HistoricalFilters;

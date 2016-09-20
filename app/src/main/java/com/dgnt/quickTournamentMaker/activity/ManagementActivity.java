@@ -25,6 +25,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dgnt.quickTournamentMaker.R;
 import com.dgnt.quickTournamentMaker.adapter.PersonAdapter;
 import com.dgnt.quickTournamentMaker.model.management.Group;
 import com.dgnt.quickTournamentMaker.model.management.Person;

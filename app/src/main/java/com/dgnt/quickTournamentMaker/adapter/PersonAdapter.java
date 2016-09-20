@@ -11,7 +11,7 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dgnt.quickTournamentMaker.activity.R;
+import com.dgnt.quickTournamentMaker.R;
 import com.dgnt.quickTournamentMaker.model.management.Group;
 import com.dgnt.quickTournamentMaker.model.management.Person;
 

@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.dgnt.quickTournamentMaker.activity.R;
+import com.dgnt.quickTournamentMaker.R;
 import com.dgnt.quickTournamentMaker.eventListener.OnSeedChangeListener;
 import com.dgnt.quickTournamentMaker.model.tournament.MatchUp;
 import com.dgnt.quickTournamentMaker.model.tournament.Participant;

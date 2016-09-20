@@ -28,6 +28,8 @@ dependencies {
     compile 'com.google.guava:guava:19.0'
     compile 'org.apache.commons:commons-lang3:3.4'
     compile 'joda-time:joda-time:2.9.4'
+    compile 'com.google.android.gms:play-services-ads:8.4.0'
+    compile 'com.google.android.gms:play-services-auth:8.4.0'
     // for joda
     compile files('libs/jgraph-5.13.0.0.jar')
     compile files('libs/jgrapht-core-0.9.2.jar')

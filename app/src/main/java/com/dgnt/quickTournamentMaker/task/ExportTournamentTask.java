@@ -19,7 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.dgnt.quickTournamentMaker.activity.R;
+import com.dgnt.quickTournamentMaker.R;
 import com.dgnt.quickTournamentMaker.util.EmailUtil;
 
 import java.io.BufferedOutputStream;
