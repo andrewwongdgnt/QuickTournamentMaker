@@ -51,7 +51,7 @@ public class MainActivity extends InAppBillingActivity
 
     final DatabaseHelper dh = new DatabaseHelper(this);
     private Set<Person> personSelectedSet = new HashSet<>();
-
+    private Menu menu;
     AdRequest adRequest = AdsUtil.buildAdRequestWithTestDevices();
     AdView adView;
 
@@ -265,11 +265,22 @@ public class MainActivity extends InAppBillingActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu items for use in the action bar
+        this.menu = menu;
+
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.actions_main, menu);
 
-
+        resolveDisableAdMenuButton();
         return super.onCreateOptionsMenu(menu);
+    }
+
+    private void resolveDisableAdMenuButton(){
+        if (menu!=null){
+            final MenuItem menuItem = menu.findItem(R.id.action_upgrade);
+            if (menuItem != null)
+                menuItem.setVisible(!isPremium());
+
+        }
     }
 
     @Override
@@ -347,5 +358,6 @@ public class MainActivity extends InAppBillingActivity
         } else {
             adView.destroy();
         }
+        resolveDisableAdMenuButton();
     }
 }
