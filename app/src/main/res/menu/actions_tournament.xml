@@ -7,12 +7,12 @@
         android:icon="@drawable/ic_save"
         compat:showAsAction="ifRoom" />
     <item
-        android:id="@+id/action_currentRanking"
-        android:title="@string/currentRanking"
-        compat:showAsAction="ifRoom" />
-    <item
         android:id="@+id/action_saveAsTournament"
         android:title="@string/saveAsTournament"
+        compat:showAsAction="never" />
+    <item
+        android:id="@+id/action_currentRanking"
+        android:title="@string/currentRanking"
         compat:showAsAction="never" />
     <item
         android:id="@+id/action_exportTournament"
