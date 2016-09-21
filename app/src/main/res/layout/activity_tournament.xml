@@ -15,7 +15,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         app:adSize="BANNER"
-        app:adUnitId="@string/tournament_ad_id"></com.google.android.gms.ads.AdView>
+        app:adUnitId="@string/tournament_ad_id"
+        android:visibility="gone"></com.google.android.gms.ads.AdView>
 
     <com.dgnt.quickTournamentMaker.layout.TwoDScrollView
         android:layout_width="match_parent"

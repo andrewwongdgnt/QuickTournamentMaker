@@ -20,7 +20,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
         app:adSize="BANNER"
-        app:adUnitId="@string/main_ad_id"></com.google.android.gms.ads.AdView>
+        app:adUnitId="@string/main_ad_id"
+        android:visibility="gone"></com.google.android.gms.ads.AdView>
 
     <ScrollView
         android:id="@+id/scrollView"

@@ -91,15 +91,12 @@
     <!--Keep in sync with colorOptions-->
     <string-array name="colorOptionsNames">
         <item>Black</item>
-        <item>Dark Grey</item>
         <item>Grey</item>
-        <item>Light Grey</item>
         <item>Red</item>
         <item>Green</item>
         <item>Blue</item>
         <item>Yellow</item>
-        <item>Cyan</item>
-        <item>Magenta</item>
+        <item>Purple</item>
     </string-array>
 
 

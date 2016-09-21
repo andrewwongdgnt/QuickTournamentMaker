@@ -189,6 +189,7 @@ public class MainActivity extends InAppBillingActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ManagementActivity.REQUEST_CODE)
             handlePersonsFromDB();
     }

@@ -178,7 +178,7 @@ public abstract class InAppBillingActivity extends AppCompatActivity implements 
         setWaitScreen(true);
 
         try {
-            final String payload = getHash("FourMonkeysInSuits ");
+            final String payload = getPayloadHash();
             iabHelper.launchPurchaseFlow(this, SKU_PREMIUM, REQUEST_PURCHASE_FLOW, purchaseFinishedListener, payload);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
@@ -186,7 +186,8 @@ public abstract class InAppBillingActivity extends AppCompatActivity implements 
 
     }
 
-    private static String getHash(final String input) throws NoSuchAlgorithmException {
+    private static String getPayloadHash() throws NoSuchAlgorithmException {
+        final String input = "FourMonkeysInSuits ";
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         md.update(input.getBytes());
 
@@ -253,7 +254,7 @@ public abstract class InAppBillingActivity extends AppCompatActivity implements 
 
         boolean payloadVerified = false;
         try {
-            payloadVerified = payload.equals(getHash("FourMonkeysInSuits"));
+            payloadVerified = payload.equals(getPayloadHash());
         } catch (NoSuchAlgorithmException e) {
 
         }

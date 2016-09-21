@@ -11,15 +11,12 @@
 
     <integer-array name="colorOptions">
         <item>0xFF000000</item>
-        <item>0xFF444444</item>
         <item>0xFF888888</item>
-        <item>0xFFCCCCCC</item>
         <item>0xFFFF0000</item>
-        <item>0xFF00FF00</item>
+        <item>0xFF149306</item>
         <item>0xFF0000FF</item>
-        <item>0xFFFFFF00</item>
-        <item>0xFF00FFFF</item>
-        <item>0xFFFF00FF</item>
+        <item>0xFFa6a70c</item>
+        <item>0xFF8100e6</item>
     </integer-array>
 
     <color name="link">#6699ff</color>
