@@ -60,7 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/standard_gap"
-            android:text="@string/with"
+            android:text="@string/between"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <LinearLayout

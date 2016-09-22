@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Quick Tournament Maker</string>
+    <string name="app_name" translatable="false">Quick Tournament Maker</string>
 
     <string name="quickStart">Quick start</string>
     <string name="randomSeed">Random seeding</string>
@@ -163,7 +163,7 @@
     <string name="showOnly">Show only</string>
     <string name="createdBetween">Created between</string>
     <string name="modifiedBetween">Modified between</string>
-    <string name="with">With</string>
+    <string name="between">Between</string>
     <string name="seedType">Seed type</string>
 
     <string name="feedback">Feedback</string>
