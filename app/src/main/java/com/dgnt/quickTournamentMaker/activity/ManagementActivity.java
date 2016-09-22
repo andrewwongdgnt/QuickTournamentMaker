@@ -52,6 +52,7 @@ public class ManagementActivity extends AppCompatActivity implements ExpandableL
     int expandableListSelectionType = ExpandableListView.PACKED_POSITION_TYPE_NULL;
     private TextView resultInformation_tv;
 
+    private ExpandableListView person_elv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +63,7 @@ public class ManagementActivity extends AppCompatActivity implements ExpandableL
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        final ExpandableListView person_elv = (ExpandableListView) findViewById(R.id.person_elv);
+        person_elv = (ExpandableListView) findViewById(R.id.person_elv);
 
         groupList = dh.getAllGroupsWithPersons();
         for (final Group group : groupList) {
@@ -74,11 +75,12 @@ public class ManagementActivity extends AppCompatActivity implements ExpandableL
         }
 
         personAdapter = new PersonAdapter(this, groupList, groupMap);
-        setUpGroupAdapter(groupList);
 
         person_elv.setAdapter(personAdapter);
         for (int i = 0; i < groupList.size(); i++)
             person_elv.expandGroup(i);
+
+        setUpGroupAdapter(groupList);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -424,6 +426,13 @@ public class ManagementActivity extends AppCompatActivity implements ExpandableL
 
 
     private void updateUI() {
+        final Set<String> collapsedGroupsSet = new HashSet<>();
+        for (int i = 0; i < groupList.size(); i++) {
+            if (!person_elv.isGroupExpanded(i)) {
+                collapsedGroupsSet.add(groupList.get(i).getKey());
+            }
+        }
+
         groupList.clear();
         groupList.addAll(dh.getAllGroupsWithPersons());
 
@@ -437,6 +446,13 @@ public class ManagementActivity extends AppCompatActivity implements ExpandableL
         }
 
         personAdapter.notifyDataSetChanged();
+
+        for (int i = 0; i < groupList.size(); i++) {
+            person_elv.expandGroup(i);
+            if (collapsedGroupsSet.contains(groupList.get(i).getKey()))
+                person_elv.collapseGroup(i);
+        }
+
         setUpGroupAdapter(groupList);
 
         resultInformation_tv.setText(groupList.size() == 0 ? getString(R.string.nobodyMsg) : getString(R.string.historicalItemHintMsg));

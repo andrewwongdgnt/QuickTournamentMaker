@@ -309,7 +309,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         COLUMN_NOTE,
                         COLUMN_GROUP_NAME,
                 }, null,
-                null, null, null, null);
+                null, null, null, COLUMN_NAME);
 
         if (personCursor.moveToFirst()) {
             do {
@@ -337,7 +337,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         COLUMN_NOTE,
                         COLUMN_FAVOURITE,
                 }, null,
-                null, null, null, null);
+                null, null, null, COLUMN_NAME);
 
         if (groupCursor.moveToFirst()) {
             do {
