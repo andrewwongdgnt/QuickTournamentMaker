@@ -194,6 +194,7 @@
     <string name="unSavedChangesWarningMsg">Обнаружены несохранённые изменения. Вы хотите сохранить?</string>
     <string name="save">Сохранить</string>
     <string name="dontSave">Не сохранять</string>
+    <string name="playStoreNotFound">Play Store не найдены</string>
 
     <!-- IAP -->
     <string name="verifyingPremiumStatus">Проверка премиум статуса&#8230;</string>

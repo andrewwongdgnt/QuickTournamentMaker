@@ -196,6 +196,7 @@
     <string name="unSavedChangesWarningMsg">Unsaved changes detected. Do you want to save?</string>
     <string name="save">Save</string>
     <string name="dontSave">Don\'t save</string>
+    <string name="playStoreNotFound">Play Store not found</string>
 
     <!-- IAP -->
     <string name="verifyingPremiumStatus">Verifying premium status&#8230;</string>

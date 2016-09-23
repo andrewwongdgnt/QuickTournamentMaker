@@ -310,9 +310,11 @@ public class MainActivity extends InAppBillingActivity
             startActivity(new Intent(this, AppInfoActivity.class));
 
         } else if (id == R.id.nav_rate) {
-            final String packageName = "market://details?id=" + getApplicationContext().getPackageName();
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(packageName)));
-
+            final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getApplicationContext().getPackageName()));
+            if(intent.resolveActivity(getPackageManager()) != null)
+                startActivity(intent);
+            else
+                Toast.makeText(getApplicationContext(), R.string.playStoreNotFound, Toast.LENGTH_LONG).show();
         } else if (id == R.id.nav_email) {
             EmailUtil.sendEmail(this, new String[]{"andrew.wong.dgnt@gmail.com"}, getString(R.string.app_name), null, null);
         }
