@@ -147,7 +147,7 @@
 
     <string name="searchHint">Поиск турниров</string>
     <string name="clearSearch">Очистить результаты поиска по \"%1$s\"</string>
-    <string name="filtersApplied">Применяются фильтры </string>
+    <string name="filtersApplied">Применяются фильтры</string>
     <string name="historicalItemHintMsg">Нажмите и удерживайте на элементе для большего количества вариантов</string>
     <string name="noResultsMsg">Результатов не найдено</string>
 
