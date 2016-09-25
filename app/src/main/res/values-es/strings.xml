@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="quickStart">Inicio rápido</string>
+    <string name="randomSeed">Siembra aleatoria</string>
+    <string name="tournamentTitle">Título del torneo</string>
+    <string name="tournamentDescription">Descripción del torneo</string>
+    <string name="numberOfPlayers">Número de jugadores</string>
+    <string name="numberOfPlayersHint">Al menos 3</string>
+    <string name="numberOfPlayersSelected">Número de jugadores seleccionados: %1$s</string>
+    <string name="participantDefaultName">Jugador %1$d</string>
+    <string name="byeDefaultName">BYE</string>
+
+    <string name="elimination">Eliminación</string>
+    <string name="doubleElimination">Doble eliminación</string>
+    <string name="roundRobin">Round robin</string>
+    <string name="swiss">Suizo</string>
+    <string name="survival">Supervivencia</string>
+
+    <string name="numPlayersUnspecifiedMsg">Número de jugadores no especificado</string>
+    <string name="lessThan3Msg">Un torneo requiere al menos 3 jugadores</string>
+    <string name="notANumberMsg">No es un número</string>
+
+    <string name="roundHeader">Ronda %1$d</string>
+    <string name="defaultTitle">Mi %1$s torneo (%2$s)</string>
+    <string name="winnersBracket">Diagrama de ganadores</string>
+    <string name="losersBracket">Diagrama de perdedores</string>
+    <string name="finalsBracket">Diagrama de finales</string>
+    <string name="roundTitleForDifferentRoundGroup">%2$s\n\t%1$s</string>
+    <string name="roundSelectionHint">Alternativamente, clic largo en encabezado de ronda</string>
+    <string name="matchUpSelectionHint">Alternativamente, clic largo en emparejamiento</string>
+    <string name="participantSelectionHint">Alternativamente, clic largo en jugador</string>
+
+    <string name="participant1VsParticipant2">%3$s\n\t%1$s VS %2$s</string>
+    <string name="participantWithABye">%2$s\n\t%1$s tiene un BYE</string>
+    <string name="participantVsNoOne">%2$s\n\t%1$s esperando oponente</string>
+    <string name="emptyMatchUp">%2$s\n\ttemparejamiento %1$s</string>
+    <string name="participant1VsParticipant2ForDifferentRoundGroup">%4$s\n\t%3$s\n\t\t%1$s VS %2$s</string>
+    <string name="participantWithAByeForDifferentRoundGroup">%3$s\n\t%2$s\n\t\t%1$s tiene un BYE</string>
+    <string name="participantVsNoOneForDifferentRoundGroup">%3$s\n\t%2$s\n\t\t%1$s esperando oponente</string>
+    <string name="emptyMatchUpForDifferentRoundGroup">%3$s\n\t%2$s\n\t\ttemparejamiento %1$s</string>
+
+    <string name="title_activity_seeding">Siembra personalizada</string>
+
+    <string name="seedHelpMsg">Tocar 2 jugadores para intercambiar sus posiciones</string>
+
+    <string name="saveTournament">Guardar</string>
+    <string name="currentRanking">Posición actual</string>
+    <string name="saveAsTournament">Guardar como</string>
+    <string name="exportTournament">Exportar como imagen</string>
+    <string name="editTournament">Editar torneo</string>
+    <string name="rebuildTournament">Reconstruir torneo</string>
+    <string name="editARound">Editar una ronda</string>
+    <string name="editAMatchUp">Edición de un emparejamiento</string>
+    <string name="editAParticipant">Edición de un jugador</string>
+
+    <string name="thisMatchUp">Este emparejamiento</string>
+    <string name="editingThisMatchUp">Editar emparejamiento</string>
+    <string name="editingThisRound">Editar ronda</string>
+
+    <string name="displayName">Mostrar nombre</string>
+    <string name="editPlayDisplayNameHint">Originalmente %1$s</string>
+    <string name="note">Nota</string>
+    <string name="displayedColor">Mostrar color</string>
+    <string name="editing">Editando %1$s</string>
+    <string name="name">Nombre</string>
+    <string name="group">Grupo</string>
+    <string name="groupHint">Empieza a escribir para el llenado automático</string>
+    <string name="adding">Añadiendo</string>
+    <string name="add">Añadir</string>
+    <string name="addAndContinue">Añadir &amp; continuar</string>
+    <string name="move">Mover</string>
+    <string name="movingPlayers">Moviendo %1$d jugador(es)</string>
+    <string name="movePlayerSuccessfulMsg">%1$d jugador(es) movidos con éxito</string>
+    <string name="addSuccessfulMsg">%1$s añadido successfully</string>
+    <string name="deletePlayerSuccessfulMsg">%1$s jugador(es) eliminado con éxito</string>
+    <string name="editSuccessfulMsg">%1$s ha sido editado con éxito</string>
+    <string name="deleteGroupSuccessfulMsg">%1$s grupo(s) eliminado con éxito</string>
+
+    <string name="title_activity_management">Gestión</string>
+    <string name="duplicateMsg">%1$s ya existe</string>
+    <string name="defaultGroupName">Grupo por defecto</string>
+    <string name="edit">Editar</string>
+    <string name="moreInfo">Más información</string>
+    <string name="delete">Eliminar</string>
+    <string name="deletePlayerMsg">¿Está seguro de que quiere eliminar jugador(es) %1$d? Esta acción no se puede deshacer.</string>
+    <string name="deletingPlayers">Eliminando jugador(es) %1$d</string>
+    <string name="deleteGroupMsg">¿Está seguro de que quiere eliminar grupo(s) %1$d? Esta acción no se puede deshacer.</string>
+    <string name="deletingGroups">Eliminando grupo(s) %1$d</string>
+
+    <!--Keep in sync with colorOptions-->
+    <string-array name="colorOptionsNames">
+        <item>Negro</item>
+        <item>Gris</item>
+        <item>Rojo</item>
+        <item>Verde</item>
+        <item>Azul</item>
+        <item>Amarillo</item>
+        <item>Púrpura</item>
+    </string-array>
+
+
+    <string name="rebuildTournamentInstructions">Reconstruir este torneo como un tipo de torneo diferente.\n*Los datos no guardados se perderán.</string>
+    <string name="customSeed">Siembra personalizada</string>
+    <string name="sameSeed">Misma siembra</string>
+    <string name="knownRanking">Posición conocida</string>
+    <string name="unknownRanking">Posición desconocida</string>
+
+    <string name="title_activity_directory_picker">Elegir directorio</string>
+    <string name="directoryChoose">Elegir \"%1$s\"</string>
+    <string name="directoryCannotReadMsg">No se pudo leer contenido de la carpeta</string>
+    <string name="exportAsImageProgressMsg">La exportación como imagen, por favor espere&#8230;</string>
+    <string name="sdNotMounted">Tarjeta SD no montado</string>
+    <string name="copyToClipboard">Copiar al portapapeles</string>
+    <string name="copyToClipboardMsg">Copiado al portapapeles</string>
+    <string name="share">Compartir</string>
+    <string name="view">Ver</string>
+    <string name="emailPickerTitle">Completar con&#8230;</string>
+    <string name="noImageAppInstalledMsg">Parece que usted no tiene una aplicación que puede ver un archivo de imagen. Por favor, instale una y vuelva a intentarlo.</string>
+    <string name="exportAsImageSuccess">Torneo exportado con éxito como una imagen\n\n%1$s</string>
+
+    <string name="exportAsImageFail">Error al exportar el torneo como una imagen\n\n%1$s</string>
+
+    <string name="sort">Ordenar</string>
+    <string name="viewMode">Modo de vista</string>
+    <string name="filter">Filtrar</string>
+    <string name="deleteTournamentMsg">¿Seguro que quiere eliminar torneo(s) %1$s? Esta acción no se puede deshacer.</string>
+
+    <string name="saveTournamentSuccessfulMsg">Torneo guardado correctamente</string>
+
+    <string name="title_activity_history">Cargar un torneo</string>
+    <string name="createdDateLabel">Creado en: </string>
+    <string name="lastModifiedDateLabel">Última modificación: </string>
+    <string name="deleteTournamentSuccessfulMsg">%1$s torneo(s) eliminado con éxito</string>
+
+    <string name="creationTimeNewest">Hora de creación (el más reciente)</string>
+    <string name="creationTimeOldest">Hora de creación (el más antiguo)</string>
+    <string name="lastModifiedTimeNewest">La última vez que se modificó (el más reciente)</string>
+    <string name="lastModifiedTimeOldest">La última vez que se modificó (el más antiguo)</string>
+    <string name="nameReversed">Nombre (invertido)</string>
+    <string name="tournamentType">Tipo de torneo</string>
+    <string name="tournamentTypeReversed">Tipo de torneo (invertido)</string>
+
+    <string name="viewAsMinimal">Mínimo (sólo título)</string>
+    <string name="viewAsBasic">Básico (título &amp; descripción)</string>
+    <string name="viewAsDetailed">Detallado</string>
+
+    <string name="sortOptionsTitle">Ordenar por</string>
+
+    <string name="searchHint">Buscar torneos</string>
+    <string name="clearSearch">Limpiar resultados de búsqueda para \"%1$s\"</string>
+    <string name="filtersApplied">Filtros aplicados</string>
+    <string name="historicalItemHintMsg">Toque y mantenga en un objeto para más opciones</string>
+    <string name="noResultsMsg">No se han encontrado resultados</string>
+
+    <string name="titleHeader">Título</string>
+    <string name="descriptionHeader">Descripción</string>
+    <string name="typeHeader">Tipo</string>
+    <string name="playersHeader">Jugadores</string>
+    <string name="createdDateLabelHeader">Creado en</string>
+    <string name="lastModifiedDateLabelHeader">Última modificación</string>
+
+    <string name="showOnly">Mostrar solo</string>
+    <string name="createdBetween">Creado entre</string>
+    <string name="modifiedBetween">Modificado entre</string>
+    <string name="between">Entre</string>
+    <string name="seedType">Tipo de siembra</string>
+
+    <string name="feedback">Realimentación</string>
+    <string name="rate">Tarifa</string>
+    <string name="email">Email</string>
+
+    <string name="nobodyMsg">Hasta ahora nadie ha añadido</string>
+    <string name="title_activity_app_info">Más información</string>
+    <string name="eliminationInfoText">
+        <![CDATA[Un <b>torneo de elimnación directa</b>—tmabién llamado <b>Sistema de torneo olímpico</b>, un <b>knockout</b> (o, <b>knock-out</b>), <b>una penetración</b>, o <b>torneo de muerte súbita</b>—es un tipo de torneo de eliminación donde el perdedor de cada diagrama se elimina inmediatamente de ganar el campeonato o el primer premio en el evento.
+        Para obtener más información, <a href="https://en.wikipedia.org/wiki/Single-elimination_tournament">ver la entrada de Wikipedia</a>]]>
+    </string>
+    <string name="doubleEliminationInfoText">
+        <![CDATA[Un <b>torneo de deoble eliminación</b> es un tipo de competición del torneo de eliminación en el que un participante deja de ser elegible para ganar el campeonato del torneo's\ tras haber perdido dos juegos o partidos. Se destaca en contraste con un torneo de eliminación directa, en la que sólo una derrota resulta en eliminación.
+        Para obtener más información, <a href="https://en.wikipedia.org/wiki/Double-elimination_tournament">ver la entrada de Wikipedia</a>]]>
+    </string>
+    <string name="roundRobinInfoText">
+        <![CDATA[Un <b>torneo round-robin</b> (or <b>torneo de todos contra todos</b>) es una competición "en la que cada participante se enfrenta con todos los demás concursantes, a su vez". Contrasta con un torneo de eliminación.
+        Para obtener más información, <a href="https://en.wikipedia.org/wiki/Round-robin_tournament">ver la entrada de Wikipedia</a>]]>
+    </string>
+    <string name="swissInfoText">
+        <![CDATA[Un <b>sistema de torneo suizo</b> es un formato de torneo no eliminatorio, que cuenta con un número predeterminado de rondas de competencia, pero considerablemente menos que en un torneo de todos contra todos. En un torneo suizo, cada competidor (equipo o individuo) no juega contra todos los demás. Los competidores se enfrentan uno-a-uno en cada ronda y se emparejan utilizando un conjunto predeterminado de reglas diseñadas para asegurar que cada competidor juega con oponentes con una puntuación similar, pero no el mismo oponente más de una vez. El ganador es el competidor con los puntos agregados más altos obtenidos en todas las rondas. Todos los competidores juegan en cada ronda a menos que haya un número impar de ellos.
+        Para obtener más información, <a href="https://en.wikipedia.org/wiki/Swiss-system_tournament">ver la entrada de Wikipedia</a>]]>
+    </string>
+    <string name="survivalInfoText">
+        <![CDATA[Basado en juegos de competencia de reality shows que siguen el formato de  concursos de torneos no eliminatorios. En muchos casos, los participantes se retiran hasta que sólo una persona o equipo quede, que luego es declarado ganador. Normalmente esto se hace mediante la eliminación de participantes de uno en uno (o algunas veces dos a la vez, como un toque episódico debido al número de participantes involucrados y la duración de le temporada dada).
+        Para obtener más información, <a href="https://en.wikipedia.org/wiki/Reality_television#Reality_competition.2Fgame_shows">ver la entrada de Wikipedia dejuegos de competencia de reality shows</a>]]>
+    </string>
+
+    <string name="unSavedChangesWarningMsg">Los cambios no guardados detectados. ¿Quieres guardar?</string>
+    <string name="save">Guardar</string>
+    <string name="dontSave">No Guardar</string>
+    <string name="playStoreNotFound">Play Store no se encuentra</string>
+
+    <!-- IAP -->
+    <string name="verifyingPremiumStatus">Verificar estado premium&#8230;</string>
+    <string name="upgradeTitle">Desactivar los anuncios</string>
+    <string name="upgradeMsg">Los anuncions son una fuente de ingresos para esta aplicación. Si desea desactivar los anuncios, por favor apoye mi trabajo.</string>
+    <string name="upgradeSuccessfulMsg">¡Gracias por el apoyo!</string>
+
+    <string name="unknown_errorMsg">Un error desconocido ha ocurrido al procesar su compra en la aplicación.</string>
+    <string name="service_unavailable_errorMsg">El servicio de facturación no está disponible en este momento, por favor inténtelo de nuevo más tarde.</string>
+    <string name="item_already_owned_errorMsg">Este objeto ya es de su propiedad.</string>
+    <string name="initialization_errorMsg">Se ha producido un error durante la inicialización de facturación, por favor reinicie la aplicación para volver a intentarlo más tarde.</string>
+    <string name="verification_errorMsg">Se produjo un error al intentar verificar una compra.</string>
+</resources>

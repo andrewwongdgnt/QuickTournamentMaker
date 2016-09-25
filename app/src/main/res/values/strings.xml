@@ -117,7 +117,7 @@
     <string name="view">View</string>
     <string name="emailPickerTitle">Complete with&#8230;</string>
     <string name="noImageAppInstalledMsg">It seems like you do not have an app that can view an image file.  Please install one and try again.</string>
-    <string name="exportAsImageSuccess">Successful exported tournament as an image\n\n%1$s</string>
+    <string name="exportAsImageSuccess">Successfully exported tournament as an image\n\n%1$s</string>
 
     <string name="exportAsImageFail">Failed to export tournament as an image\n\n%1$s</string>
 
@@ -201,7 +201,7 @@
     <!-- IAP -->
     <string name="verifyingPremiumStatus">Verifying premium status&#8230;</string>
     <string name="upgradeTitle">Disable ads</string>
-    <string name="upgradeMsg">Ads is a source of revenue for this app. If you would like have ads disabled, please support my work.</string>
+    <string name="upgradeMsg">Ads are a source of revenue for this app. If you would like have ads disabled, please support my work.</string>
     <string name="upgradeSuccessfulMsg">Thank you for the support!</string>
 
     <string name="unknown_errorMsg">An unknown error has occurred when processing your in app purchase.</string>
