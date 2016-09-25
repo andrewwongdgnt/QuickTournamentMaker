@@ -176,7 +176,7 @@
         Para obtener más información, <a href="https://en.wikipedia.org/wiki/Single-elimination_tournament">ver la entrada de Wikipedia</a>]]>
     </string>
     <string name="doubleEliminationInfoText">
-        <![CDATA[Un <b>torneo de deoble eliminación</b> es un tipo de competición del torneo de eliminación en el que un participante deja de ser elegible para ganar el campeonato del torneo's\ tras haber perdido dos juegos o partidos. Se destaca en contraste con un torneo de eliminación directa, en la que sólo una derrota resulta en eliminación.
+        <![CDATA[Un <b>torneo de deoble eliminación</b> es un tipo de competición del torneo de eliminación en el que un participante deja de ser elegible para ganar el campeonato del torneo\'s tras haber perdido dos juegos o partidos. Se destaca en contraste con un torneo de eliminación directa, en la que sólo una derrota resulta en eliminación.
         Para obtener más información, <a href="https://en.wikipedia.org/wiki/Double-elimination_tournament">ver la entrada de Wikipedia</a>]]>
     </string>
     <string name="roundRobinInfoText">
