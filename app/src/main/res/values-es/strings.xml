@@ -6,7 +6,7 @@
     <string name="tournamentDescription">Descripción del torneo</string>
     <string name="numberOfPlayers">Número de jugadores</string>
     <string name="numberOfPlayersHint">Al menos 3</string>
-    <string name="numberOfPlayersSelected">Número de jugadores seleccionados: %1$s</string>
+    <string name="numberOfPlayersSelected">Número de jugadores seleccionados: %1$d</string>
     <string name="participantDefaultName">Jugador %1$d</string>
     <string name="byeDefaultName">BYE</string>
 
@@ -33,11 +33,11 @@
     <string name="participant1VsParticipant2">%3$s\n\t%1$s VS %2$s</string>
     <string name="participantWithABye">%2$s\n\t%1$s tiene un BYE</string>
     <string name="participantVsNoOne">%2$s\n\t%1$s esperando oponente</string>
-    <string name="emptyMatchUp">%2$s\n\ttemparejamiento %1$s</string>
+    <string name="emptyMatchUp">%2$s\n\ttemparejamiento %1$d</string>
     <string name="participant1VsParticipant2ForDifferentRoundGroup">%4$s\n\t%3$s\n\t\t%1$s VS %2$s</string>
     <string name="participantWithAByeForDifferentRoundGroup">%3$s\n\t%2$s\n\t\t%1$s tiene un BYE</string>
     <string name="participantVsNoOneForDifferentRoundGroup">%3$s\n\t%2$s\n\t\t%1$s esperando oponente</string>
-    <string name="emptyMatchUpForDifferentRoundGroup">%3$s\n\t%2$s\n\t\ttemparejamiento %1$s</string>
+    <string name="emptyMatchUpForDifferentRoundGroup">%3$s\n\t%2$s\n\t\ttemparejamiento %1$d</string>
 
     <string name="title_activity_seeding">Siembra personalizada</string>
 
@@ -72,9 +72,9 @@
     <string name="movingPlayers">Moviendo %1$d jugador(es)</string>
     <string name="movePlayerSuccessfulMsg">%1$d jugador(es) movidos con éxito</string>
     <string name="addSuccessfulMsg">%1$s añadido successfully</string>
-    <string name="deletePlayerSuccessfulMsg">%1$s jugador(es) eliminado con éxito</string>
+    <string name="deletePlayerSuccessfulMsg">%1$d jugador(es) eliminado con éxito</string>
     <string name="editSuccessfulMsg">%1$s ha sido editado con éxito</string>
-    <string name="deleteGroupSuccessfulMsg">%1$s grupo(s) eliminado con éxito</string>
+    <string name="deleteGroupSuccessfulMsg">%1$d grupo(s) eliminado con éxito</string>
 
     <string name="title_activity_management">Gestión</string>
     <string name="duplicateMsg">%1$s ya existe</string>
@@ -130,7 +130,7 @@
     <string name="title_activity_history">Cargar un torneo</string>
     <string name="createdDateLabel">Creado en: </string>
     <string name="lastModifiedDateLabel">Última modificación: </string>
-    <string name="deleteTournamentSuccessfulMsg">%1$s torneo(s) eliminado con éxito</string>
+    <string name="deleteTournamentSuccessfulMsg">%1$d torneo(s) eliminado con éxito</string>
 
     <string name="creationTimeNewest">Hora de creación (el más reciente)</string>
     <string name="creationTimeOldest">Hora de creación (el más antiguo)</string>

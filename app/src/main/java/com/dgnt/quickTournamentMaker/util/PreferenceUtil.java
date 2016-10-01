@@ -40,9 +40,10 @@ public class PreferenceUtil {
 
     private final static String PREF_FILTER_TOURNAMENT_TYPE_KEY = "filterTournamentTypeKey";
 
-    public static String getTournamentTypeFilterKey(final Tournament.TournamentType type){
+    public static String getTournamentTypeFilterKey(final Tournament.TournamentType type) {
         return PREF_FILTER_TOURNAMENT_TYPE_KEY + type.name();
     }
+
     public static boolean isTournamentTypeFilteredOn(final SharedPreferences sharedPreferences, final Tournament.TournamentType type) {
         return sharedPreferences.getBoolean(getTournamentTypeFilterKey(type), false);
     }
@@ -117,5 +118,51 @@ public class PreferenceUtil {
 
     public static boolean isLatestModifiedEpochFilterAllowed(final SharedPreferences sharedPreferences) {
         return sharedPreferences.getBoolean(PREF_FILTER_LATEST_MODIFIED_EPOCH_ALLOWED_KEY, false);
+    }
+
+    public final static String PREF_SWISS_RANKING_CONFIG_KEY = "rankSwissRankingConfigKey";
+    public final static String PREF_ROUND_ROBIN_RANKING_CONFIG_KEY = "rankRoundRobinRankingConfigKey";
+
+    public static boolean isRankingBasedOnPriority(final SharedPreferences sharedPreferences, final String prefKey) {
+        return sharedPreferences.getBoolean(prefKey, true);
+    }
+
+    public static void setRankingBasedOnPriority(final SharedPreferences sharedPreferences, final String prefKey, final boolean value) {
+        final SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(prefKey, value);
+        editor.commit();
+    }
+
+    public final static String PREF_RANK_PRIORITY_KEY = "rankPriorityKey";
+
+//    public static boolean isLatestModifiedEpochFilterAllowed(final SharedPreferences sharedPreferences) {
+//        return sharedPreferences.get(PREF_FILTER_LATEST_MODIFIED_EPOCH_ALLOWED_KEY, false);
+//    }
+
+    public final static String PREF_SWISS_RANK_WIN_SCORE_KEY = "rankSwissWinScoreKey";
+    public final static String PREF_SWISS_RANK_LOSS_SCORE_KEY = "rankSwissLossScoreKey";
+    public final static String PREF_SWISS_RANK_TIE_SCORE_KEY = "rankSwissTieScoreKey";
+    
+    public final static String PREF_ROUND_ROBIN_RANK_WIN_SCORE_KEY = "rankRoundRobinWinScoreKey";
+    public final static String PREF_ROUND_ROBIN_RANK_LOSS_SCORE_KEY = "rankRoundRobinLossScoreKey";
+    public final static String PREF_ROUND_ROBIN_RANK_TIE_SCORE_KEY = "rankRoundRobinTieScoreKey";
+
+    public static int getRankScore(final SharedPreferences sharedPreferences, final String prefKey) {
+        return sharedPreferences.getInt(prefKey, 0);
+    }
+
+    public static void setRankScore(final SharedPreferences sharedPreferences, final String prefKey, final String winScore) {
+        final SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(prefKey, getIntFromString(winScore, 0));
+        editor.commit();
+    }
+
+    private static int getIntFromString(final String s, final int defaultNum) {
+        try {
+            return Integer.parseInt(s);
+        } catch (NumberFormatException ex) {
+
+        }
+        return defaultNum;
     }
 }

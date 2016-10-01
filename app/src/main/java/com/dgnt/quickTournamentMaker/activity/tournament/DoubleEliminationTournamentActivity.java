@@ -184,23 +184,23 @@ public class DoubleEliminationTournamentActivity extends EliminationTournamentAc
     }
 
     protected String getFullMatchUpTitle(final int roundGroupIndex, final int roundIndex, final int matchUpIndex) {
-        final Round round = tournament.getRoundAt(roundGroupIndex,roundIndex);
+        final Round round = tournament.getRoundAt(roundGroupIndex, roundIndex);
         final MatchUp matchUp = tournament.getMatchUp(roundGroupIndex, roundIndex, matchUpIndex);
         final Participant participant1 = matchUp.getParticipant1();
         final Participant participant2 = matchUp.getParticipant2();
 
 
         if (participant1.isNormal() && participant2.isNormal())
-            return getString(R.string.participant1VsParticipant2ForDifferentRoundGroup,participant1.getDisplayName(),participant2.getDisplayName(),round.getTitle(),getRoundBracketTitle(roundGroupIndex));
+            return getString(R.string.participant1VsParticipant2ForDifferentRoundGroup, participant1.getDisplayName(), participant2.getDisplayName(), round.getTitle(), getRoundBracketTitle(roundGroupIndex));
         else if (participant1.isNormal() && participant2.isBye())
-            return getString(R.string.participantWithAByeForDifferentRoundGroup,participant1.getDisplayName(),round.getTitle(),getRoundBracketTitle(roundGroupIndex));
+            return getString(R.string.participantWithAByeForDifferentRoundGroup, participant1.getDisplayName(), round.getTitle(), getRoundBracketTitle(roundGroupIndex));
         else if (participant1.isBye() && participant2.isNormal())
-            return getString(R.string.participantWithAByeForDifferentRoundGroup,participant2.getDisplayName(),round.getTitle(),getRoundBracketTitle(roundGroupIndex));
+            return getString(R.string.participantWithAByeForDifferentRoundGroup, participant2.getDisplayName(), round.getTitle(), getRoundBracketTitle(roundGroupIndex));
         else if (participant1.isNormal() && participant2.isNull())
-            return getString(R.string.participantVsNoOneForDifferentRoundGroup,participant1.getDisplayName(),round.getTitle(),getRoundBracketTitle(roundGroupIndex));
+            return getString(R.string.participantVsNoOneForDifferentRoundGroup, participant1.getDisplayName(), round.getTitle(), getRoundBracketTitle(roundGroupIndex));
         else if (participant1.isNull() && participant2.isNormal())
-            return getString(R.string.participantVsNoOneForDifferentRoundGroup,participant2.getDisplayName(),round.getTitle(),getRoundBracketTitle(roundGroupIndex));
-        return getString(R.string.emptyMatchUpForDifferentRoundGroup,matchUpIndex+1,round.getTitle(),getRoundBracketTitle(roundGroupIndex));
+            return getString(R.string.participantVsNoOneForDifferentRoundGroup, participant2.getDisplayName(), round.getTitle(), getRoundBracketTitle(roundGroupIndex));
+        return getString(R.string.emptyMatchUpForDifferentRoundGroup, matchUpIndex + 1, round.getTitle(), getRoundBracketTitle(roundGroupIndex));
     }
 
     private String getRoundBracketTitle(final int roundGroupIndex) {

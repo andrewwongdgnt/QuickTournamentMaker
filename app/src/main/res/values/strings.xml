@@ -7,7 +7,7 @@
     <string name="tournamentDescription">Tournament description</string>
     <string name="numberOfPlayers">Number of players</string>
     <string name="numberOfPlayersHint">At least 3</string>
-    <string name="numberOfPlayersSelected">Number of players selected: %1$s</string>
+    <string name="numberOfPlayersSelected">Number of players selected: %1$d</string>
     <string name="participantDefaultName">Player %1$d</string>
     <string name="byeDefaultName">BYE</string>
 
@@ -34,11 +34,11 @@
     <string name="participant1VsParticipant2">%3$s\n\t%1$s VS %2$s</string>
     <string name="participantWithABye">%2$s\n\t%1$s has a BYE</string>
     <string name="participantVsNoOne">%2$s\n\t%1$s waiting for opponent</string>
-    <string name="emptyMatchUp">%2$s\n\tMatch up %1$s</string>
+    <string name="emptyMatchUp">%2$s\n\tMatch up %1$d</string>
     <string name="participant1VsParticipant2ForDifferentRoundGroup">%4$s\n\t%3$s\n\t\t%1$s VS %2$s</string>
     <string name="participantWithAByeForDifferentRoundGroup">%3$s\n\t%2$s\n\t\t%1$s has a BYE</string>
     <string name="participantVsNoOneForDifferentRoundGroup">%3$s\n\t%2$s\n\t\t%1$s waiting for opponent</string>
-    <string name="emptyMatchUpForDifferentRoundGroup">%3$s\n\t%2$s\n\t\tMatch up %1$s</string>
+    <string name="emptyMatchUpForDifferentRoundGroup">%3$s\n\t%2$s\n\t\tMatch up %1$d</string>
 
     <string name="title_activity_seeding">Custom seeding</string>
 
@@ -73,9 +73,9 @@
     <string name="movingPlayers">Moving %1$d player(s)</string>
     <string name="movePlayerSuccessfulMsg">%1$d player(s) moved successfully</string>
     <string name="addSuccessfulMsg">%1$s added successfully</string>
-    <string name="deletePlayerSuccessfulMsg">%1$s player(s) deleted successfully</string>
+    <string name="deletePlayerSuccessfulMsg">%1$d player(s) deleted successfully</string>
     <string name="editSuccessfulMsg">%1$s has been edited successfully</string>
-    <string name="deleteGroupSuccessfulMsg">%1$s group(s) deleted successfully</string>
+    <string name="deleteGroupSuccessfulMsg">%1$d group(s) deleted successfully</string>
 
     <string name="title_activity_management">Management</string>
     <string name="duplicateMsg">%1$s already exists</string>
@@ -131,7 +131,7 @@
     <string name="title_activity_history">Load a tournament</string>
     <string name="createdDateLabel">Created on: </string>
     <string name="lastModifiedDateLabel">Last modified: </string>
-    <string name="deleteTournamentSuccessfulMsg">%1$s tournament(s) deleted successfully</string>
+    <string name="deleteTournamentSuccessfulMsg">%1$d tournament(s) deleted successfully</string>
 
     <string name="creationTimeNewest">Creation time (newest)</string>
     <string name="creationTimeOldest">Creation time (oldest)</string>
@@ -197,6 +197,13 @@
     <string name="save">Save</string>
     <string name="dontSave">Don\'t save</string>
     <string name="playStoreNotFound">Play Store not found</string>
+
+    <string name="rankConfiguration">Ranking configuration</string>
+    <string name="priority">Priority</string>
+    <string name="scoring">Scoring</string>
+    <string name="win">Win</string>
+    <string name="tie">Tie</string>
+    <string name="loss">Loss</string>
 
     <!-- IAP -->
     <string name="verifyingPremiumStatus">Verifying premium status&#8230;</string>
