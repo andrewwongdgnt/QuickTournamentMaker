@@ -6,11 +6,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.util.Pair;
 import android.support.v7.app.ActionBar;
@@ -1123,147 +1125,6 @@ abstract public class TournamentActivity extends InAppBillingActivity implements
         startingActivity.startActivityForResult(intent, requestCode);
     }
 
-    public static void setUpRankingEditor(final Activity activity, final boolean isSwiss) {
-        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
-
-        final RadioGroup rankingConfig_rg = (RadioGroup) activity.findViewById(R.id.rankingConfig_rg);
-
-        final RadioButton compareRankFromPriority_rb = (RadioButton) activity.findViewById(R.id.compareRankFromPriority_rb);
-        final RadioButton compareRankFromScore_rb = (RadioButton) activity.findViewById(R.id.compareRankFromScore_rb);
-
-        final ViewGroup compareRankFromPriorityGroup = (ViewGroup) activity.findViewById(R.id.compareRankFromPriorityGroup);
-        final ViewGroup compareRankFromScoreGroup = (ViewGroup) activity.findViewById(R.id.compareRankFromScoreGroup);
-        rankingConfig_rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-
-                final RadioButton checkedRadioButton = (RadioButton) group.findViewById(checkedId);
-
-                final boolean isChecked = checkedRadioButton.isChecked();
-
-                if (isChecked) {
-                    if (checkedId == R.id.compareRankFromPriority_rb) {
-                        compareRankFromPriorityGroup.setVisibility(isChecked ? View.VISIBLE : View.GONE);
-                        compareRankFromScoreGroup.setVisibility(isChecked ? View.GONE : View.VISIBLE);
-                        PreferenceUtil.setRankingBasedOnPriority(sharedPreferences, isSwiss ? PreferenceUtil.PREF_SWISS_RANKING_CONFIG_KEY : PreferenceUtil.PREF_ROUND_ROBIN_RANKING_CONFIG_KEY, true);
-
-                    } else {
-                        compareRankFromPriorityGroup.setVisibility(isChecked ? View.GONE : View.VISIBLE);
-                        compareRankFromScoreGroup.setVisibility(isChecked ? View.VISIBLE : View.GONE);
-                        PreferenceUtil.setRankingBasedOnPriority(sharedPreferences, isSwiss ? PreferenceUtil.PREF_SWISS_RANKING_CONFIG_KEY : PreferenceUtil.PREF_ROUND_ROBIN_RANKING_CONFIG_KEY, false);
-
-                    }
-
-                }
-
-            }
-        });
-//        compareRankFromPriority_rb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                compareRankFromPriorityGroup.setVisibility(isChecked ? View.VISIBLE : View.GONE);
-//                compareRankFromScoreGroup.setVisibility(isChecked ? View.GONE : View.VISIBLE);
-//                PreferenceUtil.setRankingBasedOnPriority(sharedPreferences, isSwiss ? PreferenceUtil.PREF_SWISS_RANKING_CONFIG_KEY : PreferenceUtil.PREF_ROUND_ROBIN_RANKING_CONFIG_KEY, true);
-//            }
-//        });
-//        compareRankFromScore_rb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                compareRankFromPriorityGroup.setVisibility(isChecked ? View.GONE : View.VISIBLE);
-//                compareRankFromScoreGroup.setVisibility(isChecked ? View.VISIBLE : View.GONE);
-//                PreferenceUtil.setRankingBasedOnPriority(sharedPreferences, isSwiss ? PreferenceUtil.PREF_SWISS_RANKING_CONFIG_KEY : PreferenceUtil.PREF_ROUND_ROBIN_RANKING_CONFIG_KEY, false);
-//
-//            }
-//        });
-
-        final boolean isRankingBasedOnPriority = PreferenceUtil.isRankingBasedOnPriority(sharedPreferences, isSwiss ? PreferenceUtil.PREF_SWISS_RANKING_CONFIG_KEY : PreferenceUtil.PREF_ROUND_ROBIN_RANKING_CONFIG_KEY);
-        if (isRankingBasedOnPriority) {
-            compareRankFromPriority_rb.setChecked(true);
-            compareRankFromScore_rb.setChecked(false);
-        } else {
-            compareRankFromPriority_rb.setChecked(false);
-            compareRankFromScore_rb.setChecked(true);
-        }
-
-        final Button winScoreAdd_btn = (Button) activity.findViewById(R.id.winScoreAdd_btn);
-        final EditText winScore_et = (EditText) activity.findViewById(R.id.winScore_et);
-        final Button winScoreSubtract_btn = (Button) activity.findViewById(R.id.winScoreSubtract_btn);
-        setUpRankingEditor_Score(activity, "w",isSwiss ? PreferenceUtil.PREF_SWISS_RANK_WIN_SCORE_KEY : PreferenceUtil.PREF_ROUND_ROBIN_RANK_WIN_SCORE_KEY, winScoreAdd_btn, winScore_et, winScoreSubtract_btn);
-
-        final Button tieScoreAdd_btn = (Button) activity.findViewById(R.id.tieScoreAdd_btn);
-        final EditText tieScore_et = (EditText) activity.findViewById(R.id.tieScore_et);
-        final Button tieScoreSubtract_btn = (Button) activity.findViewById(R.id.tieScoreSubtract_btn);
-        setUpRankingEditor_Score(activity, "t",isSwiss ? PreferenceUtil.PREF_SWISS_RANK_TIE_SCORE_KEY : PreferenceUtil.PREF_ROUND_ROBIN_RANK_TIE_SCORE_KEY, tieScoreAdd_btn, tieScore_et, tieScoreSubtract_btn);
-
-        final Button lossScoreAdd_btn = (Button) activity.findViewById(R.id.lossScoreAdd_btn);
-        final EditText lossScore_et = (EditText) activity.findViewById(R.id.lossScore_et);
-        final Button lossScoreSubtract_btn = (Button) activity.findViewById(R.id.lossScoreSubtract_btn);
-        setUpRankingEditor_Score(activity,"l", isSwiss ? PreferenceUtil.PREF_SWISS_RANK_LOSS_SCORE_KEY : PreferenceUtil.PREF_ROUND_ROBIN_RANK_LOSS_SCORE_KEY, lossScoreAdd_btn, lossScore_et, lossScoreSubtract_btn);
-
-    }
-
-    private static void setUpRankingEditor_Score(final Context context, final String type,final String prefKey, final Button add_btn, final EditText score_et, final Button subtract_btn) {
-        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-
-        if (!myTextWatcherMap.containsKey(type))
-            myTextWatcherMap.put(type,new MyTextWatcher());
-        final MyTextWatcher myTextWatcher = myTextWatcherMap.get(type);
-
-        score_et.removeTextChangedListener(myTextWatcher);
-        score_et.setText(String.valueOf(PreferenceUtil.getRankScore(sharedPreferences, prefKey)));
-        myTextWatcher.setSharedPreferences(sharedPreferences);
-        myTextWatcher.setPrefKey(prefKey);
-        score_et.addTextChangedListener(myTextWatcher);
-
-        add_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                score_et.setText(String.valueOf(PreferenceUtil.getRankScore(sharedPreferences, prefKey) + 1));
-            }
-        });
-
-        subtract_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                score_et.setText(String.valueOf(PreferenceUtil.getRankScore(sharedPreferences, prefKey) - 1));
-            }
-        });
-    }
-
-    final private static Map<String,MyTextWatcher> myTextWatcherMap = new HashMap<>();
-
-    private static class MyTextWatcher implements TextWatcher {
-
-        private MyTextWatcher() {
-
-        }
-
-        private SharedPreferences sharedPreferences;
-
-        private void setSharedPreferences(final SharedPreferences sharedPreferences) {
-            this.sharedPreferences = sharedPreferences;
-        }
-
-        private String prefKey;
-
-        private void setPrefKey(final String prefKey) {
-            this.prefKey = prefKey;
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-        }
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if (sharedPreferences != null && prefKey != null)
-                PreferenceUtil.setRankScore(sharedPreferences, prefKey, s.toString());
-        }
-    }
 
     protected class ParticipantClickListener implements View.OnClickListener {
 

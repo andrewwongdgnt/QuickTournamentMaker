@@ -36,6 +36,7 @@ import com.dgnt.quickTournamentMaker.model.tournament.Tournament;
 import com.dgnt.quickTournamentMaker.util.AdsUtil;
 import com.dgnt.quickTournamentMaker.util.DatabaseHelper;
 import com.dgnt.quickTournamentMaker.util.EmailUtil;
+import com.dgnt.quickTournamentMaker.util.LayoutUtil;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
@@ -132,7 +133,7 @@ public class MainActivity extends InAppBillingActivity
                     if (checkedId == R.id.roundRobin_rb || checkedId == R.id.swiss_rb) {
                         rankingConfig_tv.setVisibility(View.VISIBLE);
                         rankingConfig_rg.setVisibility(View.VISIBLE);
-                        TournamentActivity.setUpRankingEditor(MainActivity.this, checkedId == R.id.swiss_rb);
+                        LayoutUtil.setUpRankingEditor(MainActivity.this, checkedId == R.id.swiss_rb);
                     } else {
                         rankingConfig_tv.setVisibility(View.GONE);
                         rankingConfig_rg.setVisibility(View.GONE);

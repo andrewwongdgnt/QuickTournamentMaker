@@ -199,8 +199,8 @@
     <string name="playStoreNotFound">Play Store not found</string>
 
     <string name="rankConfiguration">Ranking configuration</string>
-    <string name="priority">Priority</string>
-    <string name="scoring">Scoring</string>
+    <string name="priority">Priority (Tap two to swap. Click here for more info)</string>
+    <string name="scoring">Scoring (Points based on record)</string>
     <string name="win">Win</string>
     <string name="tie">Tie</string>
     <string name="loss">Loss</string>

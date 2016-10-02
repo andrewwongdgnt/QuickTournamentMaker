@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import com.dgnt.quickTournamentMaker.model.history.HistoricalTournament;
 import com.dgnt.quickTournamentMaker.model.tournament.Tournament;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * Created by Owner on 7/18/2016.
  */
@@ -133,16 +135,57 @@ public class PreferenceUtil {
         editor.commit();
     }
 
-    public final static String PREF_RANK_PRIORITY_KEY = "rankPriorityKey";
+    public final static String PREF_SWISS_RANK_PRIORITY_KEY = "rankSwissPriorityKey";
+    public final static String PREF_ROUND_ROBIN_RANK_PRIORITY_KEY = "rankRoundRobinPriorityKey";
 
-//    public static boolean isLatestModifiedEpochFilterAllowed(final SharedPreferences sharedPreferences) {
-//        return sharedPreferences.get(PREF_FILTER_LATEST_MODIFIED_EPOCH_ALLOWED_KEY, false);
-//    }
+    public enum RankPriorityType {
+        WIN, TIE, LOSS
+    }
+
+    public static RankPriorityType[] getRankPriority(final SharedPreferences sharedPreferences, final String prefKey) {
+        final String[] priority = sharedPreferences.getString(prefKey, "w;l;t").split(";");
+        final RankPriorityType[] rankPriorityTypes = new RankPriorityType[priority.length];
+        for (int i = 0; i < priority.length; i++) {
+            final String s = priority[i];
+            if (s.equals("w"))
+                rankPriorityTypes[i] = RankPriorityType.WIN;
+            else if (s.equals("l"))
+                rankPriorityTypes[i] = RankPriorityType.LOSS;
+            else //"t"
+                rankPriorityTypes[i] = RankPriorityType.TIE;
+        }
+        return rankPriorityTypes;
+    }
+
+    public static void setRankPriority(final SharedPreferences sharedPreferences, final String prefKey, final RankPriorityType[] rankPriorityTypes) {
+        final StringBuilder stringBuilder = new StringBuilder();
+        String sep = "";
+        for (final RankPriorityType rankPriorityType : rankPriorityTypes) {
+
+            stringBuilder.append(sep);
+            switch (rankPriorityType) {
+                case WIN:
+                    stringBuilder.append("w");
+                    break;
+                case LOSS:
+                    stringBuilder.append("l");
+                    break;
+                case TIE:
+                default:
+                    stringBuilder.append("t");
+            }
+            sep = ";";
+        }
+
+        final SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(prefKey, stringBuilder.toString());
+        editor.commit();
+    }
 
     public final static String PREF_SWISS_RANK_WIN_SCORE_KEY = "rankSwissWinScoreKey";
     public final static String PREF_SWISS_RANK_LOSS_SCORE_KEY = "rankSwissLossScoreKey";
     public final static String PREF_SWISS_RANK_TIE_SCORE_KEY = "rankSwissTieScoreKey";
-    
+
     public final static String PREF_ROUND_ROBIN_RANK_WIN_SCORE_KEY = "rankRoundRobinWinScoreKey";
     public final static String PREF_ROUND_ROBIN_RANK_LOSS_SCORE_KEY = "rankRoundRobinLossScoreKey";
     public final static String PREF_ROUND_ROBIN_RANK_TIE_SCORE_KEY = "rankRoundRobinTieScoreKey";
