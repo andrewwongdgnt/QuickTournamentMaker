@@ -1,10 +1,8 @@
 package com.dgnt.quickTournamentMaker.util;
 
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 import com.dgnt.quickTournamentMaker.model.history.HistoricalTournament;
-import com.dgnt.quickTournamentMaker.model.tournament.RecordKeepingTournament;
 import com.dgnt.quickTournamentMaker.model.tournament.RecordKeepingTournamentTrait;
 import com.dgnt.quickTournamentMaker.model.tournament.Tournament;
 
@@ -136,59 +134,43 @@ public class PreferenceUtil {
         editor.commit();
     }
 
-    public final static String PREF_SWISS_RANK_PRIORITY_KEY = "rankSwissPriorityKey";
-    public final static String PREF_ROUND_ROBIN_RANK_PRIORITY_KEY = "rankRoundRobinPriorityKey";
+    private final static String PREF_SWISS_RANK_PRIORITY_KEY = "rankSwissPriorityKey";
+    private final static String PREF_ROUND_ROBIN_RANK_PRIORITY_KEY = "rankRoundRobinPriorityKey";
 
 
-    public static RecordKeepingTournamentTrait.RankingFromPriority getRankPriority(final SharedPreferences sharedPreferences, final String prefKey) {
-        return RecordKeepingTournamentTrait.buildRankingFromPriority(sharedPreferences.getString(prefKey, RecordKeepingTournamentTrait.RankingFromPriority.DEFAULT_INPUT));
+    public static RecordKeepingTournamentTrait.RankingFromPriority getRankPriority(final SharedPreferences sharedPreferences, final boolean isSwiss) {
+        return RecordKeepingTournamentTrait.buildRankingFromPriority(sharedPreferences.getString(isSwiss ? PREF_SWISS_RANK_PRIORITY_KEY : PREF_ROUND_ROBIN_RANK_PRIORITY_KEY, RecordKeepingTournamentTrait.RankingFromPriority.DEFAULT_INPUT));
     }
 
-    public static void setRankPriority(final SharedPreferences sharedPreferences, final String prefKey, final RecordKeepingTournamentTrait.RankPriorityType firstPriority, final RecordKeepingTournamentTrait.RankPriorityType secondPriority, final RecordKeepingTournamentTrait.RankPriorityType thirdPriority) {
+    public static void setRankPriority(final SharedPreferences sharedPreferences, final boolean isSwiss, final RecordKeepingTournamentTrait.RecordType firstPriority, final RecordKeepingTournamentTrait.RecordType secondPriority, final RecordKeepingTournamentTrait.RecordType thirdPriority) {
 
         final SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(prefKey, RecordKeepingTournamentTrait.getRankingFromPriorityAsString(firstPriority,secondPriority,thirdPriority));
+        editor.putString(isSwiss ? PREF_SWISS_RANK_PRIORITY_KEY : PREF_ROUND_ROBIN_RANK_PRIORITY_KEY, RecordKeepingTournamentTrait.getRankingFromPriorityAsString(firstPriority, secondPriority, thirdPriority));
         editor.commit();
     }
 
-    public final static String PREF_SWISS_RANK_WIN_SCORE_KEY = "rankSwissWinScoreKey";
-    public final static String PREF_SWISS_RANK_LOSS_SCORE_KEY = "rankSwissLossScoreKey";
-    public final static String PREF_SWISS_RANK_TIE_SCORE_KEY = "rankSwissTieScoreKey";
+    private final static String PREF_SWISS_RANK_SCORE_KEY = "rankSwissScoreKey";
+    private final static String PREF_ROUND_ROBIN_RANK_SCORE_KEY = "rankRoundRobinScoreKey";
 
-    public final static String PREF_ROUND_ROBIN_RANK_WIN_SCORE_KEY = "rankRoundRobinWinScoreKey";
-    public final static String PREF_ROUND_ROBIN_RANK_LOSS_SCORE_KEY = "rankRoundRobinLossScoreKey";
-    public final static String PREF_ROUND_ROBIN_RANK_TIE_SCORE_KEY = "rankRoundRobinTieScoreKey";
-
-    public static int getRankScore(final SharedPreferences sharedPreferences, final String prefKey) {
-        return sharedPreferences.getInt(prefKey, 0);
+    public static RecordKeepingTournamentTrait.RankingFromScore getRankScore(final SharedPreferences sharedPreferences, final boolean isSwiss) {
+        return RecordKeepingTournamentTrait.buildRankingFromScore(sharedPreferences.getString(isSwiss ? PREF_SWISS_RANK_SCORE_KEY : PREF_ROUND_ROBIN_RANK_SCORE_KEY, RecordKeepingTournamentTrait.RankingFromScore.DEFAULT_INPUT));
     }
 
-    public static void setRankScore(final SharedPreferences sharedPreferences, final String prefKey, final String score) {
+    public static void setRankScore(final SharedPreferences sharedPreferences, final boolean isSwiss, final int winScore, final int lossScore, final int tieScore) {
         final SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(prefKey, getIntFromString(score, 0));
+        editor.putString(isSwiss ? PREF_SWISS_RANK_SCORE_KEY : PREF_ROUND_ROBIN_RANK_SCORE_KEY, RecordKeepingTournamentTrait.getRankingFromScoreAsString(winScore, lossScore, tieScore));
         editor.commit();
     }
 
-    private static int getIntFromString(final String s, final int defaultNum) {
-        try {
-            return Integer.parseInt(s);
-        } catch (NumberFormatException ex) {
+    public static String getRankingConfig(final SharedPreferences sharedPreferences, final Tournament.TournamentType tournamentType) {
+        final boolean isSwiss = tournamentType == Tournament.TournamentType.SWISS;
 
-        }
-        return defaultNum;
-    }
 
-    public static void setRankingConfig(final SharedPreferences sharedPreferences, final RecordKeepingTournament recordKeepingTournament, final boolean isSwiss){
         final boolean isRankingBasedOnPriority = PreferenceUtil.isRankingBasedOnPriority(sharedPreferences, isSwiss ? PreferenceUtil.PREF_SWISS_RANKING_CONFIG_KEY : PreferenceUtil.PREF_ROUND_ROBIN_RANKING_CONFIG_KEY);
         if (isRankingBasedOnPriority)
-            recordKeepingTournament.setRankingConfigFromPriority(PreferenceUtil.getRankPriority(sharedPreferences, isSwiss ? PreferenceUtil.PREF_SWISS_RANK_PRIORITY_KEY : PreferenceUtil.PREF_ROUND_ROBIN_RANK_PRIORITY_KEY));
+            return getRankPriority(sharedPreferences, isSwiss).toString();
         else {
-            final int winScore = PreferenceUtil.getRankScore(sharedPreferences, isSwiss ? PreferenceUtil.PREF_SWISS_RANK_WIN_SCORE_KEY : PreferenceUtil.PREF_ROUND_ROBIN_RANK_WIN_SCORE_KEY);
-            final int lossScore = PreferenceUtil.getRankScore(sharedPreferences, isSwiss ? PreferenceUtil.PREF_SWISS_RANK_LOSS_SCORE_KEY : PreferenceUtil.PREF_ROUND_ROBIN_RANK_LOSS_SCORE_KEY);
-            final int tieScore = PreferenceUtil.getRankScore(sharedPreferences, isSwiss ? PreferenceUtil.PREF_SWISS_RANK_TIE_SCORE_KEY : PreferenceUtil.PREF_ROUND_ROBIN_RANK_TIE_SCORE_KEY);
-            final RecordKeepingTournamentTrait.RankingFromScore rankingFromScore = RecordKeepingTournamentTrait.buildRankingFromScore(winScore, lossScore, tieScore);
-
-            recordKeepingTournament.setRankingConfigFromScore(rankingFromScore);
+            return getRankScore(sharedPreferences, isSwiss).toString();
         }
     }
 }

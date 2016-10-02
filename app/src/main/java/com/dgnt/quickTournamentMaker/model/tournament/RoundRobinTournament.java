@@ -22,13 +22,10 @@ import java.util.Set;
 public class RoundRobinTournament extends Tournament implements RecordKeepingTournament {
 
 
-    public void setRankingConfigFromPriority(final RecordKeepingTournamentTrait.RankingFromPriority rankingFromPriority) {
-        getRecordKeepingTournamentTrait().setRankingConfigFromPriority(rankingFromPriority);
+    public void setRankingConfig(final String rankingConfig) {
+        getRecordKeepingTournamentTrait().setRankingConfig(rankingConfig);
     }
 
-    public void setRankingConfigFromScore(final RecordKeepingTournamentTrait.RankingFromScore rankingFromScore) {
-        getRecordKeepingTournamentTrait().setRankingConfigFromScore(rankingFromScore);
-    }
 
     private RecordKeepingTournamentTrait recordKeepingTournamentTrait;
 

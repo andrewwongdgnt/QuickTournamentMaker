@@ -1,11 +1,5 @@
 package com.dgnt.quickTournamentMaker.model.tournament;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-
-import com.dgnt.quickTournamentMaker.util.PreferenceUtil;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -16,6 +10,10 @@ import java.util.List;
  */
 public class RecordKeepingTournamentTrait {
 
+    public enum RecordType {
+        WIN, TIE, LOSS
+    }
+
     private Tournament tournament;
 
     public RecordKeepingTournamentTrait(final Tournament tournament) {
@@ -23,18 +21,25 @@ public class RecordKeepingTournamentTrait {
     }
 
     private RankingFromPriority rankingFromPriority;
-
-    public void setRankingConfigFromPriority(final RankingFromPriority rankingFromPriority) {
-        this.rankingFromPriority = rankingFromPriority;
-        rankingFromScore = null;
-    }
-
     private RankingFromScore rankingFromScore;
 
-    public void setRankingConfigFromScore(final RankingFromScore rankingFromScore) {
-        this.rankingFromScore = rankingFromScore;
+    public void setRankingConfig(final String rankingConfig) {
+
         rankingFromPriority = null;
+        rankingFromScore = null;
+        String[] arr = rankingConfig.split(";");
+        if (arr.length==3){
+            if (arr[0].matches("[wlt]")){
+                rankingFromPriority = buildRankingFromPriority(rankingConfig);
+            } else {
+                rankingFromScore = buildRankingFromScore(rankingConfig);
+            }
+        } else {
+            rankingFromPriority = buildRankingFromPriority(RecordKeepingTournamentTrait.RankingFromPriority.DEFAULT_INPUT);
+        }
     }
+
+
 
     public void updateParticipantsRecordOnResultChange(final int roundGroupIndex, final int roundIndex, final int matchUpIndex, final MatchUp.MatchUpStatus previousStatus, final MatchUp.MatchUpStatus status) {
 
@@ -89,8 +94,8 @@ public class RecordKeepingTournamentTrait {
 
     public int compareParticipantsBasedOnRecord(Participant lhs, Participant rhs) {
 
-        if (rankingFromPriority==null && rankingFromScore==null)
-            setRankingConfigFromPriority(RecordKeepingTournamentTrait.buildRankingFromPriority(RecordKeepingTournamentTrait.RankingFromPriority.DEFAULT_INPUT));
+        if (rankingFromPriority == null && rankingFromScore == null)
+            setRankingConfig(RecordKeepingTournamentTrait.RankingFromPriority.DEFAULT_INPUT);
 
 
         if (rankingFromPriority != null)
@@ -104,26 +109,26 @@ public class RecordKeepingTournamentTrait {
         for (int i = 0; i < 3; i++) {
 
 
-            final RankPriorityType rankPriorityType;
+            final RecordType recordType;
 
             switch (i) {
                 case 0:
-                    rankPriorityType = rankingFromPriority.getFirstPriority();
+                    recordType = rankingFromPriority.getFirstPriority();
                     break;
                 case 1:
-                    rankPriorityType = rankingFromPriority.getSecondPriority();
+                    recordType = rankingFromPriority.getSecondPriority();
                     break;
                 case 2:
                 default:
-                    rankPriorityType = rankingFromPriority.getThirdPriority();
+                    recordType = rankingFromPriority.getThirdPriority();
             }
 
-            if (rankPriorityType == RankPriorityType.WIN) {
+            if (recordType == RecordType.WIN) {
                 if (lhs.getWins() > rhs.getWins())
                     return -1;
                 else if (rhs.getWins() > lhs.getWins())
                     return 1;
-            } else if (rankPriorityType == RankPriorityType.LOSS) {
+            } else if (recordType == RecordType.LOSS) {
                 if (lhs.getLosses() > rhs.getLosses())
                     return 1;
                 else if (rhs.getLosses() > lhs.getLosses())
@@ -185,64 +190,59 @@ public class RecordKeepingTournamentTrait {
         }
     }
 
-    public enum RankPriorityType {
-        WIN, TIE, LOSS
-    }
 
     public static RankingFromPriority buildRankingFromPriority(final String input) {
 
 
         final RankingFromPriority rankingFromPriority = new RankingFromPriority();
 
-        final String[] priority = input.split(";");
-        if (priority.length == 3) {
-            for (int i = 0; i < priority.length; i++) {
-                final String priority_string = priority[i];
-                final RankPriorityType rankingPriorityType;
-                if (priority_string.equals("w"))
-                    rankingPriorityType = RankPriorityType.WIN;
-                else if (priority_string.equals("l"))
-                    rankingPriorityType = RankPriorityType.LOSS;
-                else //"t"
-                    rankingPriorityType = RankPriorityType.TIE;
-
-                if (i == 0)
-                    rankingFromPriority.firstPriority = rankingPriorityType;
-                else if (i == 1)
-                    rankingFromPriority.secondPriority = rankingPriorityType;
-                else
-                    rankingFromPriority.thirdPriority = rankingPriorityType;
-            }
-        } else {
-            rankingFromPriority.firstPriority = RankPriorityType.WIN;
-            rankingFromPriority.secondPriority = RankPriorityType.LOSS;
-            rankingFromPriority.thirdPriority = RankPriorityType.TIE;
+        String[] priority = input.split(";");
+        if (priority.length != 3) {
+            priority = RankingFromPriority.DEFAULT_INPUT.split(";");
         }
+        for (int i = 0; i < priority.length; i++) {
+            final String priority_string = priority[i];
+            final RecordType rankingPriorityType;
+            if (priority_string.equals("w"))
+                rankingPriorityType = RecordType.WIN;
+            else if (priority_string.equals("l"))
+                rankingPriorityType = RecordType.LOSS;
+            else //"t"
+                rankingPriorityType = RecordType.TIE;
+
+            if (i == 0)
+                rankingFromPriority.firstPriority = rankingPriorityType;
+            else if (i == 1)
+                rankingFromPriority.secondPriority = rankingPriorityType;
+            else
+                rankingFromPriority.thirdPriority = rankingPriorityType;
+        }
+
 
         return rankingFromPriority;
     }
 
-    public static String getRankingFromPriorityAsString(final RankPriorityType firstPriority, final RankPriorityType secondPriority, final RankPriorityType thirdPriority) {
+    public static String getRankingFromPriorityAsString(final RecordType firstPriority, final RecordType secondPriority, final RecordType thirdPriority) {
         final StringBuilder stringBuilder = new StringBuilder();
         String sep = "";
         for (int i = 0; i < 3; i++) {
 
-            final RecordKeepingTournamentTrait.RankPriorityType rankPriorityType;
+            final RecordType recordType;
 
             switch (i) {
                 case 0:
-                    rankPriorityType = firstPriority;
+                    recordType = firstPriority;
                     break;
                 case 1:
-                    rankPriorityType = secondPriority;
+                    recordType = secondPriority;
                     break;
                 case 2:
                 default:
-                    rankPriorityType = thirdPriority;
+                    recordType = thirdPriority;
             }
 
             stringBuilder.append(sep);
-            switch (rankPriorityType) {
+            switch (recordType) {
                 case WIN:
                     stringBuilder.append("w");
                     break;
@@ -264,41 +264,67 @@ public class RecordKeepingTournamentTrait {
     public static class RankingFromPriority {
         final public static String DEFAULT_INPUT = "w;l;t";
 
-        private RankPriorityType firstPriority;
-        private RankPriorityType secondPriority;
-        private RankPriorityType thirdPriority;
+        private RecordType firstPriority;
+        private RecordType secondPriority;
+        private RecordType thirdPriority;
 
         private RankingFromPriority() {
 
         }
 
-        public RankPriorityType getFirstPriority() {
+        public RecordType getFirstPriority() {
             return firstPriority;
         }
 
-        public RankPriorityType getSecondPriority() {
+        public RecordType getSecondPriority() {
             return secondPriority;
         }
 
-        public RankPriorityType getThirdPriority() {
+        public RecordType getThirdPriority() {
             return thirdPriority;
+        }
+
+        public String toString(){
+            return getRankingFromPriorityAsString(firstPriority,secondPriority,thirdPriority);
         }
     }
 
-    public static RankingFromScore buildRankingFromScore(final int winScore, final int lossScore, final int tieScore) {
+    public static RankingFromScore buildRankingFromScore(final String input) {
         final RankingFromScore rankingFromScore = new RankingFromScore();
 
+        String[] scores = input.split(";");
 
-        rankingFromScore.winScore = winScore;
-        rankingFromScore.lossScore = lossScore;
-        rankingFromScore.tieScore = tieScore;
+        if (scores.length != 3) {
+            scores = RankingFromScore.DEFAULT_INPUT.split(";");
+        }
+        for (int i = 0; i < scores.length; i++) {
+            final String score_string = scores[i];
 
+            int score = 0;
+            try {
+                score = Integer.parseInt(score_string);
+            } catch (NumberFormatException e) {
+
+            }
+
+            if (i == 0)
+                rankingFromScore.winScore = score;
+            else if (i == 1)
+                rankingFromScore.lossScore = score;
+            else
+                rankingFromScore.tieScore = score;
+        }
 
         return rankingFromScore;
     }
 
+    public static String getRankingFromScoreAsString(final int winScore, final int lossScore, final int tieScore) {
+        return winScore+";"+lossScore+";"+tieScore;
+    }
+
     public static class RankingFromScore {
 
+        final public static String DEFAULT_INPUT = "2;0;1";
 
         private int winScore;
         private int lossScore;
@@ -319,6 +345,10 @@ public class RecordKeepingTournamentTrait {
 
         public int getTieScore() {
             return tieScore;
+        }
+
+        public String toString(){
+            return getRankingFromScoreAsString(winScore,lossScore,tieScore);
         }
     }
 }

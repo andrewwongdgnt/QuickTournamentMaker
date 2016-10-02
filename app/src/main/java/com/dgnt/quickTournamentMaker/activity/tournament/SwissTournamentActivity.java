@@ -11,8 +11,7 @@ public class SwissTournamentActivity extends TournamentActivity {
 
 
         final SwissTournament swissTournament = new SwissTournament();
-        PreferenceUtil.setRankingConfig(PreferenceManager.getDefaultSharedPreferences(this), swissTournament, true);
-
+        swissTournament.setRankingConfig(getIntent().getStringExtra(INTENT_TOURNAMENT_RANK_CONFIG_KEY));
         tournament = swissTournament;
     }
 

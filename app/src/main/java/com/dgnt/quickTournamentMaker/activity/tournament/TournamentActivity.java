@@ -90,6 +90,7 @@ abstract public class TournamentActivity extends InAppBillingActivity implements
     public static final String INTENT_TOURNAMENT_CREATION_TIME_KEY = "tournamentCreationTimeKey";
     public static final String INTENT_TOURNAMENT_LAST_MODIFIED_TIME_KEY = "tournamentLastModifiedTimeKey";
     public static final String INTENT_TOURNAMENT_IS_REBUILT_KEY = "tournamentIsRebuiltKey";
+    public static final String INTENT_TOURNAMENT_RANK_CONFIG_KEY = "tournamentRankingConfigKey";
 
     private static final int DESCRIPTION_MAX_CHARACTERS_PER_LINE = 30;
     private static final int DESCRIPTION_TOTAL_MAX_CHARACTERS = 100;
@@ -600,7 +601,8 @@ abstract public class TournamentActivity extends InAppBillingActivity implements
                         : swiss_rb.isChecked() ? Tournament.TournamentType.SWISS
                         : Tournament.TournamentType.SURVIVAL;
 
-                startTournamentActivity(TournamentActivity.this, 0, seedType, tournament.getType(), tournamentType, tournament.getTitle(), tournament.getDescription(), (ArrayList<Participant>) tournament.getSeededParticipants(), null, null, tournament.getCreationTimeInEpoch(), Tournament.NULL_TIME_VALUE, true);
+                final String rankingConfig = PreferenceUtil.getRankingConfig( PreferenceManager.getDefaultSharedPreferences(TournamentActivity.this),tournamentType);
+                startTournamentActivity(TournamentActivity.this, 0, seedType, tournament.getType(), tournamentType, tournament.getTitle(), tournament.getDescription(), (ArrayList<Participant>) tournament.getSeededParticipants(), null, null, tournament.getCreationTimeInEpoch(), Tournament.NULL_TIME_VALUE, true,rankingConfig);
                 finish();
 
             }
@@ -1063,12 +1065,14 @@ abstract public class TournamentActivity extends InAppBillingActivity implements
                 (ArrayList<HistoricalMatchUp>) historicalTournament.getMatchUpList(),
                 historicalTournament.getCreationTimeInEpoch(),
                 historicalTournament.getLastModifiedTimeInEpoch(),
-                false
+                false,
+                "w;l;t"
         );
     }
 
     public static void startTournamentActivity(final Activity startingActivity, final int requestCode, final Seeder.Type seedType, final Tournament.TournamentType tournamentType_original, final Tournament.TournamentType tournamentType, final String title, final String description,
-                                               final ArrayList<Participant> participantList, final ArrayList<HistoricalRound> roundList, final ArrayList<HistoricalMatchUp> matchUpList, final long creationTimeInEpoch, final long lastModifiedTimeInEpoch, final boolean rebuilt) {
+                                               final ArrayList<Participant> participantList, final ArrayList<HistoricalRound> roundList, final ArrayList<HistoricalMatchUp> matchUpList, final long creationTimeInEpoch, final long lastModifiedTimeInEpoch, final boolean rebuilt,
+                                               final String rankingConfig) {
 
         final Class clazz;
         final Seeder.SeedFillType seedFillType_original = getSeedFileType(tournamentType_original);
@@ -1114,6 +1118,7 @@ abstract public class TournamentActivity extends InAppBillingActivity implements
         intent.putExtra(TournamentActivity.INTENT_TOURNAMENT_CREATION_TIME_KEY, creationTimeInEpoch);
         intent.putExtra(TournamentActivity.INTENT_TOURNAMENT_LAST_MODIFIED_TIME_KEY, lastModifiedTimeInEpoch);
         intent.putExtra(TournamentActivity.INTENT_TOURNAMENT_IS_REBUILT_KEY, rebuilt);
+        intent.putExtra(TournamentActivity.INTENT_TOURNAMENT_RANK_CONFIG_KEY, rankingConfig);
         if (seedType == Seeder.Type.CUSTOM && tournamentType != Tournament.TournamentType.SURVIVAL)
             intent.putExtra(INTENT_TOURNAMENT_TYPE_KEY, tournamentType);
         startingActivity.startActivityForResult(intent, requestCode);

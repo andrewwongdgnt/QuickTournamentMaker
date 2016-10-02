@@ -18,12 +18,8 @@ import java.util.Set;
  */
 public class SwissTournament extends Tournament implements RecordKeepingTournament {
 
-    public void setRankingConfigFromPriority(final RecordKeepingTournamentTrait.RankingFromPriority rankingFromPriority) {
-        getRecordKeepingTournamentTrait().setRankingConfigFromPriority(rankingFromPriority);
-    }
-
-    public void setRankingConfigFromScore(final RecordKeepingTournamentTrait.RankingFromScore rankingFromScore) {
-        getRecordKeepingTournamentTrait().setRankingConfigFromScore(rankingFromScore);
+    public void setRankingConfig(final String rankingConfig) {
+        getRecordKeepingTournamentTrait().setRankingConfig(rankingConfig);
     }
 
     private RecordKeepingTournamentTrait recordKeepingTournamentTrait;

@@ -1,6 +1,5 @@
 package com.dgnt.quickTournamentMaker.util;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -16,7 +15,6 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.dgnt.quickTournamentMaker.R;
-import com.dgnt.quickTournamentMaker.activity.MainActivity;
 import com.dgnt.quickTournamentMaker.model.tournament.RecordKeepingTournamentTrait;
 
 import java.util.HashMap;
@@ -28,7 +26,7 @@ import java.util.Map;
 
 public class LayoutUtil {
 
-    public static void setUpSeedingEditor(final Context context, final View rootView){
+    public static void setUpSeedingEditor(final Context context, final View rootView) {
         final TextView seedOptions_tv = (TextView) rootView.findViewById(R.id.seedOptions_tv);
         final RadioGroup seedOptions_rg = (RadioGroup) rootView.findViewById(R.id.seedOptions_rg);
 
@@ -52,7 +50,7 @@ public class LayoutUtil {
                     if (checkedId == R.id.roundRobin_rb || checkedId == R.id.swiss_rb) {
                         rankingConfig_tv.setVisibility(View.VISIBLE);
                         rankingConfig_rg.setVisibility(View.VISIBLE);
-                        LayoutUtil.setUpRankingEditor(context, rootView,checkedId == R.id.swiss_rb);
+                        LayoutUtil.setUpRankingEditor(context, rootView, checkedId == R.id.swiss_rb);
                     } else {
                         rankingConfig_tv.setVisibility(View.GONE);
                         rankingConfig_rg.setVisibility(View.GONE);
@@ -67,7 +65,7 @@ public class LayoutUtil {
         });
     }
 
-    private static void setUpRankingEditor(final Context context, final View rootView,final boolean isSwiss) {
+    private static void setUpRankingEditor(final Context context, final View rootView, final boolean isSwiss) {
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
         final RadioGroup rankingConfig_rg = (RadioGroup) rootView.findViewById(R.id.rankingConfig_rg);
@@ -113,75 +111,80 @@ public class LayoutUtil {
         }
 
         prioritySelectedTextView = null;
-        final String prefKey_rankPriority = isSwiss ? PreferenceUtil.PREF_SWISS_RANK_PRIORITY_KEY : PreferenceUtil.PREF_ROUND_ROBIN_RANK_PRIORITY_KEY;
-        final RecordKeepingTournamentTrait.RankingFromPriority rankingFromPriority = PreferenceUtil.getRankPriority(sharedPreferences, prefKey_rankPriority);
+        final RecordKeepingTournamentTrait.RankingFromPriority rankingFromPriority = PreferenceUtil.getRankPriority(sharedPreferences, isSwiss);
+
         final TextView priority1_tv = (TextView) rootView.findViewById(R.id.priority1_tv);
-        setUpRankingEditor_Priority(context, rootView,sharedPreferences, prefKey_rankPriority, rankingFromPriority.getFirstPriority(), priority1_tv);
+        setUpRankingEditor_Priority(context, rootView, sharedPreferences, isSwiss, rankingFromPriority.getFirstPriority(), priority1_tv);
+
         final TextView priority2_tv = (TextView) rootView.findViewById(R.id.priority2_tv);
-        setUpRankingEditor_Priority(context,rootView, sharedPreferences, prefKey_rankPriority, rankingFromPriority.getSecondPriority(), priority2_tv);
+        setUpRankingEditor_Priority(context, rootView, sharedPreferences, isSwiss, rankingFromPriority.getSecondPriority(), priority2_tv);
+
         final TextView priority3_tv = (TextView) rootView.findViewById(R.id.priority3_tv);
-        setUpRankingEditor_Priority(context,rootView, sharedPreferences, prefKey_rankPriority, rankingFromPriority.getThirdPriority(), priority3_tv);
+        setUpRankingEditor_Priority(context, rootView, sharedPreferences, isSwiss, rankingFromPriority.getThirdPriority(), priority3_tv);
+
+
+        final RecordKeepingTournamentTrait.RankingFromScore rankingFromScore = PreferenceUtil.getRankScore(sharedPreferences, isSwiss);
 
         final Button winScoreAdd_btn = (Button) rootView.findViewById(R.id.winScoreAdd_btn);
         final EditText winScore_et = (EditText) rootView.findViewById(R.id.winScore_et);
         final Button winScoreSubtract_btn = (Button) rootView.findViewById(R.id.winScoreSubtract_btn);
-        setUpRankingEditor_Score(context, "w", isSwiss ? PreferenceUtil.PREF_SWISS_RANK_WIN_SCORE_KEY : PreferenceUtil.PREF_ROUND_ROBIN_RANK_WIN_SCORE_KEY, winScoreAdd_btn, winScore_et, winScoreSubtract_btn);
-
-        final Button tieScoreAdd_btn = (Button) rootView.findViewById(R.id.tieScoreAdd_btn);
-        final EditText tieScore_et = (EditText) rootView.findViewById(R.id.tieScore_et);
-        final Button tieScoreSubtract_btn = (Button) rootView.findViewById(R.id.tieScoreSubtract_btn);
-        setUpRankingEditor_Score(context, "t", isSwiss ? PreferenceUtil.PREF_SWISS_RANK_TIE_SCORE_KEY : PreferenceUtil.PREF_ROUND_ROBIN_RANK_TIE_SCORE_KEY, tieScoreAdd_btn, tieScore_et, tieScoreSubtract_btn);
+        setUpRankingEditor_Score(sharedPreferences, rootView, RecordKeepingTournamentTrait.RecordType.WIN, isSwiss, rankingFromScore.getWinScore(), winScoreAdd_btn, winScore_et, winScoreSubtract_btn);
 
         final Button lossScoreAdd_btn = (Button) rootView.findViewById(R.id.lossScoreAdd_btn);
         final EditText lossScore_et = (EditText) rootView.findViewById(R.id.lossScore_et);
         final Button lossScoreSubtract_btn = (Button) rootView.findViewById(R.id.lossScoreSubtract_btn);
-        setUpRankingEditor_Score(context, "l", isSwiss ? PreferenceUtil.PREF_SWISS_RANK_LOSS_SCORE_KEY : PreferenceUtil.PREF_ROUND_ROBIN_RANK_LOSS_SCORE_KEY, lossScoreAdd_btn, lossScore_et, lossScoreSubtract_btn);
+        setUpRankingEditor_Score(sharedPreferences, rootView, RecordKeepingTournamentTrait.RecordType.LOSS, isSwiss, rankingFromScore.getLossScore(), lossScoreAdd_btn, lossScore_et, lossScoreSubtract_btn);
+
+        final Button tieScoreAdd_btn = (Button) rootView.findViewById(R.id.tieScoreAdd_btn);
+        final EditText tieScore_et = (EditText) rootView.findViewById(R.id.tieScore_et);
+        final Button tieScoreSubtract_btn = (Button) rootView.findViewById(R.id.tieScoreSubtract_btn);
+        setUpRankingEditor_Score(sharedPreferences, rootView, RecordKeepingTournamentTrait.RecordType.TIE, isSwiss, rankingFromScore.getTieScore(), tieScoreAdd_btn, tieScore_et, tieScoreSubtract_btn);
 
     }
 
     private static TextView prioritySelectedTextView;
 
-    private static void setUpRankingEditor_Priority(final Context context, final View rootView, final SharedPreferences sharedPreferences, final String prefKey, final RecordKeepingTournamentTrait.RankPriorityType rankPriorityType, final TextView priority_tv) {
+    private static void setUpRankingEditor_Priority(final Context context, final View rootView, final SharedPreferences sharedPreferences, final boolean isSwiss, final RecordKeepingTournamentTrait.RecordType recordType, final TextView priority_tv) {
 
-        priority_tv.setText(getProperPriorityName(context,rankPriorityType));
-        priority_tv.setTag(rankPriorityType);
-        priority_tv.setTextColor(ContextCompat.getColor(context,R.color.defaultStroke));
+        priority_tv.setText(getProperPriorityName(context, recordType));
+        priority_tv.setTag(recordType);
+        priority_tv.setTextColor(ContextCompat.getColor(context, R.color.defaultStroke));
         priority_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (prioritySelectedTextView == null) {
-                    priority_tv.setTextColor(ContextCompat.getColor(context,R.color.winStroke));
+                    priority_tv.setTextColor(ContextCompat.getColor(context, R.color.winStroke));
                     prioritySelectedTextView = priority_tv;
                 } else {
 
-                    final RecordKeepingTournamentTrait.RankPriorityType rankPriorityType_selected = (RecordKeepingTournamentTrait.RankPriorityType) prioritySelectedTextView.getTag();
-                    final RecordKeepingTournamentTrait.RankPriorityType rankPriorityType_new = (RecordKeepingTournamentTrait.RankPriorityType) priority_tv.getTag();
+                    final RecordKeepingTournamentTrait.RecordType recordType_selected = (RecordKeepingTournamentTrait.RecordType) prioritySelectedTextView.getTag();
+                    final RecordKeepingTournamentTrait.RecordType recordType_new = (RecordKeepingTournamentTrait.RecordType) priority_tv.getTag();
 
-                    priority_tv.setText(getProperPriorityName(context,rankPriorityType_selected));
-                    priority_tv.setTag(rankPriorityType_selected);
+                    priority_tv.setText(getProperPriorityName(context, recordType_selected));
+                    priority_tv.setTag(recordType_selected);
 
-                    prioritySelectedTextView.setText(getProperPriorityName(context,rankPriorityType_new));
-                    prioritySelectedTextView.setTag(rankPriorityType_new);
-                    prioritySelectedTextView.setTextColor(ContextCompat.getColor(context,R.color.defaultStroke));
+                    prioritySelectedTextView.setText(getProperPriorityName(context, recordType_new));
+                    prioritySelectedTextView.setTag(recordType_new);
+                    prioritySelectedTextView.setTextColor(ContextCompat.getColor(context, R.color.defaultStroke));
 
                     prioritySelectedTextView = null;
                 }
 
                 final TextView priority1_tv = (TextView) rootView.findViewById(R.id.priority1_tv);
-                final RecordKeepingTournamentTrait.RankPriorityType rankPriorityType1 = (RecordKeepingTournamentTrait.RankPriorityType) priority1_tv.getTag();
+                final RecordKeepingTournamentTrait.RecordType recordType1 = (RecordKeepingTournamentTrait.RecordType) priority1_tv.getTag();
                 final TextView priority2_tv = (TextView) rootView.findViewById(R.id.priority2_tv);
-                final RecordKeepingTournamentTrait.RankPriorityType rankPriorityType2 = (RecordKeepingTournamentTrait.RankPriorityType) priority2_tv.getTag();
+                final RecordKeepingTournamentTrait.RecordType recordType2 = (RecordKeepingTournamentTrait.RecordType) priority2_tv.getTag();
                 final TextView priority3_tv = (TextView) rootView.findViewById(R.id.priority3_tv);
-                final RecordKeepingTournamentTrait.RankPriorityType rankPriorityType3 = (RecordKeepingTournamentTrait.RankPriorityType) priority3_tv.getTag();
+                final RecordKeepingTournamentTrait.RecordType recordType3 = (RecordKeepingTournamentTrait.RecordType) priority3_tv.getTag();
 
-                PreferenceUtil.setRankPriority(sharedPreferences, prefKey, rankPriorityType1,rankPriorityType2,rankPriorityType3);
+                PreferenceUtil.setRankPriority(sharedPreferences, isSwiss, recordType1, recordType2, recordType3);
 
             }
         });
     }
 
-    private static String getProperPriorityName(final Context context, final RecordKeepingTournamentTrait.RankPriorityType rankPriorityType){
-        switch (rankPriorityType) {
+    private static String getProperPriorityName(final Context context, final RecordKeepingTournamentTrait.RecordType recordType) {
+        switch (recordType) {
             case WIN:
                 return context.getString(R.string.win);
             case LOSS:
@@ -192,35 +195,49 @@ public class LayoutUtil {
         }
     }
 
-    private static void setUpRankingEditor_Score(final Context context, final String type, final String prefKey, final Button add_btn, final EditText score_et, final Button subtract_btn) {
-        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+    private static void setUpRankingEditor_Score(final SharedPreferences sharedPreferences, final View rootView, final RecordKeepingTournamentTrait.RecordType recordType, final boolean isSwiss, final int score, final Button add_btn, final EditText score_et, final Button subtract_btn) {
 
-        if (!myTextWatcherMap.containsKey(type))
-            myTextWatcherMap.put(type, new MyTextWatcher());
-        final MyTextWatcher myTextWatcher = myTextWatcherMap.get(type);
+        if (!myTextWatcherMap.containsKey(recordType))
+            myTextWatcherMap.put(recordType, new MyTextWatcher());
+        final MyTextWatcher myTextWatcher = myTextWatcherMap.get(recordType);
 
         score_et.removeTextChangedListener(myTextWatcher);
-        score_et.setText(String.valueOf(PreferenceUtil.getRankScore(sharedPreferences, prefKey)));
+        score_et.setText(String.valueOf(score));
         myTextWatcher.setSharedPreferences(sharedPreferences);
-        myTextWatcher.setPrefKey(prefKey);
+        myTextWatcher.setSwiss(isSwiss);
+        myTextWatcher.setRootView(rootView);
         score_et.addTextChangedListener(myTextWatcher);
 
-        add_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                score_et.setText(String.valueOf(PreferenceUtil.getRankScore(sharedPreferences, prefKey) + 1));
-            }
-        });
+        add_btn.setTag(1);
+        subtract_btn.setTag(-1);
 
-        subtract_btn.setOnClickListener(new View.OnClickListener() {
+        final View.OnClickListener myOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                score_et.setText(String.valueOf(PreferenceUtil.getRankScore(sharedPreferences, prefKey) - 1));
+                final int increment = (Integer) v.getTag();
+
+                final RecordKeepingTournamentTrait.RankingFromScore rankingFromScore = PreferenceUtil.getRankScore(sharedPreferences, isSwiss);
+                final int scoreToUse;
+                switch (recordType) {
+                    case WIN:
+                        scoreToUse = rankingFromScore.getWinScore();
+                        break;
+                    case LOSS:
+                        scoreToUse = rankingFromScore.getLossScore();
+                        break;
+                    case TIE:
+                    default:
+                        scoreToUse = rankingFromScore.getTieScore();
+                }
+                score_et.setText(String.valueOf(scoreToUse + increment));
             }
-        });
+        };
+
+        add_btn.setOnClickListener(myOnClickListener);
+        subtract_btn.setOnClickListener(myOnClickListener);
     }
 
-    final private static Map<String, MyTextWatcher> myTextWatcherMap = new HashMap<>();
+    final private static Map<RecordKeepingTournamentTrait.RecordType, MyTextWatcher> myTextWatcherMap = new HashMap<>();
 
     private static class MyTextWatcher implements TextWatcher {
 
@@ -231,10 +248,16 @@ public class LayoutUtil {
             this.sharedPreferences = sharedPreferences;
         }
 
-        private String prefKey;
+        private boolean isSwiss;
 
-        private void setPrefKey(final String prefKey) {
-            this.prefKey = prefKey;
+        private void setSwiss(final boolean swiss) {
+            this.isSwiss = swiss;
+        }
+
+        private View rootView;
+
+        private void setRootView(final View rootView) {
+            this.rootView = rootView;
         }
 
         @Override
@@ -247,8 +270,15 @@ public class LayoutUtil {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if (sharedPreferences != null && prefKey != null)
-                PreferenceUtil.setRankScore(sharedPreferences, prefKey, s.toString());
+            if (sharedPreferences != null  && rootView != null) {
+                final TextView winScore_et = (TextView) rootView.findViewById(R.id.winScore_et);
+                final int winScore = winScore_et.getText().toString().trim().equals("") ? 0 : Integer.parseInt(winScore_et.getText().toString());
+                final TextView lossScore_et = (TextView) rootView.findViewById(R.id.lossScore_et);
+                final int lossScore = lossScore_et.getText().toString().trim().equals("") ? 0 : Integer.parseInt(lossScore_et.getText().toString());
+                final TextView tieScore_et = (TextView) rootView.findViewById(R.id.tieScore_et);
+                final int tieScore = tieScore_et.getText().toString().trim().equals("") ? 0 : Integer.parseInt(tieScore_et.getText().toString());
+                PreferenceUtil.setRankScore(sharedPreferences, isSwiss, winScore, lossScore, tieScore);
+            }
         }
     }
 }

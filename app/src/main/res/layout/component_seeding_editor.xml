@@ -155,40 +155,6 @@
                     android:text="+" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-
-                <TextView
-                    android:layout_width="@dimen/scoreTextWidth"
-                    android:layout_height="wrap_content"
-                    android:text="@string/tie"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                <Button
-                    android:id="@+id/tieScoreSubtract_btn"
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="-" />
-
-                <EditText
-                    android:id="@+id/tieScore_et"
-                    android:layout_width="@dimen/scoreEditTextWidth"
-                    android:layout_height="match_parent"
-                    android:ems="10"
-                    android:gravity="center_horizontal"
-                    android:inputType="numberSigned" />
-
-                <Button
-                    android:id="@+id/tieScoreAdd_btn"
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="+" />
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -219,6 +185,41 @@
 
                 <Button
                     android:id="@+id/lossScoreAdd_btn"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="+" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:layout_width="@dimen/scoreTextWidth"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tie"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <Button
+                    android:id="@+id/tieScoreSubtract_btn"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-" />
+
+                <EditText
+                    android:id="@+id/tieScore_et"
+                    android:layout_width="@dimen/scoreEditTextWidth"
+                    android:layout_height="match_parent"
+                    android:ems="10"
+                    android:gravity="center_horizontal"
+                    android:inputType="numberSigned" />
+
+                <Button
+                    android:id="@+id/tieScoreAdd_btn"
                     style="?android:attr/buttonStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

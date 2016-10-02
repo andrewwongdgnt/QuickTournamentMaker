@@ -5,7 +5,6 @@ package com.dgnt.quickTournamentMaker.model.tournament;
  */
 public interface RecordKeepingTournament {
 
-    public void setRankingConfigFromPriority(final RecordKeepingTournamentTrait.RankingFromPriority rankingFromPriority);
 
-    public void setRankingConfigFromScore(final RecordKeepingTournamentTrait.RankingFromScore rankingFromScore);
+    public void setRankingConfig(final String rankingConfig);
 }

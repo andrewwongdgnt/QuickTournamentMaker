@@ -1,10 +1,12 @@
 package com.dgnt.quickTournamentMaker.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -37,6 +39,7 @@ import com.dgnt.quickTournamentMaker.util.AdsUtil;
 import com.dgnt.quickTournamentMaker.util.DatabaseHelper;
 import com.dgnt.quickTournamentMaker.util.EmailUtil;
 import com.dgnt.quickTournamentMaker.util.LayoutUtil;
+import com.dgnt.quickTournamentMaker.util.PreferenceUtil;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
@@ -173,7 +176,8 @@ public class MainActivity extends InAppBillingActivity
                         : swiss_rb.isChecked() ? Tournament.TournamentType.SWISS
                         : Tournament.TournamentType.SURVIVAL;
 
-                TournamentActivity.startTournamentActivity(MainActivity.this, 0, seedType, tournamentType, tournamentType, title, description, participantList, null, null, Tournament.NULL_TIME_VALUE, Tournament.NULL_TIME_VALUE, false);
+                final String rankingConfig = PreferenceUtil.getRankingConfig( PreferenceManager.getDefaultSharedPreferences(MainActivity.this),tournamentType);
+                TournamentActivity.startTournamentActivity(MainActivity.this, 0, seedType, tournamentType, tournamentType, title, description, participantList, null, null, Tournament.NULL_TIME_VALUE, Tournament.NULL_TIME_VALUE, false,rankingConfig);
 
             }
         });
