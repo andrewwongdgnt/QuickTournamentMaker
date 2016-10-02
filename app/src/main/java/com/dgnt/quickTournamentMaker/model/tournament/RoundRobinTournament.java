@@ -1,8 +1,13 @@
 package com.dgnt.quickTournamentMaker.model.tournament;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
 import com.dgnt.quickTournamentMaker.eventListener.OnMatchUpUpdateListener;
 import com.dgnt.quickTournamentMaker.eventListener.OnParticipantUpdateListener;
 import com.dgnt.quickTournamentMaker.eventListener.OnTournamentUpdateListener;
+import com.dgnt.quickTournamentMaker.util.PreferenceUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,16 +22,26 @@ import java.util.Set;
 public class RoundRobinTournament extends Tournament implements RecordKeepingTournament {
 
 
+    public void setRankingConfigFromPriority(final RecordKeepingTournamentTrait.RankingFromPriority rankingFromPriority) {
+        getRecordKeepingTournamentTrait().setRankingConfigFromPriority(rankingFromPriority);
+    }
+
+    public void setRankingConfigFromScore(final RecordKeepingTournamentTrait.RankingFromScore rankingFromScore) {
+        getRecordKeepingTournamentTrait().setRankingConfigFromScore(rankingFromScore);
+    }
+
     private RecordKeepingTournamentTrait recordKeepingTournamentTrait;
+
     protected RecordKeepingTournamentTrait getRecordKeepingTournamentTrait() {
-        if (recordKeepingTournamentTrait ==null)
+        if (recordKeepingTournamentTrait == null)
             recordKeepingTournamentTrait = new RecordKeepingTournamentTrait(this);
         return recordKeepingTournamentTrait;
     }
 
     private TiesAllowedTournamentTrait tiesAllowedTournamentTrait;
+
     protected TiesAllowedTournamentTrait getTiesAllowedTournamentTrait() {
-        if (tiesAllowedTournamentTrait==null)
+        if (tiesAllowedTournamentTrait == null)
             tiesAllowedTournamentTrait = new TiesAllowedTournamentTrait(this);
         return tiesAllowedTournamentTrait;
     }
@@ -34,7 +49,7 @@ public class RoundRobinTournament extends Tournament implements RecordKeepingTou
     private Map<Participant, Set<ParticipantCoordinates>> participantCoordinatesMap = new HashMap<>();
 
     public boolean build(final List<Participant> orderedParticipantList, final OnTournamentUpdateListener onTournamentUpdateListener, final OnMatchUpUpdateListener onMatchUpUpdateListener, final OnParticipantUpdateListener onParticipantUpdateListener) {
-        final boolean initialStatus = super.build(orderedParticipantList,onTournamentUpdateListener, onMatchUpUpdateListener,onParticipantUpdateListener);
+        final boolean initialStatus = super.build(orderedParticipantList, onTournamentUpdateListener, onMatchUpUpdateListener, onParticipantUpdateListener);
 
         if (!initialStatus)
             return false;
@@ -119,12 +134,13 @@ public class RoundRobinTournament extends Tournament implements RecordKeepingTou
     }
 
     protected MatchUp.MatchUpStatus getNewMatchUpStatus(final MatchUp.MatchUpStatus currentStatus, final int participantIndex) {
-        return getTiesAllowedTournamentTrait().getNewMatchUpStatus(currentStatus,participantIndex);
+        return getTiesAllowedTournamentTrait().getNewMatchUpStatus(currentStatus, participantIndex);
     }
 
     protected void updateTournamentOnResultChange(final int roundGroupIndex, final int roundIndex, final int matchUpIndex, final MatchUp.MatchUpStatus previousStatus, final MatchUp.MatchUpStatus status) {
-        getRecordKeepingTournamentTrait().updateParticipantsRecordOnResultChange(roundGroupIndex,roundIndex,matchUpIndex,previousStatus,status);
+        getRecordKeepingTournamentTrait().updateParticipantsRecordOnResultChange(roundGroupIndex, roundIndex, matchUpIndex, previousStatus, status);
     }
+
     public Set<ParticipantCoordinates> getParticipantCoordinates(final Participant participant) {
         return participantCoordinatesMap.get(participant);
     }

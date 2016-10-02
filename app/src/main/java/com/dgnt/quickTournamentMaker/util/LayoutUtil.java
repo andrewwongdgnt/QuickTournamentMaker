@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.dgnt.quickTournamentMaker.R;
 import com.dgnt.quickTournamentMaker.activity.MainActivity;
+import com.dgnt.quickTournamentMaker.model.tournament.RecordKeepingTournamentTrait;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -113,13 +114,13 @@ public class LayoutUtil {
 
         prioritySelectedTextView = null;
         final String prefKey_rankPriority = isSwiss ? PreferenceUtil.PREF_SWISS_RANK_PRIORITY_KEY : PreferenceUtil.PREF_ROUND_ROBIN_RANK_PRIORITY_KEY;
-        final PreferenceUtil.RankPriorityType[] rankPriorityTypes = PreferenceUtil.getRankPriority(sharedPreferences, prefKey_rankPriority);
+        final RecordKeepingTournamentTrait.RankingFromPriority rankingFromPriority = PreferenceUtil.getRankPriority(sharedPreferences, prefKey_rankPriority);
         final TextView priority1_tv = (TextView) rootView.findViewById(R.id.priority1_tv);
-        setUpRankingEditor_Priority(context, rootView,sharedPreferences, prefKey_rankPriority, rankPriorityTypes[0], priority1_tv);
+        setUpRankingEditor_Priority(context, rootView,sharedPreferences, prefKey_rankPriority, rankingFromPriority.getFirstPriority(), priority1_tv);
         final TextView priority2_tv = (TextView) rootView.findViewById(R.id.priority2_tv);
-        setUpRankingEditor_Priority(context,rootView, sharedPreferences, prefKey_rankPriority, rankPriorityTypes[1], priority2_tv);
+        setUpRankingEditor_Priority(context,rootView, sharedPreferences, prefKey_rankPriority, rankingFromPriority.getSecondPriority(), priority2_tv);
         final TextView priority3_tv = (TextView) rootView.findViewById(R.id.priority3_tv);
-        setUpRankingEditor_Priority(context,rootView, sharedPreferences, prefKey_rankPriority, rankPriorityTypes[2], priority3_tv);
+        setUpRankingEditor_Priority(context,rootView, sharedPreferences, prefKey_rankPriority, rankingFromPriority.getThirdPriority(), priority3_tv);
 
         final Button winScoreAdd_btn = (Button) rootView.findViewById(R.id.winScoreAdd_btn);
         final EditText winScore_et = (EditText) rootView.findViewById(R.id.winScore_et);
@@ -140,7 +141,7 @@ public class LayoutUtil {
 
     private static TextView prioritySelectedTextView;
 
-    private static void setUpRankingEditor_Priority(final Context context, final View rootView, final SharedPreferences sharedPreferences, final String prefKey, final PreferenceUtil.RankPriorityType rankPriorityType, final TextView priority_tv) {
+    private static void setUpRankingEditor_Priority(final Context context, final View rootView, final SharedPreferences sharedPreferences, final String prefKey, final RecordKeepingTournamentTrait.RankPriorityType rankPriorityType, final TextView priority_tv) {
 
         priority_tv.setText(getProperPriorityName(context,rankPriorityType));
         priority_tv.setTag(rankPriorityType);
@@ -153,8 +154,8 @@ public class LayoutUtil {
                     prioritySelectedTextView = priority_tv;
                 } else {
 
-                    final PreferenceUtil.RankPriorityType rankPriorityType_selected = (PreferenceUtil.RankPriorityType) prioritySelectedTextView.getTag();
-                    final PreferenceUtil.RankPriorityType rankPriorityType_new = (PreferenceUtil.RankPriorityType) priority_tv.getTag();
+                    final RecordKeepingTournamentTrait.RankPriorityType rankPriorityType_selected = (RecordKeepingTournamentTrait.RankPriorityType) prioritySelectedTextView.getTag();
+                    final RecordKeepingTournamentTrait.RankPriorityType rankPriorityType_new = (RecordKeepingTournamentTrait.RankPriorityType) priority_tv.getTag();
 
                     priority_tv.setText(getProperPriorityName(context,rankPriorityType_selected));
                     priority_tv.setTag(rankPriorityType_selected);
@@ -167,19 +168,19 @@ public class LayoutUtil {
                 }
 
                 final TextView priority1_tv = (TextView) rootView.findViewById(R.id.priority1_tv);
-                final PreferenceUtil.RankPriorityType rankPriorityType1 = (PreferenceUtil.RankPriorityType) priority1_tv.getTag();
+                final RecordKeepingTournamentTrait.RankPriorityType rankPriorityType1 = (RecordKeepingTournamentTrait.RankPriorityType) priority1_tv.getTag();
                 final TextView priority2_tv = (TextView) rootView.findViewById(R.id.priority2_tv);
-                final PreferenceUtil.RankPriorityType rankPriorityType2 = (PreferenceUtil.RankPriorityType) priority2_tv.getTag();
+                final RecordKeepingTournamentTrait.RankPriorityType rankPriorityType2 = (RecordKeepingTournamentTrait.RankPriorityType) priority2_tv.getTag();
                 final TextView priority3_tv = (TextView) rootView.findViewById(R.id.priority3_tv);
-                final PreferenceUtil.RankPriorityType rankPriorityType3 = (PreferenceUtil.RankPriorityType) priority3_tv.getTag();
+                final RecordKeepingTournamentTrait.RankPriorityType rankPriorityType3 = (RecordKeepingTournamentTrait.RankPriorityType) priority3_tv.getTag();
 
-                PreferenceUtil.setRankPriority(sharedPreferences, prefKey, new PreferenceUtil.RankPriorityType[]{rankPriorityType1, rankPriorityType2, rankPriorityType3});
+                PreferenceUtil.setRankPriority(sharedPreferences, prefKey, rankPriorityType1,rankPriorityType2,rankPriorityType3);
 
             }
         });
     }
 
-    private static String getProperPriorityName(final Context context, final PreferenceUtil.RankPriorityType rankPriorityType){
+    private static String getProperPriorityName(final Context context, final RecordKeepingTournamentTrait.RankPriorityType rankPriorityType){
         switch (rankPriorityType) {
             case WIN:
                 return context.getString(R.string.win);

@@ -7,6 +7,7 @@ import com.dgnt.quickTournamentMaker.model.history.HistoricalMatchUp;
 import com.dgnt.quickTournamentMaker.model.history.HistoricalRound;
 import com.dgnt.quickTournamentMaker.model.tournament.MatchUp;
 import com.dgnt.quickTournamentMaker.model.tournament.Participant;
+import com.dgnt.quickTournamentMaker.model.tournament.RecordKeepingTournamentTrait;
 import com.dgnt.quickTournamentMaker.model.tournament.Round;
 import com.dgnt.quickTournamentMaker.model.tournament.Tournament;
 
@@ -123,25 +124,6 @@ public class TournamentUtil {
             default:
                 return context.getString(R.string.survival);
         }
-    }
-
-    public static int compareParticipantsBasedOnRecord(final Participant lhs, final Participant rhs) {
-        if (lhs.getWins() > rhs.getWins())
-            return -1;
-        else if (rhs.getWins() > lhs.getWins())
-            return 1;
-
-        if (lhs.getLosses() > rhs.getLosses())
-            return 1;
-        else if (rhs.getLosses() > lhs.getLosses())
-            return -1;
-
-        if (lhs.getTies() > rhs.getTies())
-            return -1;
-        else if (rhs.getTies() > lhs.getTies())
-            return 1;
-
-        return 0;
     }
 
     public static final int DEFAULT_DISPLAY_COLOR = 0xff000000;

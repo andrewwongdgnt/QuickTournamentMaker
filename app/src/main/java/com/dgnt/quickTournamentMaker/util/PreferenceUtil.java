@@ -1,11 +1,12 @@
 package com.dgnt.quickTournamentMaker.util;
 
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.dgnt.quickTournamentMaker.model.history.HistoricalTournament;
+import com.dgnt.quickTournamentMaker.model.tournament.RecordKeepingTournament;
+import com.dgnt.quickTournamentMaker.model.tournament.RecordKeepingTournamentTrait;
 import com.dgnt.quickTournamentMaker.model.tournament.Tournament;
-
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * Created by Owner on 7/18/2016.
@@ -138,47 +139,15 @@ public class PreferenceUtil {
     public final static String PREF_SWISS_RANK_PRIORITY_KEY = "rankSwissPriorityKey";
     public final static String PREF_ROUND_ROBIN_RANK_PRIORITY_KEY = "rankRoundRobinPriorityKey";
 
-    public enum RankPriorityType {
-        WIN, TIE, LOSS
+
+    public static RecordKeepingTournamentTrait.RankingFromPriority getRankPriority(final SharedPreferences sharedPreferences, final String prefKey) {
+        return RecordKeepingTournamentTrait.buildRankingFromPriority(sharedPreferences.getString(prefKey, RecordKeepingTournamentTrait.RankingFromPriority.DEFAULT_INPUT));
     }
 
-    public static RankPriorityType[] getRankPriority(final SharedPreferences sharedPreferences, final String prefKey) {
-        final String[] priority = sharedPreferences.getString(prefKey, "w;l;t").split(";");
-        final RankPriorityType[] rankPriorityTypes = new RankPriorityType[priority.length];
-        for (int i = 0; i < priority.length; i++) {
-            final String s = priority[i];
-            if (s.equals("w"))
-                rankPriorityTypes[i] = RankPriorityType.WIN;
-            else if (s.equals("l"))
-                rankPriorityTypes[i] = RankPriorityType.LOSS;
-            else //"t"
-                rankPriorityTypes[i] = RankPriorityType.TIE;
-        }
-        return rankPriorityTypes;
-    }
-
-    public static void setRankPriority(final SharedPreferences sharedPreferences, final String prefKey, final RankPriorityType[] rankPriorityTypes) {
-        final StringBuilder stringBuilder = new StringBuilder();
-        String sep = "";
-        for (final RankPriorityType rankPriorityType : rankPriorityTypes) {
-
-            stringBuilder.append(sep);
-            switch (rankPriorityType) {
-                case WIN:
-                    stringBuilder.append("w");
-                    break;
-                case LOSS:
-                    stringBuilder.append("l");
-                    break;
-                case TIE:
-                default:
-                    stringBuilder.append("t");
-            }
-            sep = ";";
-        }
+    public static void setRankPriority(final SharedPreferences sharedPreferences, final String prefKey, final RecordKeepingTournamentTrait.RankPriorityType firstPriority, final RecordKeepingTournamentTrait.RankPriorityType secondPriority, final RecordKeepingTournamentTrait.RankPriorityType thirdPriority) {
 
         final SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(prefKey, stringBuilder.toString());
+        editor.putString(prefKey, RecordKeepingTournamentTrait.getRankingFromPriorityAsString(firstPriority,secondPriority,thirdPriority));
         editor.commit();
     }
 
@@ -194,9 +163,9 @@ public class PreferenceUtil {
         return sharedPreferences.getInt(prefKey, 0);
     }
 
-    public static void setRankScore(final SharedPreferences sharedPreferences, final String prefKey, final String winScore) {
+    public static void setRankScore(final SharedPreferences sharedPreferences, final String prefKey, final String score) {
         final SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(prefKey, getIntFromString(winScore, 0));
+        editor.putInt(prefKey, getIntFromString(score, 0));
         editor.commit();
     }
 
@@ -207,5 +176,19 @@ public class PreferenceUtil {
 
         }
         return defaultNum;
+    }
+
+    public static void setRankingConfig(final SharedPreferences sharedPreferences, final RecordKeepingTournament recordKeepingTournament, final boolean isSwiss){
+        final boolean isRankingBasedOnPriority = PreferenceUtil.isRankingBasedOnPriority(sharedPreferences, isSwiss ? PreferenceUtil.PREF_SWISS_RANKING_CONFIG_KEY : PreferenceUtil.PREF_ROUND_ROBIN_RANKING_CONFIG_KEY);
+        if (isRankingBasedOnPriority)
+            recordKeepingTournament.setRankingConfigFromPriority(PreferenceUtil.getRankPriority(sharedPreferences, isSwiss ? PreferenceUtil.PREF_SWISS_RANK_PRIORITY_KEY : PreferenceUtil.PREF_ROUND_ROBIN_RANK_PRIORITY_KEY));
+        else {
+            final int winScore = PreferenceUtil.getRankScore(sharedPreferences, isSwiss ? PreferenceUtil.PREF_SWISS_RANK_WIN_SCORE_KEY : PreferenceUtil.PREF_ROUND_ROBIN_RANK_WIN_SCORE_KEY);
+            final int lossScore = PreferenceUtil.getRankScore(sharedPreferences, isSwiss ? PreferenceUtil.PREF_SWISS_RANK_LOSS_SCORE_KEY : PreferenceUtil.PREF_ROUND_ROBIN_RANK_LOSS_SCORE_KEY);
+            final int tieScore = PreferenceUtil.getRankScore(sharedPreferences, isSwiss ? PreferenceUtil.PREF_SWISS_RANK_TIE_SCORE_KEY : PreferenceUtil.PREF_ROUND_ROBIN_RANK_TIE_SCORE_KEY);
+            final RecordKeepingTournamentTrait.RankingFromScore rankingFromScore = RecordKeepingTournamentTrait.buildRankingFromScore(winScore, lossScore, tieScore);
+
+            recordKeepingTournament.setRankingConfigFromScore(rankingFromScore);
+        }
     }
 }
