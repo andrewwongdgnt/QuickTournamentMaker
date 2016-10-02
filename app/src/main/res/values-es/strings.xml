@@ -123,7 +123,7 @@
     <string name="sort">Ordenar</string>
     <string name="viewMode">Modo de vista</string>
     <string name="filter">Filtrar</string>
-    <string name="deleteTournamentMsg">¿Seguro que quiere eliminar torneo(s) %1$s? Esta acción no se puede deshacer.</string>
+    <string name="deleteTournamentMsg">¿Seguro que quiere eliminar torneo(s) %1$d? Esta acción no se puede deshacer.</string>
 
     <string name="saveTournamentSuccessfulMsg">Torneo guardado correctamente</string>
 

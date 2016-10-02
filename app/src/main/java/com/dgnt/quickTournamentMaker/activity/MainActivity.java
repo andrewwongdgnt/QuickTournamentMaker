@@ -1,7 +1,6 @@
 package com.dgnt.quickTournamentMaker.activity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
@@ -23,7 +22,6 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -177,7 +175,7 @@ public class MainActivity extends InAppBillingActivity
                         : Tournament.TournamentType.SURVIVAL;
 
                 final String rankingConfig = PreferenceUtil.getRankingConfig( PreferenceManager.getDefaultSharedPreferences(MainActivity.this),tournamentType);
-                TournamentActivity.startTournamentActivity(MainActivity.this, 0, seedType, tournamentType, tournamentType, title, description, participantList, null, null, Tournament.NULL_TIME_VALUE, Tournament.NULL_TIME_VALUE, false,rankingConfig);
+                TournamentActivity.startTournamentActivity(MainActivity.this, 0, seedType, tournamentType, tournamentType, title, description, rankingConfig, participantList, null, null, Tournament.NULL_TIME_VALUE, Tournament.NULL_TIME_VALUE, false);
 
             }
         });

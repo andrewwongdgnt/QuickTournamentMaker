@@ -7,4 +7,5 @@ public interface RecordKeepingTournament {
 
 
     public void setRankingConfig(final String rankingConfig);
+    public String getRankingConfig();
 }

@@ -21,7 +21,9 @@ public class SwissTournament extends Tournament implements RecordKeepingTourname
     public void setRankingConfig(final String rankingConfig) {
         getRecordKeepingTournamentTrait().setRankingConfig(rankingConfig);
     }
-
+    public String getRankingConfig() {
+        return getRecordKeepingTournamentTrait().getRankingConfig();
+    }
     private RecordKeepingTournamentTrait recordKeepingTournamentTrait;
 
     protected RecordKeepingTournamentTrait getRecordKeepingTournamentTrait() {

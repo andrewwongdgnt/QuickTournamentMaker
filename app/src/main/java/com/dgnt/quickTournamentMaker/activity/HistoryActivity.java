@@ -480,7 +480,7 @@ public class HistoryActivity extends AppCompatActivity {
         builder.setTitle(getString(R.string.editTournament));
         builder.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
             public void onClick(final DialogInterface dialogInterface, final int n) {
-                getDb().updateTournament(historicalTournament.getCreationTimeInEpoch(), System.currentTimeMillis(), historicalTournament.getType(), tournamentTitle_et.getText().toString(), tournamentDescription_et.getText().toString(), historicalTournament.getRoundList(), historicalTournament.getMatchUpList(), historicalTournament.getParticipantList());
+                getDb().updateTournament(historicalTournament.getCreationTimeInEpoch(), System.currentTimeMillis(), historicalTournament.getType(), tournamentTitle_et.getText().toString(), tournamentDescription_et.getText().toString(), historicalTournament.getRoundList(), historicalTournament.getMatchUpList(), historicalTournament.getParticipantList(), historicalTournament.getRankingConfig());
 
                 updateTournamentListViewFromDB();
 

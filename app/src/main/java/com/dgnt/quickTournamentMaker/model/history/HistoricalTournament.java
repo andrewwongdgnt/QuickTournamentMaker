@@ -28,16 +28,18 @@ public class HistoricalTournament implements IKeyable {
     private String name;
     private String note;
     private Tournament.TournamentType type;
+    private String rankingConfig;
     private List<Participant> participantList;
     private List<HistoricalRound> roundList;
     private List<HistoricalMatchUp> matchUpList;
 
-    public HistoricalTournament(final long creationTimeInEpoch, final long lastModifiedTimeInEpoch, final String name, final String note, final Tournament.TournamentType type, final List<Participant> participantList, final List<HistoricalRound> roundList, final List<HistoricalMatchUp> matchUpList) {
+    public HistoricalTournament(final long creationTimeInEpoch, final long lastModifiedTimeInEpoch, final String name, final String note, final Tournament.TournamentType type, final String rankingConfig, final List<Participant> participantList, final List<HistoricalRound> roundList, final List<HistoricalMatchUp> matchUpList) {
         this.creationTimeInEpoch = creationTimeInEpoch;
         this.lastModifiedTimeInEpoch = lastModifiedTimeInEpoch;
         this.name = name;
         this.note = note;
         this.type = type;
+        this.rankingConfig = rankingConfig;
         this.participantList = participantList;
         this.roundList = roundList;
         this.matchUpList = matchUpList;
@@ -72,6 +74,10 @@ public class HistoricalTournament implements IKeyable {
 
     public Tournament.TournamentType getType() {
         return type;
+    }
+
+    public String getRankingConfig() {
+        return rankingConfig;
     }
 
     public List<Participant> getParticipantList() {

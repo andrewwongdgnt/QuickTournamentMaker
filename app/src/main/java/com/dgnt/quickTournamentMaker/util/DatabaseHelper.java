@@ -17,6 +17,7 @@ import com.dgnt.quickTournamentMaker.model.management.Group;
 import com.dgnt.quickTournamentMaker.model.management.Person;
 import com.dgnt.quickTournamentMaker.model.tournament.MatchUp;
 import com.dgnt.quickTournamentMaker.model.tournament.Participant;
+import com.dgnt.quickTournamentMaker.model.tournament.RecordKeepingTournament;
 import com.dgnt.quickTournamentMaker.model.tournament.Tournament;
 
 import org.apache.commons.lang3.StringUtils;
@@ -33,7 +34,7 @@ import java.util.Set;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 1001;
+    private static final int DATABASE_VERSION = 1002;
     public static final String DATABASE_NAME = "db";
     private static final String PERSON_TABLE = "personTable";
     private static final String GROUP_TABLE = "groupTable";
@@ -56,6 +57,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_MATCH_UP_STATUS = "matchUpStatus";
     private static final String COLUMN_DISPLAY_NAME = "displayName";
     private static final String COLUMN_COLOR = "color";
+    private static final String COLUMN_RANKING_CONFIG = "rankingConfig";
 
     //For PERSON_TABLE
     //name, note, groupName
@@ -64,7 +66,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //name, note, favourite
 
     //FOR TOURNAMENT_TABLE
-    //epoch, lastModifiedTime, name, note, type
+    //epoch, lastModifiedTime, name, note, type, rankingConfig
 
     //FOR ROUND_TABLE
     //epoch, roundGroupIndex, roundIndex, name, note, color
@@ -105,7 +107,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COLUMN_LAST_MODIFIED_TIME + " INTEGER, " +
                 COLUMN_NAME + " TEXT, " +
                 COLUMN_NOTE + " TEXT, " +
-                COLUMN_TYPE + " TEXT " +
+                COLUMN_TYPE + " TEXT, " +
+                COLUMN_RANKING_CONFIG + " TEXT " +
                 ")";
 
         db.execSQL(createTournamentTableQuery);
@@ -162,6 +165,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.execSQL("DROP TABLE IF EXISTS players");
             db.execSQL("DROP TABLE IF EXISTS Tournaments");
             onCreate(db);
+        } else {
+            if (oldversion < 1002) {
+                db.execSQL("ALTER TABLE " + TOURNAMENT_TABLE + " ADD COLUMN " + COLUMN_RANKING_CONFIG + " TEXT");
+            }
         }
     }
 
@@ -367,10 +374,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //------------------------------
 
     public void addTournament(final Tournament tournament) throws SQLException {
-        addTournament(tournament.getCreationTimeInEpoch(), tournament.getLastModifiedTimeInEpoch(), tournament.getType(), tournament.getTitle(), tournament.getDescription(), TournamentUtil.buildRoundList(tournament), TournamentUtil.buildMatchUpList(tournament), tournament.getSeededParticipants());
+        final String rankingConfig = tournament instanceof RecordKeepingTournament ? ((RecordKeepingTournament) tournament).getRankingConfig() : "";
+        addTournament(tournament.getCreationTimeInEpoch(), tournament.getLastModifiedTimeInEpoch(), tournament.getType(), tournament.getTitle(), tournament.getDescription(), TournamentUtil.buildRoundList(tournament), TournamentUtil.buildMatchUpList(tournament), tournament.getSeededParticipants(), rankingConfig);
     }
 
-    public void addTournament(final long creationTimeInEpoch, final long lastModifiedTimeInEpoch, final Tournament.TournamentType tournamentType, final String name, final String description, final List<HistoricalRound> roundList, final List<HistoricalMatchUp> matchUpList, final List<Participant> participantList) throws SQLException {
+    public void addTournament(final long creationTimeInEpoch, final long lastModifiedTimeInEpoch, final Tournament.TournamentType tournamentType, final String name, final String description, final List<HistoricalRound> roundList, final List<HistoricalMatchUp> matchUpList, final List<Participant> participantList, final String rankingConfig) throws SQLException {
 
         //delete a tournament with this creation time just in case it exists
         deleteTournament(creationTimeInEpoch);
@@ -383,6 +391,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_NAME, name);
         values.put(COLUMN_NOTE, description);
         values.put(COLUMN_TYPE, tournamentType.name());
+        values.put(COLUMN_RANKING_CONFIG, rankingConfig == null ? "" : rankingConfig);
 
         db.insertOrThrow(TOURNAMENT_TABLE, null, values);
 
@@ -435,10 +444,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void updateTournament(final Tournament tournament) throws SQLException {
-        updateTournament(tournament.getCreationTimeInEpoch(), tournament.getLastModifiedTimeInEpoch(), tournament.getType(), tournament.getTitle(), tournament.getDescription(), TournamentUtil.buildRoundList(tournament), TournamentUtil.buildMatchUpList(tournament), tournament.getSeededParticipants());
+        final String rankingConfig = tournament instanceof RecordKeepingTournament ? ((RecordKeepingTournament) tournament).getRankingConfig() : "";
+        updateTournament(tournament.getCreationTimeInEpoch(), tournament.getLastModifiedTimeInEpoch(), tournament.getType(), tournament.getTitle(), tournament.getDescription(), TournamentUtil.buildRoundList(tournament), TournamentUtil.buildMatchUpList(tournament), tournament.getSeededParticipants(), rankingConfig);
     }
 
-    public void updateTournament(final long creationTimeInEpoch, final long lastModifiedTimeInEpoch, final Tournament.TournamentType tournamentType, final String name, final String description, final List<HistoricalRound> roundList, final List<HistoricalMatchUp> matchUpList, final List<Participant> participantList) throws SQLException {
+    public void updateTournament(final long creationTimeInEpoch, final long lastModifiedTimeInEpoch, final Tournament.TournamentType tournamentType, final String name, final String description, final List<HistoricalRound> roundList, final List<HistoricalMatchUp> matchUpList, final List<Participant> participantList, final String rankingConfig) throws SQLException {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -447,6 +457,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_NAME, name);
         values.put(COLUMN_NOTE, description);
         values.put(COLUMN_TYPE, tournamentType.name());
+        values.put(COLUMN_RANKING_CONFIG, rankingConfig == null ? "" : rankingConfig);
 
         db.update(TOURNAMENT_TABLE, values, COLUMN_EPOCH + " = ?",
                 new String[]{String.valueOf(creationTimeInEpoch)});
@@ -725,7 +736,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         COLUMN_LAST_MODIFIED_TIME,
                         COLUMN_NAME,
                         COLUMN_NOTE,
-                        COLUMN_TYPE
+                        COLUMN_TYPE,
+                        COLUMN_RANKING_CONFIG
                 }, whereClause,
                 whereArgs_final, null, null, orderBy);
 
@@ -738,12 +750,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     final String name = tournamentCursor.getString(tournamentCursor.getColumnIndex(COLUMN_NAME));
                     final String note = tournamentCursor.getString(tournamentCursor.getColumnIndex(COLUMN_NOTE));
                     final Tournament.TournamentType type = Tournament.TournamentType.valueOf(tournamentCursor.getString(tournamentCursor.getColumnIndex(COLUMN_TYPE)));
+                    final String rankingConfig = tournamentCursor.getString(tournamentCursor.getColumnIndex(COLUMN_RANKING_CONFIG));
 
                     final List<Participant> participantList = epochToParticipantList.get(creationTimeInEpoch);
                     final List<HistoricalRound> roundList = epochToRoundList.get(creationTimeInEpoch);
                     final List<HistoricalMatchUp> matchUpList = epochToMatchUpList.get(creationTimeInEpoch);
 
-                    final HistoricalTournament historicalTournament = new HistoricalTournament(creationTimeInEpoch, lastModifiedTimeInEpoch, name, note, type, participantList, roundList, matchUpList);
+                    final HistoricalTournament historicalTournament = new HistoricalTournament(creationTimeInEpoch, lastModifiedTimeInEpoch, name, note, type, rankingConfig, participantList, roundList, matchUpList);
 
                     final int normalParticipantCount = TournamentUtil.getNormalParticipantCount(participantList);
 
@@ -768,7 +781,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     final int rightIndexOfSearchTerm_name = rhs.getName().indexOf(searchTerm);
 
                     // if the search term appears in the title, then give a higher relevance rank the closer the search term is to the beginning (IE smaller index)
-                    if (leftIndexOfSearchTerm_name>=0 && rightIndexOfSearchTerm_name>=0 && rightIndexOfSearchTerm_name-leftIndexOfSearchTerm_name!=0)
+                    if (leftIndexOfSearchTerm_name >= 0 && rightIndexOfSearchTerm_name >= 0 && rightIndexOfSearchTerm_name - leftIndexOfSearchTerm_name != 0)
                         return leftIndexOfSearchTerm_name - rightIndexOfSearchTerm_name;
 
                     // otherwise, assign weights
@@ -787,7 +800,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     else if (rightWeight_sequence - leftWeight_sequence != 0)
                         return rightWeight_sequence - leftWeight_sequence;
 
-                    // if above results in a draw, then resort to sorting by alphabetical order, starting with title, then description
+                        // if above results in a draw, then resort to sorting by alphabetical order, starting with title, then description
                     else if (lhs.getName().compareTo(rhs.getName()) != 0)
                         return lhs.getName().compareTo(rhs.getName());
                     else

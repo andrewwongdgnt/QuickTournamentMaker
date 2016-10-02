@@ -122,7 +122,7 @@
     <string name="sort">Сортировать</string>
     <string name="viewMode">Режим просмотра</string>
     <string name="filter">Фильтр</string>
-    <string name="deleteTournamentMsg">Вы уверены, что хотите удалить %1$s турнир(ы)? Это действие не может быть отменено.</string>
+    <string name="deleteTournamentMsg">Вы уверены, что хотите удалить %1$d турнир(ы)? Это действие не может быть отменено.</string>
 
     <string name="saveTournamentSuccessfulMsg">Турнир успешно сохранён</string>
 

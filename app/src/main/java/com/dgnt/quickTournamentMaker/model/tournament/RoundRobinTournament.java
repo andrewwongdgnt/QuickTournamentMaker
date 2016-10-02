@@ -25,7 +25,9 @@ public class RoundRobinTournament extends Tournament implements RecordKeepingTou
     public void setRankingConfig(final String rankingConfig) {
         getRecordKeepingTournamentTrait().setRankingConfig(rankingConfig);
     }
-
+    public String getRankingConfig() {
+        return getRecordKeepingTournamentTrait().getRankingConfig();
+    }
 
     private RecordKeepingTournamentTrait recordKeepingTournamentTrait;
 

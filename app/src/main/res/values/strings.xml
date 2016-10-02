@@ -124,7 +124,7 @@
     <string name="sort">Sort</string>
     <string name="viewMode">View mode</string>
     <string name="filter">Filter</string>
-    <string name="deleteTournamentMsg">Are you sure you want to delete %1$s tournament(s)? This action cannot be undone.</string>
+    <string name="deleteTournamentMsg">Are you sure you want to delete %1$d tournament(s)? This action cannot be undone.</string>
 
     <string name="saveTournamentSuccessfulMsg">Tournament saved successfully</string>
 

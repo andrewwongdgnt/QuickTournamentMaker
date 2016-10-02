@@ -2,36 +2,27 @@ package com.dgnt.quickTournamentMaker.activity.tournament;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.util.Pair;
 import android.support.v7.app.ActionBar;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,7 +30,6 @@ import android.widget.Toast;
 import com.dgnt.quickTournamentMaker.R;
 import com.dgnt.quickTournamentMaker.activity.DirectoryPickerActivity;
 import com.dgnt.quickTournamentMaker.activity.InAppBillingActivity;
-import com.dgnt.quickTournamentMaker.activity.MainActivity;
 import com.dgnt.quickTournamentMaker.adapter.ColorAdapter;
 import com.dgnt.quickTournamentMaker.adapter.RankingAdapter;
 import com.dgnt.quickTournamentMaker.eventListener.OnMatchUpUpdateListener;
@@ -602,7 +592,7 @@ abstract public class TournamentActivity extends InAppBillingActivity implements
                         : Tournament.TournamentType.SURVIVAL;
 
                 final String rankingConfig = PreferenceUtil.getRankingConfig( PreferenceManager.getDefaultSharedPreferences(TournamentActivity.this),tournamentType);
-                startTournamentActivity(TournamentActivity.this, 0, seedType, tournament.getType(), tournamentType, tournament.getTitle(), tournament.getDescription(), (ArrayList<Participant>) tournament.getSeededParticipants(), null, null, tournament.getCreationTimeInEpoch(), Tournament.NULL_TIME_VALUE, true,rankingConfig);
+                startTournamentActivity(TournamentActivity.this, 0, seedType, tournament.getType(), tournamentType, tournament.getTitle(), tournament.getDescription(), rankingConfig, (ArrayList<Participant>) tournament.getSeededParticipants(), null, null, tournament.getCreationTimeInEpoch(), Tournament.NULL_TIME_VALUE, true);
                 finish();
 
             }
@@ -1060,19 +1050,17 @@ abstract public class TournamentActivity extends InAppBillingActivity implements
                 historicalTournament.getType(),
                 historicalTournament.getName(),
                 historicalTournament.getNote(),
-                (ArrayList<Participant>) historicalTournament.getParticipantList(),
+                historicalTournament.getRankingConfig(), (ArrayList<Participant>) historicalTournament.getParticipantList(),
                 (ArrayList<HistoricalRound>) historicalTournament.getRoundList(),
                 (ArrayList<HistoricalMatchUp>) historicalTournament.getMatchUpList(),
                 historicalTournament.getCreationTimeInEpoch(),
                 historicalTournament.getLastModifiedTimeInEpoch(),
-                false,
-                "w;l;t"
+                false
         );
     }
 
     public static void startTournamentActivity(final Activity startingActivity, final int requestCode, final Seeder.Type seedType, final Tournament.TournamentType tournamentType_original, final Tournament.TournamentType tournamentType, final String title, final String description,
-                                               final ArrayList<Participant> participantList, final ArrayList<HistoricalRound> roundList, final ArrayList<HistoricalMatchUp> matchUpList, final long creationTimeInEpoch, final long lastModifiedTimeInEpoch, final boolean rebuilt,
-                                               final String rankingConfig) {
+                                               final String rankingConfig, final ArrayList<Participant> participantList, final ArrayList<HistoricalRound> roundList, final ArrayList<HistoricalMatchUp> matchUpList, final long creationTimeInEpoch, final long lastModifiedTimeInEpoch, final boolean rebuilt) {
 
         final Class clazz;
         final Seeder.SeedFillType seedFillType_original = getSeedFileType(tournamentType_original);

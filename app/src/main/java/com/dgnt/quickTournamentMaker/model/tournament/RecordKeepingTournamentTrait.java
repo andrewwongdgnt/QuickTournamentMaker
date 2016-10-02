@@ -27,9 +27,9 @@ public class RecordKeepingTournamentTrait {
 
         rankingFromPriority = null;
         rankingFromScore = null;
-        String[] arr = rankingConfig.split(";");
-        if (arr.length==3){
-            if (arr[0].matches("[wlt]")){
+        String[] arr = rankingConfig == null ? new String[0] : rankingConfig.split(";");
+        if (arr.length == 3) {
+            if (arr[0].matches("[wlt]")) {
                 rankingFromPriority = buildRankingFromPriority(rankingConfig);
             } else {
                 rankingFromScore = buildRankingFromScore(rankingConfig);
@@ -39,6 +39,15 @@ public class RecordKeepingTournamentTrait {
         }
     }
 
+    public String getRankingConfig() {
+        if (rankingFromPriority == null && rankingFromScore == null)
+            setRankingConfig(RecordKeepingTournamentTrait.RankingFromPriority.DEFAULT_INPUT);
+
+        if (rankingFromPriority != null)
+            return rankingFromPriority.toString();
+        else
+            return rankingFromScore.toString();
+    }
 
 
     public void updateParticipantsRecordOnResultChange(final int roundGroupIndex, final int roundIndex, final int matchUpIndex, final MatchUp.MatchUpStatus previousStatus, final MatchUp.MatchUpStatus status) {
@@ -196,7 +205,7 @@ public class RecordKeepingTournamentTrait {
 
         final RankingFromPriority rankingFromPriority = new RankingFromPriority();
 
-        String[] priority = input.split(";");
+        String[] priority = input == null ? new String[0] : input.split(";");
         if (priority.length != 3) {
             priority = RankingFromPriority.DEFAULT_INPUT.split(";");
         }
@@ -284,15 +293,15 @@ public class RecordKeepingTournamentTrait {
             return thirdPriority;
         }
 
-        public String toString(){
-            return getRankingFromPriorityAsString(firstPriority,secondPriority,thirdPriority);
+        public String toString() {
+            return getRankingFromPriorityAsString(firstPriority, secondPriority, thirdPriority);
         }
     }
 
     public static RankingFromScore buildRankingFromScore(final String input) {
         final RankingFromScore rankingFromScore = new RankingFromScore();
 
-        String[] scores = input.split(";");
+        String[] scores = input == null ? new String[0] : input.split(";");
 
         if (scores.length != 3) {
             scores = RankingFromScore.DEFAULT_INPUT.split(";");
@@ -319,7 +328,7 @@ public class RecordKeepingTournamentTrait {
     }
 
     public static String getRankingFromScoreAsString(final int winScore, final int lossScore, final int tieScore) {
-        return winScore+";"+lossScore+";"+tieScore;
+        return winScore + ";" + lossScore + ";" + tieScore;
     }
 
     public static class RankingFromScore {
@@ -347,8 +356,8 @@ public class RecordKeepingTournamentTrait {
             return tieScore;
         }
 
-        public String toString(){
-            return getRankingFromScoreAsString(winScore,lossScore,tieScore);
+        public String toString() {
+            return getRankingFromScoreAsString(winScore, lossScore, tieScore);
         }
     }
 }
