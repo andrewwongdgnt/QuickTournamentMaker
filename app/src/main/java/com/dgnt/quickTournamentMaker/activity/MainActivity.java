@@ -101,52 +101,17 @@ public class MainActivity extends InAppBillingActivity
             }
         });
 
-        final TextView seedOptions_tv = (TextView) findViewById(R.id.seedOptions_tv);
-        final RadioGroup seedOptions_rg = (RadioGroup) findViewById(R.id.seedOptions_rg);
-        final RadioButton randomSeed_rb = (RadioButton) findViewById(R.id.randomSeed_rb);
-        final RadioButton customSeed_rb = (RadioButton) findViewById(R.id.customSeed_rb);
 
-        final RadioGroup tournamentType_rg = (RadioGroup) findViewById(R.id.tournamentType_rg);
+        final RadioButton randomSeed_rb = (RadioButton) findViewById(R.id.randomSeed_rb);
+        final RadioButton sameSeed_rb = (RadioButton) findViewById(R.id.sameSeed_rb);
+        sameSeed_rb.setVisibility(View.GONE);
 
         final RadioButton elimination_rb = (RadioButton) findViewById(R.id.elimination_rb);
         final RadioButton doubleElimination_rb = (RadioButton) findViewById(R.id.doubleElimination_rb);
         final RadioButton roundRobin_rb = (RadioButton) findViewById(R.id.roundRobin_rb);
         final RadioButton swiss_rb = (RadioButton) findViewById(R.id.swiss_rb);
-        final RadioButton survival_rb = (RadioButton) findViewById(R.id.survival_rb);
 
-
-        final TextView rankingConfig_tv = (TextView) findViewById(R.id.rankingConfig_tv);
-        final RadioGroup rankingConfig_rg = (RadioGroup) findViewById(R.id.rankingConfig_rg);
-
-        rankingConfig_tv.setVisibility(View.GONE);
-        rankingConfig_rg.setVisibility(View.GONE);
-
-        tournamentType_rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-
-                final RadioButton checkedRadioButton = (RadioButton) group.findViewById(checkedId);
-
-                final boolean isChecked = checkedRadioButton.isChecked();
-
-                if (isChecked) {
-                    if (checkedId == R.id.roundRobin_rb || checkedId == R.id.swiss_rb) {
-                        rankingConfig_tv.setVisibility(View.VISIBLE);
-                        rankingConfig_rg.setVisibility(View.VISIBLE);
-                        LayoutUtil.setUpRankingEditor(MainActivity.this, checkedId == R.id.swiss_rb);
-                    } else {
-                        rankingConfig_tv.setVisibility(View.GONE);
-                        rankingConfig_rg.setVisibility(View.GONE);
-                    }
-
-
-                    seedOptions_tv.setVisibility(checkedId == R.id.survival_rb ? View.GONE : View.VISIBLE);
-                    seedOptions_rg.setVisibility(checkedId == R.id.survival_rb ? View.GONE : View.VISIBLE);
-                }
-
-            }
-        });
-
+        LayoutUtil.setUpSeedingEditor(MainActivity.this, findViewById(android.R.id.content));
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

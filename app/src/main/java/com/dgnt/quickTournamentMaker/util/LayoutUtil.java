@@ -16,6 +16,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.dgnt.quickTournamentMaker.R;
+import com.dgnt.quickTournamentMaker.activity.MainActivity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,17 +27,55 @@ import java.util.Map;
 
 public class LayoutUtil {
 
+    public static void setUpSeedingEditor(final Context context, final View rootView){
+        final TextView seedOptions_tv = (TextView) rootView.findViewById(R.id.seedOptions_tv);
+        final RadioGroup seedOptions_rg = (RadioGroup) rootView.findViewById(R.id.seedOptions_rg);
 
-    public static void setUpRankingEditor(final Activity activity, final boolean isSwiss) {
-        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
+        final TextView rankingConfig_tv = (TextView) rootView.findViewById(R.id.rankingConfig_tv);
+        final RadioGroup rankingConfig_rg = (RadioGroup) rootView.findViewById(R.id.rankingConfig_rg);
 
-        final RadioGroup rankingConfig_rg = (RadioGroup) activity.findViewById(R.id.rankingConfig_rg);
+        rankingConfig_tv.setVisibility(View.GONE);
+        rankingConfig_rg.setVisibility(View.GONE);
 
-        final RadioButton compareRankFromPriority_rb = (RadioButton) activity.findViewById(R.id.compareRankFromPriority_rb);
-        final RadioButton compareRankFromScore_rb = (RadioButton) activity.findViewById(R.id.compareRankFromScore_rb);
+        final RadioGroup tournamentType_rg = (RadioGroup) rootView.findViewById(R.id.tournamentType_rg);
 
-        final ViewGroup compareRankFromPriorityGroup = (ViewGroup) activity.findViewById(R.id.compareRankFromPriorityGroup);
-        final ViewGroup compareRankFromScoreGroup = (ViewGroup) activity.findViewById(R.id.compareRankFromScoreGroup);
+        tournamentType_rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                final RadioButton checkedRadioButton = (RadioButton) group.findViewById(checkedId);
+
+                final boolean isChecked = checkedRadioButton.isChecked();
+
+                if (isChecked) {
+                    if (checkedId == R.id.roundRobin_rb || checkedId == R.id.swiss_rb) {
+                        rankingConfig_tv.setVisibility(View.VISIBLE);
+                        rankingConfig_rg.setVisibility(View.VISIBLE);
+                        LayoutUtil.setUpRankingEditor(context, rootView,checkedId == R.id.swiss_rb);
+                    } else {
+                        rankingConfig_tv.setVisibility(View.GONE);
+                        rankingConfig_rg.setVisibility(View.GONE);
+                    }
+
+
+                    seedOptions_tv.setVisibility(checkedId == R.id.survival_rb ? View.GONE : View.VISIBLE);
+                    seedOptions_rg.setVisibility(checkedId == R.id.survival_rb ? View.GONE : View.VISIBLE);
+                }
+
+            }
+        });
+    }
+
+    private static void setUpRankingEditor(final Context context, final View rootView,final boolean isSwiss) {
+        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+        final RadioGroup rankingConfig_rg = (RadioGroup) rootView.findViewById(R.id.rankingConfig_rg);
+
+        final RadioButton compareRankFromPriority_rb = (RadioButton) rootView.findViewById(R.id.compareRankFromPriority_rb);
+        final RadioButton compareRankFromScore_rb = (RadioButton) rootView.findViewById(R.id.compareRankFromScore_rb);
+
+        final ViewGroup compareRankFromPriorityGroup = (ViewGroup) rootView.findViewById(R.id.compareRankFromPriorityGroup);
+        final ViewGroup compareRankFromScoreGroup = (ViewGroup) rootView.findViewById(R.id.compareRankFromScoreGroup);
         rankingConfig_rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -75,63 +114,63 @@ public class LayoutUtil {
         prioritySelectedTextView = null;
         final String prefKey_rankPriority = isSwiss ? PreferenceUtil.PREF_SWISS_RANK_PRIORITY_KEY : PreferenceUtil.PREF_ROUND_ROBIN_RANK_PRIORITY_KEY;
         final PreferenceUtil.RankPriorityType[] rankPriorityTypes = PreferenceUtil.getRankPriority(sharedPreferences, prefKey_rankPriority);
-        final TextView priority1_tv = (TextView) activity.findViewById(R.id.priority1_tv);
-        setUpRankingEditor_Priority(activity, sharedPreferences, prefKey_rankPriority, rankPriorityTypes[0], priority1_tv);
-        final TextView priority2_tv = (TextView) activity.findViewById(R.id.priority2_tv);
-        setUpRankingEditor_Priority(activity, sharedPreferences, prefKey_rankPriority, rankPriorityTypes[1], priority2_tv);
-        final TextView priority3_tv = (TextView) activity.findViewById(R.id.priority3_tv);
-        setUpRankingEditor_Priority(activity, sharedPreferences, prefKey_rankPriority, rankPriorityTypes[2], priority3_tv);
+        final TextView priority1_tv = (TextView) rootView.findViewById(R.id.priority1_tv);
+        setUpRankingEditor_Priority(context, rootView,sharedPreferences, prefKey_rankPriority, rankPriorityTypes[0], priority1_tv);
+        final TextView priority2_tv = (TextView) rootView.findViewById(R.id.priority2_tv);
+        setUpRankingEditor_Priority(context,rootView, sharedPreferences, prefKey_rankPriority, rankPriorityTypes[1], priority2_tv);
+        final TextView priority3_tv = (TextView) rootView.findViewById(R.id.priority3_tv);
+        setUpRankingEditor_Priority(context,rootView, sharedPreferences, prefKey_rankPriority, rankPriorityTypes[2], priority3_tv);
 
-        final Button winScoreAdd_btn = (Button) activity.findViewById(R.id.winScoreAdd_btn);
-        final EditText winScore_et = (EditText) activity.findViewById(R.id.winScore_et);
-        final Button winScoreSubtract_btn = (Button) activity.findViewById(R.id.winScoreSubtract_btn);
-        setUpRankingEditor_Score(activity, "w", isSwiss ? PreferenceUtil.PREF_SWISS_RANK_WIN_SCORE_KEY : PreferenceUtil.PREF_ROUND_ROBIN_RANK_WIN_SCORE_KEY, winScoreAdd_btn, winScore_et, winScoreSubtract_btn);
+        final Button winScoreAdd_btn = (Button) rootView.findViewById(R.id.winScoreAdd_btn);
+        final EditText winScore_et = (EditText) rootView.findViewById(R.id.winScore_et);
+        final Button winScoreSubtract_btn = (Button) rootView.findViewById(R.id.winScoreSubtract_btn);
+        setUpRankingEditor_Score(context, "w", isSwiss ? PreferenceUtil.PREF_SWISS_RANK_WIN_SCORE_KEY : PreferenceUtil.PREF_ROUND_ROBIN_RANK_WIN_SCORE_KEY, winScoreAdd_btn, winScore_et, winScoreSubtract_btn);
 
-        final Button tieScoreAdd_btn = (Button) activity.findViewById(R.id.tieScoreAdd_btn);
-        final EditText tieScore_et = (EditText) activity.findViewById(R.id.tieScore_et);
-        final Button tieScoreSubtract_btn = (Button) activity.findViewById(R.id.tieScoreSubtract_btn);
-        setUpRankingEditor_Score(activity, "t", isSwiss ? PreferenceUtil.PREF_SWISS_RANK_TIE_SCORE_KEY : PreferenceUtil.PREF_ROUND_ROBIN_RANK_TIE_SCORE_KEY, tieScoreAdd_btn, tieScore_et, tieScoreSubtract_btn);
+        final Button tieScoreAdd_btn = (Button) rootView.findViewById(R.id.tieScoreAdd_btn);
+        final EditText tieScore_et = (EditText) rootView.findViewById(R.id.tieScore_et);
+        final Button tieScoreSubtract_btn = (Button) rootView.findViewById(R.id.tieScoreSubtract_btn);
+        setUpRankingEditor_Score(context, "t", isSwiss ? PreferenceUtil.PREF_SWISS_RANK_TIE_SCORE_KEY : PreferenceUtil.PREF_ROUND_ROBIN_RANK_TIE_SCORE_KEY, tieScoreAdd_btn, tieScore_et, tieScoreSubtract_btn);
 
-        final Button lossScoreAdd_btn = (Button) activity.findViewById(R.id.lossScoreAdd_btn);
-        final EditText lossScore_et = (EditText) activity.findViewById(R.id.lossScore_et);
-        final Button lossScoreSubtract_btn = (Button) activity.findViewById(R.id.lossScoreSubtract_btn);
-        setUpRankingEditor_Score(activity, "l", isSwiss ? PreferenceUtil.PREF_SWISS_RANK_LOSS_SCORE_KEY : PreferenceUtil.PREF_ROUND_ROBIN_RANK_LOSS_SCORE_KEY, lossScoreAdd_btn, lossScore_et, lossScoreSubtract_btn);
+        final Button lossScoreAdd_btn = (Button) rootView.findViewById(R.id.lossScoreAdd_btn);
+        final EditText lossScore_et = (EditText) rootView.findViewById(R.id.lossScore_et);
+        final Button lossScoreSubtract_btn = (Button) rootView.findViewById(R.id.lossScoreSubtract_btn);
+        setUpRankingEditor_Score(context, "l", isSwiss ? PreferenceUtil.PREF_SWISS_RANK_LOSS_SCORE_KEY : PreferenceUtil.PREF_ROUND_ROBIN_RANK_LOSS_SCORE_KEY, lossScoreAdd_btn, lossScore_et, lossScoreSubtract_btn);
 
     }
 
     private static TextView prioritySelectedTextView;
 
-    private static void setUpRankingEditor_Priority(final Activity activity, final SharedPreferences sharedPreferences, final String prefKey, final PreferenceUtil.RankPriorityType rankPriorityType, final TextView priority_tv) {
+    private static void setUpRankingEditor_Priority(final Context context, final View rootView, final SharedPreferences sharedPreferences, final String prefKey, final PreferenceUtil.RankPriorityType rankPriorityType, final TextView priority_tv) {
 
-        priority_tv.setText(getProperPriorityName(activity,rankPriorityType));
+        priority_tv.setText(getProperPriorityName(context,rankPriorityType));
         priority_tv.setTag(rankPriorityType);
-        priority_tv.setTextColor(ContextCompat.getColor(activity,R.color.defaultStroke));
+        priority_tv.setTextColor(ContextCompat.getColor(context,R.color.defaultStroke));
         priority_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (prioritySelectedTextView == null) {
-                    priority_tv.setTextColor(ContextCompat.getColor(activity,R.color.winStroke));
+                    priority_tv.setTextColor(ContextCompat.getColor(context,R.color.winStroke));
                     prioritySelectedTextView = priority_tv;
                 } else {
 
                     final PreferenceUtil.RankPriorityType rankPriorityType_selected = (PreferenceUtil.RankPriorityType) prioritySelectedTextView.getTag();
                     final PreferenceUtil.RankPriorityType rankPriorityType_new = (PreferenceUtil.RankPriorityType) priority_tv.getTag();
 
-                    priority_tv.setText(getProperPriorityName(activity,rankPriorityType_selected));
+                    priority_tv.setText(getProperPriorityName(context,rankPriorityType_selected));
                     priority_tv.setTag(rankPriorityType_selected);
 
-                    prioritySelectedTextView.setText(getProperPriorityName(activity,rankPriorityType_new));
+                    prioritySelectedTextView.setText(getProperPriorityName(context,rankPriorityType_new));
                     prioritySelectedTextView.setTag(rankPriorityType_new);
-                    prioritySelectedTextView.setTextColor(ContextCompat.getColor(activity,R.color.defaultStroke));
+                    prioritySelectedTextView.setTextColor(ContextCompat.getColor(context,R.color.defaultStroke));
 
                     prioritySelectedTextView = null;
                 }
 
-                final TextView priority1_tv = (TextView) activity.findViewById(R.id.priority1_tv);
+                final TextView priority1_tv = (TextView) rootView.findViewById(R.id.priority1_tv);
                 final PreferenceUtil.RankPriorityType rankPriorityType1 = (PreferenceUtil.RankPriorityType) priority1_tv.getTag();
-                final TextView priority2_tv = (TextView) activity.findViewById(R.id.priority2_tv);
+                final TextView priority2_tv = (TextView) rootView.findViewById(R.id.priority2_tv);
                 final PreferenceUtil.RankPriorityType rankPriorityType2 = (PreferenceUtil.RankPriorityType) priority2_tv.getTag();
-                final TextView priority3_tv = (TextView) activity.findViewById(R.id.priority3_tv);
+                final TextView priority3_tv = (TextView) rootView.findViewById(R.id.priority3_tv);
                 final PreferenceUtil.RankPriorityType rankPriorityType3 = (PreferenceUtil.RankPriorityType) priority3_tv.getTag();
 
                 PreferenceUtil.setRankPriority(sharedPreferences, prefKey, new PreferenceUtil.RankPriorityType[]{rankPriorityType1, rankPriorityType2, rankPriorityType3});

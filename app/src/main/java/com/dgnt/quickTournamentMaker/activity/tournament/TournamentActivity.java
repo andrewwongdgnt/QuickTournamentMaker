@@ -39,6 +39,7 @@ import android.widget.Toast;
 import com.dgnt.quickTournamentMaker.R;
 import com.dgnt.quickTournamentMaker.activity.DirectoryPickerActivity;
 import com.dgnt.quickTournamentMaker.activity.InAppBillingActivity;
+import com.dgnt.quickTournamentMaker.activity.MainActivity;
 import com.dgnt.quickTournamentMaker.adapter.ColorAdapter;
 import com.dgnt.quickTournamentMaker.adapter.RankingAdapter;
 import com.dgnt.quickTournamentMaker.eventListener.OnMatchUpUpdateListener;
@@ -61,6 +62,7 @@ import com.dgnt.quickTournamentMaker.model.tournament.Tournament;
 import com.dgnt.quickTournamentMaker.task.ExportTournamentTask;
 import com.dgnt.quickTournamentMaker.util.AdsUtil;
 import com.dgnt.quickTournamentMaker.util.DatabaseHelper;
+import com.dgnt.quickTournamentMaker.util.LayoutUtil;
 import com.dgnt.quickTournamentMaker.util.PreferenceUtil;
 import com.dgnt.quickTournamentMaker.util.TournamentUtil;
 import com.google.android.gms.ads.AdRequest;
@@ -572,8 +574,6 @@ abstract public class TournamentActivity extends InAppBillingActivity implements
 
         final ViewGroup layout_tournament_rebuilder = (ViewGroup) getLayoutInflater().inflate(R.layout.layout_tournament_rebuilder, null);
 
-        final TextView seedOptions_tv = (TextView) layout_tournament_rebuilder.findViewById(R.id.seedOptions_tv);
-        final RadioGroup seedOptions_rg = (RadioGroup) layout_tournament_rebuilder.findViewById(R.id.seedOptions_rg);
 
         final RadioButton elimination_rb = (RadioButton) layout_tournament_rebuilder.findViewById(R.id.elimination_rb);
         final RadioButton doubleElimination_rb = (RadioButton) layout_tournament_rebuilder.findViewById(R.id.doubleElimination_rb);
@@ -581,13 +581,7 @@ abstract public class TournamentActivity extends InAppBillingActivity implements
         final RadioButton swiss_rb = (RadioButton) layout_tournament_rebuilder.findViewById(R.id.swiss_rb);
         final RadioButton survival_rb = (RadioButton) layout_tournament_rebuilder.findViewById(R.id.survival_rb);
 
-        survival_rb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                seedOptions_tv.setVisibility(isChecked ? View.GONE : View.VISIBLE);
-                seedOptions_rg.setVisibility(isChecked ? View.GONE : View.VISIBLE);
-            }
-        });
+        LayoutUtil.setUpSeedingEditor(TournamentActivity.this,layout_tournament_rebuilder);
 
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);

@@ -23,88 +23,10 @@
             android:text="@string/rebuildTournamentInstructions"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/standard_gap"
-            android:text="@string/tournamentType"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <RadioGroup
-            android:id="@+id/radioGroup2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <RadioButton
-                android:id="@+id/elimination_rb"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="@string/elimination" />
-
-            <RadioButton
-                android:id="@+id/doubleElimination_rb"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="false"
-                android:text="@string/doubleElimination" />
-
-            <RadioButton
-                android:id="@+id/roundRobin_rb"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="false"
-                android:text="@string/roundRobin" />
-
-            <RadioButton
-                android:id="@+id/swiss_rb"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="false"
-                android:text="@string/swiss" />
-
-            <RadioButton
-                android:id="@+id/survival_rb"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="false"
-                android:text="@string/survival" />
-
-        </RadioGroup>
-
-        <TextView
-            android:id="@+id/seedOptions_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/standard_gap"
-            android:text="@string/seedType"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <RadioGroup
-            android:id="@+id/seedOptions_rg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <RadioButton
-                android:id="@+id/randomSeed_rb"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="@string/randomSeed" />
-
-            <RadioButton
-                android:id="@+id/customSeed_rb"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/customSeed" />
-
-            <RadioButton
-                android:id="@+id/sameSeed_rb"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/sameSeed" />
-        </RadioGroup>
+        <include
+            layout="@layout/component_seeding_editor"
+            android:paddingTop="@dimen/standard_gap" />
 
 
     </LinearLayout>
