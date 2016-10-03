@@ -1,5 +1,6 @@
 package com.dgnt.quickTournamentMaker.util;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -30,11 +32,12 @@ public class LayoutUtil {
         final TextView seedOptions_tv = (TextView) rootView.findViewById(R.id.seedOptions_tv);
         final RadioGroup seedOptions_rg = (RadioGroup) rootView.findViewById(R.id.seedOptions_rg);
 
-        final TextView rankingConfig_tv = (TextView) rootView.findViewById(R.id.rankingConfig_tv);
+        final ViewGroup rankingConfig_group = (ViewGroup) rootView.findViewById(R.id.rankingConfig_group);
         final RadioGroup rankingConfig_rg = (RadioGroup) rootView.findViewById(R.id.rankingConfig_rg);
 
-        rankingConfig_tv.setVisibility(View.GONE);
+        rankingConfig_group.setVisibility(View.GONE);
         rankingConfig_rg.setVisibility(View.GONE);
+
 
         final RadioGroup tournamentType_rg = (RadioGroup) rootView.findViewById(R.id.tournamentType_rg);
 
@@ -48,11 +51,11 @@ public class LayoutUtil {
 
                 if (isChecked) {
                     if (checkedId == R.id.roundRobin_rb || checkedId == R.id.swiss_rb) {
-                        rankingConfig_tv.setVisibility(View.VISIBLE);
+                        rankingConfig_group.setVisibility(View.VISIBLE);
                         rankingConfig_rg.setVisibility(View.VISIBLE);
                         LayoutUtil.setUpRankingEditor(context, rootView, checkedId == R.id.swiss_rb);
                     } else {
-                        rankingConfig_tv.setVisibility(View.GONE);
+                        rankingConfig_group.setVisibility(View.GONE);
                         rankingConfig_rg.setVisibility(View.GONE);
                     }
 
@@ -67,6 +70,18 @@ public class LayoutUtil {
 
     private static void setUpRankingEditor(final Context context, final View rootView, final boolean isSwiss) {
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+        final ImageView rankingConfigHelp_iv = (ImageView) rootView.findViewById(R.id.rankingConfigHelp_iv);
+        rankingConfigHelp_iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage(context.getString(R.string.rankConfigurationHelpMsg, context.getString(isSwiss ? R.string.rankConfigurationForSwissHelpMsg : R.string.rankConfigurationForRoundRobinHelpMsg)));
+                builder.setPositiveButton(context.getString(android.R.string.ok), null);
+                builder.create().show();
+            }
+        });
 
         final RadioGroup rankingConfig_rg = (RadioGroup) rootView.findViewById(R.id.rankingConfig_rg);
 
@@ -270,7 +285,7 @@ public class LayoutUtil {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if (sharedPreferences != null  && rootView != null) {
+            if (sharedPreferences != null && rootView != null) {
                 final TextView winScore_et = (TextView) rootView.findViewById(R.id.winScore_et);
                 final int winScore = winScore_et.getText().toString().trim().equals("") ? 0 : Integer.parseInt(winScore_et.getText().toString());
                 final TextView lossScore_et = (TextView) rootView.findViewById(R.id.lossScore_et);

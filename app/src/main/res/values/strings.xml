@@ -199,7 +199,14 @@
     <string name="playStoreNotFound">Play Store not found</string>
 
     <string name="rankConfiguration">Ranking configuration</string>
-    <string name="priority">Priority (Tap two to swap. Click here for more info)</string>
+    <string name="rankConfigurationForSwissHelpMsg">Ranking for Swiss is required for determining the current ranking of each player at any given time and to calculate the next set of match ups.</string>
+    <string name="rankConfigurationForRoundRobinHelpMsg">Ranking for Round Robin is required for determining the current ranking of each player at any given time.</string>
+    <string name="rankConfigurationHelpMsg">%1$s
+    \n\nPriority based:
+    \n\nRank based on the number of wins or losses or ties in some order.  EG If the order is wins, ties, losses, then to compare the rank of A and B,  do the following. Compare A\'s win count with B\'s win count and whichever is more is ranked higher. If the same, compare A\'s tie count with B\'s tie count and whichever is more is ranked higher. If the same, compare A\'s loss count with B\'s loss count and whichever is more is ranked lower.
+    \n\nScoring based:
+    \n\nRank based on the amount of points accumulated where more means higher ranked. Points are assigned per win and loss and tie  EG If a win is worth 2 points, a tie is worth 1 point and a loss is worth 0 points, then to compare the rank of A and B, count the number of wins, losses and ties for both and calculate the total points. The one with more is ranked higher.</string>
+    <string name="priority">Priority (Tap two to swap)</string>
     <string name="scoring">Scoring (Points based on record)</string>
     <string name="win">Win</string>
     <string name="tie">Tie</string>
