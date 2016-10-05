@@ -1,5 +1,9 @@
 package com.dgnt.quickTournamentMaker.model.tournament;
 
+import com.dgnt.quickTournamentMaker.util.TournamentUtil;
+
+import org.apache.commons.lang3.tuple.Pair;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -25,18 +29,9 @@ public class RecordKeepingTournamentTrait {
 
     public void setRankingConfig(final String rankingConfig) {
 
-        rankingFromPriority = null;
-        rankingFromScore = null;
-        String[] arr = rankingConfig == null ? new String[0] : rankingConfig.split(";");
-        if (arr.length == 3) {
-            if (arr[0].matches("[wlt]")) {
-                rankingFromPriority = buildRankingFromPriority(rankingConfig);
-            } else {
-                rankingFromScore = buildRankingFromScore(rankingConfig);
-            }
-        } else {
-            rankingFromPriority = buildRankingFromPriority(RecordKeepingTournamentTrait.RankingFromPriority.DEFAULT_INPUT);
-        }
+        final Pair<RankingFromPriority, RankingFromScore> pair = TournamentUtil.getRankingConfigObjects(rankingConfig);
+        rankingFromPriority = pair.getLeft();
+        rankingFromScore = pair.getRight();
     }
 
     public String getRankingConfig() {
@@ -211,20 +206,20 @@ public class RecordKeepingTournamentTrait {
         }
         for (int i = 0; i < priority.length; i++) {
             final String priority_string = priority[i];
-            final RecordType rankingPriorityType;
+            final RecordType recordType;
             if (priority_string.equals("w"))
-                rankingPriorityType = RecordType.WIN;
+                recordType = RecordType.WIN;
             else if (priority_string.equals("l"))
-                rankingPriorityType = RecordType.LOSS;
+                recordType = RecordType.LOSS;
             else //"t"
-                rankingPriorityType = RecordType.TIE;
+                recordType = RecordType.TIE;
 
             if (i == 0)
-                rankingFromPriority.firstPriority = rankingPriorityType;
+                rankingFromPriority.firstPriority = recordType;
             else if (i == 1)
-                rankingFromPriority.secondPriority = rankingPriorityType;
+                rankingFromPriority.secondPriority = recordType;
             else
-                rankingFromPriority.thirdPriority = rankingPriorityType;
+                rankingFromPriority.thirdPriority = recordType;
         }
 
 

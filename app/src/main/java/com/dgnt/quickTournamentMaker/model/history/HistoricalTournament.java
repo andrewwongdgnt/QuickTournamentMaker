@@ -76,6 +76,10 @@ public class HistoricalTournament implements IKeyable {
         return type;
     }
 
+    public boolean isRecordKeepingTournament () {
+        return getType()== Tournament.TournamentType.SWISS || getType()== Tournament.TournamentType.ROUND_ROBIN;
+    }
+
     public String getRankingConfig() {
         return rankingConfig;
     }

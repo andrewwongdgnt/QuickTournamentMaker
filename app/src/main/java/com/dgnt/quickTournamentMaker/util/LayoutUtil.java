@@ -1,5 +1,6 @@
 package com.dgnt.quickTournamentMaker.util;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -17,9 +18,15 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.dgnt.quickTournamentMaker.R;
+import com.dgnt.quickTournamentMaker.model.history.HistoricalTournament;
+import com.dgnt.quickTournamentMaker.model.tournament.Participant;
 import com.dgnt.quickTournamentMaker.model.tournament.RecordKeepingTournamentTrait;
+import com.dgnt.quickTournamentMaker.model.tournament.Tournament;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -254,6 +261,7 @@ public class LayoutUtil {
 
     final private static Map<RecordKeepingTournamentTrait.RecordType, MyTextWatcher> myTextWatcherMap = new HashMap<>();
 
+
     private static class MyTextWatcher implements TextWatcher {
 
 
@@ -295,5 +303,88 @@ public class LayoutUtil {
                 PreferenceUtil.setRankScore(sharedPreferences, isSwiss, winScore, lossScore, tieScore);
             }
         }
+    }
+
+
+    public static void openTournamentInfo(final Activity activity, final HistoricalTournament historicalTournament) {
+        final ViewGroup layout_tournament_info = (ViewGroup) activity.getLayoutInflater().inflate(R.layout.layout_tournament_info, null);
+
+        final TextView tournamentTitle_tv = (TextView) layout_tournament_info.findViewById(R.id.tournamentTitle_tv);
+        tournamentTitle_tv.setText(historicalTournament.getName());
+
+        final TextView tournamentDescription_tv = (TextView) layout_tournament_info.findViewById(R.id.tournamentDescription_tv);
+        tournamentDescription_tv.setText(historicalTournament.getNote());
+
+        final TextView tournamentParticipants_tv = (TextView) layout_tournament_info.findViewById(R.id.tournamentParticipants_tv);
+        tournamentParticipants_tv.setText(getNiceParticipantList(historicalTournament.getNormalSortedParticipantList()));
+
+        final TextView tournamentType_tv = (TextView) layout_tournament_info.findViewById(R.id.tournamentType_tv);
+        tournamentType_tv.setText(TournamentUtil.tournamentTypeToString(activity, historicalTournament.getType()));
+
+        final TextView rankingConfigHeader_tv = (TextView) layout_tournament_info.findViewById(R.id.rankingConfigHeader_tv);
+        final TextView rankingConfig_tv = (TextView) layout_tournament_info.findViewById(R.id.rankingConfig_tv);
+        if (!historicalTournament.isRecordKeepingTournament()) {
+            rankingConfigHeader_tv.setVisibility(View.GONE);
+            rankingConfig_tv.setVisibility(View.GONE);
+        } else {
+            rankingConfigHeader_tv.setVisibility(View.VISIBLE);
+            rankingConfig_tv.setVisibility(View.VISIBLE);
+
+            final Pair<RecordKeepingTournamentTrait.RankingFromPriority, RecordKeepingTournamentTrait.RankingFromScore> pair = TournamentUtil.getRankingConfigObjects(historicalTournament.getRankingConfig());
+            final RecordKeepingTournamentTrait.RankingFromPriority rankingFromPriority = pair.getLeft();
+            final RecordKeepingTournamentTrait.RankingFromScore rankingFromScore = pair.getRight();
+
+            if (rankingFromPriority != null) {
+                rankingConfigHeader_tv.setText(activity.getString(R.string.rankConfigurationBasedOnPriority));
+                final String[] priorityArr = new String[3];
+                for (int i = 0; i < 3; i++) {
+                    final RecordKeepingTournamentTrait.RecordType recordType;
+                    if (i == 0)
+                        recordType = rankingFromPriority.getFirstPriority();
+                    else if (i == 1)
+                        recordType = rankingFromPriority.getSecondPriority();
+                    else
+                        recordType = rankingFromPriority.getThirdPriority();
+
+                    priorityArr[i] = getProperPriorityName(activity, recordType);
+
+                }
+                rankingConfig_tv.setText(activity.getString(R.string.priorityInfo, priorityArr[0], priorityArr[1], priorityArr[2]));
+            } else if (rankingFromScore != null) {
+
+                rankingConfigHeader_tv.setText(activity.getString(R.string.rankConfigurationBasedOnScoring));
+                rankingConfig_tv.setText(activity.getString(R.string.scoringInfo, activity.getString(R.string.win), rankingFromScore.getWinScore()
+                        , activity.getString(R.string.loss), rankingFromScore.getLossScore()
+                        , activity.getString(R.string.tie), rankingFromScore.getTieScore()));
+            } else {
+                rankingConfigHeader_tv.setVisibility(View.GONE);
+                rankingConfig_tv.setVisibility(View.GONE);
+            }
+
+        }
+
+        final TextView tournamentCreationDate_tv = (TextView) layout_tournament_info.findViewById(R.id.tournamentCreationDate_tv);
+        tournamentCreationDate_tv.setText(historicalTournament.getCreationTimeInEpoch() == Tournament.NULL_TIME_VALUE ? activity.getString(R.string.na) : historicalTournament.getCreationTimeAsDate());
+
+        final TextView tournamentLastModifiedDate_tv = (TextView) layout_tournament_info.findViewById(R.id.tournamentLastModifiedDate_tv);
+        tournamentLastModifiedDate_tv.setText(historicalTournament.getLastModifiedTimeInEpoch() == Tournament.NULL_TIME_VALUE ? activity.getString(R.string.na) : historicalTournament.getLastModifiedTimeAsDate());
+
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setView(layout_tournament_info);
+        builder.setTitle(activity.getString(R.string.tournamentInfo));
+        builder.setPositiveButton(activity.getString(android.R.string.ok), null);
+        builder.create().show();
+    }
+
+    private static String getNiceParticipantList(final List<Participant> participantList) {
+        final StringBuilder sb = new StringBuilder();
+        String newLine = "";
+        for (final Participant participant : participantList) {
+            sb.append(newLine).append(participant.getDisplayName());
+            newLine = "\n";
+        }
+
+        return sb.toString();
     }
 }

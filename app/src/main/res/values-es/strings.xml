@@ -80,7 +80,7 @@
     <string name="duplicateMsg">%1$s ya existe</string>
     <string name="defaultGroupName">Grupo por defecto</string>
     <string name="edit">Editar</string>
-    <string name="moreInfo">Más información</string>
+    <string name="tournamentInfo">Torneo información</string>
     <string name="delete">Eliminar</string>
     <string name="deletePlayerMsg">¿Está seguro de que quiere eliminar jugador(es) %1$d? Esta acción no se puede deshacer.</string>
     <string name="deletingPlayers">Eliminando jugador(es) %1$d</string>
@@ -197,6 +197,10 @@
     <string name="dontSave">No Guardar</string>
     <string name="playStoreNotFound">Play Store no se encuentra</string>
 
+    <string name="win">Victoria</string>
+    <string name="loss">Pérdida</string>
+    <string name="tie">Empatar</string>
+
     <!-- IAP -->
     <string name="verifyingPremiumStatus">Verificar estado premium&#8230;</string>
     <string name="upgradeTitle">Desactivar los anuncios</string>
@@ -208,4 +212,5 @@
     <string name="item_already_owned_errorMsg">Este objeto ya es de su propiedad.</string>
     <string name="initialization_errorMsg">Se ha producido un error durante la inicialización de facturación, por favor reinicie la aplicación para volver a intentarlo más tarde.</string>
     <string name="verification_errorMsg">Se produjo un error al intentar verificar una compra.</string>
+
 </resources>

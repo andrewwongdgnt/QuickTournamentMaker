@@ -79,7 +79,7 @@
     <string name="duplicateMsg">%1$s уже существует</string>
     <string name="defaultGroupName">Группа по умолчанию</string>
     <string name="edit">Редактировать</string>
-    <string name="moreInfo">Больше информации</string>
+    <string name="tournamentInfo">Турнира информации</string>
     <string name="delete">Удалить</string>
     <string name="deletePlayerMsg">Вы уверены, что хотите удалить %1$d игрока(ов)? Это действие не может быть отменено.</string>
     <string name="deletingPlayers">Удаление %1$d игрока(ов)</string>
@@ -196,6 +196,10 @@
     <string name="dontSave">Не сохранять</string>
     <string name="playStoreNotFound">Play Store не найдены</string>
 
+    <string name="win">победа</string>
+    <string name="loss">потеря</string>
+    <string name="tie">ра́вный счёт</string>
+
     <!-- IAP -->
     <string name="verifyingPremiumStatus">Проверка премиум статуса&#8230;</string>
     <string name="upgradeTitle">Отключить объявления</string>
@@ -207,5 +211,6 @@
     <string name="item_already_owned_errorMsg">Этот пункт уже принадлежит кому-то.</string>
     <string name="initialization_errorMsg">Произошла ошибка при выставлении счётов, необходимо перезапустить приложение, чтобы повторить попытку позже.</string>
     <string name="verification_errorMsg">Произошла ошибка при попытке подтвердить покупку.</string>
+
 
 </resources>

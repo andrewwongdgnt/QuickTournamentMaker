@@ -15,6 +15,10 @@
         android:title="@string/currentRanking"
         compat:showAsAction="never" />
     <item
+        android:id="@+id/action_tournamentInfo"
+        android:title="@string/tournamentInfo"
+        compat:showAsAction="never" />
+    <item
         android:id="@+id/action_exportTournament"
         android:title="@string/exportTournament"
         compat:showAsAction="never" />

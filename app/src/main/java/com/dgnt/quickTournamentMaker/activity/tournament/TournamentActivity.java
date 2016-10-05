@@ -572,7 +572,7 @@ abstract public class TournamentActivity extends InAppBillingActivity implements
         final RadioButton swiss_rb = (RadioButton) layout_tournament_rebuilder.findViewById(R.id.swiss_rb);
         final RadioButton survival_rb = (RadioButton) layout_tournament_rebuilder.findViewById(R.id.survival_rb);
 
-        LayoutUtil.setUpSeedingEditor(TournamentActivity.this,layout_tournament_rebuilder);
+        LayoutUtil.setUpSeedingEditor(TournamentActivity.this, layout_tournament_rebuilder);
 
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -591,7 +591,7 @@ abstract public class TournamentActivity extends InAppBillingActivity implements
                         : swiss_rb.isChecked() ? Tournament.TournamentType.SWISS
                         : Tournament.TournamentType.SURVIVAL;
 
-                final String rankingConfig = PreferenceUtil.getRankingConfig( PreferenceManager.getDefaultSharedPreferences(TournamentActivity.this),tournamentType);
+                final String rankingConfig = PreferenceUtil.getRankingConfig(PreferenceManager.getDefaultSharedPreferences(TournamentActivity.this), tournamentType);
                 startTournamentActivity(TournamentActivity.this, 0, seedType, tournament.getType(), tournamentType, tournament.getTitle(), tournament.getDescription(), rankingConfig, (ArrayList<Participant>) tournament.getSeededParticipants(), null, null, tournament.getCreationTimeInEpoch(), Tournament.NULL_TIME_VALUE, true);
                 finish();
 
@@ -935,6 +935,9 @@ abstract public class TournamentActivity extends InAppBillingActivity implements
             case R.id.action_currentRanking:
                 openCurrentRankings();
                 return true;
+            case R.id.action_tournamentInfo:
+                openTournamentInfo();
+                return true;
             case R.id.action_saveAsTournament:
                 saveAsTournament();
                 return true;
@@ -959,6 +962,14 @@ abstract public class TournamentActivity extends InAppBillingActivity implements
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void openTournamentInfo() {
+
+        final HistoricalTournament historicalTournament = new HistoricalTournament(tournament.getCreationTimeInEpoch(), tournament.getLastModifiedTimeInEpoch(), tournament.getTitle(), tournament.getDescription(), tournament.getType(), tournament instanceof RecordKeepingTournament ? ((RecordKeepingTournament)tournament).getRankingConfig(): "", tournament.getSeededParticipants(),null,null);
+
+        LayoutUtil.openTournamentInfo(this, historicalTournament);
+
     }
 
     @Override

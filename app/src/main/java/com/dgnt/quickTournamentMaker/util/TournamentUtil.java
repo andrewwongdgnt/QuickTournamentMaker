@@ -7,13 +7,19 @@ import com.dgnt.quickTournamentMaker.model.history.HistoricalMatchUp;
 import com.dgnt.quickTournamentMaker.model.history.HistoricalRound;
 import com.dgnt.quickTournamentMaker.model.tournament.MatchUp;
 import com.dgnt.quickTournamentMaker.model.tournament.Participant;
+import com.dgnt.quickTournamentMaker.model.tournament.RecordKeepingTournament;
 import com.dgnt.quickTournamentMaker.model.tournament.RecordKeepingTournamentTrait;
 import com.dgnt.quickTournamentMaker.model.tournament.Round;
 import com.dgnt.quickTournamentMaker.model.tournament.Tournament;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
+
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+
 
 /**
  * Created by Owner on 3/13/2016.
@@ -146,5 +152,23 @@ public class TournamentUtil {
             default:
                 return forActionBar ? R.drawable.ic_swiss_actionbar : R.drawable.ic_swiss;
         }
+    }
+
+    public static Pair<RecordKeepingTournamentTrait.RankingFromPriority, RecordKeepingTournamentTrait.RankingFromScore> getRankingConfigObjects(final String rankingConfig) {
+        RecordKeepingTournamentTrait.RankingFromPriority rankingFromPriority = null;
+        RecordKeepingTournamentTrait.RankingFromScore rankingFromScore = null;
+
+        String[] arr = rankingConfig == null ? new String[0] : rankingConfig.split(";");
+        if (arr.length == 3) {
+            if (arr[0].matches("[wlt]")) {
+                rankingFromPriority = RecordKeepingTournamentTrait.buildRankingFromPriority(rankingConfig);
+            } else {
+                rankingFromScore = RecordKeepingTournamentTrait.buildRankingFromScore(rankingConfig);
+            }
+        } else {
+            rankingFromPriority = RecordKeepingTournamentTrait.buildRankingFromPriority(RecordKeepingTournamentTrait.RankingFromPriority.DEFAULT_INPUT);
+        }
+
+        return new ImmutablePair<>(rankingFromPriority,rankingFromScore);
     }
 }

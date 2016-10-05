@@ -36,12 +36,11 @@ import com.dgnt.quickTournamentMaker.activity.tournament.TournamentActivity;
 import com.dgnt.quickTournamentMaker.adapter.HistoryAdapter;
 import com.dgnt.quickTournamentMaker.model.history.HistoricalFilters;
 import com.dgnt.quickTournamentMaker.model.history.HistoricalTournament;
-import com.dgnt.quickTournamentMaker.model.tournament.Participant;
 import com.dgnt.quickTournamentMaker.model.tournament.Seeder;
 import com.dgnt.quickTournamentMaker.model.tournament.Tournament;
 import com.dgnt.quickTournamentMaker.util.DatabaseHelper;
+import com.dgnt.quickTournamentMaker.util.LayoutUtil;
 import com.dgnt.quickTournamentMaker.util.PreferenceUtil;
-import com.dgnt.quickTournamentMaker.util.TournamentUtil;
 
 import org.joda.time.DateTime;
 
@@ -102,7 +101,7 @@ public class HistoryActivity extends AppCompatActivity {
                 MenuItem editItem = menu.findItem(R.id.action_edit);
                 editItem.setVisible(checkedCount <= 1);
 
-                MenuItem moreInfoItem = menu.findItem(R.id.action_more_info);
+                MenuItem moreInfoItem = menu.findItem(R.id.action_tournamentInfo);
                 moreInfoItem.setVisible(checkedCount <= 1);
 
                 return true;
@@ -115,7 +114,7 @@ public class HistoryActivity extends AppCompatActivity {
                     case R.id.action_edit:
                         openTournamentEditor();
                         return true;
-                    case R.id.action_more_info:
+                    case R.id.action_tournamentInfo:
                         openTournamentInfo();
                         return true;
                     case R.id.action_delete:
@@ -423,45 +422,11 @@ public class HistoryActivity extends AppCompatActivity {
     private void openTournamentInfo() {
         final HistoricalTournament historicalTournament = getAndUnCheckHistoricalTournament(historicalTournaments_lv);
 
-        final ViewGroup layout_tournament_info = (ViewGroup) getLayoutInflater().inflate(R.layout.layout_tournament_info, null);
+        LayoutUtil.openTournamentInfo(this, historicalTournament);
 
-        final TextView tournamentTitle_tv = (TextView) layout_tournament_info.findViewById(R.id.tournamentTitle_tv);
-        tournamentTitle_tv.setText(historicalTournament.getName());
-
-        final TextView tournamentDescription_tv = (TextView) layout_tournament_info.findViewById(R.id.tournamentDescription_tv);
-        tournamentDescription_tv.setText(historicalTournament.getNote());
-
-        final TextView tournamentParticipants_tv = (TextView) layout_tournament_info.findViewById(R.id.tournamentParticipants_tv);
-        tournamentParticipants_tv.setText(getNiceParticipantList(historicalTournament.getNormalSortedParticipantList()));
-
-        final TextView tournamentType_tv = (TextView) layout_tournament_info.findViewById(R.id.tournamentType_tv);
-
-        final String type = TournamentUtil.tournamentTypeToString(this,historicalTournament.getType());
-        tournamentType_tv.setText(type);
-
-        final TextView tournamentCreationDate_tv = (TextView) layout_tournament_info.findViewById(R.id.tournamentCreationDate_tv);
-        tournamentCreationDate_tv.setText(historicalTournament.getCreationTimeAsDate());
-
-        final TextView tournamentLastModifiedDate_tv = (TextView) layout_tournament_info.findViewById(R.id.tournamentLastModifiedDate_tv);
-        tournamentLastModifiedDate_tv.setText(historicalTournament.getLastModifiedTimeAsDate());
-
-        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-        builder.setView(layout_tournament_info);
-        builder.setTitle(getString(R.string.moreInfo));
-        builder.setPositiveButton(getString(android.R.string.ok), null);
-        builder.create().show();
     }
 
-    private String getNiceParticipantList(final List<Participant> participantList) {
-        final StringBuilder sb = new StringBuilder();
-        String newLine = "";
-        for (final Participant participant : participantList) {
-            sb.append(newLine).append(participant.getDisplayName());
-            newLine = "\n";
-        }
 
-        return sb.toString();
-    }
 
     private void openTournamentEditor() {
 
@@ -536,7 +501,7 @@ public class HistoryActivity extends AppCompatActivity {
         filtersApplied_tv.setVisibility(areFiltersApplied() ? View.VISIBLE : View.GONE);
 
         searchClearPrompt_tv.setVisibility(searchTerm != null && searchTerm.trim().length() > 0 ? View.VISIBLE : View.GONE);
-        searchClearPrompt_tv.setText(Html.fromHtml("<u>"+getString(R.string.clearSearch, searchTerm)+"</u>"));
+        searchClearPrompt_tv.setText(Html.fromHtml("<u>" + getString(R.string.clearSearch, searchTerm) + "</u>"));
 
         final SparseBooleanArray sparseBooleanArray = historicalTournaments_lv.getCheckedItemPositions();
 
