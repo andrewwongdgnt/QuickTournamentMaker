@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tournamentType"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <RadioGroup
+        android:id="@+id/tournamentType_rg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/elimination_rb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/elimination" />
+
+        <RadioButton
+            android:id="@+id/doubleElimination_rb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="@string/doubleElimination" />
+
+        <RadioButton
+            android:id="@+id/roundRobin_rb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="@string/roundRobin" />
+
+        <RadioButton
+            android:id="@+id/swiss_rb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="@string/swiss" />
+
+        <RadioButton
+            android:id="@+id/survival_rb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="@string/survival" />
+
+    </RadioGroup>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/rankingConfig_group"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/rankingConfig_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/rankConfiguration"
+            android:layout_weight="1"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/rankingConfigHelp_iv"
+            android:src="@drawable/ic_help"
+            />
+    </LinearLayout>
+
+
+    <RadioGroup
+        android:id="@+id/rankingConfig_rg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/compareRankFromPriority_rb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/priority" />
+
+        <LinearLayout
+            android:id="@+id/compareRankFromPriorityGroup"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="?android:attr/expandableListPreferredChildPaddingLeft"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/priority1_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingBottom="@dimen/priorityRankTextVerticalPadding"
+                android:paddingTop="@dimen/priorityRankTextVerticalPadding"
+                android:text="Win"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/priority2_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingBottom="@dimen/priorityRankTextVerticalPadding"
+                android:paddingTop="@dimen/priorityRankTextVerticalPadding"
+                android:text="Loss"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/priority3_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingBottom="@dimen/priorityRankTextVerticalPadding"
+                android:paddingTop="@dimen/priorityRankTextVerticalPadding"
+                android:text="Tie"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        </LinearLayout>
+
+        <RadioButton
+            android:id="@+id/compareRankFromScore_rb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/scoring" />
+
+        <LinearLayout
+            android:id="@+id/compareRankFromScoreGroup"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="?android:attr/expandableListPreferredChildPaddingLeft"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:layout_width="@dimen/scoreTextWidth"
+                    android:layout_height="wrap_content"
+                    android:text="@string/win"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <Button
+                    android:id="@+id/winScoreSubtract_btn"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-" />
+
+                <EditText
+                    android:id="@+id/winScore_et"
+                    android:layout_width="@dimen/scoreEditTextWidth"
+                    android:layout_height="match_parent"
+                    android:ems="10"
+                    android:gravity="center_horizontal"
+                    android:inputType="numberSigned" />
+
+                <Button
+                    android:id="@+id/winScoreAdd_btn"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="+" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:layout_width="@dimen/scoreTextWidth"
+                    android:layout_height="wrap_content"
+                    android:text="@string/loss"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <Button
+                    android:id="@+id/lossScoreSubtract_btn"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-" />
+
+                <EditText
+                    android:id="@+id/lossScore_et"
+                    android:layout_width="@dimen/scoreEditTextWidth"
+                    android:layout_height="match_parent"
+                    android:ems="10"
+                    android:gravity="center_horizontal"
+                    android:inputType="numberSigned" />
+
+                <Button
+                    android:id="@+id/lossScoreAdd_btn"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="+" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:layout_width="@dimen/scoreTextWidth"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tie"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <Button
+                    android:id="@+id/tieScoreSubtract_btn"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-" />
+
+                <EditText
+                    android:id="@+id/tieScore_et"
+                    android:layout_width="@dimen/scoreEditTextWidth"
+                    android:layout_height="match_parent"
+                    android:ems="10"
+                    android:gravity="center_horizontal"
+                    android:inputType="numberSigned" />
+
+                <Button
+                    android:id="@+id/tieScoreAdd_btn"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="+" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/seedOptions_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/standard_gap"
+        android:text="@string/seedType"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <RadioGroup
+        android:id="@+id/seedOptions_rg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/randomSeed_rb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/randomSeed" />
+
+        <RadioButton
+            android:id="@+id/customSeed_rb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/customSeed" />
+
+        <RadioButton
+            android:id="@+id/sameSeed_rb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sameSeed" />
+    </RadioGroup>
+</merge>

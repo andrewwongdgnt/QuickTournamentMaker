@@ -5,7 +5,7 @@
     <string name="tournamentDescription">Описание турнира</string>
     <string name="numberOfPlayers">Количество игроков</string>
     <string name="numberOfPlayersHint">По крайней мере 3</string>
-    <string name="numberOfPlayersSelected">Количество выбранных игроков: %1$s</string>
+    <string name="numberOfPlayersSelected">Количество выбранных игроков: %1$d</string>
     <string name="participantDefaultName">Игро %1$d</string>
     <string name="byeDefaultName">BYE</string>
 
@@ -32,11 +32,11 @@
     <string name="participant1VsParticipant2">%3$s\n\t%1$s VS %2$s</string>
     <string name="participantWithABye">%2$s\n\t%1$s имеет BYE</string>
     <string name="participantVsNoOne">%2$s\n\t%1$s ожидеает соперника</string>
-    <string name="emptyMatchUp">%2$s\n\tСоеденить %1$s</string>
+    <string name="emptyMatchUp">%2$s\n\tСоеденить %1$d</string>
     <string name="participant1VsParticipant2ForDifferentRoundGroup">%4$s\n\t%3$s\n\t\t%1$s VS %2$s</string>
     <string name="participantWithAByeForDifferentRoundGroup">%3$s\n\t%2$s\n\t\t%1$s имеет BYE</string>
     <string name="participantVsNoOneForDifferentRoundGroup">%3$s\n\t%2$s\n\t\t%1$s ожидает соперника</string>
-    <string name="emptyMatchUpForDifferentRoundGroup">%3$s\n\t%2$s\n\t\tСоеденить %1$s</string>
+    <string name="emptyMatchUpForDifferentRoundGroup">%3$s\n\t%2$s\n\t\tСоеденить %1$d</string>
 
     <string name="title_activity_seeding">Пользовательский сидинг</string>
 
@@ -71,15 +71,15 @@
     <string name="movingPlayers">Перемещение %1$d игрока(ов)</string>
     <string name="movePlayerSuccessfulMsg">%1$d игрок(и) успешно перемещены</string>
     <string name="addSuccessfulMsg">%1$s успешно добавлен</string>
-    <string name="deletePlayerSuccessfulMsg">%1$s игрок(и) успешно удалён</string>
+    <string name="deletePlayerSuccessfulMsg">%1$d игрок(и) успешно удалён</string>
     <string name="editSuccessfulMsg">%1$s было отредактировано успешно</string>
-    <string name="deleteGroupSuccessfulMsg">%1$s группа(ы) успешно удалены</string>
+    <string name="deleteGroupSuccessfulMsg">%1$d группа(ы) успешно удалены</string>
 
     <string name="title_activity_management">Управление</string>
     <string name="duplicateMsg">%1$s уже существует</string>
     <string name="defaultGroupName">Группа по умолчанию</string>
     <string name="edit">Редактировать</string>
-    <string name="moreInfo">Больше информации</string>
+    <string name="tournamentInfo">Турнира информации</string>
     <string name="delete">Удалить</string>
     <string name="deletePlayerMsg">Вы уверены, что хотите удалить %1$d игрока(ов)? Это действие не может быть отменено.</string>
     <string name="deletingPlayers">Удаление %1$d игрока(ов)</string>
@@ -122,14 +122,14 @@
     <string name="sort">Сортировать</string>
     <string name="viewMode">Режим просмотра</string>
     <string name="filter">Фильтр</string>
-    <string name="deleteTournamentMsg">Вы уверены, что хотите удалить %1$s турнир(ы)? Это действие не может быть отменено.</string>
+    <string name="deleteTournamentMsg">Вы уверены, что хотите удалить %1$d турнир(ы)? Это действие не может быть отменено.</string>
 
     <string name="saveTournamentSuccessfulMsg">Турнир успешно сохранён</string>
 
     <string name="title_activity_history">Загрузите турнир</string>
     <string name="createdDateLabel">Создано: </string>
     <string name="lastModifiedDateLabel">Последнее изменение: </string>
-    <string name="deleteTournamentSuccessfulMsg">%1$s турнир(ы) успешно удалён(ы)</string>
+    <string name="deleteTournamentSuccessfulMsg">%1$d турнир(ы) успешно удалён(ы)</string>
 
     <string name="creationTimeNewest">Время создания (самые новые)</string>
     <string name="creationTimeOldest">Время создания (самые старые)</string>
@@ -196,6 +196,10 @@
     <string name="dontSave">Не сохранять</string>
     <string name="playStoreNotFound">Play Store не найдены</string>
 
+    <string name="win">победа</string>
+    <string name="loss">потеря</string>
+    <string name="tie">ра́вный счёт</string>
+
     <!-- IAP -->
     <string name="verifyingPremiumStatus">Проверка премиум статуса&#8230;</string>
     <string name="upgradeTitle">Отключить объявления</string>
@@ -207,5 +211,6 @@
     <string name="item_already_owned_errorMsg">Этот пункт уже принадлежит кому-то.</string>
     <string name="initialization_errorMsg">Произошла ошибка при выставлении счётов, необходимо перезапустить приложение, чтобы повторить попытку позже.</string>
     <string name="verification_errorMsg">Произошла ошибка при попытке подтвердить покупку.</string>
+
 
 </resources>

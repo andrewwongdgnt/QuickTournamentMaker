@@ -6,7 +6,7 @@
     <string name="tournamentDescription">Description du tournoi</string>
     <string name="numberOfPlayers">Nombre de joueurs</string>
     <string name="numberOfPlayersHint">Au moins 3</string>
-    <string name="numberOfPlayersSelected">Nombre de joueurs sélectionnés: %1$s</string>
+    <string name="numberOfPlayersSelected">Nombre de joueurs sélectionnés: %1$d</string>
     <string name="participantDefaultName">Joueur %1$d</string>
     <string name="byeDefaultName">BYE</string>
 
@@ -33,11 +33,11 @@
     <string name="participant1VsParticipant2">%3$s\n\t%1$s VS %2$s</string>
     <string name="participantWithABye">%2$s\n\t%1$s a une BYE</string>
     <string name="participantVsNoOne">%2$s\n\t%1$s en attendant l\'adversaire</string>
-    <string name="emptyMatchUp">%2$s\n\tMatch %1$s</string>
+    <string name="emptyMatchUp">%2$s\n\tMatch %1$d</string>
     <string name="participant1VsParticipant2ForDifferentRoundGroup">%4$s\n\t%3$s\n\t\t%1$s VS %2$s</string>
     <string name="participantWithAByeForDifferentRoundGroup">%3$s\n\t%2$s\n\t\t%1$s a une BYE</string>
     <string name="participantVsNoOneForDifferentRoundGroup">%3$s\n\t%2$s\n\t\t%1$s en attendant l\'adversaire</string>
-    <string name="emptyMatchUpForDifferentRoundGroup">%3$s\n\t%2$s\n\t\tMatch %1$s</string>
+    <string name="emptyMatchUpForDifferentRoundGroup">%3$s\n\t%2$s\n\t\tMatch %1$d</string>
 
     <string name="title_activity_seeding">Classement personnalisé</string>
 
@@ -72,15 +72,15 @@
     <string name="movingPlayers">Mouvement des %1$d joueurs(s)</string>
     <string name="movePlayerSuccessfulMsg">%1$d joueur(s) correctement déplacé(s)</string>
     <string name="addSuccessfulMsg">%1$s correctement ajouté(s)</string>
-    <string name="deletePlayerSuccessfulMsg">%1$s joueur(s) correctement supprimé(s)</string>
+    <string name="deletePlayerSuccessfulMsg">%1$d joueur(s) correctement supprimé(s)</string>
     <string name="editSuccessfulMsg">%1$s a été correctement modifié</string>
-    <string name="deleteGroupSuccessfulMsg">%1$s groupe(s) correctement supprimé(s)</string>
+    <string name="deleteGroupSuccessfulMsg">%1$d groupe(s) correctement supprimé(s)</string>
 
     <string name="title_activity_management">Gestion</string>
     <string name="duplicateMsg">%1$s existe déjà</string>
     <string name="defaultGroupName">Groupe par défaut</string>
     <string name="edit">Modifier</string>
-    <string name="moreInfo">Plus d\'infos</string>
+    <string name="tournamentInfo">Tournoi d\'infos</string>
     <string name="delete">Supprimer</string>
     <string name="deletePlayerMsg">Êtes-vous sûr de vouloir supprimer %1$d joueur(s)? Cette action ne peut pas être annulée.</string>
     <string name="deletingPlayers">En supprimant %1$d joueur(s)</string>
@@ -123,14 +123,14 @@
     <string name="sort">Sorte</string>
     <string name="viewMode">Mode d\'affichage</string>
     <string name="filter">Filtre</string>
-    <string name="deleteTournamentMsg">Êtes-vous sûr de vouloir supprimer %1$s tournoi(s)? Cette action ne peut pas être annulée.</string>
+    <string name="deleteTournamentMsg">Êtes-vous sûr de vouloir supprimer %1$d tournoi(s)? Cette action ne peut pas être annulée.</string>
 
     <string name="saveTournamentSuccessfulMsg">Tournoi correctement sauvegardé</string>
 
     <string name="title_activity_history">Charger un tournoi</string>
     <string name="createdDateLabel">Créé le: </string>
     <string name="lastModifiedDateLabel">Dernière modification: </string>
-    <string name="deleteTournamentSuccessfulMsg">%1$s tournoi(s) correctement supprimé(s)</string>
+    <string name="deleteTournamentSuccessfulMsg">%1$d tournoi(s) correctement supprimé(s)</string>
 
     <string name="creationTimeNewest">Date de création (la plus récente)</string>
     <string name="creationTimeOldest">Date de création (la plus ancienne)</string>
@@ -197,6 +197,10 @@
     <string name="dontSave">Ne pas sauvegarder</string>
     <string name="playStoreNotFound">Play Store est introuvable</string>
 
+    <string name="win">Victoire</string>
+    <string name="loss">Perte</string>
+    <string name="tie">Faire</string>
+
     <!-- IAP -->
     <string name="verifyingPremiumStatus">Vérification de l\'état de la prime&#8230;</string>
     <string name="upgradeTitle">Désactiver les annonces</string>
@@ -208,4 +212,5 @@
     <string name="item_already_owned_errorMsg">Cet article est déjà acheté.</string>
     <string name="initialization_errorMsg">Une erreur s\'est produite lors de l\'initialisation de la facturation, veuillez redémarrer l\'appli pour réessayer encore.</string>
     <string name="verification_errorMsg">Une erreur s\'est produite en essayant de vérifier un achat.</string>
+
 </resources>

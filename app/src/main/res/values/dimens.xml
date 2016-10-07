@@ -36,4 +36,8 @@
     <dimen name="history_description_size">15sp</dimen>
     <dimen name="history_time_size">11sp</dimen>
     <dimen name="app_bar_height">180dp</dimen>
+
+    <dimen name="scoreEditTextWidth">50dp</dimen>
+    <dimen name="scoreTextWidth">50dp</dimen>
+    <dimen name="priorityRankTextVerticalPadding">5dp</dimen>
 </resources>

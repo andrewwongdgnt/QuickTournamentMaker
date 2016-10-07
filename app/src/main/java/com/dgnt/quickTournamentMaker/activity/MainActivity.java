@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -21,7 +22,6 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -36,6 +36,8 @@ import com.dgnt.quickTournamentMaker.model.tournament.Tournament;
 import com.dgnt.quickTournamentMaker.util.AdsUtil;
 import com.dgnt.quickTournamentMaker.util.DatabaseHelper;
 import com.dgnt.quickTournamentMaker.util.EmailUtil;
+import com.dgnt.quickTournamentMaker.util.LayoutUtil;
+import com.dgnt.quickTournamentMaker.util.PreferenceUtil;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
@@ -100,24 +102,17 @@ public class MainActivity extends InAppBillingActivity
             }
         });
 
-        final TextView seedOptions_tv = (TextView) findViewById(R.id.seedOptions_tv);
-        final RadioGroup seedOptions_rg = (RadioGroup) findViewById(R.id.seedOptions_rg);
+
         final RadioButton randomSeed_rb = (RadioButton) findViewById(R.id.randomSeed_rb);
-        final RadioButton customSeed_rb = (RadioButton) findViewById(R.id.customSeed_rb);
+        final RadioButton sameSeed_rb = (RadioButton) findViewById(R.id.sameSeed_rb);
+        sameSeed_rb.setVisibility(View.GONE);
 
         final RadioButton elimination_rb = (RadioButton) findViewById(R.id.elimination_rb);
         final RadioButton doubleElimination_rb = (RadioButton) findViewById(R.id.doubleElimination_rb);
         final RadioButton roundRobin_rb = (RadioButton) findViewById(R.id.roundRobin_rb);
         final RadioButton swiss_rb = (RadioButton) findViewById(R.id.swiss_rb);
-        final RadioButton survival_rb = (RadioButton) findViewById(R.id.survival_rb);
 
-        survival_rb.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                seedOptions_tv.setVisibility(isChecked ? View.GONE : View.VISIBLE);
-                seedOptions_rg.setVisibility(isChecked ? View.GONE : View.VISIBLE);
-            }
-        });
+        LayoutUtil.setUpSeedingEditor(MainActivity.this, findViewById(android.R.id.content));
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -179,7 +174,8 @@ public class MainActivity extends InAppBillingActivity
                         : swiss_rb.isChecked() ? Tournament.TournamentType.SWISS
                         : Tournament.TournamentType.SURVIVAL;
 
-                TournamentActivity.startTournamentActivity(MainActivity.this, 0, seedType, tournamentType, tournamentType, title, description, participantList, null, null, Tournament.NULL_TIME_VALUE, Tournament.NULL_TIME_VALUE, false);
+                final String rankingConfig = PreferenceUtil.getRankingConfig( PreferenceManager.getDefaultSharedPreferences(MainActivity.this),tournamentType);
+                TournamentActivity.startTournamentActivity(MainActivity.this, 0, seedType, tournamentType, tournamentType, title, description, rankingConfig, participantList, null, null, Tournament.NULL_TIME_VALUE, Tournament.NULL_TIME_VALUE, false);
 
             }
         });
@@ -275,8 +271,8 @@ public class MainActivity extends InAppBillingActivity
         return super.onCreateOptionsMenu(menu);
     }
 
-    private void resolveDisableAdMenuButton(){
-        if (menu!=null){
+    private void resolveDisableAdMenuButton() {
+        if (menu != null) {
             final MenuItem menuItem = menu.findItem(R.id.action_upgrade);
             if (menuItem != null)
                 menuItem.setVisible(!isPremium());
@@ -311,7 +307,7 @@ public class MainActivity extends InAppBillingActivity
 
         } else if (id == R.id.nav_rate) {
             final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getApplicationContext().getPackageName()));
-            if(intent.resolveActivity(getPackageManager()) != null)
+            if (intent.resolveActivity(getPackageManager()) != null)
                 startActivity(intent);
             else
                 Toast.makeText(getApplicationContext(), R.string.playStoreNotFound, Toast.LENGTH_LONG).show();

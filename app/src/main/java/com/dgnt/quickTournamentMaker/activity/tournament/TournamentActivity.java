@@ -8,6 +8,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.util.Pair;
 import android.support.v7.app.ActionBar;
@@ -18,12 +19,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,6 +52,8 @@ import com.dgnt.quickTournamentMaker.model.tournament.Tournament;
 import com.dgnt.quickTournamentMaker.task.ExportTournamentTask;
 import com.dgnt.quickTournamentMaker.util.AdsUtil;
 import com.dgnt.quickTournamentMaker.util.DatabaseHelper;
+import com.dgnt.quickTournamentMaker.util.LayoutUtil;
+import com.dgnt.quickTournamentMaker.util.PreferenceUtil;
 import com.dgnt.quickTournamentMaker.util.TournamentUtil;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -79,6 +80,7 @@ abstract public class TournamentActivity extends InAppBillingActivity implements
     public static final String INTENT_TOURNAMENT_CREATION_TIME_KEY = "tournamentCreationTimeKey";
     public static final String INTENT_TOURNAMENT_LAST_MODIFIED_TIME_KEY = "tournamentLastModifiedTimeKey";
     public static final String INTENT_TOURNAMENT_IS_REBUILT_KEY = "tournamentIsRebuiltKey";
+    public static final String INTENT_TOURNAMENT_RANK_CONFIG_KEY = "tournamentRankingConfigKey";
 
     private static final int DESCRIPTION_MAX_CHARACTERS_PER_LINE = 30;
     private static final int DESCRIPTION_TOTAL_MAX_CHARACTERS = 100;
@@ -578,8 +580,6 @@ abstract public class TournamentActivity extends InAppBillingActivity implements
 
         final ViewGroup layout_tournament_rebuilder = (ViewGroup) getLayoutInflater().inflate(R.layout.layout_tournament_rebuilder, null);
 
-        final TextView seedOptions_tv = (TextView) layout_tournament_rebuilder.findViewById(R.id.seedOptions_tv);
-        final RadioGroup seedOptions_rg = (RadioGroup) layout_tournament_rebuilder.findViewById(R.id.seedOptions_rg);
 
         final RadioButton elimination_rb = (RadioButton) layout_tournament_rebuilder.findViewById(R.id.elimination_rb);
         final RadioButton doubleElimination_rb = (RadioButton) layout_tournament_rebuilder.findViewById(R.id.doubleElimination_rb);
@@ -587,13 +587,7 @@ abstract public class TournamentActivity extends InAppBillingActivity implements
         final RadioButton swiss_rb = (RadioButton) layout_tournament_rebuilder.findViewById(R.id.swiss_rb);
         final RadioButton survival_rb = (RadioButton) layout_tournament_rebuilder.findViewById(R.id.survival_rb);
 
-        survival_rb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                seedOptions_tv.setVisibility(isChecked ? View.GONE : View.VISIBLE);
-                seedOptions_rg.setVisibility(isChecked ? View.GONE : View.VISIBLE);
-            }
-        });
+        LayoutUtil.setUpSeedingEditor(TournamentActivity.this, layout_tournament_rebuilder);
 
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -612,7 +606,8 @@ abstract public class TournamentActivity extends InAppBillingActivity implements
                         : swiss_rb.isChecked() ? Tournament.TournamentType.SWISS
                         : Tournament.TournamentType.SURVIVAL;
 
-                startTournamentActivity(TournamentActivity.this, 0, seedType, tournament.getType(), tournamentType, tournament.getTitle(), tournament.getDescription(), (ArrayList<Participant>) tournament.getSeededParticipants(), null, null, tournament.getCreationTimeInEpoch(), Tournament.NULL_TIME_VALUE, true);
+                final String rankingConfig = PreferenceUtil.getRankingConfig(PreferenceManager.getDefaultSharedPreferences(TournamentActivity.this), tournamentType);
+                startTournamentActivity(TournamentActivity.this, 0, seedType, tournament.getType(), tournamentType, tournament.getTitle(), tournament.getDescription(), rankingConfig, (ArrayList<Participant>) tournament.getSeededParticipants(), null, null, tournament.getCreationTimeInEpoch(), Tournament.NULL_TIME_VALUE, true);
                 finish();
 
             }
@@ -961,6 +956,9 @@ abstract public class TournamentActivity extends InAppBillingActivity implements
             case R.id.action_currentRanking:
                 openCurrentRankings();
                 return true;
+            case R.id.action_tournamentInfo:
+                openTournamentInfo();
+                return true;
             case R.id.action_saveAsTournament:
                 saveAsTournament();
                 return true;
@@ -990,6 +988,14 @@ abstract public class TournamentActivity extends InAppBillingActivity implements
         }
     }
 
+    private void openTournamentInfo() {
+
+        final HistoricalTournament historicalTournament = new HistoricalTournament(tournament.getCreationTimeInEpoch(), tournament.getLastModifiedTimeInEpoch(), tournament.getTitle(), tournament.getDescription(), tournament.getType(), tournament instanceof RecordKeepingTournament ? ((RecordKeepingTournament)tournament).getRankingConfig(): "", tournament.getSeededParticipants(),null,null);
+
+        LayoutUtil.openTournamentInfo(this, historicalTournament);
+
+    }
+
     @Override
     public void onTournamentTitleChange(String title) {
         setTitle(title);
@@ -1013,24 +1019,6 @@ abstract public class TournamentActivity extends InAppBillingActivity implements
     @Override
     public void onTournamentLastModifiedTimeInEpochChange(long epoch) {
         setUnSavedChanges(false);
-    }
-
-    public static void startTournamentActivity(final Activity startingActivity, final int requestCode, final Seeder.Type seedType, final HistoricalTournament historicalTournament) {
-        startTournamentActivity(
-                startingActivity,
-                requestCode,
-                seedType,
-                historicalTournament.getType(),
-                historicalTournament.getType(),
-                historicalTournament.getName(),
-                historicalTournament.getNote(),
-                (ArrayList<Participant>) historicalTournament.getParticipantList(),
-                (ArrayList<HistoricalRound>) historicalTournament.getRoundList(),
-                (ArrayList<HistoricalMatchUp>) historicalTournament.getMatchUpList(),
-                historicalTournament.getCreationTimeInEpoch(),
-                historicalTournament.getLastModifiedTimeInEpoch(),
-                false
-        );
     }
 
     private void setUnSavedChanges(final boolean value) {
@@ -1087,8 +1075,27 @@ abstract public class TournamentActivity extends InAppBillingActivity implements
         }
     }
 
+
+    public static void startTournamentActivity(final Activity startingActivity, final int requestCode, final Seeder.Type seedType, final HistoricalTournament historicalTournament) {
+        startTournamentActivity(
+                startingActivity,
+                requestCode,
+                seedType,
+                historicalTournament.getType(),
+                historicalTournament.getType(),
+                historicalTournament.getName(),
+                historicalTournament.getNote(),
+                historicalTournament.getRankingConfig(), (ArrayList<Participant>) historicalTournament.getParticipantList(),
+                (ArrayList<HistoricalRound>) historicalTournament.getRoundList(),
+                (ArrayList<HistoricalMatchUp>) historicalTournament.getMatchUpList(),
+                historicalTournament.getCreationTimeInEpoch(),
+                historicalTournament.getLastModifiedTimeInEpoch(),
+                false
+        );
+    }
+
     public static void startTournamentActivity(final Activity startingActivity, final int requestCode, final Seeder.Type seedType, final Tournament.TournamentType tournamentType_original, final Tournament.TournamentType tournamentType, final String title, final String description,
-                                               final ArrayList<Participant> participantList, final ArrayList<HistoricalRound> roundList, final ArrayList<HistoricalMatchUp> matchUpList, final long creationTimeInEpoch, final long lastModifiedTimeInEpoch, final boolean rebuilt) {
+                                               final String rankingConfig, final ArrayList<Participant> participantList, final ArrayList<HistoricalRound> roundList, final ArrayList<HistoricalMatchUp> matchUpList, final long creationTimeInEpoch, final long lastModifiedTimeInEpoch, final boolean rebuilt) {
 
         final Class clazz;
         final Seeder.SeedFillType seedFillType_original = getSeedFileType(tournamentType_original);
@@ -1134,10 +1141,12 @@ abstract public class TournamentActivity extends InAppBillingActivity implements
         intent.putExtra(TournamentActivity.INTENT_TOURNAMENT_CREATION_TIME_KEY, creationTimeInEpoch);
         intent.putExtra(TournamentActivity.INTENT_TOURNAMENT_LAST_MODIFIED_TIME_KEY, lastModifiedTimeInEpoch);
         intent.putExtra(TournamentActivity.INTENT_TOURNAMENT_IS_REBUILT_KEY, rebuilt);
+        intent.putExtra(TournamentActivity.INTENT_TOURNAMENT_RANK_CONFIG_KEY, rankingConfig);
         if (seedType == Seeder.Type.CUSTOM && tournamentType != Tournament.TournamentType.SURVIVAL)
             intent.putExtra(INTENT_TOURNAMENT_TYPE_KEY, tournamentType);
         startingActivity.startActivityForResult(intent, requestCode);
     }
+
 
     protected class ParticipantClickListener implements View.OnClickListener {
 

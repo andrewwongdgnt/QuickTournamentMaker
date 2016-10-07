@@ -5,7 +5,6 @@ import android.support.v4.util.Pair;
 import com.dgnt.quickTournamentMaker.eventListener.OnMatchUpUpdateListener;
 import com.dgnt.quickTournamentMaker.eventListener.OnParticipantUpdateListener;
 import com.dgnt.quickTournamentMaker.eventListener.OnTournamentUpdateListener;
-import com.dgnt.quickTournamentMaker.util.TournamentUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,22 +18,30 @@ import java.util.Set;
  */
 public class SwissTournament extends Tournament implements RecordKeepingTournament {
 
+    public void setRankingConfig(final String rankingConfig) {
+        getRecordKeepingTournamentTrait().setRankingConfig(rankingConfig);
+    }
+    public String getRankingConfig() {
+        return getRecordKeepingTournamentTrait().getRankingConfig();
+    }
     private RecordKeepingTournamentTrait recordKeepingTournamentTrait;
+
     protected RecordKeepingTournamentTrait getRecordKeepingTournamentTrait() {
-        if (recordKeepingTournamentTrait ==null)
+        if (recordKeepingTournamentTrait == null)
             recordKeepingTournamentTrait = new RecordKeepingTournamentTrait(this);
         return recordKeepingTournamentTrait;
     }
 
     private TiesAllowedTournamentTrait tiesAllowedTournamentTrait;
+
     protected TiesAllowedTournamentTrait getTiesAllowedTournamentTrait() {
-        if (tiesAllowedTournamentTrait==null)
+        if (tiesAllowedTournamentTrait == null)
             tiesAllowedTournamentTrait = new TiesAllowedTournamentTrait(this);
         return tiesAllowedTournamentTrait;
     }
 
     public boolean build(final List<Participant> orderedParticipantList, final OnTournamentUpdateListener onTournamentUpdateListener, final OnMatchUpUpdateListener onMatchUpUpdateListener, final OnParticipantUpdateListener onParticipantUpdateListener) {
-        final boolean initialStatus = super.build(orderedParticipantList,onTournamentUpdateListener, onMatchUpUpdateListener,onParticipantUpdateListener);
+        final boolean initialStatus = super.build(orderedParticipantList, onTournamentUpdateListener, onMatchUpUpdateListener, onParticipantUpdateListener);
 
         if (!initialStatus)
             return false;
@@ -69,11 +76,11 @@ public class SwissTournament extends Tournament implements RecordKeepingTourname
     }
 
     protected MatchUp.MatchUpStatus getNewMatchUpStatus(final MatchUp.MatchUpStatus currentStatus, final int participantIndex) {
-        return getTiesAllowedTournamentTrait().getNewMatchUpStatus(currentStatus,participantIndex);
+        return getTiesAllowedTournamentTrait().getNewMatchUpStatus(currentStatus, participantIndex);
     }
 
     protected void updateTournamentOnResultChange(final int roundGroupIndex, final int roundIndex, final int matchUpIndex, final MatchUp.MatchUpStatus previousStatus, final MatchUp.MatchUpStatus status) {
-        getRecordKeepingTournamentTrait().updateParticipantsRecordOnResultChange(roundGroupIndex,roundIndex,matchUpIndex,previousStatus,status);
+        getRecordKeepingTournamentTrait().updateParticipantsRecordOnResultChange(roundGroupIndex, roundIndex, matchUpIndex, previousStatus, status);
         createNewRound(roundGroupIndex, roundIndex);
     }
 
@@ -186,7 +193,7 @@ public class SwissTournament extends Tournament implements RecordKeepingTourname
         @Override
         public int compare(Participant lhs, Participant rhs) {
 
-            final int difference = TournamentUtil.compareParticipantsBasedOnRecord(lhs, rhs);
+            final int difference = getRecordKeepingTournamentTrait().compareParticipantsBasedOnRecord(lhs, rhs);
             if (difference != 0)
                 return difference;
 

@@ -7,7 +7,7 @@
     <string name="tournamentDescription">Tournament description</string>
     <string name="numberOfPlayers">Number of players</string>
     <string name="numberOfPlayersHint">At least 3</string>
-    <string name="numberOfPlayersSelected">Number of players selected: %1$s</string>
+    <string name="numberOfPlayersSelected">Number of players selected: %1$d</string>
     <string name="participantDefaultName">Player %1$d</string>
     <string name="byeDefaultName">BYE</string>
 
@@ -34,11 +34,11 @@
     <string name="participant1VsParticipant2">%3$s\n\t%1$s VS %2$s</string>
     <string name="participantWithABye">%2$s\n\t%1$s has a BYE</string>
     <string name="participantVsNoOne">%2$s\n\t%1$s waiting for opponent</string>
-    <string name="emptyMatchUp">%2$s\n\tMatch up %1$s</string>
+    <string name="emptyMatchUp">%2$s\n\tMatch up %1$d</string>
     <string name="participant1VsParticipant2ForDifferentRoundGroup">%4$s\n\t%3$s\n\t\t%1$s VS %2$s</string>
     <string name="participantWithAByeForDifferentRoundGroup">%3$s\n\t%2$s\n\t\t%1$s has a BYE</string>
     <string name="participantVsNoOneForDifferentRoundGroup">%3$s\n\t%2$s\n\t\t%1$s waiting for opponent</string>
-    <string name="emptyMatchUpForDifferentRoundGroup">%3$s\n\t%2$s\n\t\tMatch up %1$s</string>
+    <string name="emptyMatchUpForDifferentRoundGroup">%3$s\n\t%2$s\n\t\tMatch up %1$d</string>
 
     <string name="title_activity_seeding">Custom seeding</string>
 
@@ -73,15 +73,15 @@
     <string name="movingPlayers">Moving %1$d player(s)</string>
     <string name="movePlayerSuccessfulMsg">%1$d player(s) moved successfully</string>
     <string name="addSuccessfulMsg">%1$s added successfully</string>
-    <string name="deletePlayerSuccessfulMsg">%1$s player(s) deleted successfully</string>
+    <string name="deletePlayerSuccessfulMsg">%1$d player(s) deleted successfully</string>
     <string name="editSuccessfulMsg">%1$s has been edited successfully</string>
-    <string name="deleteGroupSuccessfulMsg">%1$s group(s) deleted successfully</string>
+    <string name="deleteGroupSuccessfulMsg">%1$d group(s) deleted successfully</string>
 
     <string name="title_activity_management">Management</string>
     <string name="duplicateMsg">%1$s already exists</string>
     <string name="defaultGroupName">Default group</string>
     <string name="edit">Edit</string>
-    <string name="moreInfo">More info</string>
+    <string name="tournamentInfo">Tournament info</string>
     <string name="delete">Delete</string>
     <string name="deletePlayerMsg">Are you sure you want to delete %1$d player(s)? This action cannot be undone.</string>
     <string name="deletingPlayers">Deleting %1$d player(s)</string>
@@ -124,14 +124,14 @@
     <string name="sort">Sort</string>
     <string name="viewMode">View mode</string>
     <string name="filter">Filter</string>
-    <string name="deleteTournamentMsg">Are you sure you want to delete %1$s tournament(s)? This action cannot be undone.</string>
+    <string name="deleteTournamentMsg">Are you sure you want to delete %1$d tournament(s)? This action cannot be undone.</string>
 
     <string name="saveTournamentSuccessfulMsg">Tournament saved successfully</string>
 
     <string name="title_activity_history">Load a tournament</string>
     <string name="createdDateLabel">Created on: </string>
     <string name="lastModifiedDateLabel">Last modified: </string>
-    <string name="deleteTournamentSuccessfulMsg">%1$s tournament(s) deleted successfully</string>
+    <string name="deleteTournamentSuccessfulMsg">%1$d tournament(s) deleted successfully</string>
 
     <string name="creationTimeNewest">Creation time (newest)</string>
     <string name="creationTimeOldest">Creation time (oldest)</string>
@@ -198,7 +198,30 @@
     <string name="dontSave">Don\'t save</string>
     <string name="playStoreNotFound">Play Store not found</string>
 
+    <string name="rankConfiguration">Ranking configuration</string>
+    <string name="rankConfigurationBasedOnPriority">Ranking configuration based on priority</string>
+    <string name="rankConfigurationBasedOnScoring">Ranking configuration based on scoring</string>
+    <string name="rankConfigurationForSwissHelpMsg">Ranking for Swiss is required for determining the current ranking of each player at any given time and to calculate the next set of match ups.</string>
+    <string name="rankConfigurationForRoundRobinHelpMsg">Ranking for Round Robin is required for determining the current ranking of each player at any given time.</string>
+    <string name="rankConfigurationHelpMsg">%1$s
+    \n\nPriority based:
+    \n\nRank based on the number of wins or losses or ties in some order.  EG If the order is wins, ties, losses, then to compare the rank of A and B,  do the following. Compare A\'s win count with B\'s win count and whichever is more is ranked higher. If the same, compare A\'s tie count with B\'s tie count and whichever is more is ranked higher. If the same, compare A\'s loss count with B\'s loss count and whichever is more is ranked lower.
+    \n\nScoring based:
+    \n\nRank based on the amount of points accumulated where more means higher ranked. Points are assigned per win and loss and tie  EG If a win is worth 2 points, a tie is worth 1 point and a loss is worth 0 points, then to compare the rank of A and B, count the number of wins, losses and ties for both and calculate the total points. The one with more is ranked higher.</string>
+    <string name="priority">Priority (Tap two to swap)</string>
+    <string name="scoring">Scoring (Points based on record)</string>
+    <string name="win">Win</string>
+    <string name="tie">Tie</string>
+    <string name="loss">Loss</string>
+    <string name="priorityInfo">%1$s
+                                \n%2$s
+                                \n%3$s</string>
+    <string name="scoringInfo">%1$s: %2$d
+                                \n%3$s: %4$d
+                                \n%5$s: %6$d
+    </string>
 
+    <string name="na">N/A</string>
     <string name="exportTournamentAsFile">Export as file</string>
 
     <!-- IAP -->
@@ -212,5 +235,8 @@
     <string name="item_already_owned_errorMsg">This item is already owned.</string>
     <string name="initialization_errorMsg">An error has occurred during billing initialization, please restart app to try again later.</string>
     <string name="verification_errorMsg">An error has occurred while trying to verify a purchase.</string>
+    <string name="exportAsFileFail">Failed to export tournament as a file  %1$s</string>
+    <string name="exportAsFileProgressMsg">Exporting as file, please wait&#8230;</string>
+    <string name="exportAsFileSuccess">Successfully exported tournament as a file %1$s</string>
 
 </resources>
