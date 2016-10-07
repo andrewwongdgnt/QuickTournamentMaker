@@ -238,5 +238,6 @@
     <string name="exportAsFileFail">Failed to export tournament as a file  %1$s</string>
     <string name="exportAsFileProgressMsg">Exporting as file, please wait&#8230;</string>
     <string name="exportAsFileSuccess">Successfully exported tournament as a file %1$s</string>
+    <string name="noFileAppInstalledMsg">It seems like you do not have an app that can view a text file.  Please install one and try again.</string>
 
 </resources>

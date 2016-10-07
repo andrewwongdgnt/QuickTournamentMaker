@@ -3,6 +3,7 @@ package com.dgnt.quickTournamentMaker.test.tournament;
 import com.dgnt.quickTournamentMaker.model.tournament.MatchUp;
 import com.dgnt.quickTournamentMaker.model.tournament.Participant;
 import com.dgnt.quickTournamentMaker.model.tournament.EliminationTournament;
+import com.dgnt.quickTournamentMaker.model.tournament.Tournament;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -248,6 +249,12 @@ public class EliminationTournamentUnitTest implements TournamentUnitTest {
 
         assertEquals(tournament_noByes.getCurrentRanking().getUnknownRankings().size(), 0);
 
+
+    }
+
+    @Test
+    public void testJson() throws Exception {
+        final String json = Tournament.JsonHelper.toJson(tournament_noByes);
 
     }
 

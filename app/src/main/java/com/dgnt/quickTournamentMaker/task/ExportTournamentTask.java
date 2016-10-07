@@ -20,11 +20,17 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.dgnt.quickTournamentMaker.R;
+import com.dgnt.quickTournamentMaker.activity.tournament.TournamentActivity;
+import com.dgnt.quickTournamentMaker.model.tournament.Tournament;
 import com.dgnt.quickTournamentMaker.util.EmailUtil;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.OutputStream;
 
 /**
@@ -34,53 +40,59 @@ public class ExportTournamentTask extends AsyncTask<String, Void, String> {
 
     private Context context;
     private View tournamentView_root;
+    private Tournament tournament;
     private ProgressDialog dialog;
 
 
-    private String imageFileName;
+    private String fileName;
     private String dirPath;
     private String fullPath;
+    private TournamentActivity.ExportType exportType;
 
     private Bitmap bitmap;
 
     private Boolean resultSuccessful;
 
 
-    public ExportTournamentTask(final Context context, final View tournamentView_root, final String imageFileName, final String dirPath) {
+    public ExportTournamentTask(final Context context, final View tournamentView_root, final Tournament tournament, final String dirPath, final TournamentActivity.ExportType exportType) {
         this.context = context;
         this.tournamentView_root = tournamentView_root;
-        this.imageFileName = fileEncoder(imageFileName);
+        this.tournament = tournament;
+        this.fileName = fileEncoder(tournament.getTitle(), exportType == TournamentActivity.ExportType.IMAGE ? ".jpg" : ".qtm");
         dialog = new ProgressDialog(context);
         this.dirPath = dirPath;
-        fullPath = this.dirPath + "/" + this.imageFileName;
+        fullPath = this.dirPath + "/" + this.fileName;
+        this.exportType = exportType;
     }
 
 
-    public static String fileEncoder(String sourceString) {
-        return sourceString.replaceAll("[^A-Za-z0-9\\-_\\. ]", "-") + ".jpg";
+    public static String fileEncoder(String sourceString, final String extension) {
+        return sourceString.replaceAll("[^A-Za-z0-9\\-_\\. ]", "-") + extension;
     }
 
 
     protected void onPreExecute() {
-        this.dialog.setMessage(context.getString(R.string.exportAsImageProgressMsg));
+        this.dialog.setMessage(exportType == TournamentActivity.ExportType.IMAGE ? context.getString(R.string.exportAsImageProgressMsg) : context.getString(R.string.exportAsFileProgressMsg));
         this.dialog.show();
 
-        final int width = tournamentView_root.getWidth();
-        final int height = tournamentView_root.getHeight();
+        if (exportType == TournamentActivity.ExportType.IMAGE) {
+            final int width = tournamentView_root.getWidth();
+            final int height = tournamentView_root.getHeight();
 
-        bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        final Canvas canvas = new Canvas(bitmap);
+            bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+            final Canvas canvas = new Canvas(bitmap);
 
-        final Drawable bgDrawable = tournamentView_root.getBackground();
-        if (bgDrawable != null)
-            //has background drawable, then draw it on the canvas
-            bgDrawable.draw(canvas);
-        else
-            //does not have background drawable, then draw white background on the canvas
-            canvas.drawColor(Color.WHITE);
+            final Drawable bgDrawable = tournamentView_root.getBackground();
+            if (bgDrawable != null)
+                //has background drawable, then draw it on the canvas
+                bgDrawable.draw(canvas);
+            else
+                //does not have background drawable, then draw white background on the canvas
+                canvas.drawColor(Color.WHITE);
 
-        tournamentView_root.layout(tournamentView_root.getLeft(), tournamentView_root.getTop(), tournamentView_root.getRight(), tournamentView_root.getBottom());
-        tournamentView_root.draw(canvas);
+            tournamentView_root.layout(tournamentView_root.getLeft(), tournamentView_root.getTop(), tournamentView_root.getRight(), tournamentView_root.getBottom());
+            tournamentView_root.draw(canvas);
+        }
 
     }
 
@@ -103,13 +115,12 @@ public class ExportTournamentTask extends AsyncTask<String, Void, String> {
         }
 
 
-        if (tournamentView_root != null) {
+        if (exportType == TournamentActivity.ExportType.IMAGE) {
             try {
                 if (bitmap != null) {
-                    OutputStream fos = null;
-                    File file = new File(dirPath, imageFileName);
-                    fos = new FileOutputStream(file);
-                    BufferedOutputStream bos = new BufferedOutputStream(fos);
+                    final File file = new File(dirPath, fileName);
+                    final OutputStream fos = new FileOutputStream(file);
+                    final BufferedOutputStream bos = new BufferedOutputStream(fos);
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 50, bos);
                     bos.flush();
                     bos.close();
@@ -118,11 +129,24 @@ public class ExportTournamentTask extends AsyncTask<String, Void, String> {
                 e.printStackTrace();
                 return context.getString(R.string.exportAsImageFail, e.getMessage());
             }
+
+        } else {
+            try {
+                final File file = new File(dirPath, fileName);
+                final FileWriter writer = new FileWriter(file);
+                writer.append(Tournament.JsonHelper.toJson(tournament));
+                writer.flush();
+                writer.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return context.getString(R.string.exportAsFileFail, e.getMessage());
+
+            }
         }
 
         resultSuccessful = true;
 
-        return context.getString(R.string.exportAsImageSuccess, fullPath);
+        return exportType == TournamentActivity.ExportType.IMAGE ? context.getString(R.string.exportAsImageSuccess, fullPath) : context.getString(R.string.exportAsFileSuccess, fullPath);
 
 
     }
@@ -141,7 +165,7 @@ public class ExportTournamentTask extends AsyncTask<String, Void, String> {
             builder.setPositiveButton(context.getString(R.string.share), new DialogInterface.OnClickListener() {
                 public void onClick(final DialogInterface dialogInterface, final int n) {
 
-                    EmailUtil.sendEmail(context,null,"",fullPath,"application/image");
+                    EmailUtil.sendEmail(context, null, "", fullPath, exportType == TournamentActivity.ExportType.IMAGE ? "application/image" : "text/plain");
                 }
             });
 
@@ -167,7 +191,7 @@ public class ExportTournamentTask extends AsyncTask<String, Void, String> {
                     @Override
                     public void onClick(View view) {
                         if (resultSuccessful) {
-                            viewImage();
+                            view(exportType);
                         } else {
                             ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
                             ClipData clip = ClipData.newPlainText("errorMsg", resultMsg);
@@ -182,22 +206,23 @@ public class ExportTournamentTask extends AsyncTask<String, Void, String> {
         alertDialog.show();
     }
 
-    private void viewImage() {
+    private void view(final TournamentActivity.ExportType exportType) {
         try {
             final Intent intent = new Intent(Intent.ACTION_VIEW);
             final Uri uri = Uri.fromFile(new File(fullPath));
-            intent.setDataAndType(uri, "image/*");
+            intent.setDataAndType(uri, exportType == TournamentActivity.ExportType.IMAGE ? "image/*" : "text/plain");
             intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             context.startActivity(intent);
         } catch (ActivityNotFoundException e) {
             final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setMessage(context.getString(R.string.noImageAppInstalledMsg));
+            builder.setMessage(exportType == TournamentActivity.ExportType.IMAGE ? context.getString(R.string.noImageAppInstalledMsg) : context.getString(R.string.noFileAppInstalledMsg));
             builder.setPositiveButton(context.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
                 public void onClick(final DialogInterface dialogInterface, final int n) {
                     dialogInterface.cancel();
                 }
             });
             builder.create().show();
+
         }
     }
 

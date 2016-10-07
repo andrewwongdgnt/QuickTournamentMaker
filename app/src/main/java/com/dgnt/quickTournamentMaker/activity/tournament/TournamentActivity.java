@@ -912,8 +912,7 @@ abstract public class TournamentActivity extends InAppBillingActivity implements
     private void exportTournament(final String path, final int requestCode) {
         final ExportType exportType = requestCode==ExportType.IMAGE.getRequestCode() ? ExportType.IMAGE
                 : ExportType.FILE;
-        //TODO-AW do something with exportType
-        new ExportTournamentTask(this, tournamentView_root, tournament.getTitle(), path).execute();
+        new ExportTournamentTask(this, tournamentView_root, tournament,  path, exportType).execute();
     }
 
     @Override

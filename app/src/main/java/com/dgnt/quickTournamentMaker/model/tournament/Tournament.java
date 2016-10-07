@@ -5,6 +5,10 @@ import com.dgnt.quickTournamentMaker.eventListener.OnParticipantUpdateListener;
 import com.dgnt.quickTournamentMaker.eventListener.OnTournamentUpdateListener;
 import com.dgnt.quickTournamentMaker.model.IKeyable;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -105,7 +109,7 @@ public abstract class Tournament implements IKeyable {
     protected List<Round> rounds;
 
     public boolean build(final List<Participant> orderedParticipants) {
-        return build(orderedParticipants, null, null,null);
+        return build(orderedParticipants, null, null, null);
     }
 
     public boolean build(final List<Participant> orderedParticipantList, final OnTournamentUpdateListener onTournamentUpdateListener, final OnMatchUpUpdateListener onMatchUpUpdateListener, final OnParticipantUpdateListener onParticipantUpdateListener) {
@@ -123,7 +127,7 @@ public abstract class Tournament implements IKeyable {
             final Participant participant1 = orderedParticipantList.get(i);
             participant1.setOnParticipantUpdateListener(onParticipantUpdateListener);
 
-            final Participant participant2 = orderedParticipantList.get(i+1);
+            final Participant participant2 = orderedParticipantList.get(i + 1);
             participant2.setOnParticipantUpdateListener(onParticipantUpdateListener);
 
             final MatchUp matchUp = new MatchUp(0, roundIndex, matchUpIndex, participant1, participant2);
@@ -367,4 +371,120 @@ public abstract class Tournament implements IKeyable {
     public String getKey() {
         return Long.toString(getCreationTimeInEpoch());
     }
+
+    public static class JsonHelper {
+
+
+        //json properties
+
+        //must increase for every update
+        final private static String CURRENT_VERSION_PROPERTY = "currentVersion";
+        final private static int CURRENT_VERSION = 1;
+
+        final private static String TOURNAMENT_CREATION_TIME = "creationTime";
+        final private static String TOURNAMENT_LAST_MODIFIED_TIME = "lastModifiedTime";
+        final private static String TOURNAMENT_TITLE = "title";
+        final private static String TOURNAMENT_DESCRIPTION = "description";
+        final private static String TOURNAMENT_TYPE = "type";
+        final private static String TOURNAMENT_RANKING_CONFIG = "rankingConfig";
+
+        final private static String ROUND_GROUPS = "roundGroups";
+
+        final private static String ROUNDS = "rounds";
+        final private static String ROUND_NAME = "name";
+        final private static String ROUND_NOTE = "note";
+        final private static String ROUND_COLOR = "color";
+
+        final private static String MATCH_UPS = "matchUps";
+        final private static String MATCH_UP_NOTE = "note";
+        final private static String MATCH_UP_COLOR = "color";
+        final private static String MATCH_UP_STATUS = "status";
+
+        final private static String PARTICIPANTS = "participants";
+        final private static String PARTICIPANT_NAME = "name";
+        final private static String PARTICIPANT_SEED_INDEX = "seedIndex";
+        final private static String PARTICIPANT_DISPLAY_NAME = "displayName";
+        final private static String PARTICIPANT_NOTE = "note";
+        final private static String PARTICIPANT_TYPE = "type";
+        final private static String PARTICIPANT_COLOR = "color";
+
+
+        public static String toJson(final Tournament tournament) throws JSONException {
+
+            final JSONObject tournamentJson = new JSONObject();
+            tournamentJson.put(CURRENT_VERSION_PROPERTY, CURRENT_VERSION);
+            tournamentJson.put(TOURNAMENT_CREATION_TIME, tournament.getCreationTimeInEpoch());
+            tournamentJson.put(TOURNAMENT_LAST_MODIFIED_TIME, tournament.getLastModifiedTimeInEpoch());
+            tournamentJson.put(TOURNAMENT_TITLE, tournament.getTitle());
+            tournamentJson.put(TOURNAMENT_DESCRIPTION, tournament.getDescription());
+            tournamentJson.put(TOURNAMENT_TYPE, tournament.getType().name());
+            if (tournament instanceof RecordKeepingTournament)
+                tournamentJson.put(TOURNAMENT_RANKING_CONFIG, ((RecordKeepingTournament) tournament).getRankingConfig());
+
+            final JSONArray seededParticipantJsonArray = new JSONArray();
+
+            for (final Participant participant : tournament.getSeededParticipants()) {
+
+                final JSONObject participantJson = new JSONObject();
+
+                participantJson.put(PARTICIPANT_NAME, participant.getName());
+                participantJson.put(PARTICIPANT_DISPLAY_NAME, participant.getDisplayName());
+                participantJson.put(PARTICIPANT_NOTE, participant.getNote());
+                participantJson.put(PARTICIPANT_COLOR, participant.getColor());
+
+                seededParticipantJsonArray.put(participantJson);
+            }
+            tournamentJson.put(PARTICIPANTS, seededParticipantJsonArray);
+
+            final JSONArray roundGroupJsonArray = new JSONArray();
+            for (int roundGroupIndex = 0; roundGroupIndex < tournament.getTotalRoundGroups(); roundGroupIndex++) {
+
+                final JSONObject roundGroupJson = new JSONObject();
+                final JSONArray roundJsonArray = new JSONArray();
+                for (int roundIndex = 0; roundIndex < tournament.getTotalRounds(roundGroupIndex); roundIndex++) {
+
+                    final Round round = tournament.getRoundAt(roundGroupIndex, roundIndex);
+                    final JSONObject roundJson = new JSONObject();
+                    roundJson.put(ROUND_NAME, round.getTitle());
+                    roundJson.put(ROUND_NOTE, round.getNote());
+                    roundJson.put(ROUND_COLOR, round.getColor());
+
+                    final JSONArray matchUpJsonArray = new JSONArray();
+                    for (int matchUpIndex = 0; matchUpIndex < tournament.getTotalMatchUps(roundGroupIndex, roundIndex); matchUpIndex++) {
+
+                        final MatchUp matchUp = tournament.getMatchUp(roundGroupIndex, roundIndex, matchUpIndex);
+                        final JSONObject matchUpJson = new JSONObject();
+                        matchUpJson.put(MATCH_UP_NOTE, matchUp.getNote());
+                        matchUpJson.put(MATCH_UP_COLOR, matchUp.getColor());
+                        matchUpJson.put(MATCH_UP_STATUS, matchUp.getStatus().name());
+
+
+                        final JSONArray participantJsonArray = new JSONArray();
+                        for (int participantIndex = 0; participantIndex < 2; participantIndex++) {
+
+                            final Participant participant = participantIndex == 0 ? matchUp.getParticipant1() : matchUp.getParticipant2();
+
+                            final JSONObject participantJson = new JSONObject();
+                            participantJson.put(PARTICIPANT_NAME, participant.getName());
+                            participantJson.put(PARTICIPANT_TYPE, participant.getParticipantType().name());
+
+                            participantJsonArray.put(participantJson);
+                        }
+                        matchUpJson.put(PARTICIPANTS, participantJsonArray);
+                        matchUpJsonArray.put(matchUpJson);
+                    }
+
+                    roundJson.put(MATCH_UPS, matchUpJsonArray);
+                    roundJsonArray.put(roundJson);
+                }
+
+                roundGroupJson.put(ROUNDS, roundJsonArray);
+                roundGroupJsonArray.put(roundGroupJson);
+            }
+            tournamentJson.put(ROUND_GROUPS, roundGroupJsonArray);
+
+            return tournamentJson.toString();
+        }
+    }
+
 }
