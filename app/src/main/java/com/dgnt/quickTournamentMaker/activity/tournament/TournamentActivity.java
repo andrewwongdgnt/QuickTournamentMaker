@@ -83,6 +83,21 @@ abstract public class TournamentActivity extends InAppBillingActivity implements
     private static final int DESCRIPTION_MAX_CHARACTERS_PER_LINE = 30;
     private static final int DESCRIPTION_TOTAL_MAX_CHARACTERS = 100;
 
+
+    public enum ExportType{
+        IMAGE(1),
+        FILE(2);
+
+        private int requestCode;
+         ExportType(final int requestCode){
+            this.requestCode = requestCode;
+        }
+
+        public int getRequestCode() {
+            return requestCode;
+        }
+    }
+
     protected Tournament tournament;
 
     protected Map<String, ViewGroup> participantGroupMap = new HashMap<>();
@@ -886,7 +901,7 @@ abstract public class TournamentActivity extends InAppBillingActivity implements
 
     }
 
-    private void choosePathToExportTournament() {
+    private void choosePathToExportTournament(final ExportType exportType) {
 
         //Create default folder
         final String appFolder = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + getString(R.string.app_name);
@@ -896,19 +911,25 @@ abstract public class TournamentActivity extends InAppBillingActivity implements
         }
 
         Intent intent = new Intent(this, DirectoryPickerActivity.class);
-        startActivityForResult(intent, DirectoryPickerActivity.DIRECTORY_PICKER_DEFAULT_REQUEST_CODE);
+        startActivityForResult(intent, exportType.getRequestCode());
     }
 
-    private void exportTournament(final String path) {
+    private void exportTournament(final String path, final int requestCode) {
+        final ExportType exportType = requestCode==ExportType.IMAGE.getRequestCode() ? ExportType.IMAGE
+                : ExportType.FILE;
+        //TODO-AW do something with exportType
         new ExportTournamentTask(this, tournamentView_root, tournament.getTitle(), path).execute();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == DirectoryPickerActivity.DIRECTORY_PICKER_DEFAULT_REQUEST_CODE && resultCode == RESULT_OK) {
-            final String path = (String) data.getExtras().get(DirectoryPickerActivity.CHOSEN_DIRECTORY);
-            exportTournament(path);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == ExportType.IMAGE.getRequestCode()
+                    || requestCode == ExportType.FILE.getRequestCode()) {
+                final String path = (String) data.getExtras().get(DirectoryPickerActivity.CHOSEN_DIRECTORY);
+                exportTournament(path,requestCode);
+            }
         }
     }
 
@@ -943,8 +964,11 @@ abstract public class TournamentActivity extends InAppBillingActivity implements
             case R.id.action_saveAsTournament:
                 saveAsTournament();
                 return true;
-            case R.id.action_exportTournament:
-                choosePathToExportTournament();
+            case R.id.action_exportTournamentAsImage:
+                choosePathToExportTournament(ExportType.IMAGE);
+                return true;
+            case R.id.action_exportTournamentAsFile:
+                choosePathToExportTournament(ExportType.FILE);
                 return true;
             case R.id.action_editTournament:
                 openTournamentEditor();

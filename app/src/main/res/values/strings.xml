@@ -47,7 +47,7 @@
     <string name="saveTournament">Save</string>
     <string name="currentRanking">Current ranking</string>
     <string name="saveAsTournament">Save as</string>
-    <string name="exportTournament">Export as image</string>
+    <string name="exportTournamentAsImage">Export as image</string>
     <string name="editTournament">Edit tournament</string>
     <string name="rebuildTournament">Rebuild tournament</string>
     <string name="editARound">Edit a round</string>
@@ -197,6 +197,9 @@
     <string name="save">Save</string>
     <string name="dontSave">Don\'t save</string>
     <string name="playStoreNotFound">Play Store not found</string>
+
+
+    <string name="exportTournamentAsFile">Export as file</string>
 
     <!-- IAP -->
     <string name="verifyingPremiumStatus">Verifying premium status&#8230;</string>

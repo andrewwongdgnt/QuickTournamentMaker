@@ -45,7 +45,7 @@
     <string name="saveTournament">Сохранить</string>
     <string name="currentRanking">Текущий рейтинг</string>
     <string name="saveAsTournament">Сохранить как</string>
-    <string name="exportTournament">Экспорт как изображение</string>
+    <string name="exportTournamentAsImage">Экспорт как изображение</string>
     <string name="editTournament">Редактировать турнир</string>
     <string name="rebuildTournament">Перестроить турнир</string>
     <string name="editARound">Изменить раунд</string>
