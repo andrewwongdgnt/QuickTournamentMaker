@@ -220,10 +220,10 @@
                                 \n%3$s: %4$d
                                 \n%5$s: %6$d
     </string>
-    
+
     <string name="na" translatable="false">N/A</string>
     <string name="exportTournamentAsFile">Export as file</string>
-
+    <string name="startTournamentFromFile">Start tournament from file</string>
 
     <!-- IAP -->
     <string name="verifyingPremiumStatus">Verifying premium status&#8230;</string>
@@ -236,9 +236,11 @@
     <string name="item_already_owned_errorMsg">This item is already owned.</string>
     <string name="initialization_errorMsg">An error has occurred during billing initialization, please restart app to try again later.</string>
     <string name="verification_errorMsg">An error has occurred while trying to verify a purchase.</string>
-    <string name="exportAsFileFail">Failed to export tournament as a file  %1$s</string>
+
+    <string name="exportAsFileFail">Failed to export tournament as a file\n\n%1$s</string>
     <string name="exportAsFileProgressMsg">Exporting as file, please wait&#8230;</string>
-    <string name="exportAsFileSuccess">Successfully exported tournament as a file %1$s</string>
+    <string name="exportAsFileSuccess">Successfully exported tournament as a file\n\n%1$s</string>
     <string name="noFileAppInstalledMsg">It seems like you do not have an app that can view a text file.  Please install one and try again.</string>
 
+    <string name="startTournamentFromFileFail">Failed to start tournament from a file\n\n%1$s</string>
 </resources>

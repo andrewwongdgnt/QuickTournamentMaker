@@ -216,11 +216,7 @@ public class ExportTournamentTask extends AsyncTask<String, Void, String> {
         } catch (ActivityNotFoundException e) {
             final AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setMessage(exportType == TournamentActivity.ExportType.IMAGE ? context.getString(R.string.noImageAppInstalledMsg) : context.getString(R.string.noFileAppInstalledMsg));
-            builder.setPositiveButton(context.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-                public void onClick(final DialogInterface dialogInterface, final int n) {
-                    dialogInterface.cancel();
-                }
-            });
+            builder.setPositiveButton(context.getString(android.R.string.ok), null);
             builder.create().show();
 
         }

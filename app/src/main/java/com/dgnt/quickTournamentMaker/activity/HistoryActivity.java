@@ -43,7 +43,11 @@ import com.dgnt.quickTournamentMaker.util.LayoutUtil;
 import com.dgnt.quickTournamentMaker.util.PreferenceUtil;
 
 import org.joda.time.DateTime;
+import org.json.JSONException;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +55,7 @@ import java.util.List;
 public class HistoryActivity extends AppCompatActivity {
 
     private final static int HISTORY_REQUEST_CODE = 1;
+    private final static int START_TOURNAMENT_FROM_FILE_REQUEST_CODE = 2;
 
     private DatabaseHelper db;
 
@@ -144,8 +149,7 @@ public class HistoryActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 final HistoricalTournament historicalTournament = historicalTournamentList.get(position);
-                TournamentActivity.startTournamentActivity(HistoryActivity.this, HISTORY_REQUEST_CODE, Seeder.Type.SAME, historicalTournament);
-
+                startTournament(historicalTournament);
             }
         });
 
@@ -199,6 +203,11 @@ public class HistoryActivity extends AppCompatActivity {
         if (db == null)
             db = new DatabaseHelper(this);
         return db;
+    }
+
+    private void startTournament(final HistoricalTournament historicalTournament) {
+
+        TournamentActivity.startTournamentActivity(HistoryActivity.this, HISTORY_REQUEST_CODE, Seeder.Type.SAME, historicalTournament);
     }
 
     private void deleteTournament() {
@@ -427,7 +436,6 @@ public class HistoryActivity extends AppCompatActivity {
     }
 
 
-
     private void openTournamentEditor() {
 
         final HistoricalTournament historicalTournament = getAndUnCheckHistoricalTournament(historicalTournaments_lv);
@@ -631,12 +639,65 @@ public class HistoryActivity extends AppCompatActivity {
 
     }
 
+
+    private void choosePathToStartTournament() {
+
+        Intent intent = new Intent(this, DirectoryPickerActivity.class);
+        intent.putExtra(DirectoryPickerActivity.FILE_PICKER, true);
+
+        startActivityForResult(intent, START_TOURNAMENT_FROM_FILE_REQUEST_CODE);
+    }
+
+    private void startTournamentFromFilePath(final String path) {
+
+        final File file = new File(path);
+
+        final StringBuilder stringBuilder = new StringBuilder();
+
+        try {
+            final BufferedReader br = new BufferedReader(new FileReader(file));
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                stringBuilder.append(line);
+            }
+            br.close();
+
+
+            final String content = stringBuilder.toString();
+
+            final List<String> missingJsonPropertyList = new ArrayList<>();
+
+
+            final HistoricalTournament historicalTournament = Tournament.JsonHelper.fromJson(content, missingJsonPropertyList);
+            if (historicalTournament != null)
+                startTournament(historicalTournament);
+        } catch (JSONException e) {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(getString(R.string.startTournamentFromFileFail, e.getMessage()));
+            builder.setPositiveButton(getString(android.R.string.ok), null);
+            builder.create().show();
+
+        } catch (Exception e) {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(getString(R.string.startTournamentFromFileFail, e.getMessage()));
+            builder.setPositiveButton(getString(android.R.string.ok), null);
+            builder.create().show();
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == HISTORY_REQUEST_CODE) {
             updateTournamentListViewFromDB();
+        }
+        if (resultCode == RESULT_OK) {
+            if (requestCode == START_TOURNAMENT_FROM_FILE_REQUEST_CODE) {
+                final String path = (String) data.getExtras().get(DirectoryPickerActivity.CHOSEN_DIRECTORY);
+                startTournamentFromFilePath(path);
+            }
         }
     }
 
@@ -665,6 +726,9 @@ public class HistoryActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
+                return true;
+            case R.id.action_startTournamentFromFile:
+                choosePathToStartTournament();
                 return true;
             case R.id.action_sort:
                 openSortingOptions();
