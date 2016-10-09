@@ -244,4 +244,5 @@
 
     <string name="startTournamentFromFileFail">Failed to start tournament from a file\n\n%1$s</string>
     <string name="corruptFileMsg">Failed to start tournament. The specified file is too malformed</string>
+    <string name="readFileProgressMsg">Reading file, please wait&#8230;</string>
 </resources>

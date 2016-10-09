@@ -1,5 +1,6 @@
 package com.dgnt.quickTournamentMaker.activity;
 
+import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -38,6 +39,7 @@ import com.dgnt.quickTournamentMaker.model.history.HistoricalFilters;
 import com.dgnt.quickTournamentMaker.model.history.HistoricalTournament;
 import com.dgnt.quickTournamentMaker.model.tournament.Seeder;
 import com.dgnt.quickTournamentMaker.model.tournament.Tournament;
+import com.dgnt.quickTournamentMaker.task.StartTournamentFromFileTask;
 import com.dgnt.quickTournamentMaker.util.DatabaseHelper;
 import com.dgnt.quickTournamentMaker.util.LayoutUtil;
 import com.dgnt.quickTournamentMaker.util.PreferenceUtil;
@@ -149,7 +151,7 @@ public class HistoryActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 final HistoricalTournament historicalTournament = historicalTournamentList.get(position);
-                startTournament(historicalTournament);
+                startTournament(HistoryActivity.this, historicalTournament);
             }
         });
 
@@ -205,9 +207,9 @@ public class HistoryActivity extends AppCompatActivity {
         return db;
     }
 
-    private void startTournament(final HistoricalTournament historicalTournament) {
+    public static void startTournament(final Activity activity, final HistoricalTournament historicalTournament) {
 
-        TournamentActivity.startTournamentActivity(HistoryActivity.this, HISTORY_REQUEST_CODE, Seeder.Type.SAME, historicalTournament);
+        TournamentActivity.startTournamentActivity(activity, HISTORY_REQUEST_CODE, Seeder.Type.SAME, historicalTournament);
     }
 
     private void deleteTournament() {
@@ -650,30 +652,8 @@ public class HistoryActivity extends AppCompatActivity {
 
     private void startTournamentFromFilePath(final String path) {
 
-        final File file = new File(path);
+        new StartTournamentFromFileTask(this, path).execute();
 
-        final StringBuilder stringBuilder = new StringBuilder();
-
-        try {
-            final BufferedReader br = new BufferedReader(new FileReader(file));
-            String line;
-
-            while ((line = br.readLine()) != null) {
-                stringBuilder.append(line);
-            }
-            br.close();
-
-            final String content = stringBuilder.toString();
-
-            final HistoricalTournament historicalTournament = Tournament.JsonHelper.fromJson(content);
-
-            startTournament(historicalTournament);
-        } catch (Exception e) {
-            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage(e instanceof JSONException ? getString(R.string.corruptFileMsg) : getString(R.string.startTournamentFromFileFail, e.getMessage()));
-            builder.setPositiveButton(getString(android.R.string.ok), null);
-            builder.create().show();
-        }
     }
 
     @Override
