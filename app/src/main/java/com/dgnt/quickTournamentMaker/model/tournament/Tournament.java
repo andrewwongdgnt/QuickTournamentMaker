@@ -478,14 +478,14 @@ public abstract class Tournament implements IKeyable {
             return tournamentJson.toString();
         }
 
-        public static HistoricalTournament fromJson(final String jsonString, final List<String> missingJsonPropertyList) throws JSONException {
+        public static HistoricalTournament fromJson(final String jsonString) throws JSONException {
 
 
             final JSONObject tournamentJson = new JSONObject(jsonString);
-            final long creationTimeInEpoch = optTime(tournamentJson, TOURNAMENT_CREATION_TIME, missingJsonPropertyList);
-            final long lastModifiedTimeInEpoch = optTime(tournamentJson, TOURNAMENT_LAST_MODIFIED_TIME, missingJsonPropertyList);
-            final String name = optString(tournamentJson, TOURNAMENT_TITLE, missingJsonPropertyList);
-            final String note = optString(tournamentJson, TOURNAMENT_DESCRIPTION, missingJsonPropertyList);
+            final long creationTimeInEpoch = tournamentJson.optLong(TOURNAMENT_CREATION_TIME, NULL_TIME_VALUE);
+            final long lastModifiedTimeInEpoch = tournamentJson.optLong(TOURNAMENT_LAST_MODIFIED_TIME, NULL_TIME_VALUE);
+            final String name = tournamentJson.optString(TOURNAMENT_TITLE, "");
+            final String note = tournamentJson.optString(TOURNAMENT_DESCRIPTION, "");
             final String tournamentType_string = tournamentJson.getString(TOURNAMENT_TYPE);
             TournamentType tournamentType;
             try {
@@ -493,7 +493,7 @@ public abstract class Tournament implements IKeyable {
             } catch (IllegalArgumentException e) {
                 throw new JSONException(tournamentType_string + " not part of TournamentType enum");
             }
-            final String rankingConfig = optString(tournamentJson, TOURNAMENT_RANKING_CONFIG, missingJsonPropertyList);
+            final String rankingConfig = tournamentJson.optString(TOURNAMENT_RANKING_CONFIG, "");
 
             final JSONArray seededParticipantJsonArray = tournamentJson.getJSONArray(PARTICIPANTS);
             final List<Participant> participantList = new ArrayList<>();
@@ -501,8 +501,8 @@ public abstract class Tournament implements IKeyable {
                 final JSONObject participantJsonObject = seededParticipantJsonArray.getJSONObject(participantIndex);
 
                 final String participantName = participantJsonObject.getString(PARTICIPANT_NAME);
-                final String participantDisplayName = optString(participantJsonObject, PARTICIPANT_DISPLAY_NAME, missingJsonPropertyList);
-                final String participantNote = optString(participantJsonObject, PARTICIPANT_NOTE, missingJsonPropertyList);
+                final String participantDisplayName = participantJsonObject.optString(PARTICIPANT_DISPLAY_NAME, "");
+                final String participantNote = participantJsonObject.optString(PARTICIPANT_NOTE, "");
                 final String participantType_string = participantJsonObject.getString(PARTICIPANT_TYPE);
                 Participant.ParticipantType participantType;
                 try {
@@ -510,7 +510,7 @@ public abstract class Tournament implements IKeyable {
                 } catch (IllegalArgumentException e) {
                     throw new JSONException(participantType_string + " not part of ParticipantType enum");
                 }
-                final int participantColor = optColor(participantJsonObject, PARTICIPANT_COLOR, missingJsonPropertyList);
+                final int participantColor = participantJsonObject.optInt(PARTICIPANT_COLOR, TournamentUtil.DEFAULT_DISPLAY_COLOR);
 
                 final Participant participant = new Participant(new Person(participantName, participantNote), participantType);
                 participant.setDisplayName(participantDisplayName);
@@ -525,10 +525,10 @@ public abstract class Tournament implements IKeyable {
                 final JSONObject roundJson = roundJsonArray.getJSONObject(i);
 
                 final int roundGroupIndex = roundJson.getInt(ROUND_GROUP_INDEX);
-                final int roundIndex =  roundJson.getInt(ROUND_INDEX);
-                final String roundName = optString(roundJson, ROUND_NAME, missingJsonPropertyList);
-                final String roundNote = optString(roundJson, ROUND_NOTE, missingJsonPropertyList);
-                final int roundColor = optColor(roundJson, ROUND_COLOR, missingJsonPropertyList);
+                final int roundIndex = roundJson.getInt(ROUND_INDEX);
+                final String roundName = roundJson.optString(ROUND_NAME, "");
+                final String roundNote = roundJson.optString(ROUND_NOTE, "");
+                final int roundColor = roundJson.optInt(ROUND_COLOR, TournamentUtil.DEFAULT_DISPLAY_COLOR);
 
                 roundList.add(new HistoricalRound(roundGroupIndex, roundIndex, roundName, roundNote, roundColor));
 
@@ -541,10 +541,10 @@ public abstract class Tournament implements IKeyable {
                 final JSONObject matchUpJson = matchUpJsonArray.getJSONObject(i);
 
                 final int roundGroupIndex = matchUpJson.getInt(ROUND_GROUP_INDEX);
-                final int roundIndex =  matchUpJson.getInt(ROUND_INDEX);
-                final int matchUpIndex =  matchUpJson.getInt(MATCH_UP_INDEX);
-                final String matchUpNote = optString(matchUpJson, MATCH_UP_NOTE, missingJsonPropertyList);
-                final int matchUpColor = optColor(matchUpJson, MATCH_UP_COLOR, missingJsonPropertyList);
+                final int roundIndex = matchUpJson.getInt(ROUND_INDEX);
+                final int matchUpIndex = matchUpJson.getInt(MATCH_UP_INDEX);
+                final String matchUpNote = matchUpJson.optString(MATCH_UP_NOTE, "");
+                final int matchUpColor = matchUpJson.optInt(MATCH_UP_COLOR, TournamentUtil.DEFAULT_DISPLAY_COLOR);
                 final String status_string = matchUpJson.getString(MATCH_UP_STATUS);
                 MatchUp.MatchUpStatus status;
                 try {
@@ -561,35 +561,6 @@ public abstract class Tournament implements IKeyable {
 
         }
 
-        public static String optString(final JSONObject jsonObject, final String key, final List<String> missingJsonPropertyList) {
-            try {
-                return jsonObject.getString(key);
-            } catch (JSONException e) {
-                if (missingJsonPropertyList != null)
-                    missingJsonPropertyList.add(key);
-                return "";
-            }
-        }
-
-        public static long optTime(final JSONObject jsonObject, final String key, final List<String> missingJsonPropertyList) {
-            try {
-                return jsonObject.getLong(key);
-            } catch (JSONException e) {
-                if (missingJsonPropertyList != null)
-                    missingJsonPropertyList.add(key);
-                return NULL_TIME_VALUE;
-            }
-        }
-
-        public static int optColor(final JSONObject jsonObject, final String key, final List<String> missingJsonPropertyList) {
-            try {
-                return jsonObject.getInt(key);
-            } catch (JSONException e) {
-                if (missingJsonPropertyList != null)
-                    missingJsonPropertyList.add(key);
-                return TournamentUtil.DEFAULT_DISPLAY_COLOR;
-            }
-        }
 
     }
 

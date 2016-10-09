@@ -243,4 +243,5 @@
     <string name="noFileAppInstalledMsg">It seems like you do not have an app that can view a text file.  Please install one and try again.</string>
 
     <string name="startTournamentFromFileFail">Failed to start tournament from a file\n\n%1$s</string>
+    <string name="corruptFileMsg">Failed to start tournament. The specified file is too malformed</string>
 </resources>

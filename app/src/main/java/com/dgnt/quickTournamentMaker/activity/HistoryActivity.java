@@ -663,24 +663,14 @@ public class HistoryActivity extends AppCompatActivity {
             }
             br.close();
 
-
             final String content = stringBuilder.toString();
 
-            final List<String> missingJsonPropertyList = new ArrayList<>();
+            final HistoricalTournament historicalTournament = Tournament.JsonHelper.fromJson(content);
 
-
-            final HistoricalTournament historicalTournament = Tournament.JsonHelper.fromJson(content, missingJsonPropertyList);
-            if (historicalTournament != null)
-                startTournament(historicalTournament);
-        } catch (JSONException e) {
-            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage(getString(R.string.startTournamentFromFileFail, e.getMessage()));
-            builder.setPositiveButton(getString(android.R.string.ok), null);
-            builder.create().show();
-
+            startTournament(historicalTournament);
         } catch (Exception e) {
             final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage(getString(R.string.startTournamentFromFileFail, e.getMessage()));
+            builder.setMessage(e instanceof JSONException ? getString(R.string.corruptFileMsg) : getString(R.string.startTournamentFromFileFail, e.getMessage()));
             builder.setPositiveButton(getString(android.R.string.ok), null);
             builder.create().show();
         }
