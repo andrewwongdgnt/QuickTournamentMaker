@@ -387,8 +387,6 @@ public abstract class Tournament implements IKeyable {
         final private static String CURRENT_VERSION_PROPERTY = "currentVersion";
         final private static int CURRENT_VERSION = 1;
 
-        final private static String TOURNAMENT_CREATION_TIME = "creationTime";
-        final private static String TOURNAMENT_LAST_MODIFIED_TIME = "lastModifiedTime";
         final private static String TOURNAMENT_TITLE = "title";
         final private static String TOURNAMENT_DESCRIPTION = "description";
         final private static String TOURNAMENT_TYPE = "type";
@@ -420,8 +418,6 @@ public abstract class Tournament implements IKeyable {
 
             final JSONObject tournamentJson = new JSONObject();
             tournamentJson.put(CURRENT_VERSION_PROPERTY, CURRENT_VERSION);
-            tournamentJson.put(TOURNAMENT_CREATION_TIME, tournament.getCreationTimeInEpoch());
-            tournamentJson.put(TOURNAMENT_LAST_MODIFIED_TIME, tournament.getLastModifiedTimeInEpoch());
             tournamentJson.put(TOURNAMENT_TITLE, tournament.getTitle());
             tournamentJson.put(TOURNAMENT_DESCRIPTION, tournament.getDescription());
             tournamentJson.put(TOURNAMENT_TYPE, tournament.getType().name());
@@ -482,8 +478,8 @@ public abstract class Tournament implements IKeyable {
 
 
             final JSONObject tournamentJson = new JSONObject(jsonString);
-            final long creationTimeInEpoch = tournamentJson.optLong(TOURNAMENT_CREATION_TIME, NULL_TIME_VALUE);
-            final long lastModifiedTimeInEpoch = tournamentJson.optLong(TOURNAMENT_LAST_MODIFIED_TIME, NULL_TIME_VALUE);
+            final long creationTimeInEpoch = NULL_TIME_VALUE;
+            final long lastModifiedTimeInEpoch =  NULL_TIME_VALUE;
             final String name = tournamentJson.optString(TOURNAMENT_TITLE, "");
             final String note = tournamentJson.optString(TOURNAMENT_DESCRIPTION, "");
             final String tournamentType_string = tournamentJson.getString(TOURNAMENT_TYPE);
