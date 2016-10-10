@@ -211,6 +211,28 @@
     <string name="item_already_owned_errorMsg">Этот пункт уже принадлежит кому-то.</string>
     <string name="initialization_errorMsg">Произошла ошибка при выставлении счётов, необходимо перезапустить приложение, чтобы повторить попытку позже.</string>
     <string name="verification_errorMsg">Произошла ошибка при попытке подтвердить покупку.</string>
+    <string name="corruptFileMsg">Невозможно начать турнир. Указанный файл испорчен</string>
+    <string name="exportAsFileFail">Ошибка при экспорте турнира в файл</string>
+    <string name="exportAsFileProgressMsg">Экспорт в файл, подождите&#8230;</string>
+    <string name="exportAsFileSuccess">Турнир успешно экспортирован в файл\n\n%1$s</string>
+    <string name="exportTournamentAsFile">Экспорт в файл</string>
+    <string name="noFileAppInstalledMsg">Отсутствует приложение для просмотра текстовых файлов. Установите любое приложение и повторите попытку.</string>
+    <string name="priority">Приоритет (Нажмите на две записи для перестановки)</string>
+    <string name="rankConfiguration">Конфигурация ранжирования</string>
+    <string name="rankConfigurationBasedOnPriority">Конфигурация ранжирования по приоритету</string>
+    <string name="rankConfigurationBasedOnScoring">Конфигурация ранжирования по очкам</string>
+    <string name="rankConfigurationForRoundRobinHelpMsg">Ранжирование для Round Robin необходимо для определения текущего ранга каждого из игроков в любой момент времени.</string>
+    <string name="rankConfigurationForSwissHelpMsg">Ранжирование для Swiss необходимо для определения текущего ранга каждого из игроков в любой момент времени и для вычисления следующей серии игр.</string>
+    <string name="readFileProgressMsg">Чтение файла, подождите&#8230;</string>
+    <string name="scoring">Оценка (очки за рекорд)</string>
+    <string name="rankConfigurationHelpMsg">%1$s
+        \n\nНа основе приоритета:
+        \n\nРейтинг базируетя на количестве выигрышей, поражений или связок в некотором порядке. К примеру, если порядок следующий - выигрыши, связки, поражения - то для сравнения рейтинга А и Б сравнивается количество побед А с количеством побед Б. У кого количество выше - побеждает. Если число одинаково, сравнивается количество поражений А и Б. У кого больше поражений - опускается в рейтинге.
+        \n\nНа основе очков:
+        \n\nРейтинг базируется на количестве очков. Большее число, выше ранг. Очки присуждаются за победы, поражения и связки. К примеру, победа 2 очка, связка 1 очко и поражение 0 очков. Сравнивается ранг А и Б, подсчитывается число побед, поражений и связок для обоих и рассчитывается общее количество очков. У кого больше будет выше в рейтинге.
+</string>
+    <string name="startTournamentFromFile">Начать турнир из файла</string>
+    <string name="startTournamentFromFileFail">Не удалось начать турнир из файла</string>
 
 
 </resources>
