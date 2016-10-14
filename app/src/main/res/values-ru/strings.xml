@@ -7,7 +7,6 @@
     <string name="numberOfPlayersHint">По крайней мере 3</string>
     <string name="numberOfPlayersSelected">Количество выбранных игроков: %1$d</string>
     <string name="participantDefaultName">Игро %1$d</string>
-    <string name="byeDefaultName">BYE</string>
 
     <string name="elimination">Элиминация</string>
     <string name="doubleElimination">Двоная элиминация</string>
@@ -20,20 +19,17 @@
     <string name="notANumberMsg">Не число</string>
 
     <string name="roundHeader">Раунд %1$d</string>
-    <string name="defaultTitle">Мой %1$S турнир (%2$s)</string>
+    <string name="defaultTitle">Мой %1$s турнир (%2$s)</string>
     <string name="winnersBracket">Кронштейн Победителей</string>
     <string name="losersBracket">Кронштейн Проигравших</string>
     <string name="finalsBracket">Финальный кронштейн</string>
-    <string name="roundTitleForDifferentRoundGroup">%2$s\n\t%1$s</string>
     <string name="roundSelectionHint">В качестве альтернативы, долгий зажим кнопки кругового заголовка</string>
     <string name="matchUpSelectionHint">В качестве альтернативы, долгий зажим кнопки соединения</string>
     <string name="participantSelectionHint">В качестве альтернативы, долгий зажим кнопки игрока</string>
 
-    <string name="participant1VsParticipant2">%3$s\n\t%1$s VS %2$s</string>
     <string name="participantWithABye">%2$s\n\t%1$s имеет BYE</string>
     <string name="participantVsNoOne">%2$s\n\t%1$s ожидеает соперника</string>
     <string name="emptyMatchUp">%2$s\n\tСоеденить %1$d</string>
-    <string name="participant1VsParticipant2ForDifferentRoundGroup">%4$s\n\t%3$s\n\t\t%1$s VS %2$s</string>
     <string name="participantWithAByeForDifferentRoundGroup">%3$s\n\t%2$s\n\t\t%1$s имеет BYE</string>
     <string name="participantVsNoOneForDifferentRoundGroup">%3$s\n\t%2$s\n\t\t%1$s ожидает соперника</string>
     <string name="emptyMatchUpForDifferentRoundGroup">%3$s\n\t%2$s\n\t\tСоеденить %1$d</string>
@@ -212,7 +208,7 @@
     <string name="initialization_errorMsg">Произошла ошибка при выставлении счётов, необходимо перезапустить приложение, чтобы повторить попытку позже.</string>
     <string name="verification_errorMsg">Произошла ошибка при попытке подтвердить покупку.</string>
     <string name="corruptFileMsg">Невозможно начать турнир. Указанный файл испорчен</string>
-    <string name="exportAsFileFail">Ошибка при экспорте турнира в файл</string>
+    <string name="exportAsFileFail">Ошибка при экспорте турнира в файл\n\n%1$s</string>
     <string name="exportAsFileProgressMsg">Экспорт в файл, подождите&#8230;</string>
     <string name="exportAsFileSuccess">Турнир успешно экспортирован в файл\n\n%1$s</string>
     <string name="exportTournamentAsFile">Экспорт в файл</string>
@@ -232,7 +228,7 @@
         \n\nРейтинг базируется на количестве очков. Большее число, выше ранг. Очки присуждаются за победы, поражения и связки. К примеру, победа 2 очка, связка 1 очко и поражение 0 очков. Сравнивается ранг А и Б, подсчитывается число побед, поражений и связок для обоих и рассчитывается общее количество очков. У кого больше будет выше в рейтинге.
 </string>
     <string name="startTournamentFromFile">Начать турнир из файла</string>
-    <string name="startTournamentFromFileFail">Не удалось начать турнир из файла</string>
+    <string name="startTournamentFromFileFail">Не удалось начать турнир из файла\n\n%1$s</string>
 
 
 </resources>

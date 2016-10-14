@@ -8,7 +8,6 @@
     <string name="numberOfPlayersHint">Au moins 3</string>
     <string name="numberOfPlayersSelected">Nombre de joueurs sélectionnés: %1$d</string>
     <string name="participantDefaultName">Joueur %1$d</string>
-    <string name="byeDefaultName">BYE</string>
 
     <string name="elimination">Élimination</string>
     <string name="doubleElimination">Double élimination</string>
@@ -25,16 +24,13 @@
     <string name="winnersBracket">Tranche de gagnants</string>
     <string name="losersBracket">Tranche de perdants</string>
     <string name="finalsBracket">Tranche de finales</string>
-    <string name="roundTitleForDifferentRoundGroup">%2$s\n\t%1$s</string>
     <string name="roundSelectionHint">Alternativement, cliquer longuement sur une en-tête de la ronde</string>
     <string name="matchUpSelectionHint">Alternativement, cliquer longuement sur un match</string>
     <string name="participantSelectionHint">Alternativement, cliquer longuement sur un joueur</string>
 
-    <string name="participant1VsParticipant2">%3$s\n\t%1$s VS %2$s</string>
     <string name="participantWithABye">%2$s\n\t%1$s a une BYE</string>
     <string name="participantVsNoOne">%2$s\n\t%1$s en attendant l\'adversaire</string>
     <string name="emptyMatchUp">%2$s\n\tMatch %1$d</string>
-    <string name="participant1VsParticipant2ForDifferentRoundGroup">%4$s\n\t%3$s\n\t\t%1$s VS %2$s</string>
     <string name="participantWithAByeForDifferentRoundGroup">%3$s\n\t%2$s\n\t\t%1$s a une BYE</string>
     <string name="participantVsNoOneForDifferentRoundGroup">%3$s\n\t%2$s\n\t\t%1$s en attendant l\'adversaire</string>
     <string name="emptyMatchUpForDifferentRoundGroup">%3$s\n\t%2$s\n\t\tMatch %1$d</string>
@@ -212,5 +208,22 @@
     <string name="item_already_owned_errorMsg">Cet article est déjà acheté.</string>
     <string name="initialization_errorMsg">Une erreur s\'est produite lors de l\'initialisation de la facturation, veuillez redémarrer l\'appli pour réessayer encore.</string>
     <string name="verification_errorMsg">Une erreur s\'est produite en essayant de vérifier un achat.</string>
+    <string name="corruptFileMsg">Echec au démarrage du tournoi. Le fichier en question est trop déformé.</string>
+    <string name="exportAsFileFail">Echec de l\'exportation du tournoi en tant que fichier.\n\n%1$s</string>
+    <string name="exportAsFileProgressMsg">Exportation en tant que fichier, veuillez patienter&#8230;</string>
+    <string name="exportAsFileSuccess">Exportation du tournoi en tant que fichier réussie.\n\n%1$s</string>
+    <string name="exportTournamentAsFile">Exporter en tant que fichier.</string>
+    <string name="noFileAppInstalledMsg">Il semblerait que vous n\'ayez pas d\'application permettant d\'ouvrir les fichiers textes. Veuillez en installer une.</string>
+    <string name="priority">Priorité (Appuyez sur deux pour changer)</string>
+    <string name="rankConfiguration">Configuration du classement</string>
+    <string name="rankConfigurationBasedOnPriority">Configuration du classement basé sur la priorité</string>
+    <string name="rankConfigurationBasedOnScoring">Configuration du classement basé sur le score</string>
+    <string name="rankConfigurationForRoundRobinHelpMsg">Le classement pour les tournois toutes rondes est requis afin de déterminer le classement actuel de chaque joueur à tout moment.</string>
+    <string name="rankConfigurationForSwissHelpMsg">Le classement pour les tournois de système suisse est requis afin de déterminer le classement actuel de chaque joueur à tout moment et de calculer les prochaines équipes.</string>
+    <string name="rankConfigurationHelpMsg">%1$s\n\nBasé sur la priorité:\n\nRang basé sur le nombre de victoires, défaites ou matchs nuls dans un certain ordre. Ex: Si l\'ordre est victoires, matchs nuls, défaites, alors afin de comparer le rang A et B, procédez ainsi: comparez le nombre de victoires de A avec celui de B, celui qui a le plus grand nombre est classé au dessus. Si les nombres sont les mêmes, comparez le nombre de matchs nuls de A avec celui de B, celui qui a le plus grand nombre est classé au dessus. Si les nombres sont également les mêmes, comparez les nombres de défaites de A et B, ainsi de suite.\n\nBasé sur le score:\n\nRang basé sur le nombre de points accumulés. Plus le nombre est grand plus le rang est élevé. Les points sont assignés à chaque victoire, défaite et match nul. Ex: Si une victoire vaut 2 points, un match nul vaut 1 point et une défaite vaut 0 point, alors pour comparer les rang de A et B, comptez le nombre de victoires, défaites et matchs nuls de chacun et calculez le total des points. Celui qui a le plus de points est classé au dessus.</string>
+    <string name="readFileProgressMsg">Lecture du fichier, veuillez patienter&#8230;</string>
+    <string name="scoring">Score (points basé sur le record)</string>
+    <string name="startTournamentFromFile">Commencer le tournoi depuis le fichier</string>
+    <string name="startTournamentFromFileFail">Echec au démarrage du tournoi depuis un fichier\n\n%1$s</string>
 
 </resources>

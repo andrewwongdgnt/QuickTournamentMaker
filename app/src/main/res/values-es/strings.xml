@@ -8,7 +8,6 @@
     <string name="numberOfPlayersHint">Al menos 3</string>
     <string name="numberOfPlayersSelected">Número de jugadores seleccionados: %1$d</string>
     <string name="participantDefaultName">Jugador %1$d</string>
-    <string name="byeDefaultName">BYE</string>
 
     <string name="elimination">Eliminación</string>
     <string name="doubleElimination">Doble eliminación</string>
@@ -25,16 +24,13 @@
     <string name="winnersBracket">Diagrama de ganadores</string>
     <string name="losersBracket">Diagrama de perdedores</string>
     <string name="finalsBracket">Diagrama de finales</string>
-    <string name="roundTitleForDifferentRoundGroup">%2$s\n\t%1$s</string>
     <string name="roundSelectionHint">Alternativamente, clic largo en encabezado de ronda</string>
     <string name="matchUpSelectionHint">Alternativamente, clic largo en emparejamiento</string>
     <string name="participantSelectionHint">Alternativamente, clic largo en jugador</string>
 
-    <string name="participant1VsParticipant2">%3$s\n\t%1$s VS %2$s</string>
     <string name="participantWithABye">%2$s\n\t%1$s tiene un BYE</string>
     <string name="participantVsNoOne">%2$s\n\t%1$s esperando oponente</string>
     <string name="emptyMatchUp">%2$s\n\ttemparejamiento %1$d</string>
-    <string name="participant1VsParticipant2ForDifferentRoundGroup">%4$s\n\t%3$s\n\t\t%1$s VS %2$s</string>
     <string name="participantWithAByeForDifferentRoundGroup">%3$s\n\t%2$s\n\t\t%1$s tiene un BYE</string>
     <string name="participantVsNoOneForDifferentRoundGroup">%3$s\n\t%2$s\n\t\t%1$s esperando oponente</string>
     <string name="emptyMatchUpForDifferentRoundGroup">%3$s\n\t%2$s\n\t\ttemparejamiento %1$d</string>
@@ -212,5 +208,22 @@
     <string name="item_already_owned_errorMsg">Este objeto ya es de su propiedad.</string>
     <string name="initialization_errorMsg">Se ha producido un error durante la inicialización de facturación, por favor reinicie la aplicación para volver a intentarlo más tarde.</string>
     <string name="verification_errorMsg">Se produjo un error al intentar verificar una compra.</string>
+    <string name="corruptFileMsg">Error al iniciar el torneo. El archivo especificado esta demasiado malformado.</string>
+    <string name="exportAsFileFail">Error al exportar el torneo como archivo\n\n%1$s</string>
+    <string name="exportAsFileProgressMsg">Exportando como archivo, por favor espere&#8230;</string>
+    <string name="exportTournamentAsFile">Exportar como archivo</string>
+    <string name="noFileAppInstalledMsg">Parece ser que no tienes una app que pueda leer archivos de texto. Por favor, instala una e intenta de nuevo.</string>
+    <string name="priority">Prioridad (Toca dos para cambiar)</string>
+    <string name="rankConfiguration">Configuración de clasificatoria</string>
+    <string name="rankConfigurationBasedOnPriority">Configuración de clasificatoria en base a prioridad</string>
+    <string name="rankConfigurationBasedOnScoring">Configuración de clasificatoria en base a puntaje</string>
+    <string name="rankConfigurationForRoundRobinHelpMsg">La clasificación de torneo Todos contra Todos es requerida para determinar la clasificación actual de cada jugador en cualquier momento.</string>
+    <string name="rankConfigurationForSwissHelpMsg">La clasificación de Torneo tipo Suizo es requerida para determinar la clasificación actual de cada jugador en cualquier momento y para calcular el siguiente conjunto de agrupamientos.</string>
+    <string name="rankConfigurationHelpMsg">%1$s\n\nPrioridad basada en:\n\nLa clasificación es basada en el numero de victorias, derrotas o empates en algún orden. Ex. Si la orden es victorias, empates, derrotas; Entonces para comparar la clasificación de A y B, haz lo siguiente: Compara la cantidad de victorias de A con la cantidad de victorias de B y quien tenga más será clasificado más alto. Si tienen lo mismo, compara la cantidad de empates de A con la cantidad de empates de B, quien tenga más será clasificado más alto. Si tienen lo mismo, compara la cantidad de derrotas de A con la cantidad de derrotas de B, y quien tenga más será clasificado más bajo.\n\nPuntaje basado en:\n\nLa clasificación es basada en la cantidad de puntos acumulados donde más significa ser clasificado más alto. Los puntos son asignados por victorias, derrotas y empates. Ex. Si una victoria es valorada 2 puntos, un empate es valorado 1 punto y una derrota es valorado 0 puntos, entonces para comparar la clasificación de A y B, cuenta el numero de victorias, derrotas y empates de ambos y calcula los puntos totales. El que tenga más es clasificado más alto.</string>
+    <string name="readFileProgressMsg">Leyendo archivo, por favor espere&#8230;</string>
+    <string name="scoring">Puntaje (Puntos basados en registro)</string>
+    <string name="startTournamentFromFile">Iniciar torneo desde archivo</string>
+    <string name="startTournamentFromFileFail">Error al iniciar torneo desde archivo\n\n%1$s</string>
+    <string name="exportAsFileSuccess">Exportados satisfactoriamente torneo como un archivo\n\n%1$s</string>
 
 </resources>

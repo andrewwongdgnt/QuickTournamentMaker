@@ -9,7 +9,7 @@
     <string name="numberOfPlayersHint">At least 3</string>
     <string name="numberOfPlayersSelected">Number of players selected: %1$d</string>
     <string name="participantDefaultName">Player %1$d</string>
-    <string name="byeDefaultName">BYE</string>
+    <string name="byeDefaultName" translatable="false">BYE</string>
 
     <string name="elimination">Elimination</string>
     <string name="doubleElimination">Double elimination</string>
@@ -26,16 +26,16 @@
     <string name="winnersBracket">Winners bracket</string>
     <string name="losersBracket">Losers bracket</string>
     <string name="finalsBracket">Finals bracket</string>
-    <string name="roundTitleForDifferentRoundGroup">%2$s\n\t%1$s</string>
+    <string name="roundTitleForDifferentRoundGroup" translatable="false">%2$s\n\t%1$s</string>
     <string name="roundSelectionHint">Alternatively, long click on a round header</string>
     <string name="matchUpSelectionHint">Alternatively, long click on a match up</string>
     <string name="participantSelectionHint">Alternatively, long click on a player</string>
 
-    <string name="participant1VsParticipant2">%3$s\n\t%1$s VS %2$s</string>
+    <string name="participant1VsParticipant2" translatable="false">%3$s\n\t%1$s VS %2$s</string>
     <string name="participantWithABye">%2$s\n\t%1$s has a BYE</string>
     <string name="participantVsNoOne">%2$s\n\t%1$s waiting for opponent</string>
     <string name="emptyMatchUp">%2$s\n\tMatch up %1$d</string>
-    <string name="participant1VsParticipant2ForDifferentRoundGroup">%4$s\n\t%3$s\n\t\t%1$s VS %2$s</string>
+    <string name="participant1VsParticipant2ForDifferentRoundGroup" translatable="false">%4$s\n\t%3$s\n\t\t%1$s VS %2$s</string>
     <string name="participantWithAByeForDifferentRoundGroup">%3$s\n\t%2$s\n\t\t%1$s has a BYE</string>
     <string name="participantVsNoOneForDifferentRoundGroup">%3$s\n\t%2$s\n\t\t%1$s waiting for opponent</string>
     <string name="emptyMatchUpForDifferentRoundGroup">%3$s\n\t%2$s\n\t\tMatch up %1$d</string>
