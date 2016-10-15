@@ -65,7 +65,6 @@ public class HistoryActivity extends AppCompatActivity {
     private ListView historicalTournaments_lv;
 
     private List<HistoricalTournament> historicalTournamentList = new ArrayList<>();
-    private List<HistoricalTournament> allHistoricalTournamentList = new ArrayList<>();
     private SharedPreferences sharedPreferences;
 
     private TextView searchClearPrompt_tv;
@@ -499,14 +498,12 @@ public class HistoryActivity extends AppCompatActivity {
     private void updateTournamentListViewFromDB() {
 
         historicalTournamentList.clear();
-        allHistoricalTournamentList.clear();
         historicalTournamentList.addAll(getDb().getAllTournaments(PreferenceUtil.getHistoricalTournamentSort(sharedPreferences), searchTerm, HistoricalFilters.build(sharedPreferences)));
-        allHistoricalTournamentList.addAll(historicalTournamentList);
 
         historyAdapter.setSearchTerm(searchTerm);
         historyAdapter.notifyDataSetChanged();
 
-        resultInformation_tv.setText(allHistoricalTournamentList.size() == 0 ? getString(R.string.noResultsMsg) : getString(R.string.historicalItemHintMsg));
+        resultInformation_tv.setText(historicalTournamentList.size() == 0 ? getString(R.string.noResultsMsg) : getString(R.string.historicalItemHintMsg));
 
         filtersApplied_tv.setVisibility(areFiltersApplied() ? View.VISIBLE : View.GONE);
 
