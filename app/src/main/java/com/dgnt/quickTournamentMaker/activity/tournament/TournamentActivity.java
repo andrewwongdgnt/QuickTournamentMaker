@@ -117,6 +117,7 @@ abstract public class TournamentActivity extends InAppBillingActivity implements
     private View tournamentView_root;
     protected TournamentLayout tournamentLayout;
     private TextView description_tv;
+    private TextView msg_tv;
 
     AdRequest adRequest = AdsUtil.buildAdRequestWithTestDevices();
     AdView adView;
@@ -168,6 +169,18 @@ abstract public class TournamentActivity extends InAppBillingActivity implements
                 return false;
             }
         });
+        msg_tv = (TextView) findViewById(R.id.msg_tv);
+//        msg_tv.setVisibility(View.GONE);
+        msg_tv.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                msg_tv.setText("");
+
+                msg_tv.setVisibility(View.GONE);
+                return false;
+            }
+        });
+
 
     }
 
@@ -1018,6 +1031,23 @@ abstract public class TournamentActivity extends InAppBillingActivity implements
     @Override
     public void onTournamentLastModifiedTimeInEpochChange(long epoch) {
         setUnSavedChanges(false);
+    }
+
+
+    @Override
+    public void onTournamentMessageChange(Tournament.TournamentMsg tournamentMsg) {
+        msg_tv.setVisibility(View.VISIBLE);
+        switch(tournamentMsg){
+            case SWISS_NEW_ROUND_BLOCKED:
+                msg_tv.setText(getString(R.string.swissTournamentNewRoundBlockedMsg));
+                break;
+            case NONE:
+            default:
+
+                msg_tv.setText("");
+                msg_tv.setVisibility(View.GONE);
+        }
+
     }
 
     private void setUnSavedChanges(final boolean value) {

@@ -13,6 +13,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static com.dgnt.quickTournamentMaker.model.tournament.Tournament.TournamentMsg.NONE;
+import static com.dgnt.quickTournamentMaker.model.tournament.Tournament.TournamentMsg.SWISS_NEW_ROUND_BLOCKED;
+
 /**
  * Created by Owner on 3/12/2016.
  */
@@ -81,11 +84,13 @@ public class SwissTournament extends Tournament implements RecordKeepingTourname
 
     protected void updateTournamentOnResultChange(final int roundGroupIndex, final int roundIndex, final int matchUpIndex, final MatchUp.MatchUpStatus previousStatus, final MatchUp.MatchUpStatus status) {
         getRecordKeepingTournamentTrait().updateParticipantsRecordOnResultChange(roundGroupIndex, roundIndex, matchUpIndex, previousStatus, status);
-        createNewRound(roundGroupIndex, roundIndex);
+        final boolean newRoundBlocked = createNewRound(roundGroupIndex, roundIndex);
+        dispatchTournamentMessageForUserEvent(newRoundBlocked ? SWISS_NEW_ROUND_BLOCKED : NONE );
+
     }
 
     //update match ups of next round with new participants based on previous round.  The update can only happen if all match ups of the previous round has been resolved.
-    protected void createNewRound(final int roundGroupIndex, final int roundIndex) {
+    protected boolean createNewRound(final int roundGroupIndex, final int roundIndex) {
 
         //if not last round
         if (roundIndex < getTotalRounds(roundGroupIndex) - 1) {
@@ -127,46 +132,51 @@ public class SwissTournament extends Tournament implements RecordKeepingTourname
 
             final boolean areAllMatchUpsResolved = areAllMatchUpsResolvedAndNotNull(roundGroupIndex, roundIndex);
 
+            boolean newRoundBlocked = false;
             if (areAllMatchUpsResolved) {
 
                 final List<Participant> rankedParticipantList = getRankedParticipantByRecordAndKeyList();
 
                 final List<Pair<Participant, Participant>> pairList = getProperPairing(rankedParticipantList, getMatchUpHistory());
 
+                if (pairList==null){
+                    return true;
+                } else {
+                    for (int nextMatchUpIndex = 0; nextMatchUpIndex < pairList.size(); nextMatchUpIndex++) {
+                        final Pair<Participant, Participant> pair = pairList.get(nextMatchUpIndex);
+                        final Participant participant1 = pair.first;
+                        final Participant participant2 = pair.second;
 
-                for (int nextMatchUpIndex = 0; nextMatchUpIndex < pairList.size(); nextMatchUpIndex++) {
-                    final Pair<Participant, Participant> pair = pairList.get(nextMatchUpIndex);
-                    final Participant participant1 = pair.first;
-                    final Participant participant2 = pair.second;
+                        getMatchUpHistory().add(getPairKey(participant1, participant2));
 
-                    getMatchUpHistory().add(getPairKey(participant1, participant2));
+                        final MatchUp nextMatchUp = getMatchUp(roundGroupIndex, roundIndex + 1, nextMatchUpIndex);
+                        nextMatchUp.setParticipant1(participant1);
+                        nextMatchUp.setParticipant2(participant2);
 
-                    final MatchUp nextMatchUp = getMatchUp(roundGroupIndex, roundIndex + 1, nextMatchUpIndex);
-                    nextMatchUp.setParticipant1(participant1);
-                    nextMatchUp.setParticipant2(participant2);
+                        if (participant1.isBye())
+                            nextMatchUp.setStatus(MatchUp.MatchUpStatus.P2_WINNER);
+                        else if (participant2.isBye())
+                            nextMatchUp.setStatus(MatchUp.MatchUpStatus.P1_WINNER);
 
-                    if (participant1.isBye())
-                        nextMatchUp.setStatus(MatchUp.MatchUpStatus.P2_WINNER);
-                    else if (participant2.isBye())
-                        nextMatchUp.setStatus(MatchUp.MatchUpStatus.P1_WINNER);
-
-                    final MatchUp.MatchUpStatus matchUpStatus = nextMatchUp.getStatus();
-                    if (matchUpStatus == MatchUp.MatchUpStatus.P1_WINNER) {
-                        participant1.adjustWinsBy(1);
-                        participant2.adjustLossesBy(1);
-                    } else if (matchUpStatus == MatchUp.MatchUpStatus.P2_WINNER) {
-                        participant2.adjustWinsBy(1);
-                        participant1.adjustLossesBy(1);
-                    } else if (matchUpStatus == MatchUp.MatchUpStatus.TIE) {
-                        participant1.adjustTiesBy(1);
-                        participant2.adjustTiesBy(1);
+                        final MatchUp.MatchUpStatus matchUpStatus = nextMatchUp.getStatus();
+                        if (matchUpStatus == MatchUp.MatchUpStatus.P1_WINNER) {
+                            participant1.adjustWinsBy(1);
+                            participant2.adjustLossesBy(1);
+                        } else if (matchUpStatus == MatchUp.MatchUpStatus.P2_WINNER) {
+                            participant2.adjustWinsBy(1);
+                            participant1.adjustLossesBy(1);
+                        } else if (matchUpStatus == MatchUp.MatchUpStatus.TIE) {
+                            participant1.adjustTiesBy(1);
+                            participant2.adjustTiesBy(1);
+                        }
                     }
                 }
-
-                createNewRound(roundGroupIndex, roundIndex + 1);
+                newRoundBlocked = createNewRound(roundGroupIndex, roundIndex + 1) || newRoundBlocked;
 
             }
+            return newRoundBlocked;
         }
+        return false;
     }
 
     private Set<String> matchUpHistory;

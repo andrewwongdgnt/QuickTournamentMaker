@@ -22,4 +22,5 @@
     <color name="link">#6699ff</color>
     <color name="uncheckedItemBg">#00FFFFFF</color>
     <color name="checkedItemBg">#DCDCDC</color>
+    <color name="colorTournamentMsg">#118cff</color>
 </resources>

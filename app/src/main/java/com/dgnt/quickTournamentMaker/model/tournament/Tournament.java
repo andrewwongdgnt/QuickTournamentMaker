@@ -29,6 +29,10 @@ public abstract class Tournament implements IKeyable {
         ELIMINATION, DOUBLE_ELIMINATION, ROUND_ROBIN, SWISS, SURVIVAL
     }
 
+    public enum TournamentMsg{
+        NONE, SWISS_NEW_ROUND_BLOCKED
+    }
+
     public abstract TournamentType getType();
 
     final public static long NULL_TIME_VALUE = -1;
@@ -109,6 +113,12 @@ public abstract class Tournament implements IKeyable {
     public void dispatchTournamentLastModifiedTimeInEpochUpdateEvent(final long epoch) {
         if (onTournamentUpdateListener != null) {
             onTournamentUpdateListener.onTournamentLastModifiedTimeInEpochChange(epoch);
+        }
+    }
+
+    public void dispatchTournamentMessageForUserEvent(final TournamentMsg message) {
+        if (onTournamentUpdateListener != null) {
+            onTournamentUpdateListener.onTournamentMessageChange(message);
         }
     }
 

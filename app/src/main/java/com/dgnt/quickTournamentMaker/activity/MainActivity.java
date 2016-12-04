@@ -201,14 +201,6 @@ public class MainActivity extends InAppBillingActivity
             numOfPlayersSelected_tv.setText(getString(R.string.numberOfPlayersSelected, 0));
 
         final List<Group> groupList = dh.getAllGroupsWithPersons();
-        final HashMap<String, List<Person>> groupMap = new HashMap<>();
-        for (final Group group : groupList) {
-            final List<Person> personList = new ArrayList<>();
-            for (int i = 0; i < group.getTotalPersons(); i++) {
-                personList.add(group.getPersonAt(i));
-            }
-            groupMap.put(group.getKey(), personList);
-        }
 
 
         for (final Group group : groupList) {
