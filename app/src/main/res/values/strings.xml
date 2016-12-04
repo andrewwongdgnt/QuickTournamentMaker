@@ -246,6 +246,6 @@
     <string name="corruptFileMsg">Failed to start tournament. The specified file is too malformed</string>
     <string name="readFileProgressMsg">Reading file, please wait&#8230;</string>
 
-    <string name="swissTournamentNewRoundBlockedMsg">No new rounds can be created based the initial seeding and how the tournament progressed.
+    <string name="swissTournamentNewRoundBlockedMsg" translatable="false">No new rounds can be created based the initial seeding and how the tournament progressed.
         We will add a new feature to allow changing certain match ups manually when this happens but for now, try rebuilding the tournament with new seeding. (Long click to remove this)</string>
 </resources>

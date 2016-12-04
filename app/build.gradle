@@ -8,8 +8,8 @@ android {
         applicationId "com.dgnt.quickTournamentMaker"
         minSdkVersion 11
         targetSdkVersion 23
-        versionCode 24
-        versionName "4.1"
+        versionCode 25
+        versionName "4.1.1"
     }
     buildTypes {
         release {
