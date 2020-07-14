@@ -1,43 +1,5 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="nav_header_vertical_spacing">16dp</dimen>
-    <dimen name="nav_header_height">160dp</dimen>
-    <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
-
-    <!-- so the last item of list view doesn't get blocked by fab-->
-    <dimen name="space_for_fab">72dp</dimen>
-
-    <dimen name="participant_padding_horizontal">6dp</dimen>
-    <dimen name="participant_corner_radius">6dp</dimen>
-    <dimen name="participant_default_stroke_width">1dp</dimen>
-    <dimen name="participant_win_stroke_width">3dp</dimen>
-    <dimen name="participant_tv_width">120sp</dimen>
-    <dimen name="participant_tv_height">30sp</dimen>
-    <dimen name="participantRecord_tv_height">25sp</dimen>
-
-    <dimen name="matchUpIndicator_width">20dp</dimen>
-
-    <dimen name="standard_gap">5dp</dimen>
-    <dimen name="more_info_gap">10dp</dimen>
-    <dimen name="more_info_left_padding">15dp</dimen>
-
-    <dimen name="layout_vertical_margin">8dp</dimen>
-    <dimen name="layout_horizontal_margin">8dp</dimen>
-
-    <dimen name="list_item_horizontal_margin">8dp</dimen>
-    <dimen name="list_item_vertical_margin">8dp</dimen>
-
-    <dimen name="email_app_icon_size">26dp</dimen>
-
-    <dimen name="history_title_size">20sp</dimen>
-    <dimen name="history_description_size">15sp</dimen>
-    <dimen name="history_time_size">11sp</dimen>
-    <dimen name="app_bar_height">180dp</dimen>
-
-    <dimen name="scoreEditTextWidth">50dp</dimen>
-    <dimen name="scoreTextWidth">50dp</dimen>
-    <dimen name="priorityRankTextVerticalPadding">5dp</dimen>
 </resources>
