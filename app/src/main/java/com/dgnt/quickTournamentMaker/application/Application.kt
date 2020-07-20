@@ -1,8 +1,8 @@
 package com.dgnt.quickTournamentMaker.application
 
 import android.app.Application
-import com.dgnt.quickTournamentMaker.service.implementation.EliminationSeedService
-import com.dgnt.quickTournamentMaker.service.interfaces.ISeedService
+import com.dgnt.quickTournamentMaker.service.implementation.EliminationRoundGeneratorService
+import com.dgnt.quickTournamentMaker.service.interfaces.IRoundGeneratorService
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.bind
@@ -12,7 +12,7 @@ import org.kodein.di.provider
 class Application() : Application(), DIAware {
 
     override val di = DI.lazy {
-        bind<ISeedService>() with provider { EliminationSeedService() }
+        bind<IRoundGeneratorService>() with provider { EliminationRoundGeneratorService() }
 
     }
     //override val kodein = DIAware.lazy {

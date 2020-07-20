@@ -1,14 +1,14 @@
 package com.dgnt.quickTournamentMaker
 
 import com.dgnt.quickTournamentMaker.data.tournament.Participant
-import com.dgnt.quickTournamentMaker.service.implementation.EliminationSeedService
+import com.dgnt.quickTournamentMaker.service.implementation.EliminationRoundGeneratorService
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
 
-class EliminationSeedServiceTest {
-    private val sut: EliminationSeedService = EliminationSeedService()
+class EliminationRoundGeneratorServiceTest {
+    private val sut: EliminationRoundGeneratorService = EliminationRoundGeneratorService()
     private lateinit var participantList: List<Participant>
 
     @Before

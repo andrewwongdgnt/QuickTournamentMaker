@@ -5,7 +5,7 @@ import com.dgnt.quickTournamentMaker.data.tournament.Participant
 import com.dgnt.quickTournamentMaker.data.tournament.Round
 import com.dgnt.quickTournamentMaker.data.tournament.RoundGroup
 
-interface ISeedService {
+interface IRoundGeneratorService {
 
     /**
      * build tournament brackets

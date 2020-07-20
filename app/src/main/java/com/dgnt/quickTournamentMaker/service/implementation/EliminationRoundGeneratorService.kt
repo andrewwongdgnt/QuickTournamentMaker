@@ -4,10 +4,10 @@ import com.dgnt.quickTournamentMaker.data.tournament.MatchUp
 import com.dgnt.quickTournamentMaker.data.tournament.Participant
 import com.dgnt.quickTournamentMaker.data.tournament.Round
 import com.dgnt.quickTournamentMaker.data.tournament.RoundGroup
-import com.dgnt.quickTournamentMaker.service.interfaces.ISeedService
+import com.dgnt.quickTournamentMaker.service.interfaces.IRoundGeneratorService
 import com.dgnt.quickTournamentMaker.util.TournamentUtil
 
-class EliminationSeedService : ISeedService {
+class EliminationRoundGeneratorService : IRoundGeneratorService {
     override fun build(orderedParticipants: List<Participant>): List<RoundGroup> {
 
         if (!seedCheck(orderedParticipants)) return listOf()
