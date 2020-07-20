@@ -17,9 +17,13 @@ class EliminationSeedServiceTest {
     }
 
     @Test
-    fun testSeedCheckSuccess() {
+    fun testSeedCheck() {
         Assert.assertTrue(sut.seedCheck(participantList))
+        Assert.assertFalse(sut.seedCheck(participantList.dropLast(1)))
+        Assert.assertFalse(sut.seedCheck(participantList.dropLast(2)))
+        Assert.assertTrue(sut.seedCheck(participantList.dropLast(4)))
     }
+
 
     @Test
     fun testTotalRoundGroup() {
@@ -33,6 +37,10 @@ class EliminationSeedServiceTest {
 
     @Test
     fun testTotalMatchUps() {
-        Assert.assertEquals(4+2+1, sut.build(participantList)[0].rounds.fold(0){sum,round -> sum+round.matchUps.size})
+        val rounds = sut.build(participantList)[0].rounds
+        Assert.assertEquals(4, rounds[0].matchUps.size)
+        Assert.assertEquals(2, rounds[1].matchUps.size)
+        Assert.assertEquals(1, rounds[2].matchUps.size)
+
     }
 }
