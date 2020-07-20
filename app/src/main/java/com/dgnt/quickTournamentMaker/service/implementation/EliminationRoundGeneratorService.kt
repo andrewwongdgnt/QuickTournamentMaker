@@ -14,7 +14,7 @@ class EliminationRoundGeneratorService : IRoundGeneratorService {
 
         val round1 = TournamentUtil.createRound1(orderedParticipants)
 
-        val rounds: MutableList<Round> = ArrayList<Round>();
+        val rounds: MutableList<Round> = ArrayList();
         rounds.add(round1)
 
         val totalParticipants = orderedParticipants.size
