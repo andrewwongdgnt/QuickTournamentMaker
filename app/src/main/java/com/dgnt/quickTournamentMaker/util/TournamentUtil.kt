@@ -1,16 +1,17 @@
 package com.dgnt.quickTournamentMaker.util
 
 import android.content.Context
-import com.dgnt.quickTournamentMaker.data.tournament.Participant
-import com.dgnt.quickTournamentMaker.data.tournament.ParticipantType
+import com.dgnt.quickTournamentMaker.data.tournament.*
 import java.text.DateFormat
 
 
 class TournamentUtil {
     companion object {
-        fun isPowerOf2(candidate: Int): Boolean {
-            return candidate > 0 && candidate and candidate - 1 == 0
-        }
+        fun createRound1(orderedParticipants: List<Participant>): Round = Round(orderedParticipants.zipWithNext().filterIndexed { index, _ -> index%2==0  }.map { MatchUp(it.first, it.second) })
+
+        fun basicSeedCheck(orderedParticipantList: List<Participant?>): Boolean = orderedParticipantList.size >= 4 && orderedParticipantList.size % 2 == 0
+
+        fun isPowerOf2(candidate: Int): Boolean = candidate > 0 && candidate and candidate - 1 == 0
 
         fun nextPowerOf2(candidate: Int): Int {
             var n = candidate

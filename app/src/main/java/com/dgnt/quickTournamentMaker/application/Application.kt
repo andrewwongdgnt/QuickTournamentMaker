@@ -1,18 +1,24 @@
 package com.dgnt.quickTournamentMaker.application
 
 import android.app.Application
-
-import com.github.salomonbrys.kodein.Kodein
-import com.github.salomonbrys.kodein.KodeinAware
-import com.github.salomonbrys.kodein.bind
-import com.github.salomonbrys.kodein.singleton
-
-class Application : Application(), KodeinAware {
-
-    override val kodein: Kodein = Kodein {
+import com.dgnt.quickTournamentMaker.service.implementation.EliminationSeedService
+import com.dgnt.quickTournamentMaker.service.interfaces.ISeedService
+import org.kodein.di.DI
+import org.kodein.di.DIAware
+import org.kodein.di.bind
+import org.kodein.di.provider
 
 
-//        var unitConversionService = ConversionService()
+class Application() : Application(), DIAware {
+
+    override val di = DI.lazy {
+        bind<ISeedService>() with provider { EliminationSeedService() }
+
+    }
+    //override val kodein = DIAware.lazy {
+
+
+    //var eliminationSeedService = ISeedService()
 //
 //        bind<ConversionService>() with singleton {
 //            unitConversionService
@@ -23,6 +29,6 @@ class Application : Application(), KodeinAware {
 //        bind<UnitGeneratorService>() with singleton {
 //            UnitGeneratorService()
 //        }
-    }
+//}
 
 }

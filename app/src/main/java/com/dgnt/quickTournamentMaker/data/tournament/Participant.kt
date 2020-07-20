@@ -3,6 +3,7 @@ package com.dgnt.quickTournamentMaker.data.tournament
 import android.os.Parcelable
 import com.dgnt.quickTournamentMaker.data.IKeyable
 import com.dgnt.quickTournamentMaker.data.management.Person
+import com.dgnt.quickTournamentMaker.util.TournamentUtil
 import kotlinx.android.parcel.Parcelize
 
 enum class ParticipantType {
@@ -21,9 +22,13 @@ data class Participant(var person: Person, val participantType: ParticipantType 
     }
 
     var record: Record = Record()
-    var color = 0xff000000
+    var color = TournamentUtil.DEFAULT_DISPLAY_COLOR
 
     override val key: String = person.name + participantType.name
     override fun compareTo(other: Participant): Int = displayName.compareTo(other.displayName)
+
+    override fun toString(): String {
+        return displayName
+    }
 }
 
