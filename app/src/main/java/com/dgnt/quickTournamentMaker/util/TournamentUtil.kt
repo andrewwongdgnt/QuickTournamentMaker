@@ -11,22 +11,6 @@ class TournamentUtil {
 
         fun basicSeedCheck(orderedParticipantList: List<Participant?>): Boolean = orderedParticipantList.size >= 4 && orderedParticipantList.size % 2 == 0
 
-        fun isPowerOf2(candidate: Int): Boolean = candidate > 0 && candidate and candidate - 1 == 0
-
-        fun nextPowerOf2(candidate: Int): Int {
-            var n = candidate
-            n--
-            n = n or (n shr 1) // Divide by 2^k for consecutive doublings of k up to 32,
-            n = n or (n shr 2) // and then or the results.
-            n = n or (n shr 4)
-            n = n or (n shr 8)
-            n = n or (n shr 16)
-            n++ // The result is a number of 1 bits equal to the number
-            // of bits in the original number, plus 1. That's the
-            // next highest power of 2.
-            return n
-        }
-
         fun dpToPixels(context: Context, sizeInDp: Int): Int {
             val scale: Float = context.resources.displayMetrics.density
             return (sizeInDp * scale + 0.5f).toInt()

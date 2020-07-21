@@ -22,53 +22,45 @@ class DoubleEliminationRoundGeneratorServiceTest {
     private val mockEliminationRoundGeneratorService: EliminationRoundGeneratorService = PowerMockito.mock(EliminationRoundGeneratorService::class.java)
 
     private val sut: DoubleEliminationRoundGeneratorService = DoubleEliminationRoundGeneratorService(mockEliminationRoundGeneratorService)
-    private lateinit var participantList: List<Participant>
+    private lateinit var participants: List<Participant>
 
     @Before
     fun setUp() {
-        participantList = listOf(ParticipantData.ANDREW, ParticipantData.KYRA, ParticipantData.DGNT, ParticipantData.KELSEY, ParticipantData.FIRE, ParticipantData.SUPER, ParticipantData.HERO, ParticipantData.DEMON)
+        participants = listOf(Data.ANDREW, Data.KYRA, Data.DGNT, Data.KELSEY, Data.FIRE, Data.SUPER, Data.HERO, Data.DEMON)
 
-        val round1 = Round(listOf(MatchUp(ParticipantData.ANDREW,ParticipantData.KYRA), MatchUp(ParticipantData.DGNT,ParticipantData.KELSEY),MatchUp(ParticipantData.FIRE,ParticipantData.SUPER),MatchUp(ParticipantData.HERO,ParticipantData.DEMON)))
+        val round1 = Round(listOf(MatchUp(Data.ANDREW,Data.KYRA), MatchUp(Data.DGNT,Data.KELSEY),MatchUp(Data.FIRE,Data.SUPER),MatchUp(Data.HERO,Data.DEMON)))
         val round2 = Round(listOf(MatchUp(Participant.NULL_PARTICIPANT,Participant.NULL_PARTICIPANT), MatchUp(Participant.NULL_PARTICIPANT,Participant.NULL_PARTICIPANT)))
         val round3 = Round(listOf(MatchUp(Participant.NULL_PARTICIPANT,Participant.NULL_PARTICIPANT)))
-        PowerMockito.`when`(mockEliminationRoundGeneratorService.build(participantList)).thenReturn(listOf(RoundGroup(listOf(round1,round2,round3))))
+        PowerMockito.`when`(mockEliminationRoundGeneratorService.build(participants)).thenReturn(listOf(RoundGroup(listOf(round1,round2,round3))))
 
-        PowerMockito.`when`(mockEliminationRoundGeneratorService.seedCheck(participantList)).thenReturn(true)
     }
-
-    @Test
-    fun testSeedCheck() {
-        sut.build(participantList)
-        Mockito.verify(mockEliminationRoundGeneratorService, Mockito.times(1)).seedCheck(participantList)
-    }
-
 
     @Test
     fun testTotalRoundGroup() {
-        Assert.assertEquals(3, sut.build(participantList).size)
+        Assert.assertEquals(3, sut.build(participants).size)
     }
 
     @Test
     fun testTotalRounds() {
-        Assert.assertEquals(3,sut.build(participantList)[0].rounds.size)
-        Assert.assertEquals(4,sut.build(participantList)[1].rounds.size)
-        Assert.assertEquals(2,sut.build(participantList)[2].rounds.size)
+        Assert.assertEquals(3,sut.build(participants)[0].rounds.size)
+        Assert.assertEquals(4,sut.build(participants)[1].rounds.size)
+        Assert.assertEquals(2,sut.build(participants)[2].rounds.size)
     }
 
     @Test
     fun testTotalMatchUps() {
-        val winnerRounds = sut.build(participantList)[0].rounds
+        val winnerRounds = sut.build(participants)[0].rounds
         Assert.assertEquals(4, winnerRounds[0].matchUps.size)
         Assert.assertEquals(2, winnerRounds[1].matchUps.size)
         Assert.assertEquals(1, winnerRounds[2].matchUps.size)
 
-        val loserRounds = sut.build(participantList)[1].rounds
+        val loserRounds = sut.build(participants)[1].rounds
         Assert.assertEquals(2, loserRounds[0].matchUps.size)
         Assert.assertEquals(2, loserRounds[1].matchUps.size)
         Assert.assertEquals(1, loserRounds[2].matchUps.size)
         Assert.assertEquals(1, loserRounds[3].matchUps.size)
 
-        val finalRounds = sut.build(participantList)[2].rounds
+        val finalRounds = sut.build(participants)[2].rounds
         Assert.assertEquals(1, finalRounds[0].matchUps.size)
         Assert.assertEquals(1, finalRounds[1].matchUps.size)
 

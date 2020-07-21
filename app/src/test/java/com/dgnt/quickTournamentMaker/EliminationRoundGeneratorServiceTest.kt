@@ -9,35 +9,26 @@ import org.junit.Test
 
 class EliminationRoundGeneratorServiceTest {
     private val sut: EliminationRoundGeneratorService = EliminationRoundGeneratorService()
-    private lateinit var participantList: List<Participant>
+    private lateinit var participants: List<Participant>
 
     @Before
     fun setUp() {
-        participantList = listOf(ParticipantData.ANDREW, ParticipantData.KYRA, ParticipantData.DGNT, ParticipantData.KELSEY, ParticipantData.FIRE, ParticipantData.SUPER, ParticipantData.HERO, ParticipantData.DEMON)
+        participants = listOf(Data.ANDREW, Data.KYRA, Data.DGNT, Data.KELSEY, Data.FIRE, Data.SUPER, Data.HERO, Data.DEMON)
     }
-
-    @Test
-    fun testSeedCheck() {
-        Assert.assertTrue(sut.seedCheck(participantList))
-        Assert.assertFalse(sut.seedCheck(participantList.dropLast(1)))
-        Assert.assertFalse(sut.seedCheck(participantList.dropLast(2)))
-        Assert.assertTrue(sut.seedCheck(participantList.dropLast(4)))
-    }
-
-
+    
     @Test
     fun testTotalRoundGroup() {
-        Assert.assertEquals(1, sut.build(participantList).size)
+        Assert.assertEquals(1, sut.build(participants).size)
     }
 
     @Test
     fun testTotalRounds() {
-        Assert.assertEquals(3,sut.build(participantList)[0].rounds.size)
+        Assert.assertEquals(3,sut.build(participants)[0].rounds.size)
     }
 
     @Test
     fun testTotalMatchUps() {
-        val rounds = sut.build(participantList)[0].rounds
+        val rounds = sut.build(participants)[0].rounds
         Assert.assertEquals(4, rounds[0].matchUps.size)
         Assert.assertEquals(2, rounds[1].matchUps.size)
         Assert.assertEquals(1, rounds[2].matchUps.size)

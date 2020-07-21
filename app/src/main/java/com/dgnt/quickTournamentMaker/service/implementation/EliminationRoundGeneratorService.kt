@@ -10,8 +10,6 @@ import com.dgnt.quickTournamentMaker.util.TournamentUtil
 class EliminationRoundGeneratorService : IRoundGeneratorService {
     override fun build(orderedParticipants: List<Participant>): List<RoundGroup> {
 
-        if (!seedCheck(orderedParticipants)) return listOf()
-
         val round1 = TournamentUtil.createRound1(orderedParticipants)
 
         val rounds: MutableList<Round> = ArrayList();
@@ -30,7 +28,5 @@ class EliminationRoundGeneratorService : IRoundGeneratorService {
 
         return listOf(RoundGroup(rounds))
     }
-
-    override fun seedCheck(orderedParticipants: List<Participant>): Boolean = TournamentUtil.basicSeedCheck(orderedParticipants) && TournamentUtil.isPowerOf2(orderedParticipants.size);
 
 }

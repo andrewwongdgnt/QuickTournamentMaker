@@ -9,8 +9,6 @@ import com.dgnt.quickTournamentMaker.service.interfaces.IRoundGeneratorService
 class DoubleEliminationRoundGeneratorService(private val eliminationRoundGeneratorService: EliminationRoundGeneratorService) : IRoundGeneratorService {
     override fun build(orderedParticipants: List<Participant>): List<RoundGroup> {
 
-        if (!seedCheck(orderedParticipants)) return listOf()
-
         val winnersBracket = eliminationRoundGeneratorService.build(orderedParticipants)[0]
 
         val loserBracket = RoundGroup(winnersBracket.rounds
@@ -34,7 +32,5 @@ class DoubleEliminationRoundGeneratorService(private val eliminationRoundGenerat
 
         return listOf(winnersBracket, loserBracket, finalBracket)
     }
-
-    override fun seedCheck(orderedParticipants: List<Participant>): Boolean = eliminationRoundGeneratorService.seedCheck(orderedParticipants)
 
 }

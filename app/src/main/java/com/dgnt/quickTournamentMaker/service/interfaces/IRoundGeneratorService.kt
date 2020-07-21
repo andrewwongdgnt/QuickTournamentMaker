@@ -15,12 +15,4 @@ interface IRoundGeneratorService {
      */
     fun build(orderedParticipants: List<Participant>): List<RoundGroup>
 
-    /**
-     * Check if the list of participants works
-     *
-     * @param orderedParticipants participants in the order they were defined
-     * @return whether this seeding works
-     */
-    fun seedCheck(orderedParticipants: List<Participant>): Boolean
-
 }
