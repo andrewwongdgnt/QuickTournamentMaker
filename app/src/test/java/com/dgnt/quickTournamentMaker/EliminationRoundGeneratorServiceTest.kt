@@ -15,7 +15,7 @@ class EliminationRoundGeneratorServiceTest {
     fun setUp() {
         participants = listOf(Data.ANDREW, Data.KYRA, Data.DGNT, Data.KELSEY, Data.FIRE, Data.SUPER, Data.HERO, Data.DEMON)
     }
-    
+
     @Test
     fun testTotalRoundGroup() {
         Assert.assertEquals(1, sut.build(participants).size)
