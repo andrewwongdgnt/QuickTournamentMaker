@@ -13,5 +13,5 @@ interface IRoundGeneratorService {
      * @return List of round groups
      */
     fun build(orderedParticipants: List<Participant>): List<RoundGroup>
-    
+
 }

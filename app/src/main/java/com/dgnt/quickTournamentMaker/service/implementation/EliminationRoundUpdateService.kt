@@ -3,13 +3,12 @@ package com.dgnt.quickTournamentMaker.service.implementation
 import com.dgnt.quickTournamentMaker.data.tournament.MatchUpStatus
 import com.dgnt.quickTournamentMaker.data.tournament.Participant
 import com.dgnt.quickTournamentMaker.data.tournament.RoundGroup
-import com.dgnt.quickTournamentMaker.service.interfaces.IMatchUpUpdateService
+import com.dgnt.quickTournamentMaker.service.interfaces.IRoundUpdateService
 
-class EliminationMatchUpUpdateService : IMatchUpUpdateService {
-    override fun update(roundGroups: List<RoundGroup>, roundGroupIndex: Int, roundIndex: Int, matchUpIndex: Int, currentMatchUpStatus: MatchUpStatus, newMatchUpStatus: MatchUpStatus) {
+class EliminationRoundUpdateService : IRoundUpdateService {
+    override fun update(roundGroups: List<RoundGroup>, roundGroupIndex: Int, roundIndex: Int, matchUpIndex: Int) {
 
         val roundGroup = roundGroups[roundGroupIndex]
-        roundGroup.rounds[roundIndex].matchUps[matchUpIndex].status = newMatchUpStatus
 
         var currentRoundIndex = roundIndex;
         var currentMatchUpIndex = matchUpIndex;
@@ -27,12 +26,11 @@ class EliminationMatchUpUpdateService : IMatchUpUpdateService {
             val futureMatchUp = futureRound.matchUps[futureMatchUpIndex]
 
             val updateFutureMatchUp: (Participant) -> Boolean = {
-                var differentParticipant:Boolean
+                var differentParticipant: Boolean
                 if (currentMatchUpIndex % 2 == 0) {
                     differentParticipant = futureMatchUp.participant1.key != it.key
                     futureMatchUp.participant1 = it
-                }
-                else{
+                } else {
                     differentParticipant = futureMatchUp.participant2.key != it.key
                     futureMatchUp.participant2 = it
                 }
@@ -48,8 +46,8 @@ class EliminationMatchUpUpdateService : IMatchUpUpdateService {
                 }
             )
 
-            currentRoundIndex++
-            currentMatchUpIndex /= 2
+            currentRoundIndex = futureRoundIndex
+            currentMatchUpIndex = futureMatchUpIndex
         }
     }
 }

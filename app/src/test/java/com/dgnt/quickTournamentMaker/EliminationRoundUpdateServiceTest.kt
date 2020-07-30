@@ -1,16 +1,14 @@
 package com.dgnt.quickTournamentMaker
 
 import com.dgnt.quickTournamentMaker.data.tournament.*
-import com.dgnt.quickTournamentMaker.service.implementation.EliminationMatchUpUpdateService
-import com.dgnt.quickTournamentMaker.service.implementation.EliminationRoundGeneratorService
+import com.dgnt.quickTournamentMaker.service.implementation.EliminationRoundUpdateService
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-import org.powermock.api.mockito.PowerMockito
 
-class EliminationMatchUpUpdateServiceTest {
+class EliminationRoundUpdateServiceTest {
 
-    private val sut: EliminationMatchUpUpdateService = EliminationMatchUpUpdateService()
+    private val sut: EliminationRoundUpdateService = EliminationRoundUpdateService()
     private lateinit var roundGroups: List<RoundGroup>
 
     @Before
@@ -24,35 +22,42 @@ class EliminationMatchUpUpdateServiceTest {
 
     @Test
     fun testP1Win_evenMatchUpIndex() {
-        sut.update(roundGroups,0,0,0,MatchUpStatus.DEFAULT,MatchUpStatus.P1_WINNER)
+        roundGroups[0].rounds[0].matchUps[0].status = MatchUpStatus.P1_WINNER
+        sut.update(roundGroups,0,0,0)
         Assert.assertEquals(Data.ANDREW,roundGroups[0].rounds[1].matchUps[0].participant1)
     }
 
     @Test
     fun testP2Win_evenMatchUpIndex() {
-        sut.update(roundGroups,0,0,0,MatchUpStatus.DEFAULT,MatchUpStatus.P2_WINNER)
+        roundGroups[0].rounds[0].matchUps[0].status = MatchUpStatus.P2_WINNER
+        sut.update(roundGroups,0,0,0)
         Assert.assertEquals(Data.KYRA,roundGroups[0].rounds[1].matchUps[0].participant1)
     }
 
     @Test
     fun testP1Win_oddMatchUpIndex() {
-        sut.update(roundGroups,0,0,1,MatchUpStatus.DEFAULT,MatchUpStatus.P1_WINNER)
+        roundGroups[0].rounds[0].matchUps[1].status = MatchUpStatus.P1_WINNER
+        sut.update(roundGroups,0,0,1)
         Assert.assertEquals(Data.DGNT,roundGroups[0].rounds[1].matchUps[0].participant2)
     }
 
     @Test
     fun testP2Win_oddMatchUpIndex() {
-        sut.update(roundGroups,0,0,1,MatchUpStatus.DEFAULT,MatchUpStatus.P2_WINNER)
+        roundGroups[0].rounds[0].matchUps[1].status = MatchUpStatus.P2_WINNER
+        sut.update(roundGroups,0,0,1)
         Assert.assertEquals(Data.KELSEY,roundGroups[0].rounds[1].matchUps[0].participant2)
     }
 
     @Test
     fun testCascade() {
-        sut.update(roundGroups,0,1,0,MatchUpStatus.DEFAULT,MatchUpStatus.P1_WINNER)
+        roundGroups[0].rounds[1].matchUps[0].status = MatchUpStatus.P1_WINNER
+        sut.update(roundGroups,0,1,0)
         Assert.assertEquals(Participant.NULL_PARTICIPANT,roundGroups[0].rounds[2].matchUps[0].participant1)
-        sut.update(roundGroups,0,0,0,MatchUpStatus.DEFAULT,MatchUpStatus.P1_WINNER)
+        roundGroups[0].rounds[0].matchUps[0].status = MatchUpStatus.P1_WINNER
+        sut.update(roundGroups,0,0,0)
         Assert.assertEquals(Data.ANDREW,roundGroups[0].rounds[2].matchUps[0].participant1)
-        sut.update(roundGroups,0,0,0,MatchUpStatus.P1_WINNER,MatchUpStatus.DEFAULT)
+        roundGroups[0].rounds[0].matchUps[0].status = MatchUpStatus.DEFAULT
+        sut.update(roundGroups,0,0,0)
         Assert.assertEquals(Participant.NULL_PARTICIPANT,roundGroups[0].rounds[2].matchUps[0].participant1)
     }
 
