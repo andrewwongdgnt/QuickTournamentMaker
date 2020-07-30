@@ -10,6 +10,10 @@ enum class ParticipantType {
     NORMAL, NULL, BYE
 }
 
+enum class ParticipantPosition {
+    P1, P2
+}
+
 @Parcelize
 data class Participant(var person: Person, val participantType: ParticipantType = ParticipantType.NORMAL, var displayName: String = person.name, var note: String = person.note) : IKeyable, Comparable<Participant>,
     Parcelable {
