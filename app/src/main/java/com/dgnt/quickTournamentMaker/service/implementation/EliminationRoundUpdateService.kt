@@ -13,7 +13,7 @@ class EliminationRoundUpdateService : IRoundUpdateService {
         var currentRoundIndex = roundIndex;
         var currentMatchUpIndex = matchUpIndex;
         var continueLoop = true;
-        while (continueLoop && currentRoundIndex < roundGroups[roundGroupIndex].rounds.size - 1) {
+        while (continueLoop && currentRoundIndex < roundGroups[roundGroupIndex].rounds.lastIndex) {
 
             val currentRound = roundGroup.rounds[currentRoundIndex]
 

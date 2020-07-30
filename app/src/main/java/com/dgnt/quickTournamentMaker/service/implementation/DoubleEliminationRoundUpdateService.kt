@@ -17,7 +17,7 @@ class DoubleEliminationRoundUpdateService(private val roundUpdateService: IRound
 
             var currentRoundIndexWinnerBracket = roundIndex;
             var currentMatchUpIndexWinnerBracket = matchUpIndex;
-            while (currentRoundIndexWinnerBracket < roundGroups[roundGroupIndex].rounds.size - 1) {
+            while (currentRoundIndexWinnerBracket < roundGroups[roundGroupIndex].rounds.size) {
 
                 val currentRoundWinnerBracket = roundGroup.rounds[currentRoundIndexWinnerBracket]
                 val currentMatchUpWinnerBracket = currentRoundWinnerBracket.matchUps[currentMatchUpIndexWinnerBracket]
@@ -56,14 +56,11 @@ class DoubleEliminationRoundUpdateService(private val roundUpdateService: IRound
 
                 update(roundGroups, 1, currentRoundIndexLoserBracket, currentMatchUpIndexLoserBracket);
 
-                if (currentRoundIndexWinnerBracket==roundGroup.rounds.size-1){
-                    update(roundGroups, 2, 0, 0);
-
-                }
                 currentRoundIndexWinnerBracket++
                 currentMatchUpIndexWinnerBracket /= 2
-
-
+            }
+            if (currentRoundIndexWinnerBracket == roundGroup.rounds.size) {
+                update(roundGroups, 2, 0, 0);
             }
         }
 
@@ -73,7 +70,7 @@ class DoubleEliminationRoundUpdateService(private val roundUpdateService: IRound
             var currentRoundIndex = roundIndex;
             var currentMatchUpIndex = matchUpIndex;
             var continueLoop = true;
-            while (continueLoop && currentRoundIndex < roundGroups[roundGroupIndex].rounds.size - 1) {
+            while (continueLoop && currentRoundIndex < roundGroups[roundGroupIndex].rounds.lastIndex) {
 
                 val currentRound = roundGroup.rounds[currentRoundIndex]
 
@@ -105,12 +102,43 @@ class DoubleEliminationRoundUpdateService(private val roundUpdateService: IRound
                         else -> Participant.NULL_PARTICIPANT
                     }
                 )
-
                 currentRoundIndex = futureRoundIndex
                 currentMatchUpIndex = futureMatchUpIndex
             }
-        } else if (roundGroupIndex == 2) {
+            if (currentRoundIndex == roundGroup.rounds.lastIndex) {
+                update(roundGroups, 2, 0, 0);
+            }
+        }
 
+        //final bracket
+        else if (roundGroupIndex == 2) {
+            val matchUp1FinalBracket = roundGroup.rounds[0].matchUps.first()
+            val matchUp2FinalBracket = roundGroup.rounds[1].matchUps.first()
+
+            val lastMatchUpWinnerBracket = roundGroups[0].rounds.last().matchUps.first();
+            matchUp1FinalBracket.participant1 = when (lastMatchUpWinnerBracket.status) {
+                MatchUpStatus.P1_WINNER -> lastMatchUpWinnerBracket.participant1
+                MatchUpStatus.P2_WINNER -> lastMatchUpWinnerBracket.participant2
+                else -> Participant.NULL_PARTICIPANT
+            }
+
+            val lastMatchUpLoserBracket = roundGroups[1].rounds.last().matchUps.first();
+            matchUp1FinalBracket.participant2 = when (lastMatchUpLoserBracket.status) {
+                MatchUpStatus.P1_WINNER -> lastMatchUpLoserBracket.participant1
+                MatchUpStatus.P2_WINNER -> lastMatchUpLoserBracket.participant2
+                else -> Participant.NULL_PARTICIPANT
+            }
+
+            when (matchUp1FinalBracket.status) {
+                MatchUpStatus.P1_WINNER, MatchUpStatus.DEFAULT -> {
+                    matchUp2FinalBracket.participant1 = Participant.NULL_PARTICIPANT
+                    matchUp2FinalBracket.participant2 = Participant.NULL_PARTICIPANT
+                }
+                else -> {
+                    matchUp2FinalBracket.participant1 = matchUp1FinalBracket.participant1
+                    matchUp2FinalBracket.participant2 = matchUp1FinalBracket.participant2
+                }
+            }
         }
     }
 }

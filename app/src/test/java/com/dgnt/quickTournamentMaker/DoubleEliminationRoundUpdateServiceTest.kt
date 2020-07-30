@@ -25,7 +25,7 @@ class DoubleEliminationRoundUpdateServiceTest {
 
         val round1WB = Round(listOf(MatchUp(Data.ANDREW,Data.KYRA), MatchUp(Data.DGNT,Data.KELSEY), MatchUp(Data.FIRE,Data.SUPER), MatchUp(Data.HERO,Data.DEMON)))
         val round2WB = Round(listOf(MatchUp(Data.KYRA,Data.KELSEY), MatchUp(Data.FIRE,Data.DEMON)))
-        val round3WB = Round(listOf(MatchUp(Participant.NULL_PARTICIPANT,Participant.NULL_PARTICIPANT)))
+        val round3WB = Round(listOf(MatchUp(Data.KELSEY,Data.FIRE)))
 
         val round1LB = Round(listOf(MatchUp(Participant.NULL_PARTICIPANT,Participant.NULL_PARTICIPANT), MatchUp(Participant.NULL_PARTICIPANT,Participant.NULL_PARTICIPANT)))
         val round2LB = Round(listOf(MatchUp(Participant.NULL_PARTICIPANT,Participant.NULL_PARTICIPANT), MatchUp(Participant.NULL_PARTICIPANT,Participant.NULL_PARTICIPANT)))
@@ -40,7 +40,7 @@ class DoubleEliminationRoundUpdateServiceTest {
     }
 
     @Test
-    fun testWinnerToLoser() {
+    fun testMain() {
         roundGroupsNoByes[0].rounds[0].matchUps[0].status = MatchUpStatus.P1_WINNER
         sut.update(roundGroupsNoByes,0,0,0)
         roundGroupsNoByes[0].rounds[0].matchUps[1].status = MatchUpStatus.P2_WINNER
@@ -74,6 +74,31 @@ class DoubleEliminationRoundUpdateServiceTest {
         sut.update(roundGroupsNoByes,0,1,1)
         Assert.assertEquals(Data.DEMON,roundGroupsNoByes[1].rounds[1].matchUps[0].participant1)
         Assert.assertEquals(Data.KYRA,roundGroupsNoByes[1].rounds[1].matchUps[1].participant1)
+
+        roundGroupsNoByes[0].rounds[2].matchUps[0].status = MatchUpStatus.P1_WINNER
+        sut.update(roundGroupsNoByes,0,2,0)
+        Assert.assertEquals(Data.KELSEY,roundGroupsNoByes[2].rounds[0].matchUps[0].participant1)
+
+        roundGroupsNoByes[1].rounds[1].matchUps[0].status = MatchUpStatus.P1_WINNER
+        sut.update(roundGroupsNoByes,1,1,0)
+        roundGroupsNoByes[1].rounds[1].matchUps[1].status = MatchUpStatus.P1_WINNER
+        sut.update(roundGroupsNoByes,1,1,1)
+        roundGroupsNoByes[1].rounds[2].matchUps[0].status = MatchUpStatus.P1_WINNER
+        sut.update(roundGroupsNoByes,1,2,0)
+        roundGroupsNoByes[1].rounds[3].matchUps[0].status = MatchUpStatus.P1_WINNER
+        sut.update(roundGroupsNoByes,1,3,0)
+        Assert.assertEquals(Data.FIRE,roundGroupsNoByes[1].rounds[3].matchUps[0].participant1)
+        Assert.assertEquals(Data.FIRE,roundGroupsNoByes[2].rounds[0].matchUps[0].participant2)
+
+        roundGroupsNoByes[2].rounds[0].matchUps[0].status = MatchUpStatus.P1_WINNER
+        sut.update(roundGroupsNoByes,2,0,0)
+        Assert.assertEquals(Participant.NULL_PARTICIPANT,roundGroupsNoByes[2].rounds[1].matchUps[0].participant1)
+        Assert.assertEquals(Participant.NULL_PARTICIPANT,roundGroupsNoByes[2].rounds[1].matchUps[0].participant2)
+
+        roundGroupsNoByes[2].rounds[0].matchUps[0].status = MatchUpStatus.P2_WINNER
+        sut.update(roundGroupsNoByes,2,0,0)
+        Assert.assertEquals(Data.KELSEY,roundGroupsNoByes[2].rounds[1].matchUps[0].participant1)
+        Assert.assertEquals(Data.FIRE,roundGroupsNoByes[2].rounds[1].matchUps[0].participant2)
     }
 
 
