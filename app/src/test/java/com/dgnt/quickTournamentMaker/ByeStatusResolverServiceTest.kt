@@ -10,7 +10,7 @@ import org.junit.Test
 
 class ByeStatusResolverServiceTest {
 
-    private val sut: ByeStatusResolverService = ByeStatusResolverService()
+    private val sut = ByeStatusResolverService()
     private lateinit var roundGroups: List<RoundGroup>
 
     @Before

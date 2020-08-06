@@ -8,7 +8,7 @@ import org.junit.Test
 
 
 class EliminationRoundGeneratorServiceTest {
-    private val sut: EliminationRoundGeneratorService = EliminationRoundGeneratorService()
+    private val sut = EliminationRoundGeneratorService()
     private lateinit var participants: List<Participant>
 
     @Before

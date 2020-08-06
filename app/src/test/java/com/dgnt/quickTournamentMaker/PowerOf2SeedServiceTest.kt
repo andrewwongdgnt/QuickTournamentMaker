@@ -9,7 +9,7 @@ import org.junit.Test
 
 class PowerOf2SeedServiceTest {
 
-    private val sut: PowerOf2SeedService = PowerOf2SeedService()
+    private val sut = PowerOf2SeedService()
     private lateinit var people: List<Person>
 
     @Before

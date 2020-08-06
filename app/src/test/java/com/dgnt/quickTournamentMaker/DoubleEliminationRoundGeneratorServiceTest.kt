@@ -11,7 +11,6 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito
 import org.powermock.api.mockito.PowerMockito
 import org.powermock.core.classloader.annotations.PrepareForTest
 import org.powermock.modules.junit4.PowerMockRunner
@@ -21,17 +20,17 @@ import org.powermock.modules.junit4.PowerMockRunner
 class DoubleEliminationRoundGeneratorServiceTest {
     private val mockEliminationRoundGeneratorService: EliminationRoundGeneratorService = PowerMockito.mock(EliminationRoundGeneratorService::class.java)
 
-    private val sut: DoubleEliminationRoundGeneratorService = DoubleEliminationRoundGeneratorService(mockEliminationRoundGeneratorService)
+    private val sut = DoubleEliminationRoundGeneratorService(mockEliminationRoundGeneratorService)
     private lateinit var participants: List<Participant>
 
     @Before
     fun setUp() {
         participants = listOf(Data.ANDREW, Data.KYRA, Data.DGNT, Data.KELSEY, Data.FIRE, Data.SUPER, Data.HERO, Data.DEMON)
 
-        val round1 = Round(listOf(MatchUp(Data.ANDREW,Data.KYRA), MatchUp(Data.DGNT,Data.KELSEY),MatchUp(Data.FIRE,Data.SUPER),MatchUp(Data.HERO,Data.DEMON)))
-        val round2 = Round(listOf(MatchUp(Participant.NULL_PARTICIPANT,Participant.NULL_PARTICIPANT), MatchUp(Participant.NULL_PARTICIPANT,Participant.NULL_PARTICIPANT)))
-        val round3 = Round(listOf(MatchUp(Participant.NULL_PARTICIPANT,Participant.NULL_PARTICIPANT)))
-        PowerMockito.`when`(mockEliminationRoundGeneratorService.build(participants)).thenReturn(listOf(RoundGroup(listOf(round1,round2,round3))))
+        val round1 = Round(listOf(MatchUp(Data.ANDREW, Data.KYRA), MatchUp(Data.DGNT, Data.KELSEY), MatchUp(Data.FIRE, Data.SUPER), MatchUp(Data.HERO, Data.DEMON)))
+        val round2 = Round(listOf(MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT), MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)))
+        val round3 = Round(listOf(MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)))
+        PowerMockito.`when`(mockEliminationRoundGeneratorService.build(participants)).thenReturn(listOf(RoundGroup(listOf(round1, round2, round3))))
 
     }
 
@@ -42,9 +41,9 @@ class DoubleEliminationRoundGeneratorServiceTest {
 
     @Test
     fun testTotalRounds() {
-        Assert.assertEquals(3,sut.build(participants)[0].rounds.size)
-        Assert.assertEquals(4,sut.build(participants)[1].rounds.size)
-        Assert.assertEquals(2,sut.build(participants)[2].rounds.size)
+        Assert.assertEquals(3, sut.build(participants)[0].rounds.size)
+        Assert.assertEquals(4, sut.build(participants)[1].rounds.size)
+        Assert.assertEquals(2, sut.build(participants)[2].rounds.size)
     }
 
     @Test

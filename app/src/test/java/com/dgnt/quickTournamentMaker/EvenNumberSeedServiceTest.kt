@@ -10,7 +10,7 @@ import org.junit.Test
 
 class EvenNumberSeedServiceTest {
 
-    private val sut: EvenNumberSeedService = EvenNumberSeedService()
+    private val sut = EvenNumberSeedService()
     private lateinit var people: List<Person>
 
     @Before

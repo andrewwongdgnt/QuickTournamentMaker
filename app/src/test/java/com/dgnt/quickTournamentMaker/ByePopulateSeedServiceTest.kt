@@ -11,7 +11,7 @@ import org.junit.Test
 
 class ByePopulateSeedServiceTest {
 
-    private val sut: ByePopulateSeedService = ByePopulateSeedService()
+    private val sut = ByePopulateSeedService()
     private lateinit var people: List<Person>
 
     @Before

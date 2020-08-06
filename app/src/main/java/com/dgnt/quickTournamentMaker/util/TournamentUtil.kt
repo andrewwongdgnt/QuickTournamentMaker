@@ -7,7 +7,7 @@ import java.text.DateFormat
 
 class TournamentUtil {
     companion object {
-        fun createRound1(orderedParticipants: List<Participant>): Round = Round(orderedParticipants.zipWithNext().filterIndexed { index, _ -> index%2==0  }.map { MatchUp(it.first, it.second) })
+        fun createRound(orderedParticipants: List<Participant>): Round = Round(orderedParticipants.zipWithNext().filterIndexed { index, _ -> index%2==0  }.map { MatchUp(it.first, it.second) })
 
         fun basicSeedCheck(orderedParticipantList: List<Participant?>): Boolean = orderedParticipantList.size >= 4 && orderedParticipantList.size % 2 == 0
 

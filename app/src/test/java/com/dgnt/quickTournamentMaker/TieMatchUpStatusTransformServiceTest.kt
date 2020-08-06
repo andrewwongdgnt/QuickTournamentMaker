@@ -10,7 +10,7 @@ import org.junit.Before
 import org.junit.Test
 
 class TieMatchUpStatusTransformServiceTest {
-    private val sut: TieMatchUpStatusTransformService = TieMatchUpStatusTransformService()
+    private val sut = TieMatchUpStatusTransformService()
 
     @Before
     fun setUp() {

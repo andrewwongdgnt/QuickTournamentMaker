@@ -20,7 +20,7 @@ import org.powermock.modules.junit4.PowerMockRunner
 class ToggleStatusServiceTest {
     private val mockMatchUpStatusTransformService: IMatchUpStatusTransformService = PowerMockito.mock(IMatchUpStatusTransformService::class.java)
 
-    private val sut: ToggleStatusService = ToggleStatusService(mockMatchUpStatusTransformService)
+    private val sut = ToggleStatusService(mockMatchUpStatusTransformService)
 
     @Before
     fun setUp() {

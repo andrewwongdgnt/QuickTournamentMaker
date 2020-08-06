@@ -10,7 +10,7 @@ import com.dgnt.quickTournamentMaker.util.TournamentUtil
 class EliminationRoundGeneratorService : IRoundGeneratorService {
     override fun build(orderedParticipants: List<Participant>): List<RoundGroup> {
 
-        val round1 = TournamentUtil.createRound1(orderedParticipants)
+        val round1 = TournamentUtil.createRound(orderedParticipants)
 
         val rounds: MutableList<Round> = ArrayList();
         rounds.add(round1)

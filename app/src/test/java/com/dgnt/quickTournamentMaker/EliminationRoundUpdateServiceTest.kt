@@ -8,7 +8,7 @@ import org.junit.Test
 
 class EliminationRoundUpdateServiceTest {
 
-    private val sut: EliminationRoundUpdateService = EliminationRoundUpdateService()
+    private val sut = EliminationRoundUpdateService()
     private lateinit var roundGroups: List<RoundGroup>
 
     @Before

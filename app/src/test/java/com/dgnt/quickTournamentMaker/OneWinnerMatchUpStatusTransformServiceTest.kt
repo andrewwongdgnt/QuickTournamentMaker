@@ -13,7 +13,7 @@ import org.junit.Before
 import org.junit.Test
 
 class OneWinnerMatchUpStatusTransformServiceTest {
-    private val sut: OneWinnerMatchUpStatusTransformService = OneWinnerMatchUpStatusTransformService()
+    private val sut = OneWinnerMatchUpStatusTransformService()
 
     @Before
     fun setUp() {

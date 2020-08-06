@@ -17,7 +17,7 @@ import org.powermock.modules.junit4.PowerMockRunner
 class DoubleEliminationRoundUpdateServiceTest {
     private val mockEliminationRoundUpdateService: EliminationRoundUpdateService = PowerMockito.mock(EliminationRoundUpdateService::class.java)
 
-    private val sut: DoubleEliminationRoundUpdateService = DoubleEliminationRoundUpdateService(mockEliminationRoundUpdateService)
+    private val sut = DoubleEliminationRoundUpdateService(mockEliminationRoundUpdateService)
     private lateinit var roundGroupsNoByes: List<RoundGroup>
 
     @Before
