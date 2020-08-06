@@ -12,7 +12,7 @@ import org.kodein.di.provider
 class Application() : Application(), DIAware {
 
     override val di = DI.lazy {
-        bind<IRoundGeneratorService>() with provider { EliminationRoundGeneratorService() }
+       // bind<IRoundGeneratorService>() with provider { EliminationRoundGeneratorService() }
 
     }
     //override val kodein = DIAware.lazy {

@@ -1,20 +1,36 @@
 package com.dgnt.quickTournamentMaker
 
+import com.dgnt.quickTournamentMaker.data.tournament.MatchUp
 import com.dgnt.quickTournamentMaker.data.tournament.Participant
-import com.dgnt.quickTournamentMaker.service.implementation.EliminationRoundGeneratorService
+import com.dgnt.quickTournamentMaker.data.tournament.Round
 import com.dgnt.quickTournamentMaker.service.implementation.RoundRobinRoundGeneratorService
+import com.dgnt.quickTournamentMaker.service.interfaces.IParticipantService
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
+import org.powermock.api.mockito.PowerMockito
 
 
 class RoundRobinRoundGeneratorServiceTest {
-    private val sut = RoundRobinRoundGeneratorService()
+    private val mockParticipantService = PowerMockito.mock(IParticipantService::class.java)
+
+    private val sut = RoundRobinRoundGeneratorService(mockParticipantService)
     private lateinit var participants: List<Participant>
 
     @Before
     fun setUp() {
         participants = listOf(Data.ANDREW, Data.KYRA, Data.DGNT, Data.KELSEY, Data.FIRE, Data.SUPER, Data.HERO, Data.DEMON)
+        PowerMockito.`when`(mockParticipantService.createRound(participants)).thenReturn(
+            Round(
+                listOf(
+                    MatchUp(Data.ANDREW,Data.KYRA),
+                    MatchUp(Data.DGNT,Data.KELSEY),
+                    MatchUp(Data.FIRE,Data.SUPER),
+                    MatchUp(Data.HERO,Data.DEMON)
+                )
+            )
+        );
+
     }
 
     @Test
@@ -24,7 +40,7 @@ class RoundRobinRoundGeneratorServiceTest {
 
     @Test
     fun testTotalRounds() {
-        Assert.assertEquals(7,sut.build(participants)[0].rounds.size)
+        Assert.assertEquals(7, sut.build(participants)[0].rounds.size)
     }
 
     @Test

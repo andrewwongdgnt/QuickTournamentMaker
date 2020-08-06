@@ -4,6 +4,7 @@ import android.util.Log
 import com.dgnt.quickTournamentMaker.data.tournament.*
 import com.dgnt.quickTournamentMaker.service.implementation.DoubleEliminationRoundUpdateService
 import com.dgnt.quickTournamentMaker.service.implementation.EliminationRoundUpdateService
+import com.dgnt.quickTournamentMaker.service.interfaces.IRoundUpdateService
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -15,9 +16,9 @@ import org.powermock.modules.junit4.PowerMockRunner
 @RunWith(PowerMockRunner::class)
 @PrepareForTest(Log::class, EliminationRoundUpdateService::class)
 class DoubleEliminationRoundUpdateServiceTest {
-    private val mockEliminationRoundUpdateService: EliminationRoundUpdateService = PowerMockito.mock(EliminationRoundUpdateService::class.java)
+    private val mockRoundUpdateService = PowerMockito.mock(IRoundUpdateService::class.java)
 
-    private val sut = DoubleEliminationRoundUpdateService(mockEliminationRoundUpdateService)
+    private val sut = DoubleEliminationRoundUpdateService(mockRoundUpdateService)
     private lateinit var roundGroupsNoByes: List<RoundGroup>
 
     @Before

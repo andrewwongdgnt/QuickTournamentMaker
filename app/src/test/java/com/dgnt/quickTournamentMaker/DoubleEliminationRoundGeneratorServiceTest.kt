@@ -7,6 +7,7 @@ import com.dgnt.quickTournamentMaker.data.tournament.Round
 import com.dgnt.quickTournamentMaker.data.tournament.RoundGroup
 import com.dgnt.quickTournamentMaker.service.implementation.DoubleEliminationRoundGeneratorService
 import com.dgnt.quickTournamentMaker.service.implementation.EliminationRoundGeneratorService
+import com.dgnt.quickTournamentMaker.service.interfaces.IRoundGeneratorService
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -18,9 +19,9 @@ import org.powermock.modules.junit4.PowerMockRunner
 @RunWith(PowerMockRunner::class)
 @PrepareForTest(Log::class, EliminationRoundGeneratorService::class)
 class DoubleEliminationRoundGeneratorServiceTest {
-    private val mockEliminationRoundGeneratorService: EliminationRoundGeneratorService = PowerMockito.mock(EliminationRoundGeneratorService::class.java)
+    private val mockRoundGeneratorService = PowerMockito.mock(IRoundGeneratorService::class.java)
 
-    private val sut = DoubleEliminationRoundGeneratorService(mockEliminationRoundGeneratorService)
+    private val sut = DoubleEliminationRoundGeneratorService(mockRoundGeneratorService)
     private lateinit var participants: List<Participant>
 
     @Before
@@ -30,7 +31,7 @@ class DoubleEliminationRoundGeneratorServiceTest {
         val round1 = Round(listOf(MatchUp(Data.ANDREW, Data.KYRA), MatchUp(Data.DGNT, Data.KELSEY), MatchUp(Data.FIRE, Data.SUPER), MatchUp(Data.HERO, Data.DEMON)))
         val round2 = Round(listOf(MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT), MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)))
         val round3 = Round(listOf(MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)))
-        PowerMockito.`when`(mockEliminationRoundGeneratorService.build(participants)).thenReturn(listOf(RoundGroup(listOf(round1, round2, round3))))
+        PowerMockito.`when`(mockRoundGeneratorService.build(participants)).thenReturn(listOf(RoundGroup(listOf(round1, round2, round3))))
 
     }
 
