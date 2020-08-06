@@ -24,7 +24,6 @@ class ToggleStatusServiceTest {
 
     @Before
     fun setUp() {
-       // PowerMockito.`when`(mockMatchUpStatusTransformService.transform(Mockito.any(),Mockito.any())).thenReturn(MatchUpStatus.DEFAULT)
     }
 
     @Test

@@ -15,16 +15,15 @@ import org.powermock.api.mockito.PowerMockito
 class ParticipantServiceTest {
 
     private val sut = ParticipantService()
-    private lateinit var participants: List<Participant>
+    private lateinit var round: Round
 
     @Before
     fun setUp() {
-        participants = listOf(Data.ANDREW, Data.KYRA, Data.DGNT, Data.KELSEY, Data.FIRE, Data.SUPER, Data.HERO, Data.DEMON)
+        round = sut.createRound(listOf(Data.ANDREW, Data.KYRA, Data.DGNT, Data.KELSEY, Data.FIRE, Data.SUPER, Data.HERO, Data.DEMON))
     }
 
     @Test
     fun testCreateRound() {
-        val round = sut.createRound(participants)
         Assert.assertEquals(Data.ANDREW, round.matchUps[0].participant1)
         Assert.assertEquals(Data.KYRA, round.matchUps[0].participant2)
         Assert.assertEquals(Data.DGNT, round.matchUps[1].participant1)

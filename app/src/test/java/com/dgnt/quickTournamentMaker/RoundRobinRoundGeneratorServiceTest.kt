@@ -3,6 +3,7 @@ package com.dgnt.quickTournamentMaker
 import com.dgnt.quickTournamentMaker.data.tournament.MatchUp
 import com.dgnt.quickTournamentMaker.data.tournament.Participant
 import com.dgnt.quickTournamentMaker.data.tournament.Round
+import com.dgnt.quickTournamentMaker.data.tournament.RoundGroup
 import com.dgnt.quickTournamentMaker.service.implementation.RoundRobinRoundGeneratorService
 import com.dgnt.quickTournamentMaker.service.interfaces.IParticipantService
 import org.junit.Assert
@@ -15,11 +16,14 @@ class RoundRobinRoundGeneratorServiceTest {
     private val mockParticipantService = PowerMockito.mock(IParticipantService::class.java)
 
     private val sut = RoundRobinRoundGeneratorService(mockParticipantService)
-    private lateinit var participants: List<Participant>
+    private lateinit var roundGroups: List<RoundGroup>
 
     @Before
     fun setUp() {
-        participants = listOf(Data.ANDREW, Data.KYRA, Data.DGNT, Data.KELSEY, Data.FIRE, Data.SUPER, Data.HERO, Data.DEMON)
+        val participants = listOf(Data.ANDREW, Data.KYRA, Data.DGNT, Data.KELSEY, Data.FIRE, Data.SUPER, Data.HERO, Data.DEMON)
+
+        roundGroups = sut.build(participants)
+
         PowerMockito.`when`(mockParticipantService.createRound(participants)).thenReturn(
             Round(
                 listOf(
@@ -35,17 +39,17 @@ class RoundRobinRoundGeneratorServiceTest {
 
     @Test
     fun testTotalRoundGroup() {
-        Assert.assertEquals(1, sut.build(participants).size)
+        Assert.assertEquals(1, roundGroups.size)
     }
 
     @Test
     fun testTotalRounds() {
-        Assert.assertEquals(7, sut.build(participants)[0].rounds.size)
+        Assert.assertEquals(7, roundGroups[0].rounds.size)
     }
 
     @Test
     fun testTotalMatchUps() {
-        val rounds = sut.build(participants)[0].rounds
+        val rounds = roundGroups[0].rounds
         rounds.forEach {
             Assert.assertEquals(4, it.matchUps.size)
         }
@@ -53,7 +57,7 @@ class RoundRobinRoundGeneratorServiceTest {
 
     @Test
     fun testParticipantPlacements() {
-        val rounds = sut.build(participants)[0].rounds
+        val rounds = roundGroups[0].rounds
         Assert.assertEquals(Data.ANDREW, rounds[1].matchUps[0].participant1)
         Assert.assertEquals(Data.DGNT, rounds[1].matchUps[0].participant2)
         Assert.assertEquals(Data.FIRE, rounds[1].matchUps[1].participant1)

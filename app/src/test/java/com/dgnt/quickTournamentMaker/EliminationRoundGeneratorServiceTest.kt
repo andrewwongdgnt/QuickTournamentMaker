@@ -3,6 +3,7 @@ package com.dgnt.quickTournamentMaker
 import com.dgnt.quickTournamentMaker.data.tournament.MatchUp
 import com.dgnt.quickTournamentMaker.data.tournament.Participant
 import com.dgnt.quickTournamentMaker.data.tournament.Round
+import com.dgnt.quickTournamentMaker.data.tournament.RoundGroup
 import com.dgnt.quickTournamentMaker.service.implementation.EliminationRoundGeneratorService
 import com.dgnt.quickTournamentMaker.service.interfaces.IParticipantService
 import org.junit.Assert
@@ -15,11 +16,12 @@ class EliminationRoundGeneratorServiceTest {
     private val mockParticipantService = PowerMockito.mock(IParticipantService::class.java)
 
     private val sut = EliminationRoundGeneratorService(mockParticipantService)
-    private lateinit var participants: List<Participant>
+    private lateinit var roundGroups: List<RoundGroup>
 
     @Before
     fun setUp() {
-        participants = listOf(Data.ANDREW, Data.KYRA, Data.DGNT, Data.KELSEY, Data.FIRE, Data.SUPER, Data.HERO, Data.DEMON)
+        val participants = listOf(Data.ANDREW, Data.KYRA, Data.DGNT, Data.KELSEY, Data.FIRE, Data.SUPER, Data.HERO, Data.DEMON)
+        roundGroups = sut.build(participants)
         PowerMockito.`when`(mockParticipantService.createRound(participants)).thenReturn(
             Round(
                 listOf(
@@ -34,17 +36,17 @@ class EliminationRoundGeneratorServiceTest {
 
     @Test
     fun testTotalRoundGroup() {
-        Assert.assertEquals(1, sut.build(participants).size)
+        Assert.assertEquals(1, roundGroups.size)
     }
 
     @Test
     fun testTotalRounds() {
-        Assert.assertEquals(3,sut.build(participants)[0].rounds.size)
+        Assert.assertEquals(3,roundGroups[0].rounds.size)
     }
 
     @Test
     fun testTotalMatchUps() {
-        val rounds = sut.build(participants)[0].rounds
+        val rounds = roundGroups[0].rounds
         Assert.assertEquals(4, rounds[0].matchUps.size)
         Assert.assertEquals(2, rounds[1].matchUps.size)
         Assert.assertEquals(1, rounds[2].matchUps.size)

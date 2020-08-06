@@ -12,16 +12,15 @@ import org.junit.Test
 class ByePopulateSeedServiceTest {
 
     private val sut = ByePopulateSeedService()
-    private lateinit var people: List<Person>
+    private lateinit var participants: List<Participant>
 
     @Before
     fun setUp() {
-        people = listOf(Data.ANDREW_PERSON, Data.KYRA_PERSON, Data.DGNT_PERSON, Data.KELSEY_PERSON, Data.FIRE_PERSON, Data.SUPER_PERSON, Data.HERO_PERSON, Data.DEMON_PERSON)
+        participants = sut.seed(listOf(Data.ANDREW_PERSON, Data.KYRA_PERSON, Data.DGNT_PERSON, Data.KELSEY_PERSON, Data.FIRE_PERSON, Data.SUPER_PERSON, Data.HERO_PERSON, Data.DEMON_PERSON))
     }
 
     @Test
     fun testSeedEven() {
-        val participants= sut.seed(people)
         Assert.assertEquals(Data.ANDREW_PERSON, participants[0].person)
         Assert.assertEquals(Participant.BYE_PARTICIPANT, participants[1])
         Assert.assertEquals(Data.KYRA_PERSON, participants[2].person)
@@ -42,7 +41,6 @@ class ByePopulateSeedServiceTest {
 
     @Test
     fun testSeedOdd() {
-        val participants= sut.seed(people.dropLast(1))
         Assert.assertEquals(Data.ANDREW_PERSON, participants[0].person)
         Assert.assertEquals(Participant.BYE_PARTICIPANT, participants[1])
         Assert.assertEquals(Data.KYRA_PERSON, participants[2].person)
