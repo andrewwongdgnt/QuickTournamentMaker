@@ -21,7 +21,6 @@ class EliminationRoundGeneratorServiceTest {
     @Before
     fun setUp() {
         val participants = listOf(Data.ANDREW, Data.KYRA, Data.DGNT, Data.KELSEY, Data.FIRE, Data.SUPER, Data.HERO, Data.DEMON)
-        roundGroups = sut.build(participants)
         PowerMockito.`when`(mockParticipantService.createRound(participants)).thenReturn(
             Round(
                 listOf(
@@ -32,6 +31,7 @@ class EliminationRoundGeneratorServiceTest {
                 )
             )
         );
+        roundGroups = sut.build(participants)
     }
 
     @Test
