@@ -2,7 +2,6 @@ package com.dgnt.quickTournamentMaker
 
 import com.dgnt.quickTournamentMaker.data.tournament.*
 import com.dgnt.quickTournamentMaker.service.implementation.EliminationRankingHelperService
-import com.dgnt.quickTournamentMaker.service.implementation.EliminationRankingService
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -31,7 +30,7 @@ class EliminationRankingHelperServiceTest {
                 )
             )
         ).first().rounds
-        val initialStateRank = sut.calculate(initialState, initialState.dropLast(1),initialState.takeLast(1))
+        val initialStateRank = sut.calculate(initialState, initialState.dropLast(1), initialState.takeLast(1))
         initialStateKnownRank = initialStateRank.known
         initialStateUnknownRank = initialStateRank.unknown
 
@@ -44,7 +43,7 @@ class EliminationRankingHelperServiceTest {
                 )
             )
         ).first().rounds
-        val finalStateRank = sut.calculate(finalState,finalState.dropLast(1),finalState.takeLast(1))
+        val finalStateRank = sut.calculate(finalState, finalState.dropLast(1), finalState.takeLast(1))
         finalStateKnownRank = finalStateRank.known
         finalStateUnknownRank = finalStateRank.unknown
 
@@ -57,7 +56,7 @@ class EliminationRankingHelperServiceTest {
                 )
             )
         ).first().rounds
-        val betweenStateRank = sut.calculate(betweenState,betweenState.dropLast(1),betweenState.takeLast(1))
+        val betweenStateRank = sut.calculate(betweenState, betweenState.dropLast(1), betweenState.takeLast(1))
         betweenStateKnownRank = betweenStateRank.known
         betweenStateUnknownRank = betweenStateRank.unknown
 
@@ -70,9 +69,9 @@ class EliminationRankingHelperServiceTest {
                 )
             )
         ).first().rounds
-        val edgeStateRank = sut.calculate(edgeState,edgeState.dropLast(1),edgeState.takeLast(1))
-       edgeStateKnownRank = edgeStateRank.known
-       edgeStateUnknownRank = edgeStateRank.unknown
+        val edgeStateRank = sut.calculate(edgeState, edgeState.dropLast(1), edgeState.takeLast(1))
+        edgeStateKnownRank = edgeStateRank.known
+        edgeStateUnknownRank = edgeStateRank.unknown
 
     }
 
@@ -125,10 +124,10 @@ class EliminationRankingHelperServiceTest {
         Assert.assertTrue(finalStateKnownRank[0].contains(Data.KELSEY))
         Assert.assertTrue(finalStateKnownRank[0].contains(Data.SUPER))
         Assert.assertTrue(finalStateKnownRank[0].contains(Data.DEMON))
-        Assert.assertTrue( finalStateKnownRank[1].contains(Data.DGNT))
-        Assert.assertTrue( finalStateKnownRank[1].contains(Data.HERO))
-        Assert.assertTrue( finalStateKnownRank[2].contains(Data.FIRE))
-        Assert.assertTrue( finalStateKnownRank[3].contains(Data.ANDREW))
+        Assert.assertTrue(finalStateKnownRank[1].contains(Data.DGNT))
+        Assert.assertTrue(finalStateKnownRank[1].contains(Data.HERO))
+        Assert.assertTrue(finalStateKnownRank[2].contains(Data.FIRE))
+        Assert.assertTrue(finalStateKnownRank[3].contains(Data.ANDREW))
     }
 
     @Test
@@ -148,7 +147,7 @@ class EliminationRankingHelperServiceTest {
     fun testBetweenStateKnownRanking() {
         Assert.assertTrue(betweenStateKnownRank[0].contains(Data.KYRA))
         Assert.assertTrue(betweenStateKnownRank[0].contains(Data.DGNT))
-        Assert.assertTrue( betweenStateKnownRank[1].contains(Data.ANDREW))
+        Assert.assertTrue(betweenStateKnownRank[1].contains(Data.ANDREW))
     }
 
     @Test
@@ -185,7 +184,7 @@ class EliminationRankingHelperServiceTest {
         Assert.assertTrue(edgeStateKnownRank[0].contains(Data.SUPER))
         Assert.assertTrue(edgeStateKnownRank[1].contains(Data.ANDREW))
         Assert.assertTrue(edgeStateKnownRank[1].contains(Data.FIRE))
-        Assert.assertTrue( edgeStateKnownRank[3].contains(Data.KELSEY))
+        Assert.assertTrue(edgeStateKnownRank[3].contains(Data.KELSEY))
     }
 
     @Test
