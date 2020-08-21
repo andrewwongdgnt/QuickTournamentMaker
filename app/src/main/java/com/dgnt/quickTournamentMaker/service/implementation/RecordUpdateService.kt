@@ -11,26 +11,26 @@ class RecordUpdateService : IRecordUpdateService {
         val participant1Record = matchUp.participant1.record
         val participant2Record = matchUp.participant2.record
 
-        when (previousMatchUpStatus){
-           MatchUpStatus.DEFAULT ->{
-               when (matchUp.status){
-                   MatchUpStatus.P1_WINNER->{
-                       participant1Record.wins++
-                       participant2Record.losses++
-                   }
-                   MatchUpStatus.P2_WINNER -> {
-                       participant1Record.losses++
-                       participant2Record.wins++
-                   }
-                   MatchUpStatus.TIE -> {
-                       participant1Record.ties++
-                       participant2Record.ties++
-                   }
-               }
+        when (previousMatchUpStatus) {
+            MatchUpStatus.DEFAULT -> {
+                when (matchUp.status) {
+                    MatchUpStatus.P1_WINNER -> {
+                        participant1Record.wins++
+                        participant2Record.losses++
+                    }
+                    MatchUpStatus.P2_WINNER -> {
+                        participant1Record.losses++
+                        participant2Record.wins++
+                    }
+                    MatchUpStatus.TIE -> {
+                        participant1Record.ties++
+                        participant2Record.ties++
+                    }
+                }
             }
             MatchUpStatus.P1_WINNER -> {
-                when (matchUp.status){
-                    MatchUpStatus.DEFAULT->{
+                when (matchUp.status) {
+                    MatchUpStatus.DEFAULT -> {
                         participant1Record.wins--
                         participant2Record.losses--
                     }
@@ -49,8 +49,8 @@ class RecordUpdateService : IRecordUpdateService {
                 }
             }
             MatchUpStatus.P2_WINNER -> {
-                when (matchUp.status){
-                    MatchUpStatus.DEFAULT->{
+                when (matchUp.status) {
+                    MatchUpStatus.DEFAULT -> {
                         participant1Record.losses--
                         participant2Record.wins--
                     }
@@ -69,8 +69,8 @@ class RecordUpdateService : IRecordUpdateService {
                 }
             }
             MatchUpStatus.TIE -> {
-                when (matchUp.status){
-                    MatchUpStatus.DEFAULT->{
+                when (matchUp.status) {
+                    MatchUpStatus.DEFAULT -> {
                         participant1Record.ties--
                         participant2Record.ties--
                     }
