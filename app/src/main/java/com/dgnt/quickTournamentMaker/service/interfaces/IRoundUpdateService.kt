@@ -1,7 +1,6 @@
 package com.dgnt.quickTournamentMaker.service.interfaces
 
-import com.dgnt.quickTournamentMaker.data.tournament.MatchUpStatus
-import com.dgnt.quickTournamentMaker.data.tournament.RoundGroup
+import com.dgnt.quickTournamentMaker.data.tournament.*
 
 interface IRoundUpdateService {
     /**
@@ -11,6 +10,8 @@ interface IRoundUpdateService {
      * @param roundGroupIndex index of round group
      * @param roundIndex index of round in a round group
      * @param matchUpIndex index of match up in a round
+     * @param rankConfig optionally the rank configuration that may determine the next round configuration
      */
-    fun update(roundGroups: List<RoundGroup>, roundGroupIndex:Int, roundIndex:Int, matchUpIndex:Int)
+    fun update(roundGroups: List<RoundGroup>, roundGroupIndex:Int, roundIndex:Int, matchUpIndex:Int, rankConfig: IRankConfig= RankPriorityConfig(RankPriorityConfigType.WIN, RankPriorityConfigType.LOSS, RankPriorityConfigType.TIE))
+
 }

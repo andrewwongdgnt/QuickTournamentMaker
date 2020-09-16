@@ -1,5 +1,6 @@
 package com.dgnt.quickTournamentMaker.service.implementation
 
+import com.dgnt.quickTournamentMaker.data.tournament.IRankConfig
 import com.dgnt.quickTournamentMaker.data.tournament.MatchUpStatus
 import com.dgnt.quickTournamentMaker.data.tournament.Participant
 import com.dgnt.quickTournamentMaker.data.tournament.RoundGroup
@@ -7,7 +8,7 @@ import com.dgnt.quickTournamentMaker.service.interfaces.IRoundUpdateService
 
 
 class DoubleEliminationRoundUpdateService(private val roundUpdateService: IRoundUpdateService) : IRoundUpdateService {
-    override fun update(roundGroups: List<RoundGroup>, roundGroupIndex: Int, roundIndex: Int, matchUpIndex: Int) {
+    override fun update(roundGroups: List<RoundGroup>, roundGroupIndex: Int, roundIndex: Int, matchUpIndex: Int, rankConfig: IRankConfig) {
 
         val roundGroup = roundGroups[roundGroupIndex]
 

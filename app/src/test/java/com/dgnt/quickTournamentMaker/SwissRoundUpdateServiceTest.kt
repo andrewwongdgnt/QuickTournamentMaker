@@ -26,18 +26,14 @@ class SwissRoundUpdateServiceTest {
         }
         roundGroups = listOf(RoundGroup(rounds))
 
-        PowerMockito.`when`(mockRankingService.createRound(participants)).thenReturn(
-            Round(
-                listOf(
-                    MatchUp(Data.ANDREW,Data.KYRA),
-                    MatchUp(Data.DGNT,Data.KELSEY),
-                    MatchUp(Data.FIRE,Data.SUPER),
-                    MatchUp(Data.HERO,Data.DEMON)
-                )
-            )
-        );
+
     }
 
+    private fun helperMockRankingService(list: List<Set<Participant>>) {
+        PowerMockito.`when`(mockRankingService.calculate(MockitoHelper.anyObject())).thenReturn(
+            Rank(list, setOf())
+        );
+    }
 
     @Test
     fun testDistributionWithNoTies() {
@@ -54,21 +50,25 @@ class SwissRoundUpdateServiceTest {
 
         //Andrew Vs Kyra
         round1.matchUps[0].status = MatchUpStatus.P1_WINNER
+        helperMockRankingService(listOf(setOf(Data.KYRA), setOf(Data.SUPER, Data.KELSEY, Data.HERO, Data.FIRE, Data.DGNT, Data.DEMON), setOf(Data.ANDREW)))
         sut.update(roundGroups, 0, 0, 0)
         assertRound2NullParticipants()
 
         //Dgnt Vs Kelsey
         round1.matchUps[1].status = MatchUpStatus.P1_WINNER
+        helperMockRankingService(listOf(setOf(Data.KYRA, Data.KELSEY), setOf(Data.SUPER, Data.HERO, Data.FIRE, Data.DEMON), setOf(Data.DGNT, Data.ANDREW)))
         sut.update(roundGroups, 0, 0, 1)
         assertRound2NullParticipants()
 
         //Fire vs Super
         round1.matchUps[2].status = MatchUpStatus.P1_WINNER
+        helperMockRankingService(listOf(setOf(Data.SUPER, Data.KYRA, Data.KELSEY), setOf(Data.HERO, Data.DEMON), setOf(Data.FIRE, Data.DGNT, Data.ANDREW)))
         sut.update(roundGroups, 0, 0, 2)
         assertRound2NullParticipants()
 
         //Hero vs Demon
         round1.matchUps[3].status = MatchUpStatus.P1_WINNER
+        helperMockRankingService(listOf(setOf(Data.SUPER, Data.KYRA, Data.KELSEY, Data.DEMON), setOf(Data.HERO, Data.FIRE, Data.DGNT, Data.ANDREW)))
         sut.update(roundGroups, 0, 0, 3)
         Assert.assertEquals(Data.ANDREW, round2.matchUps[0].participant1)//1-0
         Assert.assertEquals(Data.DGNT, round2.matchUps[0].participant2)//1-0
@@ -90,21 +90,25 @@ class SwissRoundUpdateServiceTest {
 
         //Andrew Vs Dgnt
         round2.matchUps[0].status = MatchUpStatus.P1_WINNER
+        helperMockRankingService(listOf(setOf(Data.SUPER, Data.KYRA, Data.KELSEY, Data.DEMON), setOf(Data.DGNT), setOf(Data.HERO, Data.FIRE), setOf(Data.ANDREW)))
         sut.update(roundGroups, 0, 1, 0)
         assertRound3NullParticipants()
 
         //Fire Vs Hero
         round2.matchUps[1].status = MatchUpStatus.P1_WINNER
+        helperMockRankingService(listOf(setOf(Data.SUPER, Data.KYRA, Data.KELSEY, Data.DEMON), setOf(Data.HERO, Data.DGNT), setOf(Data.FIRE, Data.ANDREW)))
         sut.update(roundGroups, 0, 1, 1)
         assertRound3NullParticipants()
 
         //Demon vs Kelsey
         round2.matchUps[2].status = MatchUpStatus.P1_WINNER
+        helperMockRankingService(listOf(setOf(Data.KELSEY), setOf(Data.SUPER, Data.KYRA), setOf(Data.HERO, Data.DGNT, Data.DEMON), setOf(Data.FIRE, Data.ANDREW)))
         sut.update(roundGroups, 0, 1, 2)
         assertRound3NullParticipants()
 
         //Kyra vs Super
         round2.matchUps[3].status = MatchUpStatus.P1_WINNER
+        helperMockRankingService(listOf(setOf(Data.SUPER, Data.KELSEY), setOf(Data.KYRA, Data.HERO, Data.DGNT, Data.DEMON), setOf(Data.FIRE, Data.ANDREW)))
         sut.update(roundGroups, 0, 1, 3)
         Assert.assertEquals(Data.ANDREW, round3.matchUps[0].participant1)//2-0
         Assert.assertEquals(Data.FIRE, round3.matchUps[0].participant2)//2-0
@@ -126,21 +130,25 @@ class SwissRoundUpdateServiceTest {
 
         //Andrew vs Fire
         round3.matchUps[0].status = MatchUpStatus.P1_WINNER
+        helperMockRankingService(listOf(setOf(Data.SUPER, Data.KELSEY), setOf(Data.KYRA, Data.HERO, Data.DGNT, Data.DEMON), setOf(Data.FIRE), setOf(Data.ANDREW)))
         sut.update(roundGroups, 0, 2, 0)
         assertRound4NullParticipants()
 
         //Demon vs Dgnt
         round3.matchUps[1].status = MatchUpStatus.P1_WINNER
+        helperMockRankingService(listOf(setOf(Data.SUPER, Data.KELSEY), setOf(Data.DGNT), setOf(Data.KYRA, Data.HERO, Data.DEMON), setOf(Data.FIRE, Data.DEMON), setOf(Data.ANDREW)))
         sut.update(roundGroups, 0, 2, 1)
         assertRound4NullParticipants()
 
         //Hero vs Kyra
         round3.matchUps[2].status = MatchUpStatus.P1_WINNER
+        helperMockRankingService(listOf(setOf(Data.SUPER, Data.KELSEY), setOf(Data.KYRA, Data.DGNT), setOf(Data.HERO, Data.FIRE, Data.DEMON), setOf(Data.ANDREW)))
         sut.update(roundGroups, 0, 2, 2)
         assertRound4NullParticipants()
 
         //Kelsey vs Super
         round3.matchUps[3].status = MatchUpStatus.P1_WINNER
+        helperMockRankingService(listOf(setOf(Data.SUPER), setOf(Data.KYRA, Data.KELSEY, Data.DGNT), setOf(Data.HERO, Data.FIRE, Data.DEMON), setOf(Data.ANDREW)))
         sut.update(roundGroups, 0, 2, 3)
         Assert.assertEquals(Data.ANDREW, round4.matchUps[0].participant1)//3-0
         Assert.assertEquals(Data.DEMON, round4.matchUps[0].participant2)//2-1
@@ -152,6 +160,7 @@ class SwissRoundUpdateServiceTest {
         Assert.assertEquals(Data.KYRA, round4.matchUps[3].participant2)//0-3
 
         round1.matchUps[0].status = MatchUpStatus.DEFAULT
+        helperMockRankingService(listOf(setOf(Data.SUPER, Data.KELSEY, Data.DEMON), setOf(Data.KYRA, Data.ANDREW), setOf(Data.HERO, Data.FIRE, Data.DGNT)))
         sut.update(roundGroups, 0, 0, 0)
         assertRound2NullParticipants()
         assertRound3NullParticipants()
@@ -173,21 +182,25 @@ class SwissRoundUpdateServiceTest {
 
         //Andrew Vs Kyra
         round1.matchUps[0].status = MatchUpStatus.P1_WINNER
+        helperMockRankingService(listOf(setOf(Data.KYRA), setOf(Data.SUPER, Data.KELSEY, Data.HERO, Data.FIRE, Data.DGNT, Data.DEMON), setOf(Data.ANDREW)))
         sut.update(roundGroups, 0, 0, 0)
         assertRound2NullParticipants()
 
         //Dgnt Vs Kelsey
         round1.matchUps[1].status = MatchUpStatus.P1_WINNER
+        helperMockRankingService(listOf(setOf(Data.KYRA, Data.KELSEY), setOf(Data.SUPER, Data.HERO, Data.FIRE, Data.DEMON), setOf(Data.DGNT, Data.ANDREW)))
         sut.update(roundGroups, 0, 0, 1)
         assertRound2NullParticipants()
 
         //Fire vs Super
         round1.matchUps[2].status = MatchUpStatus.TIE
+        helperMockRankingService(listOf(setOf(Data.KYRA, Data.KELSEY), setOf(Data.HERO, Data.DEMON), setOf(Data.SUPER, Data.FIRE), setOf(Data.DGNT, Data.ANDREW)))
         sut.update(roundGroups, 0, 0, 2)
         assertRound2NullParticipants()
 
         //Hero vs Demon
         round1.matchUps[3].status = MatchUpStatus.P2_WINNER
+        helperMockRankingService(listOf(setOf(Data.KYRA, Data.KELSEY, Data.HERO), setOf(Data.SUPER, Data.FIRE), setOf(Data.DGNT, Data.DEMON, Data.ANDREW)))
         sut.update(roundGroups, 0, 0, 3)
         Assert.assertEquals(Data.ANDREW, round2.matchUps[0].participant1)//1-0-0
         Assert.assertEquals(Data.DEMON, round2.matchUps[0].participant2)//1-0-0
@@ -209,21 +222,25 @@ class SwissRoundUpdateServiceTest {
 
         //Andrew vs Demon
         round2.matchUps[0].status = MatchUpStatus.P2_WINNER
+        helperMockRankingService(listOf(setOf(Data.KYRA, Data.KELSEY, Data.HERO), setOf(Data.SUPER, Data.FIRE), setOf(Data.ANDREW), setOf(Data.DGNT), setOf(Data.DEMON)))
         sut.update(roundGroups, 0, 1, 0)
         assertRound3NullParticipants()
 
         //Dgnt vs Fire
         round2.matchUps[1].status = MatchUpStatus.P1_WINNER
+        helperMockRankingService(listOf(setOf(Data.KYRA, Data.KELSEY, Data.HERO), setOf(Data.FIRE), setOf(Data.SUPER), setOf(Data.ANDREW), setOf(Data.DGNT, Data.DEMON)))
         sut.update(roundGroups, 0, 1, 1)
         assertRound3NullParticipants()
 
         //Super vs Hero
         round2.matchUps[2].status = MatchUpStatus.TIE
+        helperMockRankingService(listOf(setOf(Data.KYRA, Data.KELSEY), setOf(Data.HERO, Data.FIRE), setOf(Data.SUPER), setOf(Data.ANDREW), setOf(Data.DGNT, Data.DEMON)))
         sut.update(roundGroups, 0, 1, 2)
         assertRound3NullParticipants()
 
         //Kelsey vs Kyra
         round2.matchUps[3].status = MatchUpStatus.P1_WINNER
+        helperMockRankingService(listOf(setOf(Data.KYRA), setOf(Data.HERO, Data.FIRE), setOf(Data.SUPER), setOf(Data.KELSEY, Data.ANDREW), setOf(Data.DGNT, Data.DEMON)))
         sut.update(roundGroups, 0, 1, 3)
         Assert.assertEquals(Data.DEMON, round3.matchUps[0].participant1)//2-0-0
         Assert.assertEquals(Data.DGNT, round3.matchUps[0].participant2)//2-0-0
@@ -245,21 +262,25 @@ class SwissRoundUpdateServiceTest {
 
         //Demon vs Dgnt
         round3.matchUps[0].status = MatchUpStatus.TIE
+        helperMockRankingService(listOf(setOf(Data.KYRA), setOf(Data.HERO, Data.FIRE), setOf(Data.SUPER), setOf(Data.KELSEY, Data.ANDREW), setOf(Data.DGNT, Data.DEMON)))
         sut.update(roundGroups, 0, 2, 0)
         assertRound4NullParticipants()
 
         //Andrew vs Kelsey
         round3.matchUps[1].status = MatchUpStatus.P2_WINNER
+        helperMockRankingService(listOf(setOf(Data.KYRA), setOf(Data.HERO, Data.FIRE), setOf(Data.SUPER), setOf(Data.ANDREW), setOf(Data.KELSEY), setOf(Data.DGNT, Data.DEMON)))
         sut.update(roundGroups, 0, 2, 1)
         assertRound4NullParticipants()
 
         //Super vs Kyra
         round3.matchUps[2].status = MatchUpStatus.P1_WINNER
+        helperMockRankingService(listOf(setOf(Data.KYRA), setOf(Data.HERO, Data.FIRE), setOf(Data.ANDREW), setOf(Data.SUPER), setOf(Data.KELSEY), setOf(Data.DGNT, Data.DEMON)))
         sut.update(roundGroups, 0, 2, 2)
         assertRound4NullParticipants()
 
         //Fire vs Hero
         round3.matchUps[3].status = MatchUpStatus.TIE
+        helperMockRankingService(listOf(setOf(Data.KYRA), setOf(Data.HERO, Data.FIRE), setOf(Data.ANDREW), setOf(Data.SUPER), setOf(Data.KELSEY), setOf(Data.DGNT, Data.DEMON)))
         sut.update(roundGroups, 0, 2, 3)
         Assert.assertEquals(Data.DEMON, round4.matchUps[0].participant1)//2-0-1
         Assert.assertEquals(Data.KELSEY, round4.matchUps[0].participant2)//2-1-0
@@ -271,6 +292,7 @@ class SwissRoundUpdateServiceTest {
         Assert.assertEquals(Data.KYRA, round4.matchUps[3].participant2)//0-3-0
 
         round1.matchUps[0].status = MatchUpStatus.DEFAULT
+        helperMockRankingService(listOf(setOf(Data.KELSEY, Data.HERO), setOf(Data.KYRA, Data.ANDREW), setOf(Data.SUPER, Data.FIRE), setOf(Data.DGNT, Data.DEMON)))
         sut.update(roundGroups, 0, 0, 0)
         assertRound2NullParticipants()
         assertRound3NullParticipants()
