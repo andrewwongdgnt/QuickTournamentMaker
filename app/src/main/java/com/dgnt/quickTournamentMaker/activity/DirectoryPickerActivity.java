@@ -66,6 +66,7 @@ public class DirectoryPickerActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         dir = Environment.getExternalStorageDirectory();
 
+        //Test
 
 
         if (extras != null) {
