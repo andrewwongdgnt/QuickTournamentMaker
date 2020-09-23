@@ -39,27 +39,27 @@ public class SurvivalTournamentUnitTest implements  TournamentUnitTest {
         tim = new Participant(PersonUtil.TIM);
         arthur = new Participant(PersonUtil.ARTHUR);
 
-        final List<Participant> participantList = new ArrayList<>();
-        participantList.add(andrew);
-        participantList.add(Participant.BYE_PARTICIPANT);
-        participantList.add(john);
-        participantList.add(Participant.BYE_PARTICIPANT);
-        participantList.add(tommy);
-        participantList.add(Participant.BYE_PARTICIPANT);
-        participantList.add(william);
-        participantList.add(Participant.BYE_PARTICIPANT);
-        participantList.add(kelsey);
-        participantList.add(Participant.BYE_PARTICIPANT);
-        participantList.add(ben);
-        participantList.add(Participant.BYE_PARTICIPANT);
-        participantList.add(tim);
-        participantList.add(Participant.BYE_PARTICIPANT);
-        participantList.add(arthur);
-        participantList.add(Participant.BYE_PARTICIPANT);
+        final List<Participant> participants = new ArrayList<>();
+        participants.add(andrew);
+        participants.add(Participant.BYE_PARTICIPANT);
+        participants.add(john);
+        participants.add(Participant.BYE_PARTICIPANT);
+        participants.add(tommy);
+        participants.add(Participant.BYE_PARTICIPANT);
+        participants.add(william);
+        participants.add(Participant.BYE_PARTICIPANT);
+        participants.add(kelsey);
+        participants.add(Participant.BYE_PARTICIPANT);
+        participants.add(ben);
+        participants.add(Participant.BYE_PARTICIPANT);
+        participants.add(tim);
+        participants.add(Participant.BYE_PARTICIPANT);
+        participants.add(arthur);
+        participants.add(Participant.BYE_PARTICIPANT);
 
 
         tournament = new SurvivalTournament();
-        tournament.build(participantList);
+        tournament.build(participants);
     }
 
 

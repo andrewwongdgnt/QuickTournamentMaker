@@ -131,8 +131,9 @@ public abstract class Tournament implements IKeyable {
     public boolean build(final List<Participant> orderedParticipantList, final OnTournamentUpdateListener onTournamentUpdateListener, final OnMatchUpUpdateListener onMatchUpUpdateListener, final OnParticipantUpdateListener onParticipantUpdateListener) {
 
 
-        if (!isInitialConfigGood(orderedParticipantList))
+        if (!isInitialConfigGood(orderedParticipantList)) {
             return false;
+        }
 
         final List<MatchUp> round1Pairing = new ArrayList<>();
 
@@ -502,7 +503,7 @@ public abstract class Tournament implements IKeyable {
             final String rankingConfig = tournamentJson.optString(TOURNAMENT_RANKING_CONFIG, "");
 
             final JSONArray seededParticipantJsonArray = tournamentJson.getJSONArray(PARTICIPANTS);
-            final List<Participant> participantList = new ArrayList<>();
+            final List<Participant> participants = new ArrayList<>();
             for (int participantIndex = 0; participantIndex < seededParticipantJsonArray.length(); participantIndex++) {
                 final JSONObject participantJsonObject = seededParticipantJsonArray.getJSONObject(participantIndex);
 
@@ -521,7 +522,7 @@ public abstract class Tournament implements IKeyable {
                 final Participant participant = new Participant(new Person(participantName, participantNote), participantType);
                 participant.setDisplayName(participantDisplayName);
                 participant.setColor(participantColor);
-                participantList.add(participant);
+                participants.add(participant);
             }
 
             final JSONArray roundJsonArray = tournamentJson.getJSONArray(ROUNDS);
@@ -563,7 +564,7 @@ public abstract class Tournament implements IKeyable {
             }
 
 
-            return new HistoricalTournament(creationTimeInEpoch, lastModifiedTimeInEpoch, name, note, tournamentType, rankingConfig, participantList, roundList, matchUpList);
+            return new HistoricalTournament(creationTimeInEpoch, lastModifiedTimeInEpoch, name, note, tournamentType, rankingConfig, participants, roundList, matchUpList);
 
         }
 

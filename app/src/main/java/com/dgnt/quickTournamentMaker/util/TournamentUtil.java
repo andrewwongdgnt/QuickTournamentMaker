@@ -52,9 +52,9 @@ public class TournamentUtil {
     }
 
     public static String shortenDescription(final String description, final int maxCharactersPerLine, final int maxTotalCharacters) {
-        if (description == null)
+        if (description == null) {
             return description;
-
+        }
         final int resolvedMaxCharactersPerLine = maxCharactersPerLine > maxTotalCharacters ? maxTotalCharacters : maxCharactersPerLine;
 
         StringBuilder sb = new StringBuilder(description);
@@ -107,11 +107,12 @@ public class TournamentUtil {
         return matchUpList;
     }
 
-    public static int getNormalParticipantCount(final List<Participant> participantList) {
+    public static int getNormalParticipantCount(final List<Participant> participants) {
         int count = 0;
-        for (final Participant participant : participantList) {
-            if (participant.isNormal())
+        for (final Participant participant : participants) {
+            if (participant.isNormal()) {
                 count++;
+            }
         }
         return count;
     }

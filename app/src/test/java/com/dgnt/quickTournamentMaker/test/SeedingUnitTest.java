@@ -17,9 +17,9 @@ import static org.junit.Assert.assertEquals;
  */
 public class SeedingUnitTest {
 
-    private List<Participant>  participantList5;
-    private List<Participant>  participantList6;
-    private List<Participant>  participantList9;
+    private List<Participant>  participants5;
+    private List<Participant>  participants6;
+    private List<Participant>  participants9;
     private Participant andrew;
     private Participant john;
     private Participant tommy;
@@ -45,32 +45,32 @@ public class SeedingUnitTest {
         arthur= new Participant(PersonUtil.ARTHUR);
 
 
-         participantList5 = new ArrayList<>();
-        participantList5.add(andrew);
-        participantList5.add(john);
-        participantList5.add(tommy);
-        participantList5.add(william);
-        participantList5.add(kelsey);
+         participants5 = new ArrayList<>();
+        participants5.add(andrew);
+        participants5.add(john);
+        participants5.add(tommy);
+        participants5.add(william);
+        participants5.add(kelsey);
 
-        participantList6 = new ArrayList<>();
-        participantList6.add(andrew);
-        participantList6.add(john);
-        participantList6.add(tommy);
-        participantList6.add(william);
-        participantList6.add(kelsey);
-        participantList6.add(ben);
+        participants6 = new ArrayList<>();
+        participants6.add(andrew);
+        participants6.add(john);
+        participants6.add(tommy);
+        participants6.add(william);
+        participants6.add(kelsey);
+        participants6.add(ben);
 
 
-        participantList9 = new ArrayList<>();
-        participantList9.add(andrew);
-        participantList9.add(john);
-        participantList9.add(tommy);
-        participantList9.add(william);
-        participantList9.add(kelsey);
-        participantList9.add(ben);
-        participantList9.add(tim);
-        participantList9.add(arthur);
-        participantList9.add(tony);
+        participants9 = new ArrayList<>();
+        participants9.add(andrew);
+        participants9.add(john);
+        participants9.add(tommy);
+        participants9.add(william);
+        participants9.add(kelsey);
+        participants9.add(ben);
+        participants9.add(tim);
+        participants9.add(arthur);
+        participants9.add(tony);
 
 
     }
@@ -78,130 +78,130 @@ public class SeedingUnitTest {
 
     @Test
     public void testFillForEven_5() throws Exception {
-        seeder=new Seeder(participantList5, Seeder.SeedFillType.EVEN);
+        seeder=new Seeder(participants5, Seeder.SeedFillType.EVEN);
         seeder.seed();
-        assertEquals(participantList5.get(3), william);
-        assertEquals(participantList5.get(5), Participant.BYE_PARTICIPANT);
+        assertEquals(participants5.get(3), william);
+        assertEquals(participants5.get(5), Participant.BYE_PARTICIPANT);
     }
 
 
     @Test
     public void testFillForPowerOf2_5() throws Exception {
-        seeder=new Seeder(participantList5, Seeder.SeedFillType.POWER_OF_2);
+        seeder=new Seeder(participants5, Seeder.SeedFillType.POWER_OF_2);
         seeder.seed();
-        assertEquals(participantList5.get(4), william);
-        assertEquals(participantList5.get(3), Participant.BYE_PARTICIPANT);
+        assertEquals(participants5.get(4), william);
+        assertEquals(participants5.get(3), Participant.BYE_PARTICIPANT);
     }
 
 
     @Test
     public void testFillAlways_5() throws Exception {
-        seeder=new Seeder(participantList5, Seeder.SeedFillType.ALWAYS);
+        seeder=new Seeder(participants5, Seeder.SeedFillType.ALWAYS);
         seeder.seed();
-        assertEquals(participantList5.get(0), andrew);
-        assertEquals(participantList5.get(2), john);
-        assertEquals(participantList5.get(3), Participant.BYE_PARTICIPANT);
-        assertEquals(participantList5.get(5), Participant.BYE_PARTICIPANT);
+        assertEquals(participants5.get(0), andrew);
+        assertEquals(participants5.get(2), john);
+        assertEquals(participants5.get(3), Participant.BYE_PARTICIPANT);
+        assertEquals(participants5.get(5), Participant.BYE_PARTICIPANT);
     }
 
     @Test
     public void testFillForEven_6() throws Exception {
-        seeder=new Seeder(participantList6, Seeder.SeedFillType.EVEN);
+        seeder=new Seeder(participants6, Seeder.SeedFillType.EVEN);
         seeder.seed();
-        assertEquals(participantList6.get(2), tommy);
+        assertEquals(participants6.get(2), tommy);
     }
 
     @Test
     public void testFillForPowerOf2_6() throws Exception {
-        seeder=new Seeder(participantList6, Seeder.SeedFillType.POWER_OF_2);
+        seeder=new Seeder(participants6, Seeder.SeedFillType.POWER_OF_2);
         seeder.seed();
-        assertEquals(participantList6.get(5), Participant.BYE_PARTICIPANT);
+        assertEquals(participants6.get(5), Participant.BYE_PARTICIPANT);
     }
 
 
     @Test
     public void testFillAlways_6() throws Exception {
-        seeder=new Seeder(participantList6, Seeder.SeedFillType.ALWAYS);
+        seeder=new Seeder(participants6, Seeder.SeedFillType.ALWAYS);
         seeder.seed();
-        assertEquals(participantList6.get(0), andrew);
-        assertEquals(participantList6.get(2), john);
-        assertEquals(participantList6.get(3), Participant.BYE_PARTICIPANT);
-        assertEquals(participantList6.get(5), Participant.BYE_PARTICIPANT);
+        assertEquals(participants6.get(0), andrew);
+        assertEquals(participants6.get(2), john);
+        assertEquals(participants6.get(3), Participant.BYE_PARTICIPANT);
+        assertEquals(participants6.get(5), Participant.BYE_PARTICIPANT);
     }
 
 
     @Test
     public void testFillForEven_9() throws Exception {
-        seeder=new Seeder(participantList9, Seeder.SeedFillType.EVEN);
+        seeder=new Seeder(participants9, Seeder.SeedFillType.EVEN);
         seeder.seed();
-        assertEquals(participantList9.get(2), tommy);
-        assertEquals(participantList9.get(8), tony);
-        assertEquals(participantList9.get(9), Participant.BYE_PARTICIPANT);
+        assertEquals(participants9.get(2), tommy);
+        assertEquals(participants9.get(8), tony);
+        assertEquals(participants9.get(9), Participant.BYE_PARTICIPANT);
     }
 
     @Test
     public void testFillForPowerOf2_9() throws Exception {
-        seeder=new Seeder(participantList9, Seeder.SeedFillType.POWER_OF_2);
+        seeder=new Seeder(participants9, Seeder.SeedFillType.POWER_OF_2);
         seeder.seed();
-        assertEquals(participantList9.get(0), andrew);
-        assertEquals(participantList9.get(2), tommy);
-        assertEquals(participantList9.get(5), Participant.BYE_PARTICIPANT);
+        assertEquals(participants9.get(0), andrew);
+        assertEquals(participants9.get(2), tommy);
+        assertEquals(participants9.get(5), Participant.BYE_PARTICIPANT);
     }
 
 
     @Test
     public void testFillAlways_9() throws Exception {
-        seeder=new Seeder(participantList9, Seeder.SeedFillType.ALWAYS);
+        seeder=new Seeder(participants9, Seeder.SeedFillType.ALWAYS);
         seeder.seed();
-        assertEquals(participantList9.get(0), andrew);
-        assertEquals(participantList9.get(2), john);
-        assertEquals(participantList9.get(3), Participant.BYE_PARTICIPANT);
-        assertEquals(participantList9.get(5), Participant.BYE_PARTICIPANT);
+        assertEquals(participants9.get(0), andrew);
+        assertEquals(participants9.get(2), john);
+        assertEquals(participants9.get(3), Participant.BYE_PARTICIPANT);
+        assertEquals(participants9.get(5), Participant.BYE_PARTICIPANT);
     }
 
 
     @Test
     public void testToggleResult_part1() throws Exception {
-        seeder=new Seeder(participantList5, Seeder.SeedFillType.EVEN);
+        seeder=new Seeder(participants5, Seeder.SeedFillType.EVEN);
         seeder.seed();
         seeder.toggleResult(0);
         seeder.toggleResult(1);
-        assertEquals(participantList5.get(0), john);
-        assertEquals(participantList5.get(1), andrew);
+        assertEquals(participants5.get(0), john);
+        assertEquals(participants5.get(1), andrew);
 
 
         seeder.toggleResult(0);
         seeder.toggleResult(1);
-        assertEquals(participantList5.get(1), john);
-        assertEquals(participantList5.get(0), andrew);
+        assertEquals(participants5.get(1), john);
+        assertEquals(participants5.get(0), andrew);
 
         seeder.toggleResult(2);
         seeder.toggleResult(5);
-        assertEquals(participantList5.get(2), william);
-        assertEquals(participantList5.get(3), Participant.BYE_PARTICIPANT);
-        assertEquals(participantList5.get(5), tommy);
+        assertEquals(participants5.get(2), william);
+        assertEquals(participants5.get(3), Participant.BYE_PARTICIPANT);
+        assertEquals(participants5.get(5), tommy);
     }
 
     @Test
     public void testToggleResult_byeFails() throws Exception {
-        seeder=new Seeder(participantList9, Seeder.SeedFillType.POWER_OF_2);
+        seeder=new Seeder(participants9, Seeder.SeedFillType.POWER_OF_2);
         seeder.seed();
 
 
-        assertEquals(participantList9.get(3), Participant.BYE_PARTICIPANT);
-        assertEquals(participantList9.get(5), Participant.BYE_PARTICIPANT);
+        assertEquals(participants9.get(3), Participant.BYE_PARTICIPANT);
+        assertEquals(participants9.get(5), Participant.BYE_PARTICIPANT);
 
         seeder.toggleResult(3);
         final Seeder.ToggleResult toggleResult = seeder.toggleResult(5);
         assertEquals(toggleResult, Seeder.ToggleResult.TWO_BYES_REDUNDANT);
-        assertEquals(participantList9.get(3), Participant.BYE_PARTICIPANT);
-        assertEquals(participantList9.get(5), Participant.BYE_PARTICIPANT);
+        assertEquals(participants9.get(3), Participant.BYE_PARTICIPANT);
+        assertEquals(participants9.get(5), Participant.BYE_PARTICIPANT);
     }
 
 
     @Test
     public void testToggleResult_byeFails2() throws Exception {
-        seeder=new Seeder(participantList6, Seeder.SeedFillType.POWER_OF_2);
+        seeder=new Seeder(participants6, Seeder.SeedFillType.POWER_OF_2);
         seeder.seed();
 
 

@@ -86,12 +86,20 @@ public class Ranking {
 
         @Override
         public boolean equals(Object other) {
-            if (other == null) return false;
-            if (other == this) return true;
-            if (!(other instanceof RankHolder)) return false;
+            if (other == null) {
+                return false;
+            }
+            if (other == this) {
+                return true;
+            }
+            if (!(other instanceof RankHolder)) {
+                return false;
+            }
             RankHolder otherOne = (RankHolder) other;
 
-            if (getParticipant().equals(otherOne.getParticipant())) return true;
+            if (getParticipant().equals(otherOne.getParticipant())) {
+                return true;
+            }
 
             return false;
         }

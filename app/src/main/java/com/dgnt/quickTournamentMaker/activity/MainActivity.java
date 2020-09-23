@@ -63,6 +63,10 @@ public class MainActivity extends InAppBillingActivity
         return adView;
     }
 
+    private void getMoney(){
+        //TODO I don't know what the fuck to do here.
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,7 +122,7 @@ public class MainActivity extends InAppBillingActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final ArrayList<Participant> participantList = new ArrayList<Participant>();
+                final ArrayList<Participant> participants = new ArrayList<Participant>();
 
                 if (quickStart_tb.isChecked()) {//Quick start
 
@@ -144,7 +148,7 @@ public class MainActivity extends InAppBillingActivity
 
 
                     for (int i = 0; i < numberOfParticipants; i++) {
-                        participantList.add(new Participant(new Person(getString(R.string.participantDefaultName, i + 1), "")));
+                        participants.add(new Participant(new Person(getString(R.string.participantDefaultName, i + 1), "")));
                     }
 
                 } else {//full Start
@@ -156,9 +160,9 @@ public class MainActivity extends InAppBillingActivity
                     }
 
                     for (final Person person : personSelectedSet)
-                        participantList.add(new Participant(person));
+                        participants.add(new Participant(person));
 
-                    Collections.sort(participantList);
+                    Collections.sort(participants);
                 }
 
 
@@ -175,7 +179,7 @@ public class MainActivity extends InAppBillingActivity
                         : Tournament.TournamentType.SURVIVAL;
 
                 final String rankingConfig = PreferenceUtil.getRankingConfig( PreferenceManager.getDefaultSharedPreferences(MainActivity.this),tournamentType);
-                TournamentActivity.startTournamentActivity(MainActivity.this, 0, seedType, tournamentType, tournamentType, title, description, rankingConfig, participantList, null, null, Tournament.NULL_TIME_VALUE, Tournament.NULL_TIME_VALUE, false);
+                TournamentActivity.startTournamentActivity(MainActivity.this, 0, seedType, tournamentType, tournamentType, title, description, rankingConfig, participants, null, null, Tournament.NULL_TIME_VALUE, Tournament.NULL_TIME_VALUE, false);
 
             }
         });

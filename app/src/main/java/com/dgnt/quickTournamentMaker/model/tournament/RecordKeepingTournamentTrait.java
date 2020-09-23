@@ -35,13 +35,14 @@ public class RecordKeepingTournamentTrait {
     }
 
     public String getRankingConfig() {
-        if (rankingFromPriority == null && rankingFromScore == null)
+        if (rankingFromPriority == null && rankingFromScore == null) {
             setRankingConfig(RecordKeepingTournamentTrait.RankingFromPriority.DEFAULT_INPUT);
-
-        if (rankingFromPriority != null)
+        }
+        if (rankingFromPriority != null) {
             return rankingFromPriority.toString();
-        else
+        } else {
             return rankingFromScore.toString();
+        }
     }
 
 
@@ -98,14 +99,15 @@ public class RecordKeepingTournamentTrait {
 
     public int compareParticipantsBasedOnRecord(Participant lhs, Participant rhs) {
 
-        if (rankingFromPriority == null && rankingFromScore == null)
+        if (rankingFromPriority == null && rankingFromScore == null) {
             setRankingConfig(RecordKeepingTournamentTrait.RankingFromPriority.DEFAULT_INPUT);
+        }
 
-
-        if (rankingFromPriority != null)
+        if (rankingFromPriority != null) {
             return compareParticipantsBasedOnRecord_fromPriority(rankingFromPriority, lhs, rhs);
-        else
+        } else {
             return compareParticipantsBasedOnRecord_fromScore(rankingFromScore, lhs, rhs);
+        }
     }
 
 

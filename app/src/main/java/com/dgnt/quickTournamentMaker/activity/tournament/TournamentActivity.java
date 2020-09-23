@@ -762,18 +762,18 @@ abstract public class TournamentActivity extends InAppBillingActivity implements
     }
 
     private void openParticipantList() {
-        final List<Participant> participantList = tournament.getNormalSortedParticipants();
-        final String[] participantNames = new String[participantList.size()];
+        final List<Participant> participants = tournament.getNormalSortedParticipants();
+        final String[] participantNames = new String[participants.size()];
 
-        for (int i = 0; i < participantList.size(); i++) {
-            participantNames[i] = participantList.get(i).getDisplayName();
+        for (int i = 0; i < participants.size(); i++) {
+            participantNames[i] = participants.get(i).getDisplayName();
         }
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.participantSelectionHint));
         builder.setItems(participantNames, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int itemIndex) {
-                openParticipantOptions(participantList.get(itemIndex));
+                openParticipantOptions(participants.get(itemIndex));
 
             }
         });
@@ -1125,7 +1125,7 @@ abstract public class TournamentActivity extends InAppBillingActivity implements
     }
 
     public static void startTournamentActivity(final Activity startingActivity, final int requestCode, final Seeder.Type seedType, final Tournament.TournamentType tournamentType_original, final Tournament.TournamentType tournamentType, final String title, final String description,
-                                               final String rankingConfig, final ArrayList<Participant> participantList, final ArrayList<HistoricalRound> roundList, final ArrayList<HistoricalMatchUp> matchUpList, final long creationTimeInEpoch, final long lastModifiedTimeInEpoch, final boolean rebuilt) {
+                                               final String rankingConfig, final ArrayList<Participant> participants, final ArrayList<HistoricalRound> roundList, final ArrayList<HistoricalMatchUp> matchUpList, final long creationTimeInEpoch, final long lastModifiedTimeInEpoch, final boolean rebuilt) {
 
         final Class clazz;
         final Seeder.SeedFillType seedFillType_original = getSeedFileType(tournamentType_original);
@@ -1150,7 +1150,7 @@ abstract public class TournamentActivity extends InAppBillingActivity implements
                 break;
         }
 
-        final Seeder seeder = new Seeder(participantList, seedFillType);
+        final Seeder seeder = new Seeder(participants, seedFillType);
         if (seedFillType == Seeder.SeedFillType.ALWAYS || seedFillType != seedFillType_original)
             seeder.clean();
         if (tournamentType == Tournament.TournamentType.SURVIVAL) {
@@ -1167,7 +1167,7 @@ abstract public class TournamentActivity extends InAppBillingActivity implements
         intent.putExtra(TournamentActivity.INTENT_TOURNAMENT_DESCRIPTION_KEY, description);
         intent.putParcelableArrayListExtra(TournamentActivity.INTENT_HISTORICAL_ROUNDS_KEY, roundList);
         intent.putParcelableArrayListExtra(TournamentActivity.INTENT_HISTORICAL_MATCH_UPS_KEY, matchUpList);
-        intent.putParcelableArrayListExtra(TournamentActivity.INTENT_PARTICIPANTS_KEY, participantList);
+        intent.putParcelableArrayListExtra(TournamentActivity.INTENT_PARTICIPANTS_KEY, participants);
         intent.putExtra(TournamentActivity.INTENT_TOURNAMENT_CREATION_TIME_KEY, creationTimeInEpoch);
         intent.putExtra(TournamentActivity.INTENT_TOURNAMENT_LAST_MODIFIED_TIME_KEY, lastModifiedTimeInEpoch);
         intent.putExtra(TournamentActivity.INTENT_TOURNAMENT_IS_REBUILT_KEY, rebuilt);

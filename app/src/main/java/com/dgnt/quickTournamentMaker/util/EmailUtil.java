@@ -34,8 +34,9 @@ public class EmailUtil {
         final Intent emailWithAttachmentIntent = new Intent(Intent.ACTION_SEND);
         emailWithAttachmentIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
         emailWithAttachmentIntent.putExtra(Intent.EXTRA_TEXT, "");
-        if (email_arr != null && email_arr.length > 0)
+        if (email_arr != null && email_arr.length > 0) {
             emailWithAttachmentIntent.putExtra(Intent.EXTRA_EMAIL, email_arr);
+        }
         if (attachmentPath != null && attachmentType != null) {
             Uri uri = Uri.fromFile(new File(attachmentPath));
             emailWithAttachmentIntent.putExtra(Intent.EXTRA_STREAM, uri);

@@ -53,9 +53,9 @@ public class RankingAdapter extends BaseExpandableListAdapter {
             convertView = inflater.inflate(R.layout.rank_list_item, null);
         }
 
-        final TextView participantListItem_tv = (TextView) convertView.findViewById(R.id.listItem_tv);
+        final TextView participantsItem_tv = (TextView) convertView.findViewById(R.id.listItem_tv);
 
-        participantListItem_tv.setText((rankHolder.getRank() == Ranking.UNKNOWN_RANK ? "" : (rankHolder.getRank() + ". ")) + rankHolder.getParticipant().getDisplayName());
+        participantsItem_tv.setText((rankHolder.getRank() == Ranking.UNKNOWN_RANK ? "" : (rankHolder.getRank() + ". ")) + rankHolder.getParticipant().getDisplayName());
 
         return convertView;
     }

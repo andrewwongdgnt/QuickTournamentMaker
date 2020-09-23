@@ -82,12 +82,13 @@ public class Group implements IKeyable, Comparable<Group> {
 
     public int compareTo(Group otherGroup) {
 
-        if (isFavourite() && !otherGroup.isFavourite())
+        if (isFavourite() && !otherGroup.isFavourite()) {
             return -1;
+        }
 
-
-        if (!isFavourite() && otherGroup.isFavourite())
+        if (!isFavourite() && otherGroup.isFavourite()) {
             return 1;
+        }
 
         return getName().compareTo(otherGroup.getName());
     }

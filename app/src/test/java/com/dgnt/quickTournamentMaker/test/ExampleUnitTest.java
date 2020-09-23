@@ -104,8 +104,9 @@ public class ExampleUnitTest {
 
         int matches = 0;
         for (int i = 0; i < n; ++i)
-            if (match[i] != -1)
+            if (match[i] != -1) {
                 ++matches;
+            }
         return matches / 2;
     }
     @Test
@@ -159,10 +160,11 @@ public class ExampleUnitTest {
 
     }
     private static String getPairKey(final String participant1, final String participant2) {
-        if (participant1.compareTo(participant2) <= 0)
+        if (participant1.compareTo(participant2) <= 0) {
             return participant1 + participant2;
-        else
+        } else {
             return participant2 + participant1;
+        }
     }
     private static List<Pair<String, String>> getProperPairing(final List<String> rankedParticipantList, final Set<String> matchUpHistory) {
 
@@ -187,8 +189,9 @@ public class ExampleUnitTest {
                 if (!matchUpHistory.contains(getPairKey(participant1, participant2))) {
                     final List<String> subRankedParticipantList = new ArrayList<>();
                     for (int j = 1; j < rankedParticipantList.size(); j++) {
-                        if (j != i)
+                        if (j != i) {
                             subRankedParticipantList.add(rankedParticipantList.get(j));
+                        }
                     }
 
                     final List<Pair<String, String>> subProperPairing = getProperPairing(subRankedParticipantList, matchUpHistory);

@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface OnSeedChangeListener {
 
-    public void onParticipantListChange(final List<Participant> participantList);
+    public void onParticipantListChange(final List<Participant> participants);
     public void onFirstPickChange(final int index);
 
 }

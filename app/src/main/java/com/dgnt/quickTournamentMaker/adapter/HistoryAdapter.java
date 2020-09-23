@@ -92,8 +92,9 @@ public class HistoryAdapter extends ArrayAdapter<HistoricalTournament> {
             int ofe = origText.indexOf(searchTerm, 0);
             for (int ofs = 0; ofs < origText.length() && ofe != -1; ofs = ofe + 1) {
                 ofe = origText.indexOf(searchTerm, ofs);
-                if (ofe == -1)
+                if (ofe == -1) {
                     break;
+                }
                 else {
 
                     title_spannable.setSpan(new BackgroundColorSpan(Color.YELLOW), ofe, ofe + searchTerm.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);

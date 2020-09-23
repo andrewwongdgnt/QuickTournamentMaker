@@ -23,7 +23,7 @@ import java.util.List;
 
 public class SeedingActivity extends AppCompatActivity implements OnSeedChangeListener {
 
-    private ArrayList<Participant> participantList;
+    private ArrayList<Participant> participants;
     private List<ViewGroup> participantGroupList;
 
     @Override
@@ -40,7 +40,7 @@ public class SeedingActivity extends AppCompatActivity implements OnSeedChangeLi
 
         final String title = getIntent().getStringExtra(TournamentActivity.INTENT_TOURNAMENT_TITLE_KEY);
         final String description = getIntent().getStringExtra(TournamentActivity.INTENT_TOURNAMENT_DESCRIPTION_KEY);
-        participantList = getIntent().getParcelableArrayListExtra(TournamentActivity.INTENT_PARTICIPANTS_KEY);
+        participants = getIntent().getParcelableArrayListExtra(TournamentActivity.INTENT_PARTICIPANTS_KEY);
         final Tournament.TournamentType tournamentType = (Tournament.TournamentType) getIntent().getSerializableExtra(TournamentActivity.INTENT_TOURNAMENT_TYPE_KEY);
         final long creationTimeInEpoch = getIntent().getLongExtra(TournamentActivity.INTENT_TOURNAMENT_CREATION_TIME_KEY, Tournament.NULL_TIME_VALUE);
         final long lastModifiedTimeInEpoch = getIntent().getLongExtra(TournamentActivity.INTENT_TOURNAMENT_LAST_MODIFIED_TIME_KEY, Tournament.NULL_TIME_VALUE);
@@ -68,15 +68,15 @@ public class SeedingActivity extends AppCompatActivity implements OnSeedChangeLi
                 break;
         }
 
-        final Seeder seeder = new Seeder(participantList, seedFillType);
+        final Seeder seeder = new Seeder(participants, seedFillType);
         seeder.seed();
         seeder.setOnSeedChangeListener(this);
 
         final ViewGroup seedingLayout = (ViewGroup) findViewById(R.id.seedingLayout);
 
-        for (int i = 0; i < participantList.size(); i += 2) {
-            final Participant participant1 = participantList.get(i);
-            final Participant participant2 = participantList.get(i + 1);
+        for (int i = 0; i < participants.size(); i += 2) {
+            final Participant participant1 = participants.get(i);
+            final Participant participant2 = participants.get(i + 1);
 
             final ViewGroup layout_matchup = (ViewGroup) getLayoutInflater().inflate(R.layout.component_matchup, null);
 
@@ -113,7 +113,7 @@ public class SeedingActivity extends AppCompatActivity implements OnSeedChangeLi
                 final Intent intent = new Intent(getApplicationContext(),  clazz);
                 intent.putExtra(TournamentActivity.INTENT_TOURNAMENT_TITLE_KEY, title);
                 intent.putExtra(TournamentActivity.INTENT_TOURNAMENT_DESCRIPTION_KEY, description);
-                intent.putParcelableArrayListExtra(TournamentActivity.INTENT_PARTICIPANTS_KEY, participantList);
+                intent.putParcelableArrayListExtra(TournamentActivity.INTENT_PARTICIPANTS_KEY, participants);
                 intent.putExtra(TournamentActivity.INTENT_TOURNAMENT_CREATION_TIME_KEY, creationTimeInEpoch);
                 intent.putExtra(TournamentActivity.INTENT_TOURNAMENT_LAST_MODIFIED_TIME_KEY, lastModifiedTimeInEpoch);
                 startActivity(intent);
@@ -142,14 +142,14 @@ public class SeedingActivity extends AppCompatActivity implements OnSeedChangeLi
     }
 
     @Override
-    public void onParticipantListChange(List<Participant> participantList) {
+    public void onParticipantListChange(List<Participant> participants) {
 
-        for (int i = 0; i < participantList.size(); i ++) {
+        for (int i = 0; i < participants.size(); i ++) {
 
             final ViewGroup participantGroup = participantGroupList.get(i);
 
             final TextView participant_tv = (TextView) participantGroup.findViewById(i % 2 == 0 ? R.id.participant1_tv : R.id.participant2_tv);
-            participant_tv.setText(TournamentUtil.resolveParticipantDisplayName(this,participantList.get(i)));
+            participant_tv.setText(TournamentUtil.resolveParticipantDisplayName(this,participants.get(i)));
 
         }
     }

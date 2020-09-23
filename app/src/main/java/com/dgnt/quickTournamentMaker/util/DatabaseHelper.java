@@ -378,7 +378,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         addTournament(tournament.getCreationTimeInEpoch(), tournament.getLastModifiedTimeInEpoch(), tournament.getType(), tournament.getTitle(), tournament.getDescription(), TournamentUtil.buildRoundList(tournament), TournamentUtil.buildMatchUpList(tournament), tournament.getSeededParticipants(), rankingConfig);
     }
 
-    public void addTournament(final long creationTimeInEpoch, final long lastModifiedTimeInEpoch, final Tournament.TournamentType tournamentType, final String name, final String description, final List<HistoricalRound> roundList, final List<HistoricalMatchUp> matchUpList, final List<Participant> participantList, final String rankingConfig) throws SQLException {
+    public void addTournament(final long creationTimeInEpoch, final long lastModifiedTimeInEpoch, final Tournament.TournamentType tournamentType, final String name, final String description, final List<HistoricalRound> roundList, final List<HistoricalMatchUp> matchUpList, final List<Participant> participants, final String rankingConfig) throws SQLException {
 
         //delete a tournament with this creation time just in case it exists
         deleteTournament(creationTimeInEpoch);
@@ -424,8 +424,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         }
 
-        for (int seedIndex = 0; seedIndex < participantList.size(); seedIndex++) {
-            final Participant participant = participantList.get(seedIndex);
+        for (int seedIndex = 0; seedIndex < participants.size(); seedIndex++) {
+            final Participant participant = participants.get(seedIndex);
             final ContentValues values_participant = new ContentValues();
             values_participant.put(COLUMN_EPOCH, creationTimeInEpoch);
             values_participant.put(COLUMN_NAME, participant.getName());
@@ -448,7 +448,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         updateTournament(tournament.getCreationTimeInEpoch(), tournament.getLastModifiedTimeInEpoch(), tournament.getType(), tournament.getTitle(), tournament.getDescription(), TournamentUtil.buildRoundList(tournament), TournamentUtil.buildMatchUpList(tournament), tournament.getSeededParticipants(), rankingConfig);
     }
 
-    public void updateTournament(final long creationTimeInEpoch, final long lastModifiedTimeInEpoch, final Tournament.TournamentType tournamentType, final String name, final String description, final List<HistoricalRound> roundList, final List<HistoricalMatchUp> matchUpList, final List<Participant> participantList, final String rankingConfig) throws SQLException {
+    public void updateTournament(final long creationTimeInEpoch, final long lastModifiedTimeInEpoch, final Tournament.TournamentType tournamentType, final String name, final String description, final List<HistoricalRound> roundList, final List<HistoricalMatchUp> matchUpList, final List<Participant> participants, final String rankingConfig) throws SQLException {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -486,8 +486,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         }
 
-        for (int seedIndex = 0; seedIndex < participantList.size(); seedIndex++) {
-            final Participant participant = participantList.get(seedIndex);
+        for (int seedIndex = 0; seedIndex < participants.size(); seedIndex++) {
+            final Participant participant = participants.get(seedIndex);
             final ContentValues values_participant = new ContentValues();
             values_participant.put(COLUMN_SEED_INDEX, seedIndex);
             values_participant.put(COLUMN_DISPLAY_NAME, participant.getDisplayName());
@@ -548,8 +548,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     if (epochToParticipantList.get(epoch) == null) {
                         epochToParticipantList.put(epoch, new ArrayList<Participant>());
                     }
-                    final List<Participant> participantList = epochToParticipantList.get(epoch);
-                    participantList.add(participant);
+                    final List<Participant> participants = epochToParticipantList.get(epoch);
+                    participants.add(participant);
                 } catch (Exception e) {
 
                 }
@@ -752,13 +752,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     final Tournament.TournamentType type = Tournament.TournamentType.valueOf(tournamentCursor.getString(tournamentCursor.getColumnIndex(COLUMN_TYPE)));
                     final String rankingConfig = tournamentCursor.getString(tournamentCursor.getColumnIndex(COLUMN_RANKING_CONFIG));
 
-                    final List<Participant> participantList = epochToParticipantList.get(creationTimeInEpoch);
+                    final List<Participant> participants = epochToParticipantList.get(creationTimeInEpoch);
                     final List<HistoricalRound> roundList = epochToRoundList.get(creationTimeInEpoch);
                     final List<HistoricalMatchUp> matchUpList = epochToMatchUpList.get(creationTimeInEpoch);
 
-                    final HistoricalTournament historicalTournament = new HistoricalTournament(creationTimeInEpoch, lastModifiedTimeInEpoch, name, note, type, rankingConfig, participantList, roundList, matchUpList);
+                    final HistoricalTournament historicalTournament = new HistoricalTournament(creationTimeInEpoch, lastModifiedTimeInEpoch, name, note, type, rankingConfig, participants, roundList, matchUpList);
 
-                    final int normalParticipantCount = TournamentUtil.getNormalParticipantCount(participantList);
+                    final int normalParticipantCount = TournamentUtil.getNormalParticipantCount(participants);
 
                     if ((historicalFilters.getMinParticipants() < 0 || normalParticipantCount >= historicalFilters.getMinParticipants())
                             &&

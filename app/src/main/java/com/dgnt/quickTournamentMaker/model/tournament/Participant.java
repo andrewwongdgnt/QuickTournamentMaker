@@ -154,12 +154,20 @@ public class Participant implements IKeyable, Parcelable, Comparable<Participant
 
     @Override
     public boolean equals(Object other) {
-        if (other == null) return false;
-        if (other == this) return true;
-        if (!(other instanceof Participant)) return false;
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (!(other instanceof Participant)) {
+            return false;
+        }
         Participant otherOne = (Participant) other;
 
-        if (getKey().equals(otherOne.getKey())) return true;
+        if (getKey().equals(otherOne.getKey())) {
+            return true;
+        }
 
         return false;
 

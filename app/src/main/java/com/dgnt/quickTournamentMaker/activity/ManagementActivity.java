@@ -45,14 +45,14 @@ public class ManagementActivity extends AppCompatActivity implements ExpandableL
     private DatabaseHelper dh = new DatabaseHelper(this);
     private List<Group> groupList = new ArrayList<>();
     private Map<String, List<Person>> groupMap = new HashMap<>();
-    private PersonAdapter personAdapter;
+    private PersonAdapter bitchAdapter;
     private ArrayAdapter<String> groupAdapter;
 
     private ActionMode mActionMode;
     int expandableListSelectionType = ExpandableListView.PACKED_POSITION_TYPE_NULL;
     private TextView resultInformation_tv;
 
-    private ExpandableListView person_elv;
+    private ExpandableListView bitches_expandedListView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +63,7 @@ public class ManagementActivity extends AppCompatActivity implements ExpandableL
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        person_elv = (ExpandableListView) findViewById(R.id.person_elv);
+        bitches_expandedListView = (ExpandableListView) findViewById(R.id.person_elv);
 
         groupList = dh.getAllGroupsWithPersons();
         for (final Group group : groupList) {
@@ -74,11 +74,11 @@ public class ManagementActivity extends AppCompatActivity implements ExpandableL
             groupMap.put(group.getKey(), personList);
         }
 
-        personAdapter = new PersonAdapter(this, groupList, groupMap);
+        bitchAdapter = new PersonAdapter(this, groupList, groupMap);
 
-        person_elv.setAdapter(personAdapter);
+        bitches_expandedListView.setAdapter(bitchAdapter);
         for (int i = 0; i < groupList.size(); i++)
-            person_elv.expandGroup(i);
+            bitches_expandedListView.expandGroup(i);
 
         setUpGroupAdapter(groupList);
 
@@ -90,15 +90,15 @@ public class ManagementActivity extends AppCompatActivity implements ExpandableL
             }
         });
 
-        person_elv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-        person_elv.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
+        bitches_expandedListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        bitches_expandedListView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
 
             @Override
             public void onItemCheckedStateChanged(ActionMode mode, int position,
                                                   long id, boolean checked) {
-                int count = person_elv.getCheckedItemCount();
+                int count = bitches_expandedListView.getCheckedItemCount();
                 if (count == 1) {
-                    expandableListSelectionType = ExpandableListView.getPackedPositionType(person_elv.getExpandableListPosition(position));
+                    expandableListSelectionType = ExpandableListView.getPackedPositionType(bitches_expandedListView.getExpandableListPosition(position));
                 }
                 mode.setTitle(String.valueOf(count));
                 configureMenu(mode.getMenu(), count);
@@ -109,21 +109,21 @@ public class ManagementActivity extends AppCompatActivity implements ExpandableL
 
                 MenuInflater inflater = getMenuInflater();
                 inflater.inflate(R.menu.contextual_actions_management, menu);
-                mode.setTitle(String.valueOf(person_elv.getCheckedItemCount()));
+                mode.setTitle(String.valueOf(bitches_expandedListView.getCheckedItemCount()));
                 mActionMode = mode;
                 return true;
             }
 
             @Override
             public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-                configureMenu(menu, person_elv.getCheckedItemCount());
+                configureMenu(menu, bitches_expandedListView.getCheckedItemCount());
                 return false;
             }
 
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
                 int itemId = item.getItemId();
-                SparseBooleanArray checkedItemPositions = person_elv.getCheckedItemPositions();
+                SparseBooleanArray checkedItemPositions = bitches_expandedListView.getCheckedItemPositions();
                 final Set<Group> groupsSelected = new HashSet<>();
                 final Set<Person> personsSelected = new HashSet<>();
                 if (checkedItemPositions != null) {
@@ -132,7 +132,7 @@ public class ManagementActivity extends AppCompatActivity implements ExpandableL
                         if (checkedItemPositions.valueAt(i)) {
                             int position = checkedItemPositions.keyAt(i);
                             ContextMenu.ContextMenuInfo info;
-                            long pos = person_elv.getExpandableListPosition(position);
+                            long pos = bitches_expandedListView.getExpandableListPosition(position);
                             int groupPos = ExpandableListView.getPackedPositionGroup(pos);
                             if (ExpandableListView.getPackedPositionType(pos) == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
                                 groupsSelected.add(groupList.get(groupPos));
@@ -172,8 +172,8 @@ public class ManagementActivity extends AppCompatActivity implements ExpandableL
                 mActionMode = null;
             }
         });
-        person_elv.setOnGroupClickListener(this);
-        person_elv.setOnChildClickListener(this);
+        bitches_expandedListView.setOnGroupClickListener(this);
+        bitches_expandedListView.setOnChildClickListener(this);
 
         resultInformation_tv = (TextView) findViewById(R.id.resultInformation_tv);
         resultInformation_tv.setText(groupList.size() == 0 ? getString(R.string.nobodyMsg) : getString(R.string.historicalItemHintMsg));
@@ -428,7 +428,7 @@ public class ManagementActivity extends AppCompatActivity implements ExpandableL
     private void updateUI() {
         final Set<String> collapsedGroupsSet = new HashSet<>();
         for (int i = 0; i < groupList.size(); i++) {
-            if (!person_elv.isGroupExpanded(i)) {
+            if (!bitches_expandedListView.isGroupExpanded(i)) {
                 collapsedGroupsSet.add(groupList.get(i).getKey());
             }
         }
@@ -445,12 +445,12 @@ public class ManagementActivity extends AppCompatActivity implements ExpandableL
             groupMap.put(group.getKey(), personList);
         }
 
-        personAdapter.notifyDataSetChanged();
+        bitchAdapter.notifyDataSetChanged();
 
         for (int i = 0; i < groupList.size(); i++) {
-            person_elv.expandGroup(i);
+            bitches_expandedListView.expandGroup(i);
             if (collapsedGroupsSet.contains(groupList.get(i).getKey()))
-                person_elv.collapseGroup(i);
+                bitches_expandedListView.collapseGroup(i);
         }
 
         setUpGroupAdapter(groupList);

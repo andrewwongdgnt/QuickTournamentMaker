@@ -30,24 +30,27 @@ public class SwissTournament extends Tournament implements RecordKeepingTourname
     private RecordKeepingTournamentTrait recordKeepingTournamentTrait;
 
     protected RecordKeepingTournamentTrait getRecordKeepingTournamentTrait() {
-        if (recordKeepingTournamentTrait == null)
+        if (recordKeepingTournamentTrait == null) {
             recordKeepingTournamentTrait = new RecordKeepingTournamentTrait(this);
+        }
         return recordKeepingTournamentTrait;
     }
 
     private TiesAllowedTournamentTrait tiesAllowedTournamentTrait;
 
     protected TiesAllowedTournamentTrait getTiesAllowedTournamentTrait() {
-        if (tiesAllowedTournamentTrait == null)
+        if (tiesAllowedTournamentTrait == null) {
             tiesAllowedTournamentTrait = new TiesAllowedTournamentTrait(this);
+        }
         return tiesAllowedTournamentTrait;
     }
 
     public boolean build(final List<Participant> orderedParticipantList, final OnTournamentUpdateListener onTournamentUpdateListener, final OnMatchUpUpdateListener onMatchUpUpdateListener, final OnParticipantUpdateListener onParticipantUpdateListener) {
         final boolean initialStatus = super.build(orderedParticipantList, onTournamentUpdateListener, onMatchUpUpdateListener, onParticipantUpdateListener);
 
-        if (!initialStatus)
+        if (!initialStatus) {
             return false;
+        }
 
         //Total participants (including byes).
         final int totalParticipants = orderedParticipantList.size();
@@ -104,8 +107,9 @@ public class SwissTournament extends Tournament implements RecordKeepingTourname
                     final Participant participant1 = matchUpToPurge.getParticipant1();
                     final Participant participant2 = matchUpToPurge.getParticipant2();
 
-                    if (!participant1.isNull() || !participant2.isNull())
+                    if (!participant1.isNull() || !participant2.isNull()) {
                         allParticipantsAlreadyNull = false;
+                    }
 
                     getMatchUpHistory().remove(getPairKey(participant1, participant2));
 
@@ -125,8 +129,9 @@ public class SwissTournament extends Tournament implements RecordKeepingTourname
                     matchUpToPurge.setParticipant2(Participant.NULL_PARTICIPANT);
                 }
 
-                if (allParticipantsAlreadyNull)
+                if (allParticipantsAlreadyNull) {
                     break;
+                }
             }
 
 
@@ -153,11 +158,11 @@ public class SwissTournament extends Tournament implements RecordKeepingTourname
                         nextMatchUp.setParticipant1(participant1);
                         nextMatchUp.setParticipant2(participant2);
 
-                        if (participant1.isBye())
+                        if (participant1.isBye()) {
                             nextMatchUp.setStatus(MatchUp.MatchUpStatus.P2_WINNER);
-                        else if (participant2.isBye())
+                        } else if (participant2.isBye()) {
                             nextMatchUp.setStatus(MatchUp.MatchUpStatus.P1_WINNER);
-
+                        }
                         final MatchUp.MatchUpStatus matchUpStatus = nextMatchUp.getStatus();
                         if (matchUpStatus == MatchUp.MatchUpStatus.P1_WINNER) {
                             participant1.adjustWinsBy(1);
@@ -193,8 +198,9 @@ public class SwissTournament extends Tournament implements RecordKeepingTourname
 
         for (int matchUpIndex = 0; matchUpIndex < totalMatchUps; matchUpIndex++) {
             final MatchUp matchUp = getMatchUp(0, roundIndex, matchUpIndex);
-            if (matchUp.isDefaultStatus() || matchUp.getParticipant1().isNull() || matchUp.getParticipant2().isNull())
+            if (matchUp.isDefaultStatus() || matchUp.getParticipant1().isNull() || matchUp.getParticipant2().isNull()) {
                 return false;
+            }
         }
         return true;
     }
@@ -204,8 +210,9 @@ public class SwissTournament extends Tournament implements RecordKeepingTourname
         public int compare(Participant lhs, Participant rhs) {
 
             final int difference = getRecordKeepingTournamentTrait().compareParticipantsBasedOnRecord(lhs, rhs);
-            if (difference != 0)
+            if (difference != 0) {
                 return difference;
+            }
 
             if (lhs.isNormal() && !rhs.isNormal()) {
                 return -1;
@@ -245,10 +252,11 @@ public class SwissTournament extends Tournament implements RecordKeepingTourname
 
 
     private static String getPairKey(final Participant participant1, final Participant participant2) {
-        if (participant1.getKey().compareTo(participant2.getKey()) <= 0)
+        if (participant1.getKey().compareTo(participant2.getKey()) <= 0) {
             return participant1.getKey() + participant2.getKey();
-        else
+        } else {
             return participant2.getKey() + participant1.getKey();
+        }
     }
 
 

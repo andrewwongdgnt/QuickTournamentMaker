@@ -20,16 +20,16 @@ public class AppInfoActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        setTextViewAsHTML((TextView) findViewById(R.id.eliminationInfoText_tv), getString(R.string.eliminationInfoText));
-        setTextViewAsHTML((TextView) findViewById(R.id.doubleEliminationInfoText_tv), getString(R.string.doubleEliminationInfoText));
-        setTextViewAsHTML((TextView) findViewById(R.id.roundRobinInfoText_tv), getString(R.string.roundRobinInfoText));
-        setTextViewAsHTML((TextView) findViewById(R.id.swissInfoText_tv), getString(R.string.swissInfoText));
-        setTextViewAsHTML((TextView) findViewById(R.id.survivalInfoText_tv), getString(R.string.survivalInfoText));
+        setTextViewAsHtml((TextView) findViewById(R.id.eliminationInfoText_tv), getString(R.string.eliminationInfoText));
+        setTextViewAsHtml((TextView) findViewById(R.id.doubleEliminationInfoText_tv), getString(R.string.doubleEliminationInfoText));
+        setTextViewAsHtml((TextView) findViewById(R.id.roundRobinInfoText_tv), getString(R.string.roundRobinInfoText));
+        setTextViewAsHtml((TextView) findViewById(R.id.swissInfoText_tv), getString(R.string.swissInfoText));
+        setTextViewAsHtml((TextView) findViewById(R.id.survivalInfoText_tv), getString(R.string.survivalInfoText));
 
 
     }
 
-    private void setTextViewAsHTML(final TextView textView, final String string){
+    private void setTextViewAsHtml(final TextView textView, final String string){
         textView.setMovementMethod(LinkMovementMethod.getInstance());
         textView.setText(Html.fromHtml(string));
     }

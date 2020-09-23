@@ -39,18 +39,18 @@ public class DoubleEliminationTournamentUnitTest implements TournamentUnitTest{
         tim= new Participant(PersonUtil.TIM);
         arthur= new Participant(PersonUtil.ARTHUR);
 
-        final List<Participant> participantList = new ArrayList<>();
-        participantList.add(andrew);
-        participantList.add(john);
-        participantList.add(tommy);
-        participantList.add(william);
-        participantList.add(kelsey);
-        participantList.add(ben);
-        participantList.add(tim);
-        participantList.add(arthur);
+        final List<Participant> participants = new ArrayList<>();
+        participants.add(andrew);
+        participants.add(john);
+        participants.add(tommy);
+        participants.add(william);
+        participants.add(kelsey);
+        participants.add(ben);
+        participants.add(tim);
+        participants.add(arthur);
 
         tournament_noByes = new DoubleEliminationTournament();
-        tournament_noByes.build(participantList);
+        tournament_noByes.build(participants);
     }
 
 

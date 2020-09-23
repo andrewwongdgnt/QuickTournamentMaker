@@ -42,12 +42,20 @@ public class Person implements IKeyable, Comparable<Person>, Parcelable {
 
     @Override
     public boolean equals(Object other) {
-        if (other == null) return false;
-        if (other == this) return true;
-        if (!(other instanceof Person)) return false;
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (!(other instanceof Person)) {
+            return false;
+        }
         Person otherOne = (Person) other;
 
-        if (getKey().equals(otherOne.getKey())) return true;
+        if (getKey().equals(otherOne.getKey())) {
+            return true;
+        }
 
         return false;
 

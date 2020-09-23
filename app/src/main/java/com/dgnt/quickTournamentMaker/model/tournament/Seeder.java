@@ -25,16 +25,16 @@ public class Seeder {
         RANDOM, CUSTOM, SAME
     }
 
-    public Seeder(final List<Participant> participantList, final SeedFillType seedFillType) {
+    public Seeder(final List<Participant> participants, final SeedFillType seedFillType) {
 
-        this.participantList = participantList;
+        this.participants = participants;
         this.seedFillType = seedFillType;
     }
 
 
     private SeedFillType seedFillType;
 
-    private List<Participant> participantList;
+    private List<Participant> participants;
 
     private int firstPickIndex = -1;
 
@@ -58,21 +58,21 @@ public class Seeder {
 
     //take out byes
     public void clean() {
-        ArrayList<Participant> copyList = new ArrayList<Participant>(participantList);
+        ArrayList<Participant> copyList = new ArrayList<Participant>(participants);
 
-        participantList.clear();
+        participants.clear();
         for (final Participant copy : copyList) {
             if (copy.isNormal())
-                participantList.add(copy);
+                participants.add(copy);
         }
     }
 
-    public void sort (){
-        Collections.sort(participantList);
+    public void sort() {
+        Collections.sort(participants);
     }
 
     public void randomize() {
-        Collections.shuffle(participantList);
+        Collections.shuffle(participants);
     }
 
     public ToggleResult toggleResult(final int index) {
@@ -85,20 +85,20 @@ public class Seeder {
             firstPickIndex = index;
         else if (firstPickIndex == index)
             firstPickIndex = -1;
-        else if (participantList.get(firstPickIndex).isBye() && participantList.get(index).isBye()) {
+        else if (participants.get(firstPickIndex).isBye() && participants.get(index).isBye()) {
             return ToggleResult.TWO_BYES_REDUNDANT;
         } else if (
-                (participantList.get(index).isBye() && firstPickIndex % 2 == 0 && participantList.get(firstPickIndex + 1).isBye())
+                (participants.get(index).isBye() && firstPickIndex % 2 == 0 && participants.get(firstPickIndex + 1).isBye())
                         ||
-                        (participantList.get(firstPickIndex).isBye() && index % 2 == 0 && participantList.get(index + 1).isBye())
-                ) {
+                        (participants.get(firstPickIndex).isBye() && index % 2 == 0 && participants.get(index + 1).isBye())
+        ) {
 
             return ToggleResult.TWO_BYES_FAIL;
         } else {
-            Collections.swap(participantList, firstPickIndex, index);
+            Collections.swap(participants, firstPickIndex, index);
             firstPickIndex = -1;
             fixParticipantList();
-            dispatchParticipantListChangeEvent(participantList);
+            dispatchParticipantListChangeEvent(participants);
 
         }
 
@@ -108,9 +108,9 @@ public class Seeder {
 
     //put byes on odd index so that the byes are always as participant 2
     private void fixParticipantList() {
-        for (int i = 0; i < participantList.size(); i += 2) {
-            if (participantList.get(i).isBye())
-                Collections.swap(participantList, i, i + 1);
+        for (int i = 0; i < participants.size(); i += 2) {
+            if (participants.get(i).isBye())
+                Collections.swap(participants, i, i + 1);
         }
     }
 
@@ -127,45 +127,45 @@ public class Seeder {
         }
     }
 
-    public void dispatchParticipantListChangeEvent(final List<Participant> participantList) {
+    public void dispatchParticipantListChangeEvent(final List<Participant> participants) {
         if (onSeedChangeListener != null) {
-            onSeedChangeListener.onParticipantListChange(participantList);
+            onSeedChangeListener.onParticipantListChange(participants);
         }
     }
 
     //filling for byes for power of 2
     private void fillForPowerOf2() {
 
-        ArrayList<Participant> copy = new ArrayList<Participant>(participantList);
+        ArrayList<Participant> copy = new ArrayList<Participant>(participants);
 
-        final int nextPowerOf2 = TournamentUtil.nextPowerOf2(participantList.size());
+        final int nextPowerOf2 = TournamentUtil.nextPowerOf2(participants.size());
 
-        final int startingIndex = nextPowerOf2 - (nextPowerOf2 - participantList.size()) * 2;
+        final int startingIndex = nextPowerOf2 - (nextPowerOf2 - participants.size()) * 2;
 
-        participantList.clear();
+        participants.clear();
         for (int i = 0; i < copy.size(); i++) {
-            participantList.add(copy.get(i));
+            participants.add(copy.get(i));
             if (i >= startingIndex)
-                participantList.add(Participant.BYE_PARTICIPANT);
+                participants.add(Participant.BYE_PARTICIPANT);
         }
     }
 
     //filling for byes for even numbers
     private void fillForEvenNumbers() {
-        if (participantList.size() % 2 == 1) {
-            participantList.add(Participant.BYE_PARTICIPANT);
+        if (participants.size() % 2 == 1) {
+            participants.add(Participant.BYE_PARTICIPANT);
         }
     }
 
     //always add byes
     private void fillAlways() {
 
-        ArrayList<Participant> copyList = new ArrayList<Participant>(participantList);
+        ArrayList<Participant> copyList = new ArrayList<Participant>(participants);
 
-        participantList.clear();
+        participants.clear();
         for (final Participant copy : copyList) {
-            participantList.add(copy);
-            participantList.add(Participant.BYE_PARTICIPANT);
+            participants.add(copy);
+            participants.add(Participant.BYE_PARTICIPANT);
         }
     }
 }

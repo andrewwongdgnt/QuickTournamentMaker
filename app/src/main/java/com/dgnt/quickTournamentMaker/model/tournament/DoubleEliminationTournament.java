@@ -18,8 +18,9 @@ public class DoubleEliminationTournament extends EliminationTournament {
     public boolean build(final List<Participant> orderedParticipantList, final OnTournamentUpdateListener onTournamentUpdateListener, final OnMatchUpUpdateListener onMatchUpUpdateListener, final OnParticipantUpdateListener onParticipantUpdateListener) {
         final boolean initialStatus = super.build(orderedParticipantList,onTournamentUpdateListener, onMatchUpUpdateListener,onParticipantUpdateListener);
 
-        if (!initialStatus)
+        if (!initialStatus) {
             return false;
+        }
 
 
         //loser bracket
@@ -27,13 +28,13 @@ public class DoubleEliminationTournament extends EliminationTournament {
         loserRounds = new ArrayList<>();
 
         //for all the winner bracket rounds except the last, we need to add 2 loser rounds. For each pair of loser rounds, it will contain half the match ups as the winner bracket rounds
-        for (int roundIndex_winner = 0; roundIndex_winner < rounds.size() - 1; roundIndex_winner++) {
+        for (int roundIndex_winnerBracket = 0; roundIndex_winnerBracket < rounds.size() - 1; roundIndex_winnerBracket++) {
 
             //do this twice
             for (int i = 0; i < 2; i++) {
-                final int roundIndex_loser = roundIndex_winner*2 + i;
+                final int roundIndex_loser = roundIndex_winnerBracket*2 + i;
                 final List<MatchUp> matchUps = new ArrayList<>();
-                for (int j = 0; j < rounds.get(roundIndex_winner).getTotalMatchUps() / 2; j++) {
+                for (int j = 0; j < rounds.get(roundIndex_winnerBracket).getTotalMatchUps() / 2; j++) {
                     final int matchUpIndex = j;
                     final MatchUp matchUp = new MatchUp(1, roundIndex_loser, matchUpIndex, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT);
                     matchUp.setOnMatchUpUpdateListener(onMatchUpUpdateListener);
@@ -92,15 +93,15 @@ public class DoubleEliminationTournament extends EliminationTournament {
                 final int currentMatchUpIndex_loserBracket;
 
                 //for the first round, the corresponding loser match ups is at location matchUpIndex/2
-                if (currentRoundIndex_winnerBracket == 0)
+                if (currentRoundIndex_winnerBracket == 0) {
                     currentMatchUpIndex_loserBracket = currentMatchUpIndex_winnerBracket / 2;
-
+                }
                     //otherwise, we alternate between starting from the first match up of the corresponding loser round and the last
-                else if (currentRoundIndex_winnerBracket % 2 == 1)
+                else if (currentRoundIndex_winnerBracket % 2 == 1) {
                     currentMatchUpIndex_loserBracket = round_loserBracket.getTotalMatchUps() - currentMatchUpIndex_winnerBracket - 1;
-                else
+                } else {
                     currentMatchUpIndex_loserBracket = currentMatchUpIndex_winnerBracket;
-
+                }
                 final MatchUp matchUp_loserBracket = round_loserBracket.getMatchUpAt(currentMatchUpIndex_loserBracket);
 
                 final Participant oldParticipant;
@@ -123,11 +124,11 @@ public class DoubleEliminationTournament extends EliminationTournament {
                     }
 
 
-                    if (oldParticipant != newParticipant)
+                    if (oldParticipant != newParticipant) {
                         matchUp_loserBracket.setParticipant1(newParticipant);
-                    else
+                    } else {
                         break;
-
+                    }
                 } else {
                     oldParticipant = matchUp_loserBracket.getParticipant2();
 
@@ -140,10 +141,11 @@ public class DoubleEliminationTournament extends EliminationTournament {
                     }
 
 
-                    if (oldParticipant != newParticipant)
+                    if (oldParticipant != newParticipant) {
                         matchUp_loserBracket.setParticipant2(newParticipant);
-                    else
+                    }else {
                         break;
+                    }
                 }
 
 
@@ -167,8 +169,9 @@ public class DoubleEliminationTournament extends EliminationTournament {
 
                 final boolean breakThisLoop = setParticipantForMatchUp(roundGroupIndex, currentRoundIndex, currentMatchUpIndex, participantIndex, oldParticipant, previousMatchUp, currentMatchUp);
 
-                if (breakThisLoop)
+                if (breakThisLoop) {
                     break;
+                }
             }
         }
 

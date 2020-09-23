@@ -64,8 +64,9 @@ public class SurvivalTournament extends Tournament implements SingleMatchUpTourn
 
             final boolean breakThisLoop = setParticipantForMatchUp(roundGroupIndex, currentRoundIndex, matchUpIndex, participantIndex, oldParticipant, previousMatchUp, currentMatchUp);
 
-            if (breakThisLoop)
+            if (breakThisLoop) {
                 break;
+            }
         }
     }
 

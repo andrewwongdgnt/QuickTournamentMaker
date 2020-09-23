@@ -219,8 +219,9 @@ public class LayoutUtil {
 
     private static void setUpRankingEditor_Score(final SharedPreferences sharedPreferences, final View rootView, final RecordKeepingTournamentTrait.RecordType recordType, final boolean isSwiss, final int score, final Button add_btn, final EditText score_et, final Button subtract_btn) {
 
-        if (!myTextWatcherMap.containsKey(recordType))
+        if (!myTextWatcherMap.containsKey(recordType)) {
             myTextWatcherMap.put(recordType, new MyTextWatcher());
+        }
         final MyTextWatcher myTextWatcher = myTextWatcherMap.get(recordType);
 
         score_et.removeTextChangedListener(myTextWatcher);
@@ -339,13 +340,13 @@ public class LayoutUtil {
                 final String[] priorityArr = new String[3];
                 for (int i = 0; i < 3; i++) {
                     final RecordKeepingTournamentTrait.RecordType recordType;
-                    if (i == 0)
+                    if (i == 0) {
                         recordType = rankingFromPriority.getFirstPriority();
-                    else if (i == 1)
+                    } else if (i == 1) {
                         recordType = rankingFromPriority.getSecondPriority();
-                    else
+                    } else {
                         recordType = rankingFromPriority.getThirdPriority();
-
+                    }
                     priorityArr[i] = getProperPriorityName(activity, recordType);
 
                 }
@@ -377,10 +378,10 @@ public class LayoutUtil {
         builder.create().show();
     }
 
-    private static String getNiceParticipantList(final List<Participant> participantList) {
+    private static String getNiceParticipantList(final List<Participant> participants) {
         final StringBuilder sb = new StringBuilder();
         String newLine = "";
-        for (final Participant participant : participantList) {
+        for (final Participant participant : participants) {
             sb.append(newLine).append(participant.getDisplayName());
             newLine = "\n";
         }

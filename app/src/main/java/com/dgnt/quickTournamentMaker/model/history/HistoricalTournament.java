@@ -29,18 +29,18 @@ public class HistoricalTournament implements IKeyable {
     private String note;
     private Tournament.TournamentType type;
     private String rankingConfig;
-    private List<Participant> participantList;
+    private List<Participant> participants;
     private List<HistoricalRound> roundList;
     private List<HistoricalMatchUp> matchUpList;
 
-    public HistoricalTournament(final long creationTimeInEpoch, final long lastModifiedTimeInEpoch, final String name, final String note, final Tournament.TournamentType type, final String rankingConfig, final List<Participant> participantList, final List<HistoricalRound> roundList, final List<HistoricalMatchUp> matchUpList) {
+    public HistoricalTournament(final long creationTimeInEpoch, final long lastModifiedTimeInEpoch, final String name, final String note, final Tournament.TournamentType type, final String rankingConfig, final List<Participant> participants, final List<HistoricalRound> roundList, final List<HistoricalMatchUp> matchUpList) {
         this.creationTimeInEpoch = creationTimeInEpoch;
         this.lastModifiedTimeInEpoch = lastModifiedTimeInEpoch;
         this.name = name;
         this.note = note;
         this.type = type;
         this.rankingConfig = rankingConfig;
-        this.participantList = participantList;
+        this.participants = participants;
         this.roundList = roundList;
         this.matchUpList = matchUpList;
     }
@@ -85,7 +85,7 @@ public class HistoricalTournament implements IKeyable {
     }
 
     public List<Participant> getParticipantList() {
-        return participantList;
+        return participants;
     }
 
     private List<Participant> normalSortedParticipantList;
@@ -94,8 +94,9 @@ public class HistoricalTournament implements IKeyable {
         if (normalSortedParticipantList == null) {
             normalSortedParticipantList = new ArrayList<>();
             for (final Participant participant : getParticipantList()) {
-                if (participant.isNormal())
+                if (participant.isNormal()) {
                     normalSortedParticipantList.add(participant);
+                }
             }
             Collections.sort(normalSortedParticipantList);
         }
