@@ -9,7 +9,7 @@ import com.dgnt.quickTournamentMaker.service.interfaces.IRankingService
  */
 class RecordRankingService : IRankingService {
     override fun calculate(roundGroups: List<RoundGroup>, rankConfig: IRankConfig): Rank {
-        val participants = roundGroups.flatMap { rg -> rg.rounds.flatMap { r -> r.matchUps.flatMap { m -> setOf(m.participant1, m.participant2) } } }.toSet()
+        val participants = roundGroups.flatMap { rg -> rg.rounds.flatMap { r -> r.matchUps.flatMap { m -> setOf(m.participant1, m.participant2) } } }.toSet().filter { it.participantType==ParticipantType.NORMAL }
         val comparator = Comparator<Participant> { p1, p2 ->
             val p1Record = p1.record
             val p2Record = p2.record

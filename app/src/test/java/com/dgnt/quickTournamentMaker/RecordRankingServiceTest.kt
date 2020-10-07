@@ -14,6 +14,8 @@ class RecordRankingServiceTest {
     private lateinit var initialStateUnknownRank: Set<Participant>
     private lateinit var normalStateKnownRank: List<Set<Participant>>
     private lateinit var normalStateUnknownRank: Set<Participant>
+    private lateinit var withByeStateKnownRank: List<Set<Participant>>
+    private lateinit var withByeStateUnknownRank: Set<Participant>
 
     @Before
     fun setUp() {
@@ -83,6 +85,39 @@ class RecordRankingServiceTest {
         val normalStateRank = sut.calculate(normalState)
         normalStateKnownRank = normalStateRank.known
         normalStateUnknownRank = normalStateRank.unknown
+
+        val withByeState = listOf(
+            RoundGroup(
+                listOf(
+                    Round(listOf(
+                        MatchUp(Data.ANDREW, Data.KYRA).apply {
+                            participant1.record = Record(0, 1, 2)
+                            participant2.record = Record(0, 2, 1)
+                        },
+                        MatchUp(Data.DGNT, Participant.BYE_PARTICIPANT).apply {
+                            participant1.record = Record(2, 1, 0)
+                            participant2.record = Record(86, 0, 0)
+                        }
+                    )
+                    ),
+                    Round(
+                        listOf(
+                            MatchUp(Data.ANDREW, Data.DGNT),
+                            MatchUp(Participant.BYE_PARTICIPANT, Data.KYRA)
+                        )
+                    ),
+                    Round(
+                        listOf(
+                            MatchUp(Data.ANDREW, Participant.BYE_PARTICIPANT),
+                            MatchUp(Data.KYRA, Data.DGNT)
+                        )
+                    )
+                )
+            )
+        )
+        val withByeStateRank = sut.calculate(withByeState)
+        withByeStateKnownRank = withByeStateRank.known
+        withByeStateUnknownRank = withByeStateRank.unknown
     }
 
     @Test
@@ -124,6 +159,32 @@ class RecordRankingServiceTest {
     @Test
     fun testNormalStateUnknownRankingTotal() {
         Assert.assertEquals(0,normalStateUnknownRank.size)
+    }
+
+    //----------
+
+    @Test
+    fun testWithByeStateKnownRankingTotal() {
+        Assert.assertEquals(3,withByeStateKnownRank.size)
+    }
+
+    @Test
+    fun testWithByeStateKnownRankingTotalPerRank() {
+        Assert.assertEquals(1, withByeStateKnownRank[0].size)
+        Assert.assertEquals(1, withByeStateKnownRank[1].size)
+        Assert.assertEquals(1, withByeStateKnownRank[2].size)
+    }
+
+    @Test
+    fun testWithByeStateKnownRanking() {
+        Assert.assertTrue(withByeStateKnownRank[0].contains(Data.KYRA))
+        Assert.assertTrue(withByeStateKnownRank[1].contains(Data.ANDREW))
+        Assert.assertTrue(withByeStateKnownRank[2].contains(Data.DGNT))
+    }
+
+    @Test
+    fun testWithByeStateUnknownRankingTotal() {
+        Assert.assertEquals(0,withByeStateUnknownRank.size)
     }
 
 }

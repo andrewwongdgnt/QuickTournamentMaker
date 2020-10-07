@@ -9,7 +9,7 @@ class Data {
         //Person
         val ANDREW_PERSON = Person("Andrew", "")
         val KYRA_PERSON = Person("Kyra", "")
-        val DGNT_PERSON = Person("DGNT", "")
+        val DGNT_PERSON = Person("Dgnt", "")
         val KELSEY_PERSON = Person("Kelsey", "")
         val FIRE_PERSON = Person("Fire", "")
         val SUPER_PERSON = Person("Super", "")

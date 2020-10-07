@@ -13,6 +13,7 @@ class SwissRoundUpdateServiceTest {
     private val mockRankingService: IRankingService = PowerMockito.mock(IRankingService::class.java)
     private val sut = SwissRoundUpdateService(mockRankingService)
     private lateinit var roundGroups: List<RoundGroup>
+    private lateinit var roundGroupsWithBye: List<RoundGroup>
 
     @Before
     fun setUp() {
@@ -27,10 +28,19 @@ class SwissRoundUpdateServiceTest {
         roundGroups = listOf(RoundGroup(rounds))
 
 
+        val round1WithBye = Round(listOf(MatchUp(Data.ANDREW, Data.FIRE), MatchUp(Data.KYRA, Participant.BYE_PARTICIPANT)))
+        val roundsWithBye = (1..3).map {
+            if (it == 1)
+                round1WithBye
+            else
+                Round(listOf(MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT), MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)))
+        }
+        roundGroupsWithBye = listOf(RoundGroup(roundsWithBye))
+
     }
 
     private fun helperMockRankingService(list: List<Set<Participant>>) {
-        PowerMockito.`when`(mockRankingService.calculate(MockitoHelper.anyObject())).thenReturn(
+        PowerMockito.`when`(mockRankingService.calculate(MockitoHelper.anyObject(),MockitoHelper.anyObject())).thenReturn(
             Rank(list, setOf())
         );
     }
@@ -298,5 +308,33 @@ class SwissRoundUpdateServiceTest {
         assertRound3NullParticipants()
         assertRound4NullParticipants()
     }
+    @Test
+    fun testDistributionWithBye() {
 
+        val round1 = roundGroupsWithBye[0].rounds[0]
+        val round2 = roundGroupsWithBye[0].rounds[1]
+
+        //Andrew Vs Fire
+        round1.matchUps[0].status = MatchUpStatus.P1_WINNER
+        round1.matchUps[1].status = MatchUpStatus.P1_WINNER//because bye
+        helperMockRankingService(listOf(setOf(Data.FIRE), setOf(Data.ANDREW, Data.KYRA)))
+        sut.update(roundGroupsWithBye, 0, 0, 0)
+        Assert.assertEquals(Data.ANDREW, round2.matchUps[0].participant1)//1-0
+        Assert.assertEquals(Data.KYRA, round2.matchUps[0].participant2)//1-0
+        Assert.assertEquals(Data.FIRE, round2.matchUps[1].participant1)//0-1
+        Assert.assertEquals(Participant.BYE_PARTICIPANT, round2.matchUps[1].participant2)
+
+        val round3 = roundGroupsWithBye[0].rounds[2]
+
+        //Andrew Vs Kyra
+        round2.matchUps[0].status = MatchUpStatus.P1_WINNER
+        round2.matchUps[1].status = MatchUpStatus.P1_WINNER//because bye
+        helperMockRankingService(listOf(setOf(Data.KYRA, Data.FIRE), setOf(Data.ANDREW)))
+        sut.update(roundGroupsWithBye, 0, 1, 0)
+        Assert.assertEquals(Data.ANDREW, round3.matchUps[0].participant1)//2-0
+        Assert.assertEquals(Participant.BYE_PARTICIPANT, round3.matchUps[0].participant2)
+        Assert.assertEquals(Data.FIRE, round3.matchUps[1].participant1)//1-1
+        Assert.assertEquals(Data.KYRA, round3.matchUps[1].participant2)//1-1
+
+    }
 }
