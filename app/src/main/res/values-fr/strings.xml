@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="title_activity_home">Home_fr</string>
     <string name="quickStart">Démarrage rapide</string>
     <string name="randomSeed">Classement au hasard</string>
     <string name="tournamentTitle">Titre du tournoi</string>

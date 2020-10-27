@@ -16,10 +16,10 @@ interface GroupDAO {
     suspend fun insertGroups(groupEntities:List<GroupEntity>):List<Long>
 
     @Update(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun updateGroup(groupEntity:GroupEntity):Long
+    suspend fun updateGroup(groupEntity:GroupEntity):Int
 
     @Update(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun updateGroups(groupEntities:List<GroupEntity>):List<Long>
+    suspend fun updateGroups(groupEntities:List<GroupEntity>):Int
 
     @Delete
     suspend fun deleteGroup(groupEntity:GroupEntity)

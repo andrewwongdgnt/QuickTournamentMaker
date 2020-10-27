@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_loadTournament -> LoadTournamentFragment()
                 else -> HomeFragment()//R.id.navigation_home
             })
-            false
+            true
         }
     }
 }

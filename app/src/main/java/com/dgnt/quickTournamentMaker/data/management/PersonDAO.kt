@@ -16,10 +16,10 @@ interface PersonDAO {
     suspend fun insertPersons(personEntities:List<PersonEntity>):List<Long>
 
     @Update(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun updatePerson(personEntity:PersonEntity):Long
+    suspend fun updatePerson(personEntity:PersonEntity):Int
 
     @Update(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun updatePersons(personEntities:List<PersonEntity>):List<Long>
+    suspend fun updatePersons(personEntities:List<PersonEntity>):Int
 
     @Delete
     suspend fun deletePerson(personEntity:PersonEntity)
