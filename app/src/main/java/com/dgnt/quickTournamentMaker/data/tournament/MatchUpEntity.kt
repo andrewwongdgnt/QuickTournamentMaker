@@ -3,7 +3,9 @@ package com.dgnt.quickTournamentMaker.data.tournament
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "matchUpTable")
+const val MATCH_UP_TABLE = "matchUpTable"
+
+@Entity(tableName = MATCH_UP_TABLE)
 data class MatchUpEntity(
     @PrimaryKey val epoch: Long,
     val roundGroupIndex: Int,

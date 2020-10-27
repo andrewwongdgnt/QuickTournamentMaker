@@ -3,7 +3,8 @@ package com.dgnt.quickTournamentMaker.data.tournament
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "roundTable")
+const val ROUND_TABLE = "roundTable"
+@Entity(tableName = ROUND_TABLE)
 data class RoundEntity(
     @PrimaryKey val epoch: Long,
     val roundGroupIndex: Int,

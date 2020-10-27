@@ -1,28 +1,26 @@
 package com.dgnt.quickTournamentMaker.data.management
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.dgnt.quickTournamentMaker.model.management.Person
+import androidx.room.*
 
-class PersonDAO {
-    // FIXME: A fake database table
-    private val personList = mutableListOf<Person>()
+@Dao
+interface PersonDAO {
 
+    @Query("SELECT * FROM $PERSON_TABLE")
+    fun getAllPersons():LiveData<List<PersonEntity>>
 
-    private val persons = MutableLiveData<List<Person>>()
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertPerson(personEntity:PersonEntity):Long
 
-    init {
-        persons.value = personList
-    }
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertPersons(personEntities:List<PersonEntity>):List<Long>
 
-    fun addPerson(person: Person) {
-        personList.add(person)
-        persons.value = personList
-    }
+    @Update(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun updatePerson(personEntity:PersonEntity):Long
 
-    fun deletePerson(person: Person){
-        personList.removeAll {  p-> p.equals(person.key)}
-    }
+    @Update(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun updatePersons(personEntities:List<PersonEntity>):List<Long>
 
-    fun getPersons() = persons as LiveData<List<Person>>
+    @Delete
+    suspend fun deletePerson(personEntity:PersonEntity)
 }
