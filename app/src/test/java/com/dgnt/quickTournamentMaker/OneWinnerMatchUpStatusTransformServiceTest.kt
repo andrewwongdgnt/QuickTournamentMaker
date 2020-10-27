@@ -1,13 +1,8 @@
 package com.dgnt.quickTournamentMaker
 
-import com.dgnt.quickTournamentMaker.data.management.Person
-import com.dgnt.quickTournamentMaker.data.tournament.MatchUpStatus
-import com.dgnt.quickTournamentMaker.data.tournament.Participant
-import com.dgnt.quickTournamentMaker.data.tournament.ParticipantPosition
-import com.dgnt.quickTournamentMaker.service.implementation.ByePopulateSeedService
-import com.dgnt.quickTournamentMaker.service.implementation.EvenNumberSeedService
+import com.dgnt.quickTournamentMaker.model.tournament.MatchUpStatus
+import com.dgnt.quickTournamentMaker.model.tournament.ParticipantPosition
 import com.dgnt.quickTournamentMaker.service.implementation.OneWinnerMatchUpStatusTransformService
-import com.dgnt.quickTournamentMaker.service.implementation.PowerOf2SeedService
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test

@@ -1,10 +1,10 @@
 package com.dgnt.quickTournamentMaker
 
 import android.util.Log
-import com.dgnt.quickTournamentMaker.data.tournament.MatchUp
-import com.dgnt.quickTournamentMaker.data.tournament.Participant
-import com.dgnt.quickTournamentMaker.data.tournament.Round
-import com.dgnt.quickTournamentMaker.data.tournament.RoundGroup
+import com.dgnt.quickTournamentMaker.model.tournament.MatchUp
+import com.dgnt.quickTournamentMaker.model.tournament.Participant
+import com.dgnt.quickTournamentMaker.model.tournament.Round
+import com.dgnt.quickTournamentMaker.model.tournament.RoundGroup
 import com.dgnt.quickTournamentMaker.service.implementation.DoubleEliminationRoundGeneratorService
 import com.dgnt.quickTournamentMaker.service.implementation.EliminationRoundGeneratorService
 import com.dgnt.quickTournamentMaker.service.interfaces.IRoundGeneratorService

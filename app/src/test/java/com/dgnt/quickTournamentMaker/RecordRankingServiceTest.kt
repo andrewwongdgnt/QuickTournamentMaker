@@ -1,6 +1,6 @@
 package com.dgnt.quickTournamentMaker
 
-import com.dgnt.quickTournamentMaker.data.tournament.*
+import com.dgnt.quickTournamentMaker.model.tournament.*
 import com.dgnt.quickTournamentMaker.service.implementation.RecordRankingService
 import org.junit.Assert
 import org.junit.Before

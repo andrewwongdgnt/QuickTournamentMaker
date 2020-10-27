@@ -1,6 +1,6 @@
-package com.dgnt.quickTournamentMaker.data.management
+package com.dgnt.quickTournamentMaker.model.management
 
-import com.dgnt.quickTournamentMaker.data.IKeyable
+import com.dgnt.quickTournamentMaker.model.IKeyable
 
 data class Group(var name:String, var note:String, var favourite:Boolean): IKeyable, Comparable<Group> {
     override val key: String = name

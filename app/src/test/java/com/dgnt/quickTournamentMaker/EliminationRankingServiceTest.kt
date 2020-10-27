@@ -1,10 +1,8 @@
 package com.dgnt.quickTournamentMaker
 
-import com.dgnt.quickTournamentMaker.data.tournament.*
+import com.dgnt.quickTournamentMaker.model.tournament.*
 import com.dgnt.quickTournamentMaker.service.implementation.EliminationRankingService
 import com.dgnt.quickTournamentMaker.service.interfaces.IEliminationRankingHelperService
-import com.dgnt.quickTournamentMaker.service.interfaces.IRoundGeneratorService
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito

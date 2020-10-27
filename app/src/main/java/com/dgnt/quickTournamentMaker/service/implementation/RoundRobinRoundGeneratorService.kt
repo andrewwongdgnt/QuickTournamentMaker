@@ -1,12 +1,11 @@
 package com.dgnt.quickTournamentMaker.service.implementation
 
-import com.dgnt.quickTournamentMaker.data.tournament.MatchUp
-import com.dgnt.quickTournamentMaker.data.tournament.Participant
-import com.dgnt.quickTournamentMaker.data.tournament.Round
-import com.dgnt.quickTournamentMaker.data.tournament.RoundGroup
+import com.dgnt.quickTournamentMaker.model.tournament.MatchUp
+import com.dgnt.quickTournamentMaker.model.tournament.Participant
+import com.dgnt.quickTournamentMaker.model.tournament.Round
+import com.dgnt.quickTournamentMaker.model.tournament.RoundGroup
 import com.dgnt.quickTournamentMaker.service.interfaces.IParticipantService
 import com.dgnt.quickTournamentMaker.service.interfaces.IRoundGeneratorService
-import com.dgnt.quickTournamentMaker.util.TournamentUtil
 import java.util.*
 
 class RoundRobinRoundGeneratorService(private val participantService: IParticipantService) : IRoundGeneratorService {

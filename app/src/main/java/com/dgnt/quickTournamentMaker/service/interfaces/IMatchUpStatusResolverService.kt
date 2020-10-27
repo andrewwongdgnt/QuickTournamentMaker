@@ -1,8 +1,6 @@
 package com.dgnt.quickTournamentMaker.service.interfaces
 
-import com.dgnt.quickTournamentMaker.data.tournament.MatchUpStatus
-import com.dgnt.quickTournamentMaker.data.tournament.Participant
-import com.dgnt.quickTournamentMaker.data.tournament.RoundGroup
+import com.dgnt.quickTournamentMaker.model.tournament.RoundGroup
 
 interface IMatchUpStatusResolverService {
 

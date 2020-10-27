@@ -1,7 +1,7 @@
 package com.dgnt.quickTournamentMaker.service.interfaces
 
-import com.dgnt.quickTournamentMaker.data.tournament.Rank
-import com.dgnt.quickTournamentMaker.data.tournament.Round
+import com.dgnt.quickTournamentMaker.model.tournament.Rank
+import com.dgnt.quickTournamentMaker.model.tournament.Round
 
 interface IEliminationRankingHelperService {
     /**

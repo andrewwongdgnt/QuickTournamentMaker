@@ -1,7 +1,7 @@
 package com.dgnt.quickTournamentMaker.service.implementation
 
-import com.dgnt.quickTournamentMaker.data.tournament.MatchUpStatus
-import com.dgnt.quickTournamentMaker.data.tournament.ParticipantPosition
+import com.dgnt.quickTournamentMaker.model.tournament.MatchUpStatus
+import com.dgnt.quickTournamentMaker.model.tournament.ParticipantPosition
 import com.dgnt.quickTournamentMaker.service.interfaces.IMatchUpStatusTransformService
 
 class OneWinnerMatchUpStatusTransformService : IMatchUpStatusTransformService {

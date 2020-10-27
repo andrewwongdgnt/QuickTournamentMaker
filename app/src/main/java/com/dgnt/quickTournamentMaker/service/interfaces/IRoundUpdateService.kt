@@ -1,6 +1,6 @@
 package com.dgnt.quickTournamentMaker.service.interfaces
 
-import com.dgnt.quickTournamentMaker.data.tournament.*
+import com.dgnt.quickTournamentMaker.model.tournament.*
 
 interface IRoundUpdateService {
     /**

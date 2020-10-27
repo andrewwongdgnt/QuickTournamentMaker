@@ -1,8 +1,6 @@
 package com.dgnt.quickTournamentMaker
 
-import com.dgnt.quickTournamentMaker.data.management.Person
-import com.dgnt.quickTournamentMaker.data.tournament.*
-import com.dgnt.quickTournamentMaker.service.implementation.ByePopulateSeedService
+import com.dgnt.quickTournamentMaker.model.tournament.*
 import com.dgnt.quickTournamentMaker.service.implementation.ByeStatusResolverService
 import org.junit.Assert
 import org.junit.Before

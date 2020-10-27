@@ -1,7 +1,7 @@
 package com.dgnt.quickTournamentMaker.service.implementation
 
-import com.dgnt.quickTournamentMaker.data.tournament.IRankConfig
-import com.dgnt.quickTournamentMaker.data.tournament.RoundGroup
+import com.dgnt.quickTournamentMaker.model.tournament.IRankConfig
+import com.dgnt.quickTournamentMaker.model.tournament.RoundGroup
 import com.dgnt.quickTournamentMaker.service.interfaces.IEliminationRankingHelperService
 import com.dgnt.quickTournamentMaker.service.interfaces.IRankingService
 

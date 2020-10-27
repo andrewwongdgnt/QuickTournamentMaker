@@ -1,9 +1,7 @@
 package com.dgnt.quickTournamentMaker
 
 import android.util.Log
-import com.dgnt.quickTournamentMaker.data.tournament.*
-import com.dgnt.quickTournamentMaker.service.implementation.DoubleEliminationRoundGeneratorService
-import com.dgnt.quickTournamentMaker.service.implementation.EliminationRoundGeneratorService
+import com.dgnt.quickTournamentMaker.model.tournament.*
 import com.dgnt.quickTournamentMaker.service.implementation.ToggleStatusService
 import com.dgnt.quickTournamentMaker.service.interfaces.IMatchUpStatusTransformService
 import org.junit.Assert

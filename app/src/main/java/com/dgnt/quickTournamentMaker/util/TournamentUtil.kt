@@ -1,9 +1,5 @@
 package com.dgnt.quickTournamentMaker.util
 
-import android.content.Context
-import com.dgnt.quickTournamentMaker.data.tournament.*
-import java.text.DateFormat
-
 
 class TournamentUtil {
     companion object {

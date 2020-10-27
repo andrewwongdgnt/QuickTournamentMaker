@@ -1,7 +1,7 @@
 package com.dgnt.quickTournamentMaker.service.implementation
 
-import com.dgnt.quickTournamentMaker.data.management.Person
-import com.dgnt.quickTournamentMaker.data.tournament.Participant
+import com.dgnt.quickTournamentMaker.model.management.Person
+import com.dgnt.quickTournamentMaker.model.tournament.Participant
 import com.dgnt.quickTournamentMaker.service.interfaces.ISeedService
 
 class PowerOf2SeedService : ISeedService {

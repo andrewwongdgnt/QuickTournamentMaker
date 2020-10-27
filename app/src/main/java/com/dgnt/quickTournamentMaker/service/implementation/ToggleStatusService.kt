@@ -1,11 +1,10 @@
 package com.dgnt.quickTournamentMaker.service.implementation
 
-import com.dgnt.quickTournamentMaker.data.tournament.MatchUp
-import com.dgnt.quickTournamentMaker.data.tournament.MatchUpStatus
-import com.dgnt.quickTournamentMaker.data.tournament.Participant
-import com.dgnt.quickTournamentMaker.data.tournament.ParticipantPosition
+import com.dgnt.quickTournamentMaker.model.tournament.MatchUp
+import com.dgnt.quickTournamentMaker.model.tournament.MatchUpStatus
+import com.dgnt.quickTournamentMaker.model.tournament.Participant
+import com.dgnt.quickTournamentMaker.model.tournament.ParticipantPosition
 import com.dgnt.quickTournamentMaker.service.interfaces.IMatchUpStatusTransformService
-import com.dgnt.quickTournamentMaker.service.interfaces.IRoundGeneratorService
 import com.dgnt.quickTournamentMaker.service.interfaces.IToggleStatusService
 
 

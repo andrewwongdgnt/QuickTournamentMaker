@@ -1,4 +1,4 @@
-package com.dgnt.quickTournamentMaker.data.tournament
+package com.dgnt.quickTournamentMaker.model.tournament
 
 interface IRankConfig {
 

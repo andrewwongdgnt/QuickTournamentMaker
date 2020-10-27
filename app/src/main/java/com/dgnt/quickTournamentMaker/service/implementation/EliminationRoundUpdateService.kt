@@ -1,9 +1,9 @@
 package com.dgnt.quickTournamentMaker.service.implementation
 
-import com.dgnt.quickTournamentMaker.data.tournament.IRankConfig
-import com.dgnt.quickTournamentMaker.data.tournament.MatchUpStatus
-import com.dgnt.quickTournamentMaker.data.tournament.Participant
-import com.dgnt.quickTournamentMaker.data.tournament.RoundGroup
+import com.dgnt.quickTournamentMaker.model.tournament.IRankConfig
+import com.dgnt.quickTournamentMaker.model.tournament.MatchUpStatus
+import com.dgnt.quickTournamentMaker.model.tournament.Participant
+import com.dgnt.quickTournamentMaker.model.tournament.RoundGroup
 import com.dgnt.quickTournamentMaker.service.interfaces.IRoundUpdateService
 
 class EliminationRoundUpdateService : IRoundUpdateService {

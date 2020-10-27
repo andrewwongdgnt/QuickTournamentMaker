@@ -1,8 +1,8 @@
-package com.dgnt.quickTournamentMaker.data.tournament
+package com.dgnt.quickTournamentMaker.model.tournament
 
 import android.os.Parcelable
-import com.dgnt.quickTournamentMaker.data.IKeyable
-import com.dgnt.quickTournamentMaker.data.management.Person
+import com.dgnt.quickTournamentMaker.model.IKeyable
+import com.dgnt.quickTournamentMaker.model.management.Person
 import com.dgnt.quickTournamentMaker.util.TournamentUtil
 import kotlinx.android.parcel.Parcelize
 
