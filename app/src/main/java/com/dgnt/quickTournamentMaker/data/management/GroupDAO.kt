@@ -10,7 +10,7 @@ interface GroupDAO {
     fun getAll():LiveData<List<GroupEntity>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(vararg entity:GroupEntity):Long
+    suspend fun insert(vararg entity:GroupEntity):List<Long>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(entities:List<GroupEntity>):List<Long>

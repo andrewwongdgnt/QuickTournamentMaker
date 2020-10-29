@@ -10,7 +10,7 @@ interface RoundDAO {
     fun getAll(epoch:Long):LiveData<List<RoundEntity>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(vararg entity: RoundEntity):Long
+    suspend fun insert(vararg entity: RoundEntity):List<Long>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(entities:List<RoundEntity>):List<Long>

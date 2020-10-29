@@ -10,7 +10,7 @@ interface PersonDAO {
     fun getAll():LiveData<List<PersonEntity>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(vararg entity:PersonEntity):Long
+    suspend fun insert(vararg entity:PersonEntity):List<Long>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(entities:List<PersonEntity>):List<Long>

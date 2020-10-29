@@ -10,7 +10,7 @@ interface MatchUpDAO {
     fun getAll(epoch:Long):LiveData<List<MatchUpEntity>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(vararg entity: MatchUpEntity):Long
+    suspend fun insert(vararg entity: MatchUpEntity):List<Long>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(entities:List<MatchUpEntity>):List<Long>

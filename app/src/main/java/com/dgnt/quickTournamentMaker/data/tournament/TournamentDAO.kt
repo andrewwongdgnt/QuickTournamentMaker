@@ -10,7 +10,7 @@ interface TournamentDAO {
     fun getAll(epoch:Long):LiveData<List<TournamentEntity>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(vararg entity: TournamentEntity):Long
+    suspend fun insert(vararg entity: TournamentEntity):List<Long>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(entities:List<TournamentEntity>):List<Long>
