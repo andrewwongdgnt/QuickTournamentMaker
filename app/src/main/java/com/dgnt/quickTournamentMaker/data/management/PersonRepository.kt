@@ -1,21 +1,11 @@
 package com.dgnt.quickTournamentMaker.data.management
 
 class PersonRepository(private val dao: PersonDAO) {
-    val persons = dao.getAllPersons()
-    suspend fun insert(personEntity:PersonEntity){
-        dao.insertPerson(personEntity)
-    }
-    suspend fun insert(personEntities:List<PersonEntity>){
-        dao.insertPersons(personEntities)
-    }
-    suspend fun update(personEntity:PersonEntity){
-        dao.updatePerson(personEntity)
-    }
-    suspend fun update(personEntities:List<PersonEntity>){
-        dao.updatePersons(personEntities)
-    }
-    suspend fun delete(personEntity: PersonEntity){
-        dao.deletePerson(personEntity)
-    }
-
+    fun getAll() = dao.getAll()
+    suspend fun insert(vararg entity: PersonEntity) = dao.insert(*entity)
+    suspend fun insert(entities: List<PersonEntity>) = dao.insert(entities)
+    suspend fun update(vararg entity: PersonEntity) = dao.update(*entity)
+    suspend fun update(entities: List<PersonEntity>) = dao.update(entities)
+    suspend fun delete(vararg entity: PersonEntity) = dao.delete(*entity)
+    suspend fun delete(entities: List<PersonEntity>) = dao.delete(entities)
 }

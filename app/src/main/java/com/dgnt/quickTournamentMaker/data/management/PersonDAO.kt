@@ -7,20 +7,23 @@ import androidx.room.*
 interface PersonDAO {
 
     @Query("SELECT * FROM $PERSON_TABLE")
-    fun getAllPersons():LiveData<List<PersonEntity>>
+    fun getAll():LiveData<List<PersonEntity>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertPerson(personEntity:PersonEntity):Long
+    suspend fun insert(vararg entity:PersonEntity):Long
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertPersons(personEntities:List<PersonEntity>):List<Long>
+    suspend fun insert(entities:List<PersonEntity>):List<Long>
 
     @Update(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun updatePerson(personEntity:PersonEntity):Int
+    suspend fun update(vararg entity:PersonEntity):Int
 
     @Update(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun updatePersons(personEntities:List<PersonEntity>):Int
+    suspend fun update(entities:List<PersonEntity>):Int
 
     @Delete
-    suspend fun deletePerson(personEntity:PersonEntity)
+    suspend fun delete(vararg entity:PersonEntity)
+
+    @Delete
+    suspend fun delete(entities:List<PersonEntity>)
 }

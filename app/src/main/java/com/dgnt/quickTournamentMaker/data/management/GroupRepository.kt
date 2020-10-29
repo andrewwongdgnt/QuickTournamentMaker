@@ -1,21 +1,11 @@
 package com.dgnt.quickTournamentMaker.data.management
 
 class GroupRepository(private val dao: GroupDAO) {
-    val groups = dao.getAllGroups()
-    suspend fun insert(groupEntity:GroupEntity){
-        dao.insertGroup(groupEntity)
-    }
-    suspend fun insert(groupEntities:List<GroupEntity>){
-        dao.insertGroups(groupEntities)
-    }
-    suspend fun update(groupEntity:GroupEntity){
-        dao.updateGroup(groupEntity)
-    }
-    suspend fun update(groupEntities:List<GroupEntity>){
-        dao.updateGroups(groupEntities)
-    }
-    suspend fun delete(groupEntity: GroupEntity){
-        dao.deleteGroup(groupEntity)
-    }
-
+    fun getAll() = dao.getAll()
+    suspend fun insert(vararg entity: GroupEntity) = dao.insert(*entity)
+    suspend fun insert(entities: List<GroupEntity>) = dao.insert(entities)
+    suspend fun update(vararg entity: GroupEntity) = dao.update(*entity)
+    suspend fun update(entities: List<GroupEntity>) = dao.update(entities)
+    suspend fun delete(vararg entity: GroupEntity) = dao.delete(*entity)
+    suspend fun delete(entities: List<GroupEntity>) = dao.delete(entities)
 }
