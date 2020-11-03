@@ -6,6 +6,7 @@ import com.dgnt.quickTournamentMaker.ui.main.management.PersonViewHolder;
 import com.thoughtbot.expandablerecyclerview.ExpandableRecyclerViewAdapter;
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
 
+//TODO get rid of this soon
 import java.util.List;
 
 public class GenreAdapter extends ExpandableRecyclerViewAdapter<GroupViewHolder, PersonViewHolder> {
