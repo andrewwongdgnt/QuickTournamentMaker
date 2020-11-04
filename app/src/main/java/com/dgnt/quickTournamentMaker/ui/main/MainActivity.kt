@@ -17,21 +17,23 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
 
-        val replace:(Fragment)->Unit = {f->
+        val replace: (Fragment) -> Unit = { f ->
             supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.main_fragment_container,f)
-            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-            .commit()
+                .beginTransaction()
+                .replace(R.id.main_fragment_container, f)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .commit()
         }
         replace(HomeFragment())
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
         navView.setOnNavigationItemSelectedListener { item ->
-            replace(when (item.itemId) {
-                R.id.navigation_management -> ManagementFragment()
-                R.id.navigation_loadTournament -> LoadTournamentFragment()
-                else -> HomeFragment()//R.id.navigation_home
-            })
+            replace(
+                when (item.itemId) {
+                    R.id.navigation_management -> ManagementFragment()
+                    R.id.navigation_loadTournament -> LoadTournamentFragment()
+                    else -> HomeFragment()//R.id.navigation_home
+                }
+            )
             true
         }
     }

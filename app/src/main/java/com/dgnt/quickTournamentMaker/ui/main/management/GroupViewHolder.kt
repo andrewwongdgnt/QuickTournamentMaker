@@ -1,7 +1,6 @@
 package com.dgnt.quickTournamentMaker.ui.main.management
 
 import com.dgnt.quickTournamentMaker.databinding.SectionHeaderItemBinding
-import com.dgnt.quickTournamentMaker.model.management.Group
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup
 import com.thoughtbot.expandablerecyclerview.viewholders.GroupViewHolder
 

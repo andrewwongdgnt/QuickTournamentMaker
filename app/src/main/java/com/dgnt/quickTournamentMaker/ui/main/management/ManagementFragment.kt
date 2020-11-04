@@ -1,6 +1,5 @@
 package com.dgnt.quickTournamentMaker.ui.main.management
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +13,6 @@ import com.dgnt.quickTournamentMaker.data.QTMDatabase
 import com.dgnt.quickTournamentMaker.data.management.GroupRepository
 import com.dgnt.quickTournamentMaker.data.management.PersonRepository
 import com.dgnt.quickTournamentMaker.databinding.ManagementFragmentBinding
-import com.dgnt.quickTournamentMaker.model.management.Person
 
 class ManagementFragment : Fragment() {
     companion object {
@@ -35,7 +33,7 @@ class ManagementFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        if (context==null){
+        if (context == null) {
             return
         }
         val db = QTMDatabase.getInstance(context!!)
@@ -45,7 +43,7 @@ class ManagementFragment : Fragment() {
         val groupRepository = GroupRepository(groupDAO)
         val factory = ManagementViewModelFactory(personRepository, groupRepository)
         viewModel = ViewModelProvider(this, factory).get(ManagementViewModel::class.java)
-        binding.vm =viewModel
+        binding.vm = viewModel
         binding.lifecycleOwner = this
 
         viewModel.navigateToPersonDetails.observe(viewLifecycleOwner, Observer {
@@ -58,8 +56,6 @@ class ManagementFragment : Fragment() {
             }
         })
     }
-
-
 
 
 }

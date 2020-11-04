@@ -9,24 +9,24 @@ import com.dgnt.quickTournamentMaker.data.management.PersonRepository
 import com.dgnt.quickTournamentMaker.model.management.Person
 import com.dgnt.quickTournamentMaker.util.Event
 
-class ManagementViewModel(private val personRepository: PersonRepository, private val groupRepository: GroupRepository) : ViewModel() , Observable{
+class ManagementViewModel(private val personRepository: PersonRepository, private val groupRepository: GroupRepository) : ViewModel(), Observable {
 
     private val _navigateToPersonDetails = MutableLiveData<Event<String>>()
-    val navigateToPersonDetails : LiveData<Event<String>>
+    val navigateToPersonDetails: LiveData<Event<String>>
         get() = _navigateToPersonDetails
 
-    fun addPerson(){
+    fun addPerson() {
         //TODO
         _navigateToPersonDetails.value = Event("wtf")
 
     }
 
-    fun editPerson(person: Person){
+    fun editPerson(person: Person) {
         _navigateToPersonDetails.value = Event(person.name)
 
     }
 
-    fun editPe(name: String){
+    fun editPe(name: String) {
         _navigateToPersonDetails.value = Event(name)
 
     }
