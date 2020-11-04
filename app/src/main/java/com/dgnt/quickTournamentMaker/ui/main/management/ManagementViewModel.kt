@@ -11,24 +11,19 @@ import com.dgnt.quickTournamentMaker.util.Event
 
 class ManagementViewModel(private val personRepository: PersonRepository, private val groupRepository: GroupRepository) : ViewModel(), Observable {
 
-    private val _navigateToPersonDetails = MutableLiveData<Event<String>>()
-    val navigateToPersonDetails: LiveData<Event<String>>
+    val persons = personRepository.getAll()
+    val groups = groupRepository.getAll()
+
+    private val _navigateToPersonDetails = MutableLiveData<Event<Triple<Person,String,Boolean>>>()
+    val navigateToPersonDetails: LiveData<Event<Triple<Person,String,Boolean>>>
         get() = _navigateToPersonDetails
 
     fun addPerson() {
-        //TODO
-        _navigateToPersonDetails.value = Event("wtf")
-
+        _navigateToPersonDetails.value = Event(Triple(Person("",""),"",false))
     }
 
-    fun editPerson(person: Person) {
-        _navigateToPersonDetails.value = Event(person.name)
-
-    }
-
-    fun editPe(name: String) {
-        _navigateToPersonDetails.value = Event(name)
-
+    fun editPerson(person: Person,groupName:String) {
+        _navigateToPersonDetails.value = Event(Triple(person,groupName,true))
     }
 
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {

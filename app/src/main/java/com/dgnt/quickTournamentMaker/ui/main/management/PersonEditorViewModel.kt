@@ -5,16 +5,17 @@ import androidx.databinding.Observable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.dgnt.quickTournamentMaker.data.management.GroupRepository
+import com.dgnt.quickTournamentMaker.data.management.PersonEntity
 import com.dgnt.quickTournamentMaker.data.management.PersonRepository
 import com.dgnt.quickTournamentMaker.model.management.Person
 import com.dgnt.quickTournamentMaker.util.Event
+import kotlinx.coroutines.launch
 
 class PersonEditorViewModel(private val personRepository: PersonRepository, private val groupRepository: GroupRepository) : ViewModel(), Observable {
 
-    private val _completeEvent = MutableLiveData<Event<Boolean>>()
-    val completeEvent: LiveData<Event<Boolean>>
-        get() = _completeEvent
+    val persons = personRepository.getAll()
 
     @Bindable
     val name = MutableLiveData<String>()
@@ -43,15 +44,18 @@ class PersonEditorViewModel(private val personRepository: PersonRepository, priv
     }
 
     fun add() {
-        _completeEvent.value = Event(true)
+        val name = name.value!!
+        val note = note.value!!
+        val groupName = groupName.value!!
+        insert(PersonEntity(name, note, groupName))
+        this.name.value=""
+        this.note.value=""
+        this.groupName.value=""
     }
 
-    fun addAndContinue() {
-        _completeEvent.value = Event(true)
-    }
+    private fun insert(person: PersonEntity) = viewModelScope.launch {
+        personRepository.insert(person)
 
-    fun cancel() {
-        _completeEvent.value = Event(true)
     }
 
 

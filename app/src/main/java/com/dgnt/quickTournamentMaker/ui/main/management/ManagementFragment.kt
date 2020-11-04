@@ -1,6 +1,7 @@
 package com.dgnt.quickTournamentMaker.ui.main.management
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,23 +38,30 @@ class ManagementFragment : Fragment() {
             return
         }
         val db = QTMDatabase.getInstance(context!!)
-        val personDAO = db.personDAO
-        val personRepository = PersonRepository(personDAO)
-        val groupDAO = db.groupDAO
-        val groupRepository = GroupRepository(groupDAO)
+        val personRepository = PersonRepository.getInstance(db.personDAO)
+        val groupRepository = GroupRepository.getInstance(db.groupDAO)
         val factory = ManagementViewModelFactory(personRepository, groupRepository)
         viewModel = ViewModelProvider(this, factory).get(ManagementViewModel::class.java)
         binding.vm = viewModel
         binding.lifecycleOwner = this
 
         viewModel.navigateToPersonDetails.observe(viewLifecycleOwner, Observer {
-            it.getContentIfNotHandled()?.let { v ->// Only proceed if the event has never been handled
-                //TODO
-                val editing = false
+            it.getContentIfNotHandled()?.let { triple ->// Only proceed if the event has never been handled
+                val person = triple.first
+                val groupName = triple.second
+                val editing = triple.third
 
-                PersonEditorDialogFragment.newInstance(editing, if (editing) getString(R.string.editing, v) else getString(R.string.adding)).show(activity?.supportFragmentManager!!, PersonEditorDialogFragment.TAG)
+                PersonEditorDialogFragment.newInstance(editing, if (editing) getString(R.string.editing, person.name) else getString(R.string.adding), person, groupName).show(activity?.supportFragmentManager!!, PersonEditorDialogFragment.TAG)
 
             }
+        })
+
+        displayPersonList()
+    }
+
+    private fun displayPersonList() {
+        viewModel.persons.observe(viewLifecycleOwner, Observer {
+            Log.i("DGNTTAG", it.toString())
         })
     }
 

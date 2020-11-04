@@ -1,6 +1,17 @@
 package com.dgnt.quickTournamentMaker.data.tournament
 
 class RoundRepository(private val dao: RoundDAO) {
+
+    companion object {
+        @Volatile private var instance: RoundRepository? = null
+
+        fun getInstance(dao: RoundDAO) =
+            instance ?: synchronized(this) {
+                instance ?: RoundRepository(dao).also { instance = it }
+            }
+    }
+
+
     fun getALL(epoch: Long) = dao.getAll(epoch)
     suspend fun insert(vararg entity: RoundEntity) = dao.insert(*entity)
     suspend fun insert(entities: List<RoundEntity>) = dao.insert(entities)

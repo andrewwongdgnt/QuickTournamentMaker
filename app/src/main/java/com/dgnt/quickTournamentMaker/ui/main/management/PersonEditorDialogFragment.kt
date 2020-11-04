@@ -3,6 +3,7 @@ package com.dgnt.quickTournamentMaker.ui.main.management
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import android.view.WindowManager
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
@@ -27,7 +28,7 @@ class PersonEditorDialogFragment : DialogFragment() {
         private const val KEY_PERSON = "KEY_PERSON"
         private const val KEY_GROUP_NAME = "KEY_GROUP_NAME"
 
-        fun newInstance(editing: Boolean, title: String, person: Person? = null, groupName: String? = null): PersonEditorDialogFragment {
+        fun newInstance(editing: Boolean, title: String, person: Person, groupName: String): PersonEditorDialogFragment {
             val args = Bundle()
             args.putBoolean(KEY_EDITING, editing)
             args.putString(KEY_TITLE, title)
@@ -50,10 +51,8 @@ class PersonEditorDialogFragment : DialogFragment() {
 
         binding = DataBindingUtil.inflate(activity?.layoutInflater!!, R.layout.person_editor_fragment, container, false)
         val db = QTMDatabase.getInstance(activity!!)
-        val personDAO = db.personDAO
-        val personRepository = PersonRepository(personDAO)
-        val groupDAO = db.groupDAO
-        val groupRepository = GroupRepository(groupDAO)
+        val personRepository = PersonRepository.getInstance(db.personDAO)
+        val groupRepository = GroupRepository.getInstance(db.groupDAO)
         val factory = PersonEditorViewModelFactory(personRepository, groupRepository)
         viewModel = ViewModelProvider(this, factory).get(PersonEditorViewModel::class.java)
         binding.vm = viewModel
@@ -61,28 +60,25 @@ class PersonEditorDialogFragment : DialogFragment() {
 
         viewModel.setData(arguments?.getParcelable(KEY_PERSON), arguments?.getString(KEY_GROUP_NAME))
 
-        viewModel.completeEvent.observe(this, Observer {
-            it.getContentIfNotHandled()?.let { _ ->// Only proceed if the event has never been handled
-                dismiss()
-            }
-        })
-
-        val editing = arguments?.getBoolean(KEY_EDITING) == true
-
         val builder = AlertDialog.Builder(activity)
-        builder.setTitle(arguments?.getString(KEY_TITLE))
-        builder.setView(binding.root)
-        builder.setPositiveButton(if (editing) R.string.edit else R.string.add) { _, _ -> viewModel.add() }
-        builder.setNegativeButton(android.R.string.cancel) { _, _ -> viewModel.cancel() }
-        if (arguments?.getBoolean(KEY_EDITING) != true)
-            builder.setNeutralButton(R.string.addAndContinue) { _, _ -> viewModel.addAndContinue() }
+        .setTitle(arguments?.getString(KEY_TITLE))
+        .setView(binding.root)
+        .setPositiveButton(if (arguments?.getBoolean(KEY_EDITING) == true) R.string.edit else R.string.add) { _, _ -> viewModel.add() }
+        .setNegativeButton(android.R.string.cancel,null)
+        if (arguments?.getBoolean(KEY_EDITING) != true) {
+            builder.setNeutralButton(R.string.addAndContinue, null)
+
+        }
         alertDialog = builder.create()
+        alertDialog.setOnShowListener { d ->
+            (d as AlertDialog).getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener { _ ->
+                viewModel.add()
+            }
+
+        }
         return alertDialog
     }
-
-
     override fun onStart() {
-
         super.onStart()
         dialog?.window?.setLayout(
             WindowManager.LayoutParams.MATCH_PARENT,
