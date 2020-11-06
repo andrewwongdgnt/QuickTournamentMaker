@@ -9,11 +9,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.data.QTMDatabase
 import com.dgnt.quickTournamentMaker.data.management.GroupRepository
 import com.dgnt.quickTournamentMaker.data.management.PersonRepository
 import com.dgnt.quickTournamentMaker.databinding.ManagementFragmentBinding
+import com.dgnt.quickTournamentMaker.model.management.Person
+import com.thoughtbot.expandablerecyclerview.ExpandableRecyclerViewAdapter
 
 class ManagementFragment : Fragment() {
     companion object {
@@ -30,6 +33,12 @@ class ManagementFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.management_fragment, container, false)
         return binding.root;
     }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+      //  (binding.personRv.adapter as ExpandableRecyclerViewAdapter<*, *>).onSaveInstanceState(outState)
+    }
+
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -56,14 +65,18 @@ class ManagementFragment : Fragment() {
             }
         })
 
-        displayPersonList()
-    }
-
-    private fun displayPersonList() {
+        binding.personRv.layoutManager = LinearLayoutManager(context)
         viewModel.persons.observe(viewLifecycleOwner, Observer {
-            Log.i("DGNTTAG", it.toString())
+            Log.d("DGNTTAG", "person: $it")
+            val groupMap = it.groupBy { it.groupName }.map { it.key to it.value.map { Person(it.name, it.note) } }.map { GroupExpandableGroup(it.first, it.second) }
+            binding.personRv.adapter = GroupExpandableRecyclerViewAdapter(groupMap)
+
+        })
+        viewModel.groups.observe(viewLifecycleOwner, Observer {
+            Log.d("DGNTTAG", "group: $it")
         })
     }
+
 
 
 }

@@ -16,19 +16,3 @@ class GroupExpandableRecyclerViewAdapter(groups: List<ExpandableGroup<*>>) : Exp
 
     override fun onBindGroupViewHolder(holder: GroupViewHolder, flatPosition: Int, group: ExpandableGroup<*>) = holder.bind(group)
 }
-
-
-/*
-class GenreAdapter(groups: List<ExpandableGroup<*>?>?) : ExpandableRecyclerViewAdapter<GroupViewHolder?, PersonViewHolder?>(groups) {
-    override fun onCreateGroupViewHolder(parent: ViewGroup, viewType: Int): GroupViewHolder? {
-        return null
-    }
-
-    override fun onCreateChildViewHolder(parent: ViewGroup, viewType: Int): PersonViewHolder? {
-        return null
-    }
-
-    override fun onBindChildViewHolder(holder: PersonViewHolder?, flatPosition: Int, group: ExpandableGroup<*>?, childIndex: Int) {}
-    override fun onBindGroupViewHolder(holder: GroupViewHolder?, flatPosition: Int, group: ExpandableGroup<*>?) {}
-}
- */
