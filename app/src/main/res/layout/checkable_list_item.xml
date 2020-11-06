@@ -2,26 +2,24 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
+            android:id="@+id/list_item_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-
             android:orientation="horizontal"
             android:paddingLeft="@dimen/list_item_horizontal_margin"
             android:paddingTop="@dimen/list_item_vertical_margin"
             android:paddingRight="@dimen/list_item_horizontal_margin"
             android:paddingBottom="@dimen/list_item_vertical_margin">
 
-        <ImageView
-                android:id="@+id/checked_iv"
-                android:layout_width="?android:attr/expandableListPreferredChildPaddingLeft"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_checked" />
 
-        <TextView
+
+        <CheckedTextView
                 android:id="@+id/checkable_list_item_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+                android:gravity="center"
                 android:text="textviewtextviewtextviewtextviewtextviewtextviewtextviewtextviewtextviewtextviewtextviewtextviewtextviewtextviewtextviewtextview"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
