@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -33,18 +34,13 @@ class ManagementFragment : Fragment() {
         return binding.root;
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-      //  (binding.personRv.adapter as ExpandableRecyclerViewAdapter<*, *>).onSaveInstanceState(outState)
-    }
-
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
         if (context == null) {
             return
         }
+
         val db = QTMDatabase.getInstance(context!!)
         val personRepository = PersonRepository.getInstance(db.personDAO)
         val groupRepository = GroupRepository.getInstance(db.groupDAO)
@@ -64,15 +60,12 @@ class ManagementFragment : Fragment() {
             }
         })
 
+
         binding.personRv.layoutManager = LinearLayoutManager(context)
         viewModel.persons.observe(viewLifecycleOwner, Observer {
             Log.d("DGNTTAG", "person: $it")
             val groupMap = it.groupBy { it.groupName }.map { it.key to it.value.map { Person(it.name, it.note) } }.map { GroupExpandableGroup(it.first, it.second) }
-            val adapter = GroupExpandableRecyclerViewAdapter(groupMap) //{ person: Person -> itemClicked(person) }
-            adapter.setChildClickListener { v, checked, group, childIndex ->
-
-                Log.d("DGNTTAG", "person: ")
-            }
+            val adapter = GroupExpandableRecyclerViewAdapter(activity as AppCompatActivity, groupMap) { person: Person -> itemClicked(person) }
             binding.personRv.adapter = adapter
 
 
