@@ -15,12 +15,14 @@
             android:paddingBottom="@dimen/list_item_vertical_margin"
             android:focusable="true">
 
-        <TextView
-                android:id="@+id/checkable_list_item_tv"
-                android:layout_width="wrap_content"
+        <CheckedTextView
+                android:id="@+id/checkable_list_item_ctv"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="Hello"
+                android:checkMark="?android:attr/listChoiceIndicatorMultiple"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
+
     </LinearLayout>
 
 </layout>

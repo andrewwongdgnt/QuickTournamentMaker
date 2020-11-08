@@ -29,7 +29,7 @@ import com.thoughtbot.expandablerecyclerview.viewholders.GroupViewHolder;
  * @author Christophe Beyls
  */
 public class MultiChoiceHelper {
-        
+
     /**
      * A handy ViewHolder base class which works with the MultiChoiceHelper
      * and reproduces the default behavior of a ListView.
