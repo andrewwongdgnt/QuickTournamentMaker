@@ -22,6 +22,12 @@
                 android:text="Hello"
                 android:checkMark="?android:attr/listChoiceIndicatorMultiple"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
+        <TextView
+                android:id="@+id/checkable_list_item_tv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Hello"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
     </LinearLayout>
 

@@ -3,6 +3,7 @@ package com.dgnt.quickTournamentMaker.ui.main.management
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Checkable
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
@@ -27,6 +28,7 @@ class ManagementFragment : Fragment() {
     private lateinit var actionModeCallback: ManagementFragmentActionModeCallBack
     private lateinit var binding: ManagementFragmentBinding
     private lateinit var viewModel: ManagementViewModel
+    private  var actionMode: ActionMode? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,11 +46,9 @@ class ManagementFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_editMode -> {
-                (activity as AppCompatActivity).startSupportActionMode(actionModeCallback)
+                actionMode = (activity as AppCompatActivity).startSupportActionMode(actionModeCallback)
             }
         }
-
-
         return super.onOptionsItemSelected(item)
     }
 
@@ -87,7 +87,7 @@ class ManagementFragment : Fragment() {
             Log.d("DGNTTAG", "person: $it")
 
             val groupExpandableGroupMap = it.groupBy { it.groupName }.map { it.key to it.value.map { Person(it.name, it.note) } }.map { GroupExpandableGroup(it.first, it.second) }
-            val adapter = GroupExpandableRecyclerViewAdapter(actionModeCallback, selectedPersons, groupExpandableGroupMap) { person: Person -> itemClicked(person) }
+            val adapter = GroupExpandableRecyclerViewAdapter(actionModeCallback, selectedPersons, groupExpandableGroupMap) { checkable: Checkable, person: Person -> itemClicked(checkable, person) }
             binding.personRv.adapter = adapter
 
 
@@ -97,18 +97,30 @@ class ManagementFragment : Fragment() {
         })
     }
 
-    private fun itemClicked(person: Person) {
-        Log.d("DGNTTAG", "person: $person")
+    private fun itemClicked(checkable: Checkable, person: Person) {
+
+        if (actionModeCallback.multiSelect) {
+            val isChecked = !checkable.isChecked
+            if (isChecked)
+                selectedPersons.add(person.name)
+            else
+                selectedPersons.remove(person.name)
+            checkable.isChecked = isChecked
+            actionMode?.title=selectedPersons.size.toString()
+        } else
+
+            Log.d("DGNTTAG", "person: $person")
     }
 
 
 }
 
-class ManagementFragmentActionModeCallBack(private val binding: ManagementFragmentBinding, private val selectedPersons:MutableSet<String>) : ActionMode.Callback {
+class ManagementFragmentActionModeCallBack(private val binding: ManagementFragmentBinding, private val selectedPersons: MutableSet<String>) : ActionMode.Callback {
     var multiSelect = false
 
     override fun onCreateActionMode(actionMode: ActionMode, Menu: Menu): Boolean {
         multiSelect = true
+        actionMode.title=selectedPersons.size.toString()
         binding.personRv.adapter?.notifyDataSetChanged()
         return true;
     }
