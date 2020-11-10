@@ -102,7 +102,7 @@ class ManagementFragment : Fragment() {
             val adapter = GroupExpandableRecyclerViewAdapter(actionModeCallback, selectedPersons, (groupExpandableGroupMap + extraGroupExpandableGroupMap).sorted()) { checkable: Checkable, person: Person -> personClicked(checkable, person) }
             binding.personRv.adapter = adapter
 
-            add_fab.isEnabled = true
+            add_fab.visibility = View.VISIBLE
         })
 
     }
@@ -121,6 +121,11 @@ class ManagementFragment : Fragment() {
             else
                 selectedPersons.remove(person.name)
             checkable.isChecked = isChecked
+
+            val menu = actionMode?.menu
+            menu?.findItem(R.id.action_delete)?.isVisible = selectedPersons.size > 0
+            menu?.findItem(R.id.action_move)?.isVisible = selectedPersons.size > 0
+
             actionMode?.title = selectedPersons.size.toString()
         } else
             viewModel.editPerson(person, personToGroupNameMap[person.name] ?: "")
@@ -134,8 +139,11 @@ class ManagementFragmentActionModeCallBack(private val binding: ManagementFragme
 
     override fun onCreateActionMode(actionMode: ActionMode, menu: Menu): Boolean {
         multiSelect = true
+        binding.addFab.visibility = View.INVISIBLE
         actionMode.title = selectedPersons.size.toString()
         actionMode.menuInflater.inflate(R.menu.actions_management_contextual, menu)
+        menu.findItem(R.id.action_delete)?.isVisible = selectedPersons.size > 0
+        menu.findItem(R.id.action_move)?.isVisible = selectedPersons.size > 0
         binding.personRv.adapter?.notifyDataSetChanged()
         return true;
     }
@@ -146,6 +154,7 @@ class ManagementFragmentActionModeCallBack(private val binding: ManagementFragme
 
     override fun onActionItemClicked(actionMode: ActionMode, menuItem: MenuItem): Boolean {
         reset()
+        actionMode.finish()
         return true
     }
 
@@ -155,6 +164,7 @@ class ManagementFragmentActionModeCallBack(private val binding: ManagementFragme
 
     private fun reset() {
         multiSelect = false
+        binding.addFab.visibility = View.VISIBLE
         selectedPersons.clear()
         binding.personRv.adapter?.notifyDataSetChanged()
     }
