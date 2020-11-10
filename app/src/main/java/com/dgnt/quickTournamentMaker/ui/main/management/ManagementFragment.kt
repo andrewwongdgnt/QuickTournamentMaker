@@ -30,10 +30,8 @@ class ManagementFragment : Fragment() {
     private lateinit var binding: ManagementFragmentBinding
     private lateinit var viewModel: ManagementViewModel
     private lateinit var personToGroupNameMap: Map<String, String>
-    private lateinit var groupNames:List<String>;
+    private lateinit var groupNames: List<String>;
     private var actionMode: ActionMode? = null
-    private var personsObserved = false
-    private var groupsObserved = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -88,26 +86,25 @@ class ManagementFragment : Fragment() {
             }
         })
 
-
         binding.personRv.layoutManager = LinearLayoutManager(context)
-        viewModel.persons.observe(viewLifecycleOwner, Observer {
-            Log.d("DGNTTAG", "person: $it")
-            personToGroupNameMap = it.map { it.name to it.groupName }.toMap()
-            val groupExpandableGroupMap = it.groupBy { it.groupName }.map { it.key to it.value.map { Person.fromEntity(it) } }.map { GroupExpandableGroup(it.first, it.second) }
-            val adapter = GroupExpandableRecyclerViewAdapter(actionModeCallback, selectedPersons, groupExpandableGroupMap) { checkable: Checkable, person: Person -> personClicked(checkable, person) }
+
+        viewModel.personAndGroupLiveData.observe(viewLifecycleOwner, Observer { (persons, groups) ->
+
+            Log.d("DGNTTAG", "person: $persons")
+            Log.d("DGNTTAG", "group: $groups")
+
+            groupNames = groups.map { it.name }
+
+            personToGroupNameMap = persons.map { it.name to it.groupName }.toMap()
+            val extraGroupExpandableGroupMap = groupNames.subtract(persons.map { it.groupName }.toSet()).map { GroupExpandableGroup(it, listOf()) }
+            val groupExpandableGroupMap = persons.groupBy { it.groupName }.map { it.key to it.value.map { Person.fromEntity(it) } }.map { GroupExpandableGroup(it.first, it.second.sorted()) }
+
+            val adapter = GroupExpandableRecyclerViewAdapter(actionModeCallback, selectedPersons, (groupExpandableGroupMap + extraGroupExpandableGroupMap).sorted()) { checkable: Checkable, person: Person -> personClicked(checkable, person) }
             binding.personRv.adapter = adapter
 
-            personsObserved = true
-            add_fab.isEnabled = personsObserved && groupsObserved
+            add_fab.isEnabled = true
         })
-        viewModel.groups.observe(viewLifecycleOwner, Observer {
-            Log.d("DGNTTAG", "group: $it")
-            groupNames = it.map{it.name}
 
-            groupsObserved = true
-            add_fab.isEnabled = personsObserved && groupsObserved
-
-        })
     }
 
     private fun add() {

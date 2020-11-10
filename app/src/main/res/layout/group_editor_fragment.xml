@@ -6,7 +6,7 @@
 
         <variable
                 name="vm"
-                type="com.dgnt.quickTournamentMaker.ui.main.management.PersonEditorViewModel" />
+                type="com.dgnt.quickTournamentMaker.ui.main.management.GroupEditorViewModel" />
 
     </data>
 
@@ -24,14 +24,14 @@
                 android:paddingBottom="@dimen/layout_vertical_margin">
 
             <TextView
-                    android:id="@+id/personName_tv"
+                    android:id="@+id/groupName_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/name"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText
-                    android:id="@+id/personName_et"
+                    android:id="@+id/groupName_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionDone"
@@ -39,7 +39,7 @@
                     android:text="@={vm.name}" />
 
             <TextView
-                    android:id="@+id/personNote_tv"
+                    android:id="@+id/groupNote_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/standard_gap"
@@ -47,7 +47,7 @@
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText
-                    android:id="@+id/personNote_et"
+                    android:id="@+id/groupNote_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -55,22 +55,6 @@
                     android:inputType="textMultiLine"
                     android:minLines="3"
                     android:text="@={vm.note}" />
-
-            <TextView
-                    android:id="@+id/group_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/standard_gap"
-                    android:text="@string/group"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <Spinner
-                    android:id="@+id/group_spinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:entries="@{vm.groupNames}"
-                    app:selectedValue="@{vm.groupName}"
-                    app:onItemSelected="@{(selectedValue) -> vm.setNewGroupName(selectedValue)}" />
 
         </LinearLayout>
     </ScrollView>

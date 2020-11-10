@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.RadioButton
 import androidx.fragment.app.DialogFragment
 import com.dgnt.quickTournamentMaker.R
+import com.dgnt.quickTournamentMaker.model.management.Group
 import com.dgnt.quickTournamentMaker.model.management.Person
 import kotlinx.android.synthetic.main.main_activity.*
 
@@ -39,11 +40,10 @@ class AddChoiceDialogFragment : DialogFragment() {
             .setView(activity?.layoutInflater?.inflate(R.layout.add_choice_fragment, container, false))
             .setPositiveButton(R.string.continue_) { v, _ ->
                 if ((v as AlertDialog).findViewById<RadioButton>(R.id.person_rb).isChecked)
-                    PersonEditorDialogFragment.newInstance(false, getString(R.string.adding), Person("", "", ""), "", arguments?.getStringArrayList(KEY_GROUP_NAMES) ?: listOf()).show(activity?.supportFragmentManager!!, PersonEditorDialogFragment.TAG)
+                    PersonEditorDialogFragment.newInstance(false, getString(R.string.addingPerson), Person("", "", ""), "", arguments?.getStringArrayList(KEY_GROUP_NAMES) ?: listOf()).show(activity?.supportFragmentManager!!, PersonEditorDialogFragment.TAG)
                 else
-                {
+                    GroupEditorDialogFragment.newInstance(false, getString(R.string.addingGroup), Group("", "", "",false)).show(activity?.supportFragmentManager!!, GroupEditorDialogFragment.TAG)
 
-                }
 
             }
             .setNegativeButton(android.R.string.cancel, null)

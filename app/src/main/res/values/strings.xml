@@ -253,4 +253,6 @@
     <string name="addWhich">Add which?</string>
     <string name="person">Person</string>
     <string name="continue_">Continue</string> <!--continue is a keyword taken already -->
+    <string name="addingPerson">Adding Person</string>
+    <string name="addingGroup">Adding Group</string>
 </resources>
