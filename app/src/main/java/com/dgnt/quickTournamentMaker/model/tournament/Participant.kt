@@ -19,10 +19,10 @@ data class Participant(var person: Person, val participantType: ParticipantType 
     Parcelable {
     companion object {
         val NULL_PARTICIPANT =
-            Participant(Person("", ""), ParticipantType.NULL)
+            Participant(Person("","", ""), ParticipantType.NULL)
 
         val BYE_PARTICIPANT =
-            Participant(Person("", ""), ParticipantType.BYE)
+            Participant(Person("","", ""), ParticipantType.BYE)
     }
 
     var record: Record = Record()

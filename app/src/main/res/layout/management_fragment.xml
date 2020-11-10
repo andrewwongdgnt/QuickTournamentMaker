@@ -32,14 +32,14 @@
                     android:layout_height="wrap_content" />
         </LinearLayout>
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/add_person_fab"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom|end"
-                        android:layout_margin="@dimen/fab_margin"
-                        android:onClick="@{()->vm.addPerson()}"
-                        android:src="@drawable/ic_add_person" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/add_fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="@dimen/fab_margin"
+                android:enabled="false"
+                android:src="@drawable/ic_add_person" />
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

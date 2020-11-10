@@ -249,4 +249,8 @@
 
     <string name="swissTournamentNewRoundBlockedMsg" translatable="false">No new rounds can be created based the initial seeding and how the tournament progressed.
         We will add a new feature to allow changing certain match ups manually when this happens but for now, try rebuilding the tournament with new seeding. (Long click to remove this)</string>
+
+    <string name="addWhich">Add which?</string>
+    <string name="person">Person</string>
+    <string name="continue_">Continue</string> <!--continue is a keyword taken already -->
 </resources>

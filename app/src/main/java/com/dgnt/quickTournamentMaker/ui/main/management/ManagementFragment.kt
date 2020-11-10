@@ -18,6 +18,7 @@ import com.dgnt.quickTournamentMaker.data.management.GroupRepository
 import com.dgnt.quickTournamentMaker.data.management.PersonRepository
 import com.dgnt.quickTournamentMaker.databinding.ManagementFragmentBinding
 import com.dgnt.quickTournamentMaker.model.management.Person
+import kotlinx.android.synthetic.main.management_fragment.*
 
 class ManagementFragment : Fragment() {
     companion object {
@@ -28,7 +29,11 @@ class ManagementFragment : Fragment() {
     private lateinit var actionModeCallback: ManagementFragmentActionModeCallBack
     private lateinit var binding: ManagementFragmentBinding
     private lateinit var viewModel: ManagementViewModel
-    private  var actionMode: ActionMode? = null
+    private lateinit var personToGroupNameMap: Map<String, String>
+    private lateinit var groupNames:List<String>;
+    private var actionMode: ActionMode? = null
+    private var personsObserved = false
+    private var groupsObserved = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,6 +64,8 @@ class ManagementFragment : Fragment() {
             return
         }
 
+        add_fab.setOnClickListener { add() }
+
         actionModeCallback = ManagementFragmentActionModeCallBack(binding, selectedPersons)
 
         setHasOptionsMenu(true)
@@ -76,7 +83,7 @@ class ManagementFragment : Fragment() {
                 val groupName = triple.second
                 val editing = triple.third
 
-                PersonEditorDialogFragment.newInstance(editing, if (editing) getString(R.string.editing, person.name) else getString(R.string.adding), person, groupName).show(activity?.supportFragmentManager!!, PersonEditorDialogFragment.TAG)
+                PersonEditorDialogFragment.newInstance(editing, if (editing) getString(R.string.editing, person.name) else getString(R.string.adding), person, groupName, groupNames).show(activity?.supportFragmentManager!!, PersonEditorDialogFragment.TAG)
 
             }
         })
@@ -85,19 +92,30 @@ class ManagementFragment : Fragment() {
         binding.personRv.layoutManager = LinearLayoutManager(context)
         viewModel.persons.observe(viewLifecycleOwner, Observer {
             Log.d("DGNTTAG", "person: $it")
-
-            val groupExpandableGroupMap = it.groupBy { it.groupName }.map { it.key to it.value.map { Person(it.name, it.note) } }.map { GroupExpandableGroup(it.first, it.second) }
-            val adapter = GroupExpandableRecyclerViewAdapter(actionModeCallback, selectedPersons, groupExpandableGroupMap) { checkable: Checkable, person: Person -> itemClicked(checkable, person) }
+            personToGroupNameMap = it.map { it.name to it.groupName }.toMap()
+            val groupExpandableGroupMap = it.groupBy { it.groupName }.map { it.key to it.value.map { Person.fromEntity(it) } }.map { GroupExpandableGroup(it.first, it.second) }
+            val adapter = GroupExpandableRecyclerViewAdapter(actionModeCallback, selectedPersons, groupExpandableGroupMap) { checkable: Checkable, person: Person -> personClicked(checkable, person) }
             binding.personRv.adapter = adapter
 
-
+            personsObserved = true
+            add_fab.isEnabled = personsObserved && groupsObserved
         })
         viewModel.groups.observe(viewLifecycleOwner, Observer {
             Log.d("DGNTTAG", "group: $it")
+            groupNames = it.map{it.name}
+
+            groupsObserved = true
+            add_fab.isEnabled = personsObserved && groupsObserved
+
         })
     }
 
-    private fun itemClicked(checkable: Checkable, person: Person) {
+    private fun add() {
+        AddChoiceDialogFragment.newInstance(groupNames).show(activity?.supportFragmentManager!!, AddChoiceDialogFragment.TAG)
+
+    }
+
+    private fun personClicked(checkable: Checkable, person: Person) {
 
         if (actionModeCallback.multiSelect) {
             val isChecked = !checkable.isChecked
@@ -106,10 +124,9 @@ class ManagementFragment : Fragment() {
             else
                 selectedPersons.remove(person.name)
             checkable.isChecked = isChecked
-            actionMode?.title=selectedPersons.size.toString()
+            actionMode?.title = selectedPersons.size.toString()
         } else
-
-            Log.d("DGNTTAG", "person: $person")
+            viewModel.editPerson(person, personToGroupNameMap[person.name] ?: "")
     }
 
 
@@ -118,30 +135,31 @@ class ManagementFragment : Fragment() {
 class ManagementFragmentActionModeCallBack(private val binding: ManagementFragmentBinding, private val selectedPersons: MutableSet<String>) : ActionMode.Callback {
     var multiSelect = false
 
-    override fun onCreateActionMode(actionMode: ActionMode, Menu: Menu): Boolean {
+    override fun onCreateActionMode(actionMode: ActionMode, menu: Menu): Boolean {
         multiSelect = true
-        actionMode.title=selectedPersons.size.toString()
+        actionMode.title = selectedPersons.size.toString()
+        actionMode.menuInflater.inflate(R.menu.actions_management_contextual, menu)
         binding.personRv.adapter?.notifyDataSetChanged()
         return true;
     }
 
-    override fun onPrepareActionMode(actionMode: ActionMode, Menu: Menu): Boolean {
+    override fun onPrepareActionMode(actionMode: ActionMode, menu: Menu): Boolean {
         return false
     }
 
-    override fun onActionItemClicked(actionMode: ActionMode, MenuItem: MenuItem): Boolean {
+    override fun onActionItemClicked(actionMode: ActionMode, menuItem: MenuItem): Boolean {
         reset()
         return true
     }
 
     override fun onDestroyActionMode(actionMode: ActionMode) {
         reset()
-        binding.personRv.adapter?.notifyDataSetChanged()
     }
 
-    private fun reset(){
+    private fun reset() {
         multiSelect = false
         selectedPersons.clear()
+        binding.personRv.adapter?.notifyDataSetChanged()
     }
 
 }
