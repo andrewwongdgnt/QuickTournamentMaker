@@ -14,6 +14,17 @@ data class Group(var id: String, var name: String, var note: String, var favouri
         return name.compareTo(other.name)
     }
 
+    override fun equals(other: Any?): Boolean {
+        if (other is Group) {
+            val otherGroup = other as Group
+            return otherGroup.id == id
+        }
+        return super.equals(other)
+    }
+
+    override fun hashCode(): Int = id.hashCode()
+    fun toEntity(): GroupEntity = GroupEntity(id, name, note, favourite)
+
     companion object {
         fun fromEntity(groupEntity: GroupEntity): Group = Group(groupEntity.id, groupEntity.name, groupEntity.note, groupEntity.favourite)
     }

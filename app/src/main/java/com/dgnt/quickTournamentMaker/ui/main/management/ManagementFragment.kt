@@ -1,5 +1,6 @@
 package com.dgnt.quickTournamentMaker.ui.main.management
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -31,13 +32,13 @@ class ManagementFragment : Fragment() {
         EDIT, CHECK
     }
 
-    private val selectedPersons = mutableSetOf<String>()
-    private val selectedGroups = mutableSetOf<String>()
+    private val selectedPersons = mutableSetOf<Person>()
+    private val selectedGroups = mutableSetOf<Group>()
     private lateinit var actionModeCallback: ManagementFragmentActionModeCallBack
     private lateinit var binding: ManagementFragmentBinding
     private lateinit var viewModel: ManagementViewModel
-    private lateinit var personToGroupNameMap: Map<String, String>
-    private lateinit var groupNames: List<String>;
+    private lateinit var personToGroupNameMap: Map<Person, Group>
+    private lateinit var groups: List<Group>
     private var actionMode: ActionMode? = null
 
     override fun onCreateView(
@@ -76,7 +77,7 @@ class ManagementFragment : Fragment() {
 
         add_fab.setOnClickListener { add() }
 
-        actionModeCallback = ManagementFragmentActionModeCallBack(binding,  selectedPersons, selectedGroups)
+        actionModeCallback = ManagementFragmentActionModeCallBack(binding, selectedPersons, selectedGroups) { menuId: Int, persons:Set<Person>, groups:Set<Group> -> menuResolver(menuId,persons,groups) }
 
         setHasOptionsMenu(true)
         val db = QTMDatabase.getInstance(context!!)
@@ -104,18 +105,16 @@ class ManagementFragment : Fragment() {
 
         }
 
-
-
         viewModel.personAndGroupLiveData.observe(viewLifecycleOwner, Observer { (persons, groups) ->
 
             Log.d("DGNTTAG", "person: $persons")
             Log.d("DGNTTAG", "group: $groups")
 
-            groupNames = groups.map { it.name }
+            this.groups = groups.map { Group.fromEntity(it) }.sorted()
             val groupMap = groups.map { it.name to Group.fromEntity(it) }.toMap()
 
-            personToGroupNameMap = persons.map { it.name to it.groupName }.toMap()
-            val extraGroupExpandableGroupMap = groupNames.subtract(persons.map { it.groupName }.toSet()).map { GroupExpandableGroup(it, listOf()) }
+            personToGroupNameMap = persons.map { Person.fromEntity(it) to groupMap.getValue(it.groupName) }.toMap()
+            val extraGroupExpandableGroupMap = this.groups.map { it.name }.subtract(persons.map { it.groupName }.toSet()).map { GroupExpandableGroup(it, listOf()) }
             val groupExpandableGroupMap = persons.groupBy { it.groupName }.map { it.key to it.value.map { Person.fromEntity(it) } }.map { GroupExpandableGroup(it.first, it.second.sorted()) }
 
             val adapter = GroupExpandableRecyclerViewAdapter(setDrawable, actionModeCallback, selectedPersons, selectedGroups, groupMap, (groupExpandableGroupMap + extraGroupExpandableGroupMap).sorted(), { checkable: Checkable, person: Person -> personClicked(checkable, person) }, { checkable: Checkable, group: Group, editType: GroupEditType -> groupClicked(checkable, group, editType) })
@@ -125,16 +124,16 @@ class ManagementFragment : Fragment() {
         })
     }
 
-    private fun add() = AddChoiceDialogFragment.newInstance(groupNames).show(activity?.supportFragmentManager!!, AddChoiceDialogFragment.TAG)
+    private fun add() = AddChoiceDialogFragment.newInstance(groups).show(activity?.supportFragmentManager!!, AddChoiceDialogFragment.TAG)
 
     private fun personClicked(checkable: Checkable, person: Person) {
 
         if (actionModeCallback.multiSelect == ManagementFragmentActionModeCallBack.SelectType.PERSON) {
             val isChecked = !checkable.isChecked
             if (isChecked)
-                selectedPersons.add(person.name)
+                selectedPersons.add(person)
             else
-                selectedPersons.remove(person.name)
+                selectedPersons.remove(person)
             checkable.isChecked = isChecked
 
             val menu = actionMode?.menu
@@ -143,10 +142,32 @@ class ManagementFragment : Fragment() {
 
             actionMode?.title = selectedPersons.size.toString()
         } else if (actionModeCallback.multiSelect == ManagementFragmentActionModeCallBack.SelectType.NONE)
-            PersonEditorDialogFragment.newInstance(true, getString(R.string.editing, person.name), person, personToGroupNameMap[person.name] ?: "", groupNames).show(activity?.supportFragmentManager!!, PersonEditorDialogFragment.TAG)
+            PersonEditorDialogFragment.newInstance(true, getString(R.string.editing, person.name), person, personToGroupNameMap[person]?.name ?: "", groups).show(activity?.supportFragmentManager!!, PersonEditorDialogFragment.TAG)
 
     }
 
+    private fun menuResolver(menuId: Int,persons:Set<Person>,groups:Set<Group>) {
+        when (menuId) {
+            R.id.action_delete -> {
+                if (actionModeCallback.multiSelect == ManagementFragmentActionModeCallBack.SelectType.PERSON) {
+                    deletePersons(persons)
+                } else {
+
+                }
+            }
+            R.id.action_move -> {
+                //only for group
+            }
+        }
+    }
+
+    private fun deletePersons(selectedPersons: Set<Person>) {
+        AlertDialog.Builder(activity)
+            .setTitle(getString(R.string.deletingPlayers, selectedPersons.size))
+            .setMessage(getString(R.string.deletePlayerMsg, selectedPersons.size))
+            .setPositiveButton(android.R.string.ok) { _, _ -> viewModel.delete(selectedPersons.map { it.toEntity(personToGroupNameMap[it]?.name ?: "") }) }
+            .setNegativeButton(android.R.string.cancel, null).create().show()
+    }
 
     private fun groupClicked(checkable: Checkable, group: Group, editType: GroupEditType) {
 
@@ -155,9 +176,9 @@ class ManagementFragment : Fragment() {
 
                 val isChecked = !checkable.isChecked
                 if (isChecked)
-                    selectedGroups.add(group.name)
+                    selectedGroups.add(group)
                 else
-                    selectedGroups.remove(group.name)
+                    selectedGroups.remove(group)
                 checkable.isChecked = isChecked
 
                 val menu = actionMode?.menu
@@ -165,7 +186,7 @@ class ManagementFragment : Fragment() {
                 menu?.findItem(R.id.action_move)?.isVisible = false
 
                 actionMode?.title = selectedGroups.size.toString()
-            } else if (editType == GroupEditType.EDIT){
+            } else if (editType == GroupEditType.EDIT) {
                 GroupEditorDialogFragment.newInstance(true, getString(R.string.editing, group.name), group).show(activity?.supportFragmentManager!!, GroupEditorDialogFragment.TAG)
                 actionMode?.finish()
             }
@@ -176,7 +197,7 @@ class ManagementFragment : Fragment() {
 
 }
 
-class ManagementFragmentActionModeCallBack(private val binding: ManagementFragmentBinding, private val selectedPersons: MutableSet<String>, private val selectedGroups: MutableSet<String>) : ActionMode.Callback {
+class ManagementFragmentActionModeCallBack(private val binding: ManagementFragmentBinding, private val selectedPersons: MutableSet<Person>, private val selectedGroups: MutableSet<Group>, private val menuResolver: (Int, Set<Person>,Set<Group>) -> Unit) : ActionMode.Callback {
 
 
     enum class SelectType {
@@ -190,10 +211,10 @@ class ManagementFragmentActionModeCallBack(private val binding: ManagementFragme
         multiSelect = multiSelectRequest
         multiSelectRequest = SelectType.NONE
         binding.addFab.visibility = View.INVISIBLE
-        actionMode.title = if (multiSelect==SelectType.PERSON) selectedPersons.size.toString() else selectedGroups.size.toString()
+        actionMode.title = if (multiSelect == SelectType.PERSON) selectedPersons.size.toString() else selectedGroups.size.toString()
         actionMode.menuInflater.inflate(R.menu.actions_management_contextual, menu)
-        menu.findItem(R.id.action_delete)?.isVisible = if (multiSelect==SelectType.PERSON)selectedPersons.isNotEmpty() else selectedGroups.isNotEmpty()
-        menu.findItem(R.id.action_move)?.isVisible = if (multiSelect==SelectType.PERSON)selectedPersons.isNotEmpty()else selectedGroups.isNotEmpty()
+        menu.findItem(R.id.action_delete)?.isVisible = if (multiSelect == SelectType.PERSON) selectedPersons.isNotEmpty() else selectedGroups.isNotEmpty()
+        menu.findItem(R.id.action_move)?.isVisible = if (multiSelect == SelectType.PERSON) selectedPersons.isNotEmpty() else selectedGroups.isNotEmpty()
         binding.personRv.adapter?.notifyDataSetChanged()
         return true;
     }
@@ -203,6 +224,7 @@ class ManagementFragmentActionModeCallBack(private val binding: ManagementFragme
     }
 
     override fun onActionItemClicked(actionMode: ActionMode, menuItem: MenuItem): Boolean {
+        menuResolver(menuItem.itemId, selectedPersons.toSet(), selectedGroups.toSet())
         reset()
         actionMode.finish()
         return true

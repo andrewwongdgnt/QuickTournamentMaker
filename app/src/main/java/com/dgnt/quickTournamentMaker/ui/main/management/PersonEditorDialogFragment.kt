@@ -8,13 +8,13 @@ import android.text.TextWatcher
 import android.view.WindowManager
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.data.QTMDatabase
 import com.dgnt.quickTournamentMaker.data.management.GroupRepository
 import com.dgnt.quickTournamentMaker.data.management.PersonRepository
 import com.dgnt.quickTournamentMaker.databinding.PersonEditorFragmentBinding
+import com.dgnt.quickTournamentMaker.model.management.Group
 import com.dgnt.quickTournamentMaker.model.management.Person
 import kotlinx.android.synthetic.main.main_activity.*
 
@@ -29,15 +29,15 @@ class PersonEditorDialogFragment : DialogFragment() {
         private const val KEY_TITLE = "KEY_TITLE"
         private const val KEY_PERSON = "KEY_PERSON"
         private const val KEY_GROUP_NAME = "KEY_GROUP_NAME"
-        private const val KEY_GROUP_NAMES = "KEY_GROUP_NAMES"
+        private const val KEY_GROUPS = "KEY_GROUPS"
 
-        fun newInstance(editing: Boolean, title: String, person: Person, groupName: String, groupNames:List<String>): PersonEditorDialogFragment {
+        fun newInstance(editing: Boolean, title: String, person: Person, groupName: String, groups:List<Group>): PersonEditorDialogFragment {
             val args = Bundle()
             args.putBoolean(KEY_EDITING, editing)
             args.putString(KEY_TITLE, title)
             args.putParcelable(KEY_PERSON, person)
             args.putString(KEY_GROUP_NAME, groupName)
-            args.putStringArrayList(KEY_GROUP_NAMES, ArrayList<String>(groupNames))
+            args.putParcelableArrayList(KEY_GROUPS, ArrayList<Group>(groups))
             val fragment = PersonEditorDialogFragment()
             fragment.arguments = args
             return fragment
@@ -76,7 +76,7 @@ class PersonEditorDialogFragment : DialogFragment() {
         })
 
 
-        viewModel.setData(arguments?.getParcelable(KEY_PERSON), arguments?.getString(KEY_GROUP_NAME), arguments?.getStringArrayList(KEY_GROUP_NAMES),getString(R.string.defaultGroupName))
+        viewModel.setData(arguments?.getParcelable(KEY_PERSON), arguments?.getString(KEY_GROUP_NAME), arguments?.getParcelableArrayList<Group>(KEY_GROUPS),getString(R.string.defaultGroupName))
         val editing = arguments?.getBoolean(KEY_EDITING) == true
         val builder = AlertDialog.Builder(activity)
             .setTitle(arguments?.getString(KEY_TITLE))

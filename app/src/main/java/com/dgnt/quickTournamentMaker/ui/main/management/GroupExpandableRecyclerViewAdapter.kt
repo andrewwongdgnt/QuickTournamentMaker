@@ -12,7 +12,7 @@ import com.thoughtbot.expandablerecyclerview.ExpandableRecyclerViewAdapter
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup
 
 
-class GroupExpandableRecyclerViewAdapter(private val setDrawable: (CheckedTextView, Boolean) -> Unit, private val actionModeCallback: ManagementFragmentActionModeCallBack, private val selectedPersons: Set<String>, private val selectedGroups: Set<String>, private val groupMap: Map<String, Group>, personGroups: List<ExpandableGroup<*>>, private val personClickListener: (Checkable, Person) -> Unit, private val groupClickListener: (Checkable, Group, ManagementFragment.GroupEditType) -> Unit) : ExpandableRecyclerViewAdapter<GroupViewHolder, PersonViewHolder>(personGroups) {
+class GroupExpandableRecyclerViewAdapter(private val setDrawable: (CheckedTextView, Boolean) -> Unit, private val actionModeCallback: ManagementFragmentActionModeCallBack, private val selectedPersons: Set<Person>, private val selectedGroups: Set<Group>, private val groupMap: Map<String, Group>, personGroups: List<ExpandableGroup<*>>, private val personClickListener: (Checkable, Person) -> Unit, private val groupClickListener: (Checkable, Group, ManagementFragment.GroupEditType) -> Unit) : ExpandableRecyclerViewAdapter<GroupViewHolder, PersonViewHolder>(personGroups) {
 
     override fun onCreateGroupViewHolder(parent: ViewGroup, viewType: Int): GroupViewHolder = GroupViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.section_header_item, parent, false), selectedGroups, setDrawable, groupClickListener)
 

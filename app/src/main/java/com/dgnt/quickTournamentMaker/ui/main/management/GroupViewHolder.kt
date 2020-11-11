@@ -11,7 +11,7 @@ import com.thoughtbot.expandablerecyclerview.viewholders.GroupViewHolder
 import kotlinx.android.synthetic.main.section_header_item.view.*
 
 
-class GroupViewHolder(private val binding: SectionHeaderItemBinding, private val selectedGroups: Set<String>, private val setDrawable: (CheckedTextView, Boolean) -> Unit, private val clickListener: (Checkable, Group, ManagementFragment.GroupEditType) -> Unit) : GroupViewHolder(binding.root) {
+class GroupViewHolder(private val binding: SectionHeaderItemBinding, private val selectedGroups: Set<Group>, private val setDrawable: (CheckedTextView, Boolean) -> Unit, private val clickListener: (Checkable, Group, ManagementFragment.GroupEditType) -> Unit) : GroupViewHolder(binding.root) {
 
     fun bind(group: Group, selectable: Boolean) {
 
@@ -20,7 +20,7 @@ class GroupViewHolder(private val binding: SectionHeaderItemBinding, private val
         if (!selectable)
             binding.sectionHeaderCtv.isChecked = false
         else
-            binding.sectionHeaderCtv.isChecked = selectedGroups.contains(group.name)
+            binding.sectionHeaderCtv.isChecked = selectedGroups.contains(group)
 
         binding.sectionHeaderIv.visibility = if (selectable) View.VISIBLE else View.GONE
 

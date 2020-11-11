@@ -9,6 +9,7 @@ import com.dgnt.quickTournamentMaker.data.management.GroupEntity
 import com.dgnt.quickTournamentMaker.data.management.GroupRepository
 import com.dgnt.quickTournamentMaker.data.management.PersonEntity
 import com.dgnt.quickTournamentMaker.data.management.PersonRepository
+import com.dgnt.quickTournamentMaker.model.management.Group
 import com.dgnt.quickTournamentMaker.model.management.Person
 import kotlinx.coroutines.launch
 import java.util.*
@@ -31,7 +32,7 @@ class PersonEditorViewModel(private val personRepository: PersonRepository, priv
     val groupNames = MutableLiveData<List<String>>()
 
     private lateinit var id: String
-    private lateinit var defaultGroupName:String
+    private lateinit var defaultGroupName: String
 
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
     }
@@ -40,13 +41,14 @@ class PersonEditorViewModel(private val personRepository: PersonRepository, priv
     }
 
 
-    fun setData(person: Person?, groupName: String?, groupNames: List<String>?, defaultGroupName: String) {
+    fun setData(person: Person?, groupName: String?, groups: List<Group>?, defaultGroupName: String) {
         name.value = person?.name ?: ""
         note.value = person?.note ?: ""
         id = (person?.id ?: "").ifBlank { UUID.randomUUID().toString() }
         this.defaultGroupName = defaultGroupName
-        this.groupNames.value = (groupNames ?: listOf()).ifEmpty { listOf(defaultGroupName) }
+        this.groupNames.value = (groups?.map { it.name } ?: listOf()).ifEmpty { listOf(defaultGroupName) }
         this.groupName.value = (groupName ?: "")
+        this.newGroupName.value = this.groupName.value
     }
 
     fun add() {
@@ -58,7 +60,7 @@ class PersonEditorViewModel(private val personRepository: PersonRepository, priv
     private fun insert(person: PersonEntity) = viewModelScope.launch {
         personRepository.insert(person)
         if (newGroupName.value == defaultGroupName)
-            groupRepository.insert(GroupEntity(name=defaultGroupName,note="",favourite = false ))
+            groupRepository.insert(GroupEntity(name = defaultGroupName, note = "", favourite = false))
     }
 
     fun edit() {

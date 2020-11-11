@@ -29,9 +29,9 @@ class MainActivity : AppCompatActivity() {
         navView.setOnNavigationItemSelectedListener { item ->
             replace(
                 when (item.itemId) {
-                    R.id.navigation_management -> ManagementFragment()
-                    R.id.navigation_loadTournament -> LoadTournamentFragment()
-                    else -> HomeFragment()//R.id.navigation_home
+                    R.id.navigation_management -> ManagementFragment.newInstance()
+                    R.id.navigation_loadTournament -> LoadTournamentFragment.newInstance()
+                    else -> HomeFragment.newInstance()//R.id.navigation_home
                 }
             )
             true

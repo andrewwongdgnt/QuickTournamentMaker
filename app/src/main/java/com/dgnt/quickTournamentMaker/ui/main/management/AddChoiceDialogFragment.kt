@@ -19,11 +19,11 @@ class AddChoiceDialogFragment : DialogFragment() {
 
         const val TAG = "AddChoiceDialogFragment"
 
-        private const val KEY_GROUP_NAMES = "KEY_GROUP_NAMES"
+        private const val KEY_GROUPS = "KEY_GROUPS"
 
-        fun newInstance(groupNames:List<String>): AddChoiceDialogFragment{
+        fun newInstance(group:List<Group>): AddChoiceDialogFragment{
             val args = Bundle()
-            args.putStringArrayList(KEY_GROUP_NAMES, ArrayList<String>(groupNames))
+            args.putParcelableArrayList(KEY_GROUPS, ArrayList<Group>(group))
             val fragment = AddChoiceDialogFragment()
             fragment.arguments = args
             return fragment
@@ -40,7 +40,7 @@ class AddChoiceDialogFragment : DialogFragment() {
             .setView(activity?.layoutInflater?.inflate(R.layout.add_choice_fragment, container, false))
             .setPositiveButton(R.string.continue_) { v, _ ->
                 if ((v as AlertDialog).findViewById<RadioButton>(R.id.person_rb).isChecked)
-                    PersonEditorDialogFragment.newInstance(false, getString(R.string.addingPerson), Person("", "", ""), "", arguments?.getStringArrayList(KEY_GROUP_NAMES) ?: listOf()).show(activity?.supportFragmentManager!!, PersonEditorDialogFragment.TAG)
+                    PersonEditorDialogFragment.newInstance(false, getString(R.string.addingPerson), Person("", "", ""), "", arguments?.getParcelableArrayList<Group>(KEY_GROUPS) ?: listOf()).show(activity?.supportFragmentManager!!, PersonEditorDialogFragment.TAG)
                 else
                     GroupEditorDialogFragment.newInstance(false, getString(R.string.addingGroup), Group("", "", "",false)).show(activity?.supportFragmentManager!!, GroupEditorDialogFragment.TAG)
 

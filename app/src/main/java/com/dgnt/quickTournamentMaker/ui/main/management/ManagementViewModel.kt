@@ -3,14 +3,13 @@ package com.dgnt.quickTournamentMaker.ui.main.management
 import androidx.databinding.Observable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.dgnt.quickTournamentMaker.data.management.GroupEntity
 import com.dgnt.quickTournamentMaker.data.management.GroupRepository
 import com.dgnt.quickTournamentMaker.data.management.PersonEntity
 import com.dgnt.quickTournamentMaker.data.management.PersonRepository
-import com.dgnt.quickTournamentMaker.model.management.Person
-import com.dgnt.quickTournamentMaker.util.Event
+import kotlinx.coroutines.launch
 
 class ManagementViewModel(private val personRepository: PersonRepository, private val groupRepository: GroupRepository) : ViewModel(), Observable {
 
@@ -33,6 +32,11 @@ class ManagementViewModel(private val personRepository: PersonRepository, privat
                 }
             }
         }
+
+
+    fun delete(persons: List<PersonEntity>) = viewModelScope.launch {
+         personRepository.delete(persons)
+    }
 
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
     }
