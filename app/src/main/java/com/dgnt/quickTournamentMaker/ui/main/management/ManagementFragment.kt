@@ -13,7 +13,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.data.QTMDatabase
 import com.dgnt.quickTournamentMaker.data.management.GroupRepository
@@ -78,7 +77,7 @@ class ManagementFragment : Fragment() {
 
         add_fab.setOnClickListener { add() }
 
-        actionModeCallback = ManagementFragmentActionModeCallBack(binding, selectedPersons, selectedGroups) { menuId: Int, persons:Set<Person>, groups:Set<Group> -> menuResolver(menuId,persons,groups) }
+        actionModeCallback = ManagementFragmentActionModeCallBack(binding, selectedPersons, selectedGroups) { menuId: Int, persons: Set<Person>, groups: Set<Group> -> menuResolver(menuId, persons, groups) }
 
         setHasOptionsMenu(true)
         val db = QTMDatabase.getInstance(context!!)
@@ -149,7 +148,7 @@ class ManagementFragment : Fragment() {
 
     }
 
-    private fun menuResolver(menuId: Int, selectedPersons:Set<Person>, selectedGroups:Set<Group>) {
+    private fun menuResolver(menuId: Int, selectedPersons: Set<Person>, selectedGroups: Set<Group>) {
         when (menuId) {
             R.id.action_delete -> {
                 if (actionModeCallback.multiSelect == ManagementFragmentActionModeCallBack.SelectType.PERSON) {
@@ -168,7 +167,7 @@ class ManagementFragment : Fragment() {
         AlertDialog.Builder(activity)
             .setTitle(getString(R.string.deletingPlayers, selectedPersons.size))
             .setMessage(getString(R.string.deletePlayerMsg, selectedPersons.size))
-            .setPositiveButton(android.R.string.ok) { _, _ -> viewModel.delete(selectedPersons.map { it.toEntity(personToGroupNameMap[it]?.name ?: "") },getString(R.string.deletePlayerSuccessfulMsg, selectedPersons.size)) }
+            .setPositiveButton(android.R.string.ok) { _, _ -> viewModel.delete(selectedPersons.map { it.toEntity(personToGroupNameMap[it]?.name ?: "") }, getString(R.string.deletePlayerSuccessfulMsg, selectedPersons.size)) }
             .setNegativeButton(android.R.string.cancel, null).create().show()
     }
 
@@ -197,52 +196,5 @@ class ManagementFragment : Fragment() {
 
     }
 
-
-}
-
-class ManagementFragmentActionModeCallBack(private val binding: ManagementFragmentBinding, private val selectedPersons: MutableSet<Person>, private val selectedGroups: MutableSet<Group>, private val menuResolver: (Int, Set<Person>,Set<Group>) -> Unit) : ActionMode.Callback {
-
-
-    enum class SelectType {
-        NONE, PERSON, GROUP
-    }
-
-    var multiSelectRequest = SelectType.NONE
-    var multiSelect = SelectType.NONE
-
-    override fun onCreateActionMode(actionMode: ActionMode, menu: Menu): Boolean {
-        multiSelect = multiSelectRequest
-        multiSelectRequest = SelectType.NONE
-        binding.addFab.visibility = View.INVISIBLE
-        actionMode.title = if (multiSelect == SelectType.PERSON) selectedPersons.size.toString() else selectedGroups.size.toString()
-        actionMode.menuInflater.inflate(R.menu.actions_management_contextual, menu)
-        menu.findItem(R.id.action_delete)?.isVisible = if (multiSelect == SelectType.PERSON) selectedPersons.isNotEmpty() else selectedGroups.isNotEmpty()
-        menu.findItem(R.id.action_move)?.isVisible = if (multiSelect == SelectType.PERSON) selectedPersons.isNotEmpty() else selectedGroups.isNotEmpty()
-        binding.personRv.adapter?.notifyDataSetChanged()
-        return true;
-    }
-
-    override fun onPrepareActionMode(actionMode: ActionMode, menu: Menu): Boolean {
-        return false
-    }
-
-    override fun onActionItemClicked(actionMode: ActionMode, menuItem: MenuItem): Boolean {
-        menuResolver(menuItem.itemId, selectedPersons.toSet(), selectedGroups.toSet())
-        reset()
-        actionMode.finish()
-        return true
-    }
-
-    override fun onDestroyActionMode(actionMode: ActionMode) {
-        reset()
-    }
-
-    private fun reset() {
-        multiSelect = SelectType.NONE
-        binding.addFab.visibility = View.VISIBLE
-        selectedPersons.clear()
-        selectedGroups.clear()
-        binding.personRv.adapter?.notifyDataSetChanged()
-    }
 
 }
