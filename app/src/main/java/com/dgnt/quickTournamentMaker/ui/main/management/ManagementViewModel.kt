@@ -1,17 +1,19 @@
 package com.dgnt.quickTournamentMaker.ui.main.management
 
 import androidx.databinding.Observable
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.dgnt.quickTournamentMaker.data.management.GroupEntity
 import com.dgnt.quickTournamentMaker.data.management.GroupRepository
 import com.dgnt.quickTournamentMaker.data.management.PersonEntity
 import com.dgnt.quickTournamentMaker.data.management.PersonRepository
+import com.dgnt.quickTournamentMaker.util.Event
 import kotlinx.coroutines.launch
 
 class ManagementViewModel(private val personRepository: PersonRepository, private val groupRepository: GroupRepository) : ViewModel(), Observable {
+
+    private val _messageEvent = MutableLiveData<Event<String>>()
+    val messageEvent: LiveData<Event<String>>
+        get() = _messageEvent
 
     private val persons = personRepository.getAll()
     private val groups = groupRepository.getAll()
@@ -34,8 +36,9 @@ class ManagementViewModel(private val personRepository: PersonRepository, privat
         }
 
 
-    fun delete(persons: List<PersonEntity>) = viewModelScope.launch {
-         personRepository.delete(persons)
+    fun delete(persons: List<PersonEntity>, successMsg: String) = viewModelScope.launch {
+        personRepository.delete(persons)
+        _messageEvent.value = Event(successMsg)
     }
 
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {

@@ -3,8 +3,10 @@ package com.dgnt.quickTournamentMaker.ui.main.management
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.data.QTMDatabase
@@ -52,6 +54,12 @@ class MovePersonsDialogFragment : DialogFragment() {
         binding.vm = viewModel
         binding.lifecycleOwner = this
 
+        viewModel.messageEvent.observe(activity!!, Observer {
+            it.getContentIfNotHandled()?.let { message ->
+                Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+            }
+        })
+
         selectedPersons = arguments?.getParcelableArrayList<Person>(KEY_PERSONS)!!
         val groups = arguments?.getParcelableArrayList<Group>(KEY_GROUPS)!!
 
@@ -67,7 +75,7 @@ class MovePersonsDialogFragment : DialogFragment() {
     }
 
     private fun handle(group: Group) {
-        viewModel.move(selectedPersons.map{it.toEntity(group.name)})
+        viewModel.move(selectedPersons.map { it.toEntity(group.name) }, getString(R.string.movePlayerSuccessfulMsg, selectedPersons.size), getString(R.string.movePlayerFailedMsg))
         dismiss()
     }
 }

@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.*
 import android.widget.Checkable
 import android.widget.CheckedTextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.databinding.DataBindingUtil
@@ -88,6 +89,12 @@ class ManagementFragment : Fragment() {
         binding.vm = viewModel
         binding.lifecycleOwner = this
 
+        viewModel.messageEvent.observe(viewLifecycleOwner, Observer {
+            it.getContentIfNotHandled()?.let { message ->
+                Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+            }
+        })
+
         val setDrawable = { checkedTextView: CheckedTextView, selectable: Boolean ->
             if (selectable) {
                 val attrs = intArrayOf(android.R.attr.listChoiceIndicatorMultiple)
@@ -161,7 +168,7 @@ class ManagementFragment : Fragment() {
         AlertDialog.Builder(activity)
             .setTitle(getString(R.string.deletingPlayers, selectedPersons.size))
             .setMessage(getString(R.string.deletePlayerMsg, selectedPersons.size))
-            .setPositiveButton(android.R.string.ok) { _, _ -> viewModel.delete(selectedPersons.map { it.toEntity(personToGroupNameMap[it]?.name ?: "") }) }
+            .setPositiveButton(android.R.string.ok) { _, _ -> viewModel.delete(selectedPersons.map { it.toEntity(personToGroupNameMap[it]?.name ?: "") },getString(R.string.deletePlayerSuccessfulMsg, selectedPersons.size)) }
             .setNegativeButton(android.R.string.cancel, null).create().show()
     }
 

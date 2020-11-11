@@ -255,4 +255,5 @@
     <string name="continue_">Continue</string> <!--continue is a keyword taken already -->
     <string name="addingPerson">Adding Person</string>
     <string name="addingGroup">Adding Group</string>
+    <string name="movePlayerFailedMsg">Did not successfully move all players</string>
 </resources>

@@ -6,8 +6,10 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.data.QTMDatabase
@@ -56,6 +58,13 @@ class GroupEditorDialogFragment : DialogFragment() {
         viewModel = ViewModelProvider(this, factory).get(GroupEditorViewModel::class.java)
         binding.vm = viewModel
         binding.lifecycleOwner = this
+
+        viewModel.messageEvent.observe(activity!!, Observer {
+            it.getContentIfNotHandled()?.let { message ->
+                Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+            }
+        })
+
         binding.groupNameEt.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
             }
@@ -75,7 +84,7 @@ class GroupEditorDialogFragment : DialogFragment() {
         val builder = AlertDialog.Builder(activity)
             .setTitle(arguments?.getString(KEY_TITLE))
             .setView(binding.root)
-            .setPositiveButton(if (editing) R.string.edit else R.string.add) { _, _ -> if (editing) viewModel.edit() else viewModel.add() }
+            .setPositiveButton(if (editing) R.string.edit else R.string.add) { _, _ -> if (editing) viewModel.edit(getString(R.string.editSuccessfulMsg, viewModel.name), getString(R.string.duplicateMsg, viewModel.name.value)) else viewModel.add(getString(R.string.addSuccessfulMsg, viewModel.name.value), getString(R.string.duplicateMsg, viewModel.name.value)) }
             .setNegativeButton(android.R.string.cancel, null)
         if (arguments?.getBoolean(KEY_EDITING) != true) {
             builder.setNeutralButton(R.string.addAndContinue, null)
@@ -84,7 +93,7 @@ class GroupEditorDialogFragment : DialogFragment() {
         alertDialog = builder.create()
         alertDialog.setOnShowListener { _ ->
             alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener { _ ->
-                viewModel.add()
+                viewModel.add(getString(R.string.addSuccessfulMsg, viewModel.name.value), getString(R.string.duplicateMsg, viewModel.name.value))
             }
 
             val enabled = !arguments?.getParcelable<Group>(KEY_GROUP)?.name.isNullOrBlank()

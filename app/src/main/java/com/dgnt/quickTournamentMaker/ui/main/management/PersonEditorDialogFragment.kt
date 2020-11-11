@@ -6,8 +6,10 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.data.QTMDatabase
@@ -31,7 +33,7 @@ class PersonEditorDialogFragment : DialogFragment() {
         private const val KEY_GROUP_NAME = "KEY_GROUP_NAME"
         private const val KEY_GROUPS = "KEY_GROUPS"
 
-        fun newInstance(editing: Boolean, title: String, person: Person, groupName: String, groups:List<Group>): PersonEditorDialogFragment {
+        fun newInstance(editing: Boolean, title: String, person: Person, groupName: String, groups: List<Group>): PersonEditorDialogFragment {
             val args = Bundle()
             args.putBoolean(KEY_EDITING, editing)
             args.putString(KEY_TITLE, title)
@@ -75,22 +77,41 @@ class PersonEditorDialogFragment : DialogFragment() {
             }
         })
 
+        viewModel.messageEvent.observe(activity!!, Observer {
+            it.getContentIfNotHandled()?.let { triple ->
+                Toast.makeText(context, triple.second, Toast.LENGTH_LONG).show()
+                if (triple.first) {
+                    dismiss()
+                }
+                if (triple.third) {
+                    viewModel.name.value = ""
+                    viewModel.note.value = ""
+                }
+            }
+        })
 
-        viewModel.setData(arguments?.getParcelable(KEY_PERSON), arguments?.getString(KEY_GROUP_NAME), arguments?.getParcelableArrayList<Group>(KEY_GROUPS),getString(R.string.defaultGroupName))
+
+        viewModel.setData(arguments?.getParcelable(KEY_PERSON), arguments?.getString(KEY_GROUP_NAME), arguments?.getParcelableArrayList<Group>(KEY_GROUPS), getString(R.string.defaultGroupName))
         val editing = arguments?.getBoolean(KEY_EDITING) == true
         val builder = AlertDialog.Builder(activity)
             .setTitle(arguments?.getString(KEY_TITLE))
             .setView(binding.root)
-            .setPositiveButton(if (editing) R.string.edit else R.string.add) { _, _ -> if (editing) viewModel.edit() else viewModel.add() }
+            .setPositiveButton(if (editing) R.string.edit else R.string.add, null)
             .setNegativeButton(android.R.string.cancel, null)
         if (arguments?.getBoolean(KEY_EDITING) != true) {
             builder.setNeutralButton(R.string.addAndContinue, null)
-
         }
         alertDialog = builder.create()
         alertDialog.setOnShowListener { _ ->
             alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener { _ ->
-                viewModel.add()
+                viewModel.add(getString(R.string.addSuccessfulMsg, viewModel.name.value), getString(R.string.duplicateMsg, viewModel.name.value), forceOpen = true, forceErase = true)
+            }
+            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener { _ ->
+                if (editing){
+                    viewModel.edit(getString(R.string.editSuccessfulMsg, viewModel.name.value), getString(R.string.duplicateMsg, viewModel.name.value))
+                } else {
+                    viewModel.add(getString(R.string.addSuccessfulMsg, viewModel.name.value), getString(R.string.duplicateMsg, viewModel.name.value), forceOpen = false, forceErase = false)
+                }
             }
 
             val enabled = !arguments?.getParcelable<Person>(KEY_PERSON)?.name.isNullOrBlank()

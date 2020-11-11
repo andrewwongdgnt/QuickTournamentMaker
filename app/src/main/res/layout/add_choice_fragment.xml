@@ -15,21 +15,23 @@
                 android:paddingRight="@dimen/layout_horizontal_margin"
                 android:paddingBottom="@dimen/layout_vertical_margin">
 
-            <RadioGroup
+            <Button
+                    android:id="@+id/person_btn"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                <RadioButton
-                        android:id="@+id/person_rb"
-                        android:checked="true"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="@string/person"/>
-                <RadioButton
-                        android:id="@+id/group_rb"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="@string/group"/>
-            </RadioGroup>
+                    android:layout_height="wrap_content"
+                    android:text="@string/person"
+                    android:textAllCaps="false"
+                    android:gravity="left|center_vertical"
+                    android:background="@android:color/transparent"/>
+            <Button
+                    android:id="@+id/group_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/group"
+                    android:textAllCaps="false"
+                    android:gravity="left|center_vertical"
+                    android:background="@android:color/transparent"/>
+
 
 
         </LinearLayout>
