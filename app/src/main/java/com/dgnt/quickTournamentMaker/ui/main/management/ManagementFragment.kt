@@ -27,6 +27,10 @@ class ManagementFragment : Fragment() {
         fun newInstance() = ManagementFragment()
     }
 
+    enum class GroupEditType {
+        EDIT, CHECK
+    }
+
     private val selectedPersons = mutableSetOf<String>()
     private val selectedGroups = mutableSetOf<String>()
     private lateinit var actionModeCallback: ManagementFragmentActionModeCallBack
@@ -51,7 +55,12 @@ class ManagementFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_editPersonMode,R.id.action_editGroupMode -> {
+            R.id.action_editPersonMode -> {
+                actionModeCallback.multiSelectRequest = ManagementFragmentActionModeCallBack.SelectType.PERSON
+                actionMode = (activity as AppCompatActivity).startSupportActionMode(actionModeCallback)
+            }
+            R.id.action_editGroupMode -> {
+                actionModeCallback.multiSelectRequest = ManagementFragmentActionModeCallBack.SelectType.GROUP
                 actionMode = (activity as AppCompatActivity).startSupportActionMode(actionModeCallback)
             }
         }
@@ -67,7 +76,7 @@ class ManagementFragment : Fragment() {
 
         add_fab.setOnClickListener { add() }
 
-        actionModeCallback = ManagementFragmentActionModeCallBack(binding, selectedPersons)
+        actionModeCallback = ManagementFragmentActionModeCallBack(binding,  selectedPersons, selectedGroups)
 
         setHasOptionsMenu(true)
         val db = QTMDatabase.getInstance(context!!)
@@ -82,7 +91,7 @@ class ManagementFragment : Fragment() {
         binding.personRv.layoutManager = LinearLayoutManager(context)
 
 
-        val setDrawable = {checkedTextView: CheckedTextView, selectable:Boolean ->
+        val setDrawable = { checkedTextView: CheckedTextView, selectable: Boolean ->
             if (selectable) {
                 val attrs = intArrayOf(android.R.attr.listChoiceIndicatorMultiple)
                 val ta = context!!.theme.obtainStyledAttributes(attrs)
@@ -109,18 +118,18 @@ class ManagementFragment : Fragment() {
             val extraGroupExpandableGroupMap = groupNames.subtract(persons.map { it.groupName }.toSet()).map { GroupExpandableGroup(it, listOf()) }
             val groupExpandableGroupMap = persons.groupBy { it.groupName }.map { it.key to it.value.map { Person.fromEntity(it) } }.map { GroupExpandableGroup(it.first, it.second.sorted()) }
 
-            val adapter = GroupExpandableRecyclerViewAdapter(setDrawable, actionModeCallback, selectedPersons, selectedGroups, groupMap, (groupExpandableGroupMap + extraGroupExpandableGroupMap).sorted(), { checkable: Checkable, person: Person -> personClicked(checkable, person) }, { checkable: Checkable, group: Group -> groupClicked(checkable, group) })
+            val adapter = GroupExpandableRecyclerViewAdapter(setDrawable, actionModeCallback, selectedPersons, selectedGroups, groupMap, (groupExpandableGroupMap + extraGroupExpandableGroupMap).sorted(), { checkable: Checkable, person: Person -> personClicked(checkable, person) }, { checkable: Checkable, group: Group, editType: GroupEditType -> groupClicked(checkable, group, editType) })
             binding.personRv.adapter = adapter
 
             add_fab.visibility = View.VISIBLE
         })
     }
-private fun something():Int = 5
+
     private fun add() = AddChoiceDialogFragment.newInstance(groupNames).show(activity?.supportFragmentManager!!, AddChoiceDialogFragment.TAG)
 
     private fun personClicked(checkable: Checkable, person: Person) {
 
-        if (actionModeCallback.multiSelect) {
+        if (actionModeCallback.multiSelect == ManagementFragmentActionModeCallBack.SelectType.PERSON) {
             val isChecked = !checkable.isChecked
             if (isChecked)
                 selectedPersons.add(person.name)
@@ -133,44 +142,58 @@ private fun something():Int = 5
             menu?.findItem(R.id.action_move)?.isVisible = selectedPersons.size > 0
 
             actionMode?.title = selectedPersons.size.toString()
-        } else
+        } else if (actionModeCallback.multiSelect == ManagementFragmentActionModeCallBack.SelectType.NONE)
             PersonEditorDialogFragment.newInstance(true, getString(R.string.editing, person.name), person, personToGroupNameMap[person.name] ?: "", groupNames).show(activity?.supportFragmentManager!!, PersonEditorDialogFragment.TAG)
 
     }
 
 
-    private fun groupClicked(checkable: Checkable, group: Group) {
+    private fun groupClicked(checkable: Checkable, group: Group, editType: GroupEditType) {
 
-        if (actionModeCallback.multiSelect) {
-            val isChecked = !checkable.isChecked
-            if (isChecked)
-                selectedGroups.add(group.name)
-            else
-                selectedGroups.remove(group.name)
-            checkable.isChecked = isChecked
+        if (actionModeCallback.multiSelect == ManagementFragmentActionModeCallBack.SelectType.GROUP) {
+            if (editType == GroupEditType.CHECK) {
 
-            val menu = actionMode?.menu
-            menu?.findItem(R.id.action_delete)?.isVisible = selectedGroups.size > 0
-            menu?.findItem(R.id.action_move)?.isVisible = selectedGroups.size > 0
+                val isChecked = !checkable.isChecked
+                if (isChecked)
+                    selectedGroups.add(group.name)
+                else
+                    selectedGroups.remove(group.name)
+                checkable.isChecked = isChecked
 
-            actionMode?.title = selectedGroups.size.toString()
-        } else
-            GroupEditorDialogFragment.newInstance(true, getString(R.string.editing, group.name), group).show(activity?.supportFragmentManager!!, GroupEditorDialogFragment.TAG)
+                val menu = actionMode?.menu
+                menu?.findItem(R.id.action_delete)?.isVisible = selectedGroups.size > 0
+                menu?.findItem(R.id.action_move)?.isVisible = false
+
+                actionMode?.title = selectedGroups.size.toString()
+            } else if (editType == GroupEditType.EDIT){
+                GroupEditorDialogFragment.newInstance(true, getString(R.string.editing, group.name), group).show(activity?.supportFragmentManager!!, GroupEditorDialogFragment.TAG)
+                actionMode?.finish()
+            }
+        }
+
     }
 
 
 }
 
-class ManagementFragmentActionModeCallBack(private val binding: ManagementFragmentBinding, private val selectedPersons: MutableSet<String>) : ActionMode.Callback {
-    var multiSelect = false
+class ManagementFragmentActionModeCallBack(private val binding: ManagementFragmentBinding, private val selectedPersons: MutableSet<String>, private val selectedGroups: MutableSet<String>) : ActionMode.Callback {
+
+
+    enum class SelectType {
+        NONE, PERSON, GROUP
+    }
+
+    var multiSelectRequest = SelectType.NONE
+    var multiSelect = SelectType.NONE
 
     override fun onCreateActionMode(actionMode: ActionMode, menu: Menu): Boolean {
-        multiSelect = true
+        multiSelect = multiSelectRequest
+        multiSelectRequest = SelectType.NONE
         binding.addFab.visibility = View.INVISIBLE
-        actionMode.title = selectedPersons.size.toString()
+        actionMode.title = if (multiSelect==SelectType.PERSON) selectedPersons.size.toString() else selectedGroups.size.toString()
         actionMode.menuInflater.inflate(R.menu.actions_management_contextual, menu)
-        menu.findItem(R.id.action_delete)?.isVisible = selectedPersons.size > 0
-        menu.findItem(R.id.action_move)?.isVisible = selectedPersons.size > 0
+        menu.findItem(R.id.action_delete)?.isVisible = if (multiSelect==SelectType.PERSON)selectedPersons.isNotEmpty() else selectedGroups.isNotEmpty()
+        menu.findItem(R.id.action_move)?.isVisible = if (multiSelect==SelectType.PERSON)selectedPersons.isNotEmpty()else selectedGroups.isNotEmpty()
         binding.personRv.adapter?.notifyDataSetChanged()
         return true;
     }
@@ -190,9 +213,10 @@ class ManagementFragmentActionModeCallBack(private val binding: ManagementFragme
     }
 
     private fun reset() {
-        multiSelect = false
+        multiSelect = SelectType.NONE
         binding.addFab.visibility = View.VISIBLE
         selectedPersons.clear()
+        selectedGroups.clear()
         binding.personRv.adapter?.notifyDataSetChanged()
     }
 
