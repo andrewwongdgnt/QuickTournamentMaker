@@ -88,10 +88,6 @@ class ManagementFragment : Fragment() {
         binding.vm = viewModel
         binding.lifecycleOwner = this
 
-
-        binding.personRv.layoutManager = LinearLayoutManager(context)
-
-
         val setDrawable = { checkedTextView: CheckedTextView, selectable: Boolean ->
             if (selectable) {
                 val attrs = intArrayOf(android.R.attr.listChoiceIndicatorMultiple)
@@ -146,17 +142,17 @@ class ManagementFragment : Fragment() {
 
     }
 
-    private fun menuResolver(menuId: Int,persons:Set<Person>,groups:Set<Group>) {
+    private fun menuResolver(menuId: Int, selectedPersons:Set<Person>, selectedGroups:Set<Group>) {
         when (menuId) {
             R.id.action_delete -> {
                 if (actionModeCallback.multiSelect == ManagementFragmentActionModeCallBack.SelectType.PERSON) {
-                    deletePersons(persons)
+                    deletePersons(selectedPersons)
                 } else {
 
                 }
             }
             R.id.action_move -> {
-                //only for group
+                MovePersonsDialogFragment.newInstance(selectedPersons.toList(), this.groups).show(activity?.supportFragmentManager!!, MovePersonsDialogFragment.TAG)
             }
         }
     }
