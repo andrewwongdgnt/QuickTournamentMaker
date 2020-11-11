@@ -18,4 +18,5 @@ class PersonRepository(private val dao: PersonDAO) {
     suspend fun update(entities: List<PersonEntity>) = dao.update(entities)
     suspend fun delete(vararg entity: PersonEntity) = dao.delete(*entity)
     suspend fun delete(entities: List<PersonEntity>) = dao.delete(entities)
+    suspend fun updateGroup(groupId: String, groupName: String) =dao.updateGroup(groupId,groupName)
 }

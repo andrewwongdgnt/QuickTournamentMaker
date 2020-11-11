@@ -26,7 +26,7 @@ class LoadTournamentFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(LoadTournamentViewModel::class.java)
-        // TODO: Use the ViewModel
+
     }
 
 }

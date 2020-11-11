@@ -26,4 +26,7 @@ interface PersonDAO {
 
     @Delete
     suspend fun delete(entities:List<PersonEntity>)
+
+    @Query("UPDATE $PERSON_TABLE SET groupName = :groupName WHERE groupName = (SELECT name FROM $GROUP_TABLE WHERE id = :groupId)")
+    suspend fun updateGroup(groupId: String, groupName: String):Int
 }

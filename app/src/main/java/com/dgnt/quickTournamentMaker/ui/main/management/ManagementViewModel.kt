@@ -34,18 +34,6 @@ class ManagementViewModel(private val personRepository: PersonRepository, privat
             }
         }
 
-    private val _navigateToPersonDetails = MutableLiveData<Event<Triple<Person, String, Boolean>>>()
-    val navigateToPersonDetails: LiveData<Event<Triple<Person, String, Boolean>>>
-        get() = _navigateToPersonDetails
-
-    fun addPerson() {
-        _navigateToPersonDetails.value = Event(Triple(Person("", "", ""), "", false))
-    }
-
-    fun editPerson(person: Person, groupName: String) {
-        _navigateToPersonDetails.value = Event(Triple(person, groupName, true))
-    }
-
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
     }
 

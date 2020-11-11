@@ -7,12 +7,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dgnt.quickTournamentMaker.data.management.GroupEntity
 import com.dgnt.quickTournamentMaker.data.management.GroupRepository
-import com.dgnt.quickTournamentMaker.data.management.PersonEntity
+import com.dgnt.quickTournamentMaker.data.management.PersonRepository
 import com.dgnt.quickTournamentMaker.model.management.Group
 import kotlinx.coroutines.launch
 import java.util.*
 
-class GroupEditorViewModel(private val groupRepository: GroupRepository) : ViewModel(), Observable {
+class GroupEditorViewModel(private val personRepository: PersonRepository, private val groupRepository: GroupRepository) : ViewModel(), Observable {
+
+
 
     @Bindable
     val name = MutableLiveData<String>()
@@ -50,6 +52,7 @@ class GroupEditorViewModel(private val groupRepository: GroupRepository) : ViewM
     }
 
     private fun edit(group: GroupEntity) = viewModelScope.launch {
+        personRepository.updateGroup(id,group.name)
         groupRepository.update(group)
     }
 

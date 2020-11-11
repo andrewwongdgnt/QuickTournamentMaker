@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.data.QTMDatabase
 import com.dgnt.quickTournamentMaker.data.management.GroupRepository
+import com.dgnt.quickTournamentMaker.data.management.PersonRepository
 import com.dgnt.quickTournamentMaker.databinding.GroupEditorFragmentBinding
 import com.dgnt.quickTournamentMaker.model.management.Group
 import kotlinx.android.synthetic.main.main_activity.*
@@ -49,8 +50,9 @@ class GroupEditorDialogFragment : DialogFragment() {
 
         binding = DataBindingUtil.inflate(activity?.layoutInflater!!, R.layout.group_editor_fragment, container, false)
         val db = QTMDatabase.getInstance(activity!!)
+        val personRepository = PersonRepository.getInstance(db.personDAO)
         val groupRepository = GroupRepository.getInstance(db.groupDAO)
-        val factory = GroupEditorViewModelFactory(groupRepository)
+        val factory = GroupEditorViewModelFactory(personRepository,groupRepository)
         viewModel = ViewModelProvider(this, factory).get(GroupEditorViewModel::class.java)
         binding.vm = viewModel
         binding.lifecycleOwner = this

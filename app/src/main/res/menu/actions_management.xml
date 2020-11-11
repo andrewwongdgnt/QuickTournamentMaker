@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:compat="http://schemas.android.com/apk/res-auto">
+        xmlns:compat="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_editMode"
-        android:title="@string/edit"
-        android:icon="@drawable/ic_save"
-        compat:showAsAction="ifRoom" />
+            android:id="@+id/action_editGroupMode"
+            android:icon="@drawable/ic_save"
+            android:title="@string/edit"
+            compat:showAsAction="ifRoom" />
+    <item
+            android:id="@+id/action_editPersonMode"
+            android:icon="@drawable/ic_save_warning"
+            android:title="@string/edit"
+            compat:showAsAction="ifRoom" />
 
 </menu>
