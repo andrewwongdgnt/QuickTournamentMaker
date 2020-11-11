@@ -18,9 +18,12 @@ import java.util.*
 
 class PersonEditorViewModel(private val personRepository: PersonRepository, private val groupRepository: GroupRepository) : ViewModel(), Observable {
 
-    private val _messageEvent = MutableLiveData<Event<Triple<Boolean, String, Boolean>>>()
-    val messageEvent: LiveData<Event<Triple<Boolean, String, Boolean>>>
-        get() = _messageEvent
+    //First = dismiss or not the dialog
+    //Second = resulting message
+    //Third = reset fields or not
+    private val _resultEvent = MutableLiveData<Event<Triple<Boolean, String, Boolean>>>()
+    val resultEvent: LiveData<Event<Triple<Boolean, String, Boolean>>>
+        get() = _resultEvent
 
 
     @Bindable
@@ -64,16 +67,16 @@ class PersonEditorViewModel(private val personRepository: PersonRepository, priv
     private fun insert(person: PersonEntity, successMsg: String, failMsg: String, forceOpen: Boolean, forceErase: Boolean) = viewModelScope.launch {
         val personResult = personRepository.insert(person)
         when {
-            personResult.isEmpty() || personResult[0] == -1L -> _messageEvent.value = Event(Triple(false, failMsg, false))
+            personResult.isEmpty() || personResult[0] == -1L -> _resultEvent.value = Event(Triple(false, failMsg, false))
             newGroupName.value == defaultGroupName -> {
                 val groupResult = groupRepository.insert(GroupEntity(name = defaultGroupName, note = "", favourite = false))
                 when {
-                    groupResult.isEmpty() || groupResult[0] == -1L -> _messageEvent.value = Event(Triple(false, failMsg, false))
-                    else -> _messageEvent.value = Event(Triple(!forceOpen, successMsg, forceErase))
+                    groupResult.isEmpty() || groupResult[0] == -1L -> _resultEvent.value = Event(Triple(false, failMsg, false))
+                    else -> _resultEvent.value = Event(Triple(!forceOpen, successMsg, forceErase))
                 }
 
             }
-            else -> _messageEvent.value = Event(Triple(!forceOpen, successMsg, forceErase))
+            else -> _resultEvent.value = Event(Triple(!forceOpen, successMsg, forceErase))
 
         }
 
@@ -85,8 +88,8 @@ class PersonEditorViewModel(private val personRepository: PersonRepository, priv
 
     private fun edit(person: PersonEntity, successMsg: String, failMsg: String) = viewModelScope.launch {
         when (personRepository.update(person)) {
-            0 -> _messageEvent.value = Event(Triple(false, failMsg, false))
-            else -> _messageEvent.value = Event(Triple(true, successMsg, true))
+            0 -> _resultEvent.value = Event(Triple(false, failMsg, false))
+            else -> _resultEvent.value = Event(Triple(true, successMsg, true))
         }
     }
 

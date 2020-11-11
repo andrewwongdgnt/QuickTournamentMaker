@@ -54,14 +54,21 @@ class GroupEditorDialogFragment : DialogFragment() {
         val db = QTMDatabase.getInstance(activity!!)
         val personRepository = PersonRepository.getInstance(db.personDAO)
         val groupRepository = GroupRepository.getInstance(db.groupDAO)
-        val factory = GroupEditorViewModelFactory(personRepository,groupRepository)
+        val factory = GroupEditorViewModelFactory(personRepository, groupRepository)
         viewModel = ViewModelProvider(this, factory).get(GroupEditorViewModel::class.java)
         binding.vm = viewModel
         binding.lifecycleOwner = this
 
-        viewModel.messageEvent.observe(activity!!, Observer {
-            it.getContentIfNotHandled()?.let { message ->
-                Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+        viewModel.resultEvent.observe(activity!!, Observer {
+            it.getContentIfNotHandled()?.let { triple ->
+                Toast.makeText(context, triple.second, Toast.LENGTH_LONG).show()
+                if (triple.first) {
+                    dismiss()
+                }
+                if (triple.third) {
+                    viewModel.name.value = ""
+                    viewModel.note.value = ""
+                }
             }
         })
 
@@ -84,7 +91,7 @@ class GroupEditorDialogFragment : DialogFragment() {
         val builder = AlertDialog.Builder(activity)
             .setTitle(arguments?.getString(KEY_TITLE))
             .setView(binding.root)
-            .setPositiveButton(if (editing) R.string.edit else R.string.add) { _, _ -> if (editing) viewModel.edit(getString(R.string.editSuccessfulMsg, viewModel.name), getString(R.string.duplicateMsg, viewModel.name.value)) else viewModel.add(getString(R.string.addSuccessfulMsg, viewModel.name.value), getString(R.string.duplicateMsg, viewModel.name.value)) }
+            .setPositiveButton(if (editing) R.string.edit else R.string.add, null)
             .setNegativeButton(android.R.string.cancel, null)
         if (arguments?.getBoolean(KEY_EDITING) != true) {
             builder.setNeutralButton(R.string.addAndContinue, null)
@@ -93,7 +100,13 @@ class GroupEditorDialogFragment : DialogFragment() {
         alertDialog = builder.create()
         alertDialog.setOnShowListener { _ ->
             alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener { _ ->
-                viewModel.add(getString(R.string.addSuccessfulMsg, viewModel.name.value), getString(R.string.duplicateMsg, viewModel.name.value))
+                viewModel.add(getString(R.string.addSuccessfulMsg, viewModel.name.value), getString(R.string.duplicateMsg, viewModel.name.value), forceOpen = true, forceErase = true)
+            }
+            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener { _ ->
+                if (editing)
+                    viewModel.edit(getString(R.string.editSuccessfulMsg, viewModel.name.value), getString(R.string.duplicateMsg, viewModel.name.value))
+                else
+                    viewModel.add(getString(R.string.addSuccessfulMsg, viewModel.name.value), getString(R.string.duplicateMsg, viewModel.name.value), forceOpen = false, forceErase = false)
             }
 
             val enabled = !arguments?.getParcelable<Group>(KEY_GROUP)?.name.isNullOrBlank()

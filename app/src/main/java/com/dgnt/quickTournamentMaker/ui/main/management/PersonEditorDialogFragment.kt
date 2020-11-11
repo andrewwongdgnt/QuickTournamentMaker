@@ -77,7 +77,7 @@ class PersonEditorDialogFragment : DialogFragment() {
             }
         })
 
-        viewModel.messageEvent.observe(activity!!, Observer {
+        viewModel.resultEvent.observe(activity!!, Observer {
             it.getContentIfNotHandled()?.let { triple ->
                 Toast.makeText(context, triple.second, Toast.LENGTH_LONG).show()
                 if (triple.first) {

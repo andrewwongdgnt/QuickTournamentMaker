@@ -16,9 +16,12 @@ import java.util.*
 
 class GroupEditorViewModel(private val personRepository: PersonRepository, private val groupRepository: GroupRepository) : ViewModel(), Observable {
 
-    private val _messageEvent = MutableLiveData<Event<String>>()
-    val messageEvent: LiveData<Event<String>>
-        get() = _messageEvent
+    //First = dismiss or not the dialog
+    //Second = resulting message
+    //Third = reset fields or not
+    private val _resultEvent = MutableLiveData<Event<Triple<Boolean, String, Boolean>>>()
+    val resultEvent: LiveData<Event<Triple<Boolean, String, Boolean>>>
+        get() = _resultEvent
 
     @Bindable
     val name = MutableLiveData<String>()
@@ -41,17 +44,13 @@ class GroupEditorViewModel(private val personRepository: PersonRepository, priva
         id = (group?.id ?: "").ifBlank { UUID.randomUUID().toString() }
     }
 
-    fun add(successMsg: String, failMsg: String) {
-        insert(GroupEntity(id, name.value!!, note.value!!, false), successMsg, failMsg)
-        this.name.value = ""
-        this.note.value = ""
-    }
+    fun add(successMsg: String, failMsg: String, forceOpen: Boolean, forceErase: Boolean) = insert(GroupEntity(id, name.value!!, note.value!!, false), successMsg, failMsg, forceOpen, forceErase)
 
-    private fun insert(group: GroupEntity, successMsg: String, failMsg: String) = viewModelScope.launch {
+    private fun insert(group: GroupEntity, successMsg: String, failMsg: String, forceOpen: Boolean, forceErase: Boolean) = viewModelScope.launch {
         val groupResult = groupRepository.insert(group)
         when {
-            groupResult.isEmpty() || groupResult[0] == -1L -> _messageEvent.value = Event(failMsg)
-            else -> _messageEvent.value = Event(successMsg)
+            groupResult.isEmpty() || groupResult[0] == -1L -> _resultEvent.value = Event(Triple(false, failMsg, false))
+            else -> _resultEvent.value = Event(Triple(!forceOpen, successMsg, forceErase))
         }
     }
 
@@ -62,8 +61,8 @@ class GroupEditorViewModel(private val personRepository: PersonRepository, priva
     private fun edit(group: GroupEntity, successMsg: String, failMsg: String) = viewModelScope.launch {
         personRepository.updateGroup(id, group.name)
         when (groupRepository.update(group)) {
-            0 -> _messageEvent.value = Event(failMsg)
-            else -> _messageEvent.value = Event(successMsg)
+            0 -> _resultEvent.value = Event(Triple(false,failMsg,false))
+            else -> _resultEvent.value = Event(Triple(true,successMsg,true))
         }
     }
 
