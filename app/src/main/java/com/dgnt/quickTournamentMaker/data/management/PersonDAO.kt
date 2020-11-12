@@ -27,6 +27,9 @@ interface PersonDAO {
     @Delete
     suspend fun delete(entities:List<PersonEntity>)
 
-    @Query("UPDATE $PERSON_TABLE SET groupName = :groupName WHERE groupName = (SELECT name FROM $GROUP_TABLE WHERE id = :groupId)")
-    suspend fun updateGroup(groupId: String, groupName: String):Int
+    @Query("UPDATE $PERSON_TABLE SET groupName = :groupName WHERE groupName IN (:oldGroupNames)")
+    suspend fun updateGroup(oldGroupNames: List<String>, groupName: String):Int
+
+    @Query("DELETE FROM $PERSON_TABLE WHERE groupName IN (:groupNames)")
+    suspend fun deleteViaGroup(groupNames:List<String>)
 }

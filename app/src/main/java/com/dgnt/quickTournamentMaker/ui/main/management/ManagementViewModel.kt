@@ -41,6 +41,7 @@ class ManagementViewModel(private val personRepository: PersonRepository, privat
         _messageEvent.value = Event(successMsg)
     }
 
+
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
     }
 

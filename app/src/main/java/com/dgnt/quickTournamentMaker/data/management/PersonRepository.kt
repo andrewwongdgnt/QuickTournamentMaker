@@ -3,7 +3,8 @@ package com.dgnt.quickTournamentMaker.data.management
 class PersonRepository(private val dao: PersonDAO) {
 
     companion object {
-        @Volatile private var instance: PersonRepository? = null
+        @Volatile
+        private var instance: PersonRepository? = null
 
         fun getInstance(dao: PersonDAO) =
             instance ?: synchronized(this) {
@@ -18,5 +19,8 @@ class PersonRepository(private val dao: PersonDAO) {
     suspend fun update(entities: List<PersonEntity>) = dao.update(entities)
     suspend fun delete(vararg entity: PersonEntity) = dao.delete(*entity)
     suspend fun delete(entities: List<PersonEntity>) = dao.delete(entities)
-    suspend fun updateGroup(groupId: String, groupName: String) =dao.updateGroup(groupId,groupName)
+    suspend fun updateGroup(oldGroupNames: List<String>, groupName: String) = dao.updateGroup(oldGroupNames, groupName)
+    suspend fun deleteViaGroup(groupNames: List<String>) = dao.deleteViaGroup(groupNames)
+
+
 }

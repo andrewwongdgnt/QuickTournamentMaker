@@ -29,9 +29,9 @@ object SpinnerExtensions {
         } else {
             onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                    if (tag != position) {
+                  //  if (tag != position) {
                         listener.onItemSelected(parent.getItemAtPosition(position))
-                    }
+                  //  }
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>) {}
@@ -48,9 +48,9 @@ object SpinnerExtensions {
         } else {
             onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                    if (tag != position) {
+                    //if (tag != position) {
                         listener.onChange()
-                    }
+                  //  }
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>) {}
@@ -65,7 +65,7 @@ object SpinnerExtensions {
         if (adapter != null ) {
             val position = (adapter as ArrayAdapter<Any>).getPosition(value)
             setSelection(position, false)
-            tag = position
+            //tag = position
         }
     }
 

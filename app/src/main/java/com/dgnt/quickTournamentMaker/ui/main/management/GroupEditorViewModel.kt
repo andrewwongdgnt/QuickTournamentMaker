@@ -30,6 +30,7 @@ class GroupEditorViewModel(private val personRepository: PersonRepository, priva
     val note = MutableLiveData<String>()
 
     private lateinit var id: String
+    private lateinit var oldGroupName: String
 
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
     }
@@ -39,6 +40,7 @@ class GroupEditorViewModel(private val personRepository: PersonRepository, priva
 
 
     fun setData(group: Group?) {
+        oldGroupName = group?.name ?: ""
         name.value = group?.name ?: ""
         note.value = group?.note ?: ""
         id = (group?.id ?: "").ifBlank { UUID.randomUUID().toString() }
@@ -55,15 +57,18 @@ class GroupEditorViewModel(private val personRepository: PersonRepository, priva
     }
 
     fun edit(successMsg: String, failMsg: String) {
-        edit(GroupEntity(id, name.value!!, note.value!!, false), successMsg, failMsg)
+        edit(GroupEntity(id, name.value!!, note.value!!, false), oldGroupName, successMsg, failMsg)
     }
 
-    private fun edit(group: GroupEntity, successMsg: String, failMsg: String) = viewModelScope.launch {
-        personRepository.updateGroup(id, group.name)
+    private fun edit(group: GroupEntity, oldGroupName: String, successMsg: String, failMsg: String) = viewModelScope.launch {
         when (groupRepository.update(group)) {
-            0 -> _resultEvent.value = Event(Triple(false,failMsg,false))
-            else -> _resultEvent.value = Event(Triple(true,successMsg,true))
+            0 -> _resultEvent.value = Event(Triple(false, failMsg, false))
+            else -> {
+                _resultEvent.value = Event(Triple(true, successMsg, true))
+                personRepository.updateGroup(listOf(oldGroupName), group.name)
+            }
         }
+
     }
 
 }

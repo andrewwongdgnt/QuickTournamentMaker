@@ -65,19 +65,14 @@ class PersonEditorViewModel(private val personRepository: PersonRepository, priv
 
 
     private fun insert(person: PersonEntity, successMsg: String, failMsg: String, forceOpen: Boolean, forceErase: Boolean) = viewModelScope.launch {
+        if (newGroupName.value == defaultGroupName) {
+            groupRepository.insert(GroupEntity(name = defaultGroupName, note = "", favourite = false))
+        }
+
         val personResult = personRepository.insert(person)
         when {
             personResult.isEmpty() || personResult[0] == -1L -> _resultEvent.value = Event(Triple(false, failMsg, false))
-            newGroupName.value == defaultGroupName -> {
-                val groupResult = groupRepository.insert(GroupEntity(name = defaultGroupName, note = "", favourite = false))
-                when {
-                    groupResult.isEmpty() || groupResult[0] == -1L -> _resultEvent.value = Event(Triple(false, failMsg, false))
-                    else -> _resultEvent.value = Event(Triple(!forceOpen, successMsg, forceErase))
-                }
-
-            }
             else -> _resultEvent.value = Event(Triple(!forceOpen, successMsg, forceErase))
-
         }
 
 

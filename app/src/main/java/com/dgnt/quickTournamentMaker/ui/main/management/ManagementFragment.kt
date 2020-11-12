@@ -21,6 +21,7 @@ import com.dgnt.quickTournamentMaker.databinding.ManagementFragmentBinding
 import com.dgnt.quickTournamentMaker.model.management.Group
 import com.dgnt.quickTournamentMaker.model.management.Person
 import kotlinx.android.synthetic.main.management_fragment.*
+import java.lang.Exception
 
 
 class ManagementFragment : Fragment() {
@@ -112,17 +113,22 @@ class ManagementFragment : Fragment() {
             Log.d("DGNTTAG", "person: $persons")
             Log.d("DGNTTAG", "group: $groups")
 
-            this.groups = groups.map { Group.fromEntity(it) }.sorted()
-            val groupMap = groups.map { it.name to Group.fromEntity(it) }.toMap()
+            try {
+                this.groups = groups.map { Group.fromEntity(it) }.sorted()
+                val groupMap = groups.map { it.name to Group.fromEntity(it) }.toMap()
 
-            personToGroupNameMap = persons.map { Person.fromEntity(it) to groupMap.getValue(it.groupName) }.toMap()
-            val extraGroupExpandableGroupMap = this.groups.map { it.name }.subtract(persons.map { it.groupName }.toSet()).map { GroupExpandableGroup(it, listOf()) }
-            val groupExpandableGroupMap = persons.groupBy { it.groupName }.map { it.key to it.value.map { Person.fromEntity(it) } }.map { GroupExpandableGroup(it.first, it.second.sorted()) }
+                personToGroupNameMap = persons.map { Person.fromEntity(it) to groupMap.getValue(it.groupName) }.toMap()
+                val extraGroupExpandableGroupMap = this.groups.map { it.name }.subtract(persons.map { it.groupName }.toSet()).map { GroupExpandableGroup(it, listOf()) }
+                val groupExpandableGroupMap = persons.groupBy { it.groupName }.map { it.key to it.value.map { Person.fromEntity(it) } }.map { GroupExpandableGroup(it.first, it.second.sorted()) }
 
-            val adapter = GroupExpandableRecyclerViewAdapter(setDrawable, actionModeCallback, selectedPersons, selectedGroups, groupMap, (groupExpandableGroupMap + extraGroupExpandableGroupMap).sorted(), { checkable: Checkable, person: Person -> personClicked(checkable, person) }, { checkable: Checkable, group: Group, editType: GroupEditType -> groupClicked(checkable, group, editType) })
-            binding.personRv.adapter = adapter
+                val adapter = GroupExpandableRecyclerViewAdapter(setDrawable, actionModeCallback, selectedPersons, selectedGroups, groupMap, (groupExpandableGroupMap + extraGroupExpandableGroupMap).sorted(), { checkable: Checkable, person: Person -> personClicked(checkable, person) }, { checkable: Checkable, group: Group, editType: GroupEditType -> groupClicked(checkable, group, editType) })
+                binding.personRv.adapter = adapter
 
-            add_fab.visibility = View.VISIBLE
+                add_fab.visibility = View.VISIBLE
+            } catch (e:Exception) {
+
+                Log.e("DGNTTAG", "Something happened (Probably groups didn't resolve yet) so just do nothing and hope the next observed event fixes it")
+            }
         })
     }
 
@@ -152,8 +158,13 @@ class ManagementFragment : Fragment() {
         when (menuId) {
             R.id.action_delete -> {
                 if (actionModeCallback.multiSelect == ManagementFragmentActionModeCallBack.SelectType.PERSON) {
-                    deletePersons(selectedPersons)
+                    AlertDialog.Builder(activity)
+                        .setTitle(getString(R.string.deletingPlayers, selectedPersons.size))
+                        .setMessage(getString(R.string.deletePlayerMsg, selectedPersons.size))
+                        .setPositiveButton(android.R.string.ok) { _, _ -> viewModel.delete(selectedPersons.map { it.toEntity(personToGroupNameMap[it]?.name ?: "") }, getString(R.string.deletePlayerSuccessfulMsg, selectedPersons.size)) }
+                        .setNegativeButton(android.R.string.cancel, null).create().show()
                 } else {
+                    GroupDeleteDialogFragment.newInstance(selectedGroups.toList(), groups).show(activity?.supportFragmentManager!!, GroupDeleteDialogFragment.TAG)
 
                 }
             }
@@ -163,13 +174,6 @@ class ManagementFragment : Fragment() {
         }
     }
 
-    private fun deletePersons(selectedPersons: Set<Person>) {
-        AlertDialog.Builder(activity)
-            .setTitle(getString(R.string.deletingPlayers, selectedPersons.size))
-            .setMessage(getString(R.string.deletePlayerMsg, selectedPersons.size))
-            .setPositiveButton(android.R.string.ok) { _, _ -> viewModel.delete(selectedPersons.map { it.toEntity(personToGroupNameMap[it]?.name ?: "") }, getString(R.string.deletePlayerSuccessfulMsg, selectedPersons.size)) }
-            .setNegativeButton(android.R.string.cancel, null).create().show()
-    }
 
     private fun groupClicked(checkable: Checkable, group: Group, editType: GroupEditType) {
 

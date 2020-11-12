@@ -256,4 +256,7 @@
     <string name="addingPerson">Adding Person</string>
     <string name="addingGroup">Adding Group</string>
     <string name="movePlayerFailedMsg">Did not successfully move all players</string>
+    <string name="moveOrDeletePlayerOptionMsg">You can either delete all players in this group (if they exists) or move them into a new one</string>
+    <string name="deleteWithPlayers">Delete with players</string>
+    <string name="deleteThenMovePlayers">Delete then move players</string>
 </resources>
