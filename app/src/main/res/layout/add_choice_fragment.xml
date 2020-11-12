@@ -19,7 +19,7 @@
                     android:id="@+id/person_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/person"
+                    android:text="@string/player"
                     android:textAllCaps="false"
                     android:gravity="left|center_vertical"
                     android:background="@android:color/transparent"/>

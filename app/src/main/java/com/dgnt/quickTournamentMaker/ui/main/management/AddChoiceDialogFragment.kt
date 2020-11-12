@@ -44,7 +44,7 @@ class AddChoiceDialogFragment : DialogFragment() {
 
         alertDialog.setOnShowListener {
             alertDialog.findViewById<Button>(R.id.person_btn).setOnClickListener { _ ->
-                PersonEditorDialogFragment.newInstance(false, getString(R.string.addingPerson), Person("", "", ""), "", arguments?.getParcelableArrayList<Group>(KEY_GROUPS) ?: listOf()).show(activity?.supportFragmentManager!!, PersonEditorDialogFragment.TAG)
+                PersonEditorDialogFragment.newInstance(false, getString(R.string.addingPlayer), Person("", "", ""), "", arguments?.getParcelableArrayList<Group>(KEY_GROUPS) ?: listOf()).show(activity?.supportFragmentManager!!, PersonEditorDialogFragment.TAG)
                 dismiss()
             }
 

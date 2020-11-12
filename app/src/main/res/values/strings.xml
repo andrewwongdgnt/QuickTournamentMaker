@@ -251,9 +251,9 @@
         We will add a new feature to allow changing certain match ups manually when this happens but for now, try rebuilding the tournament with new seeding. (Long click to remove this)</string>
 
     <string name="addWhich">Add which?</string>
-    <string name="person">Person</string>
+    <string name="player">Player</string>
     <string name="continue_">Continue</string> <!--continue is a keyword taken already -->
-    <string name="addingPerson">Adding Person</string>
+    <string name="addingPlayer">Adding Player</string>
     <string name="addingGroup">Adding Group</string>
     <string name="movePlayerFailedMsg">Did not successfully move all players</string>
     <string name="moveOrDeletePlayerOptionMsg">You can either delete all players in this group (if they exists) or move them into a new one</string>

@@ -46,7 +46,7 @@ class GroupEditorViewModel(private val personRepository: PersonRepository, priva
         id = (group?.id ?: "").ifBlank { UUID.randomUUID().toString() }
     }
 
-    fun add(successMsg: String, failMsg: String, forceOpen: Boolean, forceErase: Boolean) = insert(GroupEntity(id, name.value!!, note.value!!, false), successMsg, failMsg, forceOpen, forceErase)
+    fun add(successMsg: String, failMsg: String, forceOpen: Boolean, forceErase: Boolean) = insert(GroupEntity(name = name.value!!, note = note.value!!, favourite = false), successMsg, failMsg, forceOpen, forceErase)
 
     private fun insert(group: GroupEntity, successMsg: String, failMsg: String, forceOpen: Boolean, forceErase: Boolean) = viewModelScope.launch {
         val groupResult = groupRepository.insert(group)

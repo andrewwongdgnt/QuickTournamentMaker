@@ -61,7 +61,7 @@ class PersonEditorViewModel(private val personRepository: PersonRepository, priv
         this.newGroupName.value = this.groupName.value
     }
 
-    fun add(successMsg: String, failMsg: String, forceOpen: Boolean, forceErase: Boolean) = insert(PersonEntity(id, name.value!!, note.value!!, newGroupName.value!!), successMsg, failMsg, forceOpen, forceErase)
+    fun add(successMsg: String, failMsg: String, forceOpen: Boolean, forceErase: Boolean) = insert(PersonEntity(name = name.value!!, note = note.value!!, groupName = newGroupName.value!!), successMsg, failMsg, forceOpen, forceErase)
 
 
     private fun insert(person: PersonEntity, successMsg: String, failMsg: String, forceOpen: Boolean, forceErase: Boolean) = viewModelScope.launch {
