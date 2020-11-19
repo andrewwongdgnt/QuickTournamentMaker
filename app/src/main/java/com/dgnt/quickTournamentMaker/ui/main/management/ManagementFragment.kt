@@ -21,7 +21,6 @@ import com.dgnt.quickTournamentMaker.databinding.ManagementFragmentBinding
 import com.dgnt.quickTournamentMaker.model.management.Group
 import com.dgnt.quickTournamentMaker.model.management.Person
 import kotlinx.android.synthetic.main.management_fragment.*
-import java.lang.Exception
 
 
 class ManagementFragment : Fragment() {
@@ -67,6 +66,12 @@ class ManagementFragment : Fragment() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (hidden)
+            actionMode?.finish()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -125,7 +130,7 @@ class ManagementFragment : Fragment() {
                 binding.personRv.adapter = adapter
 
                 add_fab.visibility = View.VISIBLE
-            } catch (e:Exception) {
+            } catch (e: Exception) {
 
                 Log.e("DGNTTAG", "Something happened (Probably groups didn't resolve yet) so just do nothing and hope the next observed event fixes it")
             }

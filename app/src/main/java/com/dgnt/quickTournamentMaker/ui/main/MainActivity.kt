@@ -17,24 +17,32 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
 
-        val replace: (Fragment) -> Unit = { f ->
-            supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.main_fragment_container, f)
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .commit()
-        }
-        replace(HomeFragment())
+        val homeFragment = HomeFragment()
+        val managementFragment = ManagementFragment()
+        val loadTournamentFragment = LoadTournamentFragment()
+        var activeFragment: Fragment = homeFragment
+        supportFragmentManager.beginTransaction().apply {
+            add(R.id.main_fragment_container, homeFragment)
+            add(R.id.main_fragment_container, managementFragment).hide(managementFragment)
+            add(R.id.main_fragment_container, loadTournamentFragment).hide(loadTournamentFragment)
+
+        }.commit()
+
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
         navView.setOnNavigationItemSelectedListener { item ->
-            replace(
-                when (item.itemId) {
-                    R.id.navigation_management -> ManagementFragment.newInstance()
-                    R.id.navigation_loadTournament -> LoadTournamentFragment.newInstance()
-                    else -> HomeFragment.newInstance()//R.id.navigation_home
-                }
-            )
+            val fragment = when (item.itemId) {
+                R.id.navigation_home -> homeFragment
+                R.id.navigation_management -> managementFragment
+                R.id.navigation_loadTournament -> loadTournamentFragment
+                else -> homeFragment
+            }
+            supportFragmentManager.beginTransaction().hide(activeFragment).show(fragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit()
+            activeFragment = fragment
+
             true
         }
+
     }
+
+
 }
