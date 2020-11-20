@@ -17,9 +17,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
 
-        val homeFragment = HomeFragment()
-        val managementFragment = ManagementFragment()
-        val loadTournamentFragment = LoadTournamentFragment()
+        val homeFragment = HomeFragment.newInstance()
+        val managementFragment = ManagementFragment.newInstance()
+        val loadTournamentFragment = LoadTournamentFragment.newInstance()
         var activeFragment: Fragment = homeFragment
         supportFragmentManager.beginTransaction().apply {
             add(R.id.main_fragment_container, homeFragment)

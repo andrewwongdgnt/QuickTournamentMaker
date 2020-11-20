@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android" >
+    <EditText
+            android:id="@+id/tournamentTitle_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/tournamentTitle"  />
+
+    <EditText
+            android:id="@+id/tournamentDescription_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            android:minLines="3"
+            android:hint="@string/tournamentDescription"  />
+</merge>
