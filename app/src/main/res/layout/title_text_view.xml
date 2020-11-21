@@ -1,11 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/titleOfGroup"
-        android:layout_marginLeft="15dp"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:background="@color/appBackgroundColor"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:background="@color/appBackgroundColor"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp">
+
+    <TextView
+            android:id="@+id/titleOfGroup_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="adasdasss"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <ImageView
+            android:id="@+id/help_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/standard_gap"
+            android:src="@drawable/ic_help" />
+</LinearLayout>
