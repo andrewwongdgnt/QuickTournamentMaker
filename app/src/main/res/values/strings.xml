@@ -260,4 +260,5 @@
     <string name="deleteWithPlayers">Delete with players</string>
     <string name="deleteThenMovePlayers">Delete then move players</string>
     <string name="general">General</string>
+    <string name="players">Players</string>
 </resources>

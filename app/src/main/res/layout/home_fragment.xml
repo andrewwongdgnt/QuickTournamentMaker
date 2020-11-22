@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         xmlns:bind="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -10,9 +11,6 @@
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context=".ui.main.home.HomeFragment">
@@ -38,18 +36,35 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        app:titleText="@string/general">
+                        bind:titleText="@string/general">
 
                     <include
-                            android:id="@+id/component_tournament_editor"
-                            layout="@layout/component_tournament_editor"
+                            layout="@layout/component_tournament_general_editor"
                             bind:vm="@{vm}"/>
                 </com.dgnt.quickTournamentMaker.ui.layout.TitledLinearLayout>
 
 
                 <include
-                        layout="@layout/component_seeding_editor"
+                        layout="@layout/component_tournament_type_editor"
+                        bind:vm="@{vm}"
                         android:paddingTop="@dimen/standard_gap" />
+
+                <com.dgnt.quickTournamentMaker.ui.layout.TitledLinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingTop="@dimen/standard_gap"
+                        bind:titleText="@string/players">
+
+
+                    <androidx.appcompat.widget.SwitchCompat
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/quickStart" />
+
+
+                </com.dgnt.quickTournamentMaker.ui.layout.TitledLinearLayout>
 
 
             </LinearLayout>

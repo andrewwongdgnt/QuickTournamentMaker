@@ -2,7 +2,6 @@ package com.dgnt.quickTournamentMaker.ui.main.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.dgnt.quickTournamentMaker.data.management.GroupRepository
 import com.dgnt.quickTournamentMaker.data.management.PersonRepository
 
 class HomeViewModelFactory(private val personRepository: PersonRepository) : ViewModelProvider.Factory {

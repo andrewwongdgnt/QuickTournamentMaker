@@ -5,7 +5,7 @@
 
         <variable
                 name="vm"
-                type="com.dgnt.quickTournamentMaker.ui.TournamentEditorViewModel" />
+                type="com.dgnt.quickTournamentMaker.ui.main.common.TournamentGeneralEditorViewModel" />
     </data>
 
     <LinearLayout

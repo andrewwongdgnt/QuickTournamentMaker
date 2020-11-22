@@ -1,9 +1,9 @@
-package com.dgnt.quickTournamentMaker.ui
+package com.dgnt.quickTournamentMaker.ui.main.common
 
 import androidx.databinding.Bindable
 import androidx.lifecycle.MutableLiveData
 
-interface TournamentEditorViewModel {
+interface TournamentGeneralEditorViewModel {
 
 
     val title:MutableLiveData<String>
