@@ -1,18 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android" >
-    <EditText
-            android:id="@+id/tournamentTitle_et"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/tournamentTitle"  />
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <EditText
-            android:id="@+id/tournamentDescription_et"
+    <data>
+
+        <variable
+                name="vm"
+                type="com.dgnt.quickTournamentMaker.ui.TournamentEditorViewModel" />
+    </data>
+
+    <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:gravity="top"
-            android:inputType="textMultiLine"
-            android:minLines="3"
-            android:hint="@string/tournamentDescription"  />
-</merge>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        <EditText
+                android:id="@+id/tournamentTitle_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/tournamentTitle"
+                android:text="@={vm.title}" />
+
+        <EditText
+                android:id="@+id/tournamentDescription_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:gravity="top"
+                android:hint="@string/tournamentDescription"
+                android:inputType="textMultiLine"
+                android:minLines="3"
+                android:text="@={vm.description}" />
+    </LinearLayout>
+</layout>
