@@ -18,8 +18,8 @@ class DefaultPreferenceService(private val sharedPreferences: SharedPreferences,
     }
     override fun isRankingBasedOnPriority(tournamentType: TournamentType): Boolean {
         return when (tournamentType){
-            TournamentType.SWISS -> sharedPreferences.getBoolean(PREF_SWISS_RANKING_CONFIG_KEY, false)
-            TournamentType.ROUND_ROBIN -> sharedPreferences.getBoolean(PREF_ROUND_ROBIN_RANKING_CONFIG_KEY, false)
+            TournamentType.SWISS -> sharedPreferences.getBoolean(PREF_SWISS_RANKING_CONFIG_KEY, true)
+            TournamentType.ROUND_ROBIN -> sharedPreferences.getBoolean(PREF_ROUND_ROBIN_RANKING_CONFIG_KEY, true)
             else -> throw IllegalArgumentException("Tournament Type not supported $tournamentType")
         }
     }

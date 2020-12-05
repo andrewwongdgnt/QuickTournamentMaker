@@ -12,9 +12,16 @@ import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.data.QTMDatabase
 import com.dgnt.quickTournamentMaker.data.management.PersonRepository
 import com.dgnt.quickTournamentMaker.databinding.HomeFragmentBinding
+import com.dgnt.quickTournamentMaker.service.interfaces.IPreferenceService
 import kotlinx.android.synthetic.main.component_tournament_type_editor.*
+import org.kodein.di.DIAware
+import org.kodein.di.android.x.di
+import org.kodein.di.instance
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), DIAware {
+
+
+    override val di by di()
 
     companion object {
         fun newInstance() = HomeFragment()
@@ -38,9 +45,11 @@ class HomeFragment : Fragment() {
             return
         }
 
+        val preferenceService: IPreferenceService by instance()
+
         val db = QTMDatabase.getInstance(context!!)
         val personRepository = PersonRepository.getInstance(db.personDAO)
-        val factory = HomeViewModelFactory(personRepository)
+        val factory = HomeViewModelFactory(personRepository, preferenceService)
         viewModel = ViewModelProvider(this, factory).get(HomeViewModel::class.java)
         binding.vm = viewModel
 
@@ -58,23 +67,18 @@ class HomeFragment : Fragment() {
                 else -> true
             }
 
-            //FIXME get values from preferences and set it
-            viewModel.rankConfig.value = when (it) {
-                swiss_rb.id -> compareRankFromPriority_rb.id
-                else -> compareRankFromScore_rb.id
-            }
-        })
-        viewModel.rankConfig.observe(viewLifecycleOwner, Observer {
-            viewModel.showPriorityContent.value = when (it) {
-                compareRankFromPriority_rb.id ->  true
-                else -> false
-            }
-            viewModel.showScoringContent.value = when (it) {
-                compareRankFromScore_rb.id ->  true
-                else -> false
-            }
+            viewModel.handleTournamentTypeChange(it, roundRobin_rb.id, swiss_rb.id, compareRankFromPriority_rb.id, compareRankFromScore_rb.id)
+
 
         })
+        viewModel.rankConfig.observe(viewLifecycleOwner, Observer {
+            viewModel.showPriorityContent.value = it == compareRankFromPriority_rb.id
+
+            viewModel.showScoringContent.value = it == compareRankFromScore_rb.id
+
+            viewModel.handleRankConfigChange(it == compareRankFromPriority_rb.id, roundRobin_rb.id, swiss_rb.id)
+        })
     }
+
 
 }
