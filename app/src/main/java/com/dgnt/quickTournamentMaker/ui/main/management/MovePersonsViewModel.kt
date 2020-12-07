@@ -5,12 +5,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dgnt.quickTournamentMaker.data.management.IPersonRepository
 import com.dgnt.quickTournamentMaker.data.management.PersonEntity
 import com.dgnt.quickTournamentMaker.data.management.PersonRepository
 import com.dgnt.quickTournamentMaker.util.Event
 import kotlinx.coroutines.launch
 
-class MovePersonsViewModel(private val personRepository: PersonRepository) : ViewModel(), Observable {
+class MovePersonsViewModel(private val personRepository: IPersonRepository) : ViewModel(), Observable {
 
     private val _messageEvent = MutableLiveData<Event<String>>()
     val messageEvent: LiveData<Event<String>>

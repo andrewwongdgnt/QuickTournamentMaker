@@ -2,14 +2,11 @@ package com.dgnt.quickTournamentMaker.ui.main.management
 
 import androidx.databinding.Observable
 import androidx.lifecycle.*
-import com.dgnt.quickTournamentMaker.data.management.GroupEntity
-import com.dgnt.quickTournamentMaker.data.management.GroupRepository
-import com.dgnt.quickTournamentMaker.data.management.PersonEntity
-import com.dgnt.quickTournamentMaker.data.management.PersonRepository
+import com.dgnt.quickTournamentMaker.data.management.*
 import com.dgnt.quickTournamentMaker.util.Event
 import kotlinx.coroutines.launch
 
-class ManagementViewModel(private val personRepository: PersonRepository, private val groupRepository: GroupRepository) : ViewModel(), Observable {
+class ManagementViewModel(private val personRepository: IPersonRepository, groupRepository: IGroupRepository) : ViewModel(), Observable {
 
     private val _messageEvent = MutableLiveData<Event<String>>()
     val messageEvent: LiveData<Event<String>>

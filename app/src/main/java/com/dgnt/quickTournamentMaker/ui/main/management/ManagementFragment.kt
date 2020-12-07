@@ -21,9 +21,16 @@ import com.dgnt.quickTournamentMaker.databinding.ManagementFragmentBinding
 import com.dgnt.quickTournamentMaker.model.management.Group
 import com.dgnt.quickTournamentMaker.model.management.Person
 import kotlinx.android.synthetic.main.management_fragment.*
+import org.kodein.di.DIAware
+import org.kodein.di.android.x.di
+import org.kodein.di.instance
 
 
-class ManagementFragment : Fragment() {
+class ManagementFragment : Fragment(), DIAware {
+
+    override val di by di()
+    private val viewModelFactory: ManagementViewModelFactory by instance()
+
     companion object {
         fun newInstance() = ManagementFragment()
     }
@@ -77,20 +84,13 @@ class ManagementFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        if (context == null) {
-            return
-        }
-
         add_fab.setOnClickListener { add() }
 
         actionModeCallback = ManagementFragmentActionModeCallBack(binding, selectedPersons, selectedGroups) { menuId: Int, persons: Set<Person>, groups: Set<Group> -> menuResolver(menuId, persons, groups) }
 
         setHasOptionsMenu(true)
-        val db = QTMDatabase.getInstance(context!!)
-        val personRepository = PersonRepository.getInstance(db.personDAO)
-        val groupRepository = GroupRepository.getInstance(db.groupDAO)
-        val factory = ManagementViewModelFactory(personRepository, groupRepository)
-        viewModel = ViewModelProvider(this, factory).get(ManagementViewModel::class.java)
+
+        viewModel = ViewModelProvider(this, viewModelFactory).get(ManagementViewModel::class.java)
         binding.vm = viewModel
         binding.lifecycleOwner = this
 

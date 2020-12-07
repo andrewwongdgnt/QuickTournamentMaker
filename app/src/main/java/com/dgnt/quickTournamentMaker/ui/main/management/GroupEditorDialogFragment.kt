@@ -18,10 +18,14 @@ import com.dgnt.quickTournamentMaker.data.management.PersonRepository
 import com.dgnt.quickTournamentMaker.databinding.GroupEditorFragmentBinding
 import com.dgnt.quickTournamentMaker.model.management.Group
 import kotlinx.android.synthetic.main.main_activity.*
+import org.kodein.di.DIAware
+import org.kodein.di.android.x.di
+import org.kodein.di.instance
 
 
-class GroupEditorDialogFragment : DialogFragment() {
-
+class GroupEditorDialogFragment : DialogFragment(), DIAware {
+    override val di by di()
+    private val viewModelFactory: GroupEditorViewModelFactory by instance()
     companion object {
 
         const val TAG = "GroupEditorDialogFragment"
@@ -51,11 +55,8 @@ class GroupEditorDialogFragment : DialogFragment() {
         }
 
         binding = DataBindingUtil.inflate(activity?.layoutInflater!!, R.layout.group_editor_fragment, container, false)
-        val db = QTMDatabase.getInstance(activity!!)
-        val personRepository = PersonRepository.getInstance(db.personDAO)
-        val groupRepository = GroupRepository.getInstance(db.groupDAO)
-        val factory = GroupEditorViewModelFactory(personRepository, groupRepository)
-        viewModel = ViewModelProvider(this, factory).get(GroupEditorViewModel::class.java)
+
+        viewModel = ViewModelProvider(this, viewModelFactory).get(GroupEditorViewModel::class.java)
         binding.vm = viewModel
         binding.lifecycleOwner = this
 

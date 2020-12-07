@@ -19,10 +19,14 @@ import com.dgnt.quickTournamentMaker.databinding.PersonEditorFragmentBinding
 import com.dgnt.quickTournamentMaker.model.management.Group
 import com.dgnt.quickTournamentMaker.model.management.Person
 import kotlinx.android.synthetic.main.main_activity.*
+import org.kodein.di.DIAware
+import org.kodein.di.android.x.di
+import org.kodein.di.instance
 
 
-class PersonEditorDialogFragment : DialogFragment() {
-
+class PersonEditorDialogFragment : DialogFragment() , DIAware {
+    override val di by di()
+    private val viewModelFactory: PersonEditorViewModelFactory by instance()
     companion object {
 
         const val TAG = "PersonEditorDialogFragment"
@@ -56,11 +60,8 @@ class PersonEditorDialogFragment : DialogFragment() {
         }
 
         binding = DataBindingUtil.inflate(activity?.layoutInflater!!, R.layout.person_editor_fragment, container, false)
-        val db = QTMDatabase.getInstance(activity!!)
-        val personRepository = PersonRepository.getInstance(db.personDAO)
-        val groupRepository = GroupRepository.getInstance(db.groupDAO)
-        val factory = PersonEditorViewModelFactory(personRepository, groupRepository)
-        viewModel = ViewModelProvider(this, factory).get(PersonEditorViewModel::class.java)
+
+        viewModel = ViewModelProvider(this, viewModelFactory).get(PersonEditorViewModel::class.java)
         binding.vm = viewModel
         binding.lifecycleOwner = this
         binding.personNameEt.addTextChangedListener(object : TextWatcher {

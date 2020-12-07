@@ -18,20 +18,32 @@ abstract class QTMDatabase : RoomDatabase() {
     abstract val groupDAO: GroupDAO
 
     companion object {
-        @Volatile
-        private var INSTANCE: QTMDatabase? = null
-        fun getInstance(context: Context): QTMDatabase {
-            synchronized(this) {
-                var instance = INSTANCE
-                if (instance == null) {
-                    instance = Room.databaseBuilder(
-                        context.applicationContext,
-                        QTMDatabase::class.java,
-                        "db" // same as old one
-                    ).build()
-                }
-                return instance
-            }
+//        @Volatile
+//        private var INSTANCE: QTMDatabase? = null
+//        fun getInstance(context: Context): QTMDatabase {
+//            synchronized(this) {
+//                var instance = INSTANCE
+//                if (instance == null) {
+//                    instance = Room.databaseBuilder(
+//                        context.applicationContext,
+//                        QTMDatabase::class.java,
+//                        "db" // same as old one
+//                    ).build()
+//                }
+//                return instance
+//            }
+//        }
+
+        @Volatile private var instance: QTMDatabase? = null
+        private val LOCK = Any()
+
+        operator fun invoke(context: Context) = instance ?: synchronized(LOCK) {
+            instance ?: buildDatabase(context).also { instance = it }
         }
+
+        private fun buildDatabase(context: Context) =
+            Room.databaseBuilder(context.applicationContext,
+                QTMDatabase::class.java, "db")
+                .build()
     }
 }

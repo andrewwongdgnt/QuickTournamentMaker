@@ -13,6 +13,7 @@ import com.dgnt.quickTournamentMaker.data.QTMDatabase
 import com.dgnt.quickTournamentMaker.data.management.PersonRepository
 import com.dgnt.quickTournamentMaker.databinding.HomeFragmentBinding
 import com.dgnt.quickTournamentMaker.service.interfaces.IPreferenceService
+import com.dgnt.quickTournamentMaker.ui.main.management.GroupDeleteViewModelFactory
 import kotlinx.android.synthetic.main.component_tournament_type_editor.*
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
@@ -22,6 +23,7 @@ class HomeFragment : Fragment(), DIAware {
 
 
     override val di by di()
+    private val viewModelFactory: HomeViewModelFactory by instance()
 
     companion object {
         fun newInstance() = HomeFragment()
@@ -45,12 +47,8 @@ class HomeFragment : Fragment(), DIAware {
             return
         }
 
-        val preferenceService: IPreferenceService by instance()
 
-        val db = QTMDatabase.getInstance(context!!)
-        val personRepository = PersonRepository.getInstance(db.personDAO)
-        val factory = HomeViewModelFactory(personRepository, preferenceService)
-        viewModel = ViewModelProvider(this, factory).get(HomeViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
         binding.vm = viewModel
 
         binding.lifecycleOwner = this

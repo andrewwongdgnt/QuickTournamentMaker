@@ -18,10 +18,14 @@ import com.dgnt.quickTournamentMaker.databinding.GroupDeleteFragmentBinding
 import com.dgnt.quickTournamentMaker.model.management.Group
 import kotlinx.android.synthetic.main.group_delete_fragment.view.*
 import kotlinx.android.synthetic.main.main_activity.*
+import org.kodein.di.DIAware
+import org.kodein.di.android.x.di
+import org.kodein.di.instance
 
 
-class GroupDeleteDialogFragment : DialogFragment() {
-
+class GroupDeleteDialogFragment : DialogFragment(), DIAware {
+    override val di by di()
+    private val viewModelFactory: GroupDeleteViewModelFactory by instance()
     companion object {
 
         const val TAG = "GroupDeleteDialogFragment"
@@ -50,11 +54,8 @@ class GroupDeleteDialogFragment : DialogFragment() {
         }
 
         binding = DataBindingUtil.inflate(activity?.layoutInflater!!, R.layout.group_delete_fragment, container, false)
-        val db = QTMDatabase.getInstance(activity!!)
-        val personRepository = PersonRepository.getInstance(db.personDAO)
-        val groupRepository = GroupRepository.getInstance(db.groupDAO)
-        val factory = GroupDeleteViewModelFactory(personRepository, groupRepository)
-        viewModel = ViewModelProvider(this, factory).get(GroupDeleteViewModel::class.java)
+
+        viewModel = ViewModelProvider(this, viewModelFactory).get(GroupDeleteViewModel::class.java)
         binding.vm = viewModel
         binding.lifecycleOwner = this
 
