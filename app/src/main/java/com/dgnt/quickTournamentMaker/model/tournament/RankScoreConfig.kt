@@ -4,10 +4,11 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class RankScoreConfig(val win:Int, val loss:Int, val tie:Int) : Parcelable ,IRankConfig{
+data class RankScoreConfig(val win: Float, val loss: Float, val tie: Float) : Parcelable, IRankConfig {
 
     companion object {
-        const val DEFAULT_INPUT = "2;0;1"
+        const val DEFAULT_INPUT = "1.0;0.0;0.5"
     }
-    override val stringTripleRepresentation= Triple(win.toString(),loss.toString(),tie.toString())
+
+    override val stringTripleRepresentation = Triple(win.toString(), loss.toString(), tie.toString())
 }

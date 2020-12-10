@@ -23,11 +23,12 @@ class DefaultRankingConfigService : IRankingConfigService {
 
     override fun buildRankingFromScore(value: String): RankScoreConfig {
         val listValue = (value.split(";").takeIf {
-            it.all { e -> e.toIntOrNull() != null } && it.size == 3
+            it.all { e -> e.toFloatOrNull() != null } && it.size == 3
         } ?: RankScoreConfig.DEFAULT_INPUT.split(";"))
-            .map { it.toInt() }
+            .map { it.toFloat() }
         return RankScoreConfig(listValue[0], listValue[1], listValue[2])
     }
 
     override fun getRankingFromScoreAsString(rankScoreConfig: RankScoreConfig): String = "${rankScoreConfig.win};${rankScoreConfig.loss};${rankScoreConfig.tie}"
+
 }

@@ -4,7 +4,9 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <import type="android.view.View"/>
+
+        <import type="android.view.View" />
+
         <variable
                 name="vm"
                 type="com.dgnt.quickTournamentMaker.ui.main.common.TournamentTypeEditorViewModel" />
@@ -16,16 +18,16 @@
             android:orientation="vertical">
 
         <com.dgnt.quickTournamentMaker.ui.layout.TitledLinearLayout
-                app:titleText="@string/tournamentType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                app:titleText="@string/tournamentType">
 
             <RadioGroup
                     android:id="@+id/tournamentType_rg"
-                    android:checkedButton="@={vm.tournamentType}"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:checkedButton="@={vm.tournamentType}">
 
                 <RadioButton
                         android:id="@+id/elimination_rb"
@@ -67,19 +69,19 @@
         </com.dgnt.quickTournamentMaker.ui.layout.TitledLinearLayout>
 
         <com.dgnt.quickTournamentMaker.ui.layout.TitledLinearLayout
-                app:showHelp="true"
-                app:titleText="@string/rankConfiguration"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:paddingTop="@dimen/standard_gap"
                 android:visibility="@{vm.showRankConfig ? View.VISIBLE : View.GONE}"
-                android:paddingTop="@dimen/standard_gap">
+                app:showHelp="true"
+                app:titleText="@string/rankConfiguration">
 
             <RadioGroup
                     android:id="@+id/rankingConfig_rg"
-                    android:checkedButton="@={vm.rankConfig}"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:checkedButton="@={vm.rankConfig}">
 
                 <RadioButton
                         android:id="@+id/compareRankFromPriority_rb"
@@ -92,8 +94,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="?android:attr/expandableListPreferredChildPaddingLeft"
-                        android:visibility="@{vm.showPriorityContent ? View.VISIBLE : View.GONE}"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="@{vm.showPriorityContent ? View.VISIBLE : View.GONE}">
 
                     <TextView
                             android:id="@+id/priority1_tv"
@@ -138,8 +140,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="?android:attr/expandableListPreferredChildPaddingLeft"
-                        android:visibility="@{vm.showScoringContent ? View.VISIBLE : View.GONE}"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:visibility="@{vm.showScoringContent ? View.VISIBLE : View.GONE}">
 
                     <LinearLayout
                             android:layout_width="wrap_content"
@@ -154,14 +156,12 @@
                                 android:text="@string/win"
                                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
-                        <com.shawnlin.numberpicker.NumberPicker
 
-                                app:np_formatter="%02d"
-                                app:np_max="10"
-                                app:np_min="0"
-                                app:np_typeface="sans-serif-light"
+                        <com.dgnt.quickTournamentMaker.ui.widget.MyNumberPicker
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="wrap_content"
+                                android:theme="@style/AppTheme.Picker"
+                                android:value="@={vm.winValue}" />
                     </LinearLayout>
 
 
@@ -179,14 +179,11 @@
                                 android:text="@string/loss"
                                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
-                        <com.shawnlin.numberpicker.NumberPicker
-
-                                app:np_formatter="%02d"
-                                app:np_max="10"
-                                app:np_min="0"
-                                app:np_typeface="sans-serif-light"
+                        <com.dgnt.quickTournamentMaker.ui.widget.MyNumberPicker
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="wrap_content"
+                                android:theme="@style/AppTheme.Picker"
+                                android:value="@={vm.lossValue}" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -203,14 +200,13 @@
                                 android:text="@string/tie"
                                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
-                        <com.shawnlin.numberpicker.NumberPicker
-
-                                app:np_formatter="%02d"
-                                app:np_max="10"
-                                app:np_min="0"
-                                app:np_typeface="sans-serif-light"
+                        <com.dgnt.quickTournamentMaker.ui.widget.MyNumberPicker
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="wrap_content"
+                                android:theme="@style/AppTheme.Picker"
+                                android:value="@={vm.tieValue}" />
+
+
                     </LinearLayout>
 
                 </LinearLayout>
@@ -219,19 +215,19 @@
         </com.dgnt.quickTournamentMaker.ui.layout.TitledLinearLayout>
 
         <com.dgnt.quickTournamentMaker.ui.layout.TitledLinearLayout
-                app:titleText="@string/seedType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:paddingTop="@dimen/standard_gap"
                 android:visibility="@{vm.showSeedType ? View.VISIBLE : View.GONE}"
-                android:paddingTop="@dimen/standard_gap">
+                app:titleText="@string/seedType">
 
 
             <RadioGroup
                     android:id="@+id/seedOptions_rg"
-                    android:checkedButton="@={vm.seedType}"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:checkedButton="@={vm.seedType}">
 
                 <RadioButton
                         android:id="@+id/randomSeed_rb"

@@ -9,11 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
-import com.dgnt.quickTournamentMaker.data.QTMDatabase
-import com.dgnt.quickTournamentMaker.data.management.PersonRepository
 import com.dgnt.quickTournamentMaker.databinding.HomeFragmentBinding
-import com.dgnt.quickTournamentMaker.service.interfaces.IPreferenceService
-import com.dgnt.quickTournamentMaker.ui.main.management.GroupDeleteViewModelFactory
 import kotlinx.android.synthetic.main.component_tournament_type_editor.*
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
@@ -40,13 +36,13 @@ class HomeFragment : Fragment(), DIAware {
         return binding.root;
     }
 
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
         if (context == null) {
             return
         }
-
 
         viewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
         binding.vm = viewModel
@@ -76,6 +72,11 @@ class HomeFragment : Fragment(), DIAware {
 
             viewModel.handleRankConfigChange(it == compareRankFromPriority_rb.id, roundRobin_rb.id, swiss_rb.id)
         })
+
+        viewModel.scoreConfigLiveData.observe(viewLifecycleOwner, Observer {
+            viewModel.handleScoreConfigChange(it.first, it.second, it.third, roundRobin_rb.id, swiss_rb.id)
+        })
+
     }
 
 

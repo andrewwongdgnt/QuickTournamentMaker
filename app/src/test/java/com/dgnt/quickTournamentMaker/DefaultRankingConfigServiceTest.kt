@@ -68,40 +68,49 @@ class DefaultRankingConfigServiceTest {
 
     @Test
     fun testBuildRankingFromScore201() {
-        val rankScoreConfig = sut.buildRankingFromScore("2;0;1")
-        Assert.assertEquals(2, rankScoreConfig.win)
-        Assert.assertEquals(0, rankScoreConfig.loss)
-        Assert.assertEquals(1, rankScoreConfig.tie)
+        val rankScoreConfig = sut.buildRankingFromScore("2.0;0.0;1.0")
+        Assert.assertEquals(2f, rankScoreConfig.win)
+        Assert.assertEquals(0f, rankScoreConfig.loss)
+        Assert.assertEquals(1f, rankScoreConfig.tie)
+    }
+
+    @Test
+    fun testBuildRankingFromScore10half() {
+        val rankScoreConfig = sut.buildRankingFromScore("1.0;0.0;0.5")
+        Assert.assertEquals(1f, rankScoreConfig.win)
+        Assert.assertEquals(0f, rankScoreConfig.loss)
+        Assert.assertEquals(0.5f, rankScoreConfig.tie)
     }
 
     @Test
     fun testBuildRankingFromScoreMinus221014() {
-        val rankScoreConfig = sut.buildRankingFromScore("-22;10;14")
-        Assert.assertEquals(-22, rankScoreConfig.win)
-        Assert.assertEquals(10, rankScoreConfig.loss)
-        Assert.assertEquals(14, rankScoreConfig.tie)
+        val rankScoreConfig = sut.buildRankingFromScore("-22.0;10.0;14.0")
+        Assert.assertEquals(-22f, rankScoreConfig.win)
+        Assert.assertEquals(10f, rankScoreConfig.loss)
+        Assert.assertEquals(14f, rankScoreConfig.tie)
     }
 
     @Test
     fun testBuildRankingFromScoreInvalidString() {
         val rankScoreConfig = sut.buildRankingFromScore("38472a;3df")
-        Assert.assertEquals(2, rankScoreConfig.win)
-        Assert.assertEquals(0, rankScoreConfig.loss)
-        Assert.assertEquals(1, rankScoreConfig.tie)
+        Assert.assertEquals(1f, rankScoreConfig.win)
+        Assert.assertEquals(0f, rankScoreConfig.loss)
+        Assert.assertEquals(0.5f, rankScoreConfig.tie)
     }
 
     @Test
     fun testBuildRankingFromPriority4Numbers() {
-        val rankScoreConfig = sut.buildRankingFromScore("3;4;5;3;3;3")
-        Assert.assertEquals(2, rankScoreConfig.win)
-        Assert.assertEquals(0, rankScoreConfig.loss)
-        Assert.assertEquals(1, rankScoreConfig.tie)
+        val rankScoreConfig = sut.buildRankingFromScore("3.0;4.0;5.0;3.0;3.0;3.0")
+        Assert.assertEquals(1f, rankScoreConfig.win)
+        Assert.assertEquals(0f, rankScoreConfig.loss)
+        Assert.assertEquals(0.5f, rankScoreConfig.tie)
     }
 
     @Test
     fun testGetRankingFromScoreAsString() {
-        Assert.assertEquals("2;0;1", sut.getRankingFromScoreAsString(RankScoreConfig(2, 0, 1)))
-        Assert.assertEquals("-22;10;14", sut.getRankingFromScoreAsString(RankScoreConfig(-22, 10, 14)))
+        Assert.assertEquals("2.0;0.0;1.0", sut.getRankingFromScoreAsString(RankScoreConfig(2f, 0f, 1f)))
+        Assert.assertEquals("2.5;0.5;1.0", sut.getRankingFromScoreAsString(RankScoreConfig(2.5f, 0.5f, 1f)))
+        Assert.assertEquals("-22.0;10.0;14.0", sut.getRankingFromScoreAsString(RankScoreConfig(-22f, 10f, 14f)))
     }
 
 }
