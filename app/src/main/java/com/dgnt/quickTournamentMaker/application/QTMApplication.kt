@@ -40,7 +40,7 @@ class QTMApplication() : Application(), DIAware {
         bind<ITournamentRepository>() with singleton { TournamentRepository(instance()) }
 
         //ViewModelFactory
-        bind() from provider { HomeViewModelFactory(instance(), instance()) }
+        bind() from provider { HomeViewModelFactory(instance(), instance(), instance()) }
         bind() from provider { ManagementViewModelFactory(instance(), instance()) }
         bind() from provider { GroupDeleteViewModelFactory(instance(), instance()) }
         bind() from provider { GroupEditorViewModelFactory(instance(), instance()) }

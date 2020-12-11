@@ -13,7 +13,6 @@ interface TournamentTypeEditorViewModel {
     val showSeedType:MutableLiveData<Boolean>
     val showPriorityContent:MutableLiveData<Boolean>
     val showScoringContent:MutableLiveData<Boolean>
-    val numberOfPlayers:MutableLiveData<Int>
     val winValue:MutableLiveData<Int>
     val lossValue:MutableLiveData<Int>
     val tieValue:MutableLiveData<Int>

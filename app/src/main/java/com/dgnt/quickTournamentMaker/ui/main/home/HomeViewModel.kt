@@ -6,16 +6,37 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.dgnt.quickTournamentMaker.data.management.GroupEntity
+import com.dgnt.quickTournamentMaker.data.management.IGroupRepository
 import com.dgnt.quickTournamentMaker.data.management.IPersonRepository
+import com.dgnt.quickTournamentMaker.data.management.PersonEntity
 import com.dgnt.quickTournamentMaker.model.tournament.RankScoreConfig
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentType
 import com.dgnt.quickTournamentMaker.service.interfaces.IPreferenceService
 import com.dgnt.quickTournamentMaker.ui.main.common.TournamentGeneralEditorViewModel
 import com.dgnt.quickTournamentMaker.ui.main.common.TournamentTypeEditorViewModel
 
-class HomeViewModel(personRepository: IPersonRepository, private val preferenceService: IPreferenceService) : ViewModel(), Observable, TournamentGeneralEditorViewModel, TournamentTypeEditorViewModel {
+class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroupRepository, private val preferenceService: IPreferenceService) : ViewModel(), Observable, TournamentGeneralEditorViewModel, TournamentTypeEditorViewModel {
 
     private val persons = personRepository.getAll()
+    private val groups = groupRepository.getAll()
+
+    val personAndGroupLiveData: LiveData<Pair<List<PersonEntity>, List<GroupEntity>>> =
+        object : MediatorLiveData<Pair<List<PersonEntity>, List<GroupEntity>>>() {
+            var person: List<PersonEntity>? = null
+            var group: List<GroupEntity>? = null
+
+            init {
+                addSource(persons) { persons ->
+                    this.person = persons
+                    group?.let { value = persons to it }
+                }
+                addSource(groups) { groups ->
+                    this.group = groups
+                    person?.let { value = it to groups }
+                }
+            }
+        }
 
     @Bindable
     override val title = MutableLiveData<String>()
@@ -45,9 +66,6 @@ class HomeViewModel(personRepository: IPersonRepository, private val preferenceS
     override val showScoringContent = MutableLiveData<Boolean>()
 
     @Bindable
-    override val numberOfPlayers = MutableLiveData<Int>()
-
-    @Bindable
     override val winValue = MutableLiveData<Int>()
 
     @Bindable
@@ -56,6 +74,12 @@ class HomeViewModel(personRepository: IPersonRepository, private val preferenceS
     @Bindable
     override val tieValue = MutableLiveData<Int>()
 
+    @Bindable
+    val quickStart = MutableLiveData<Boolean>(true)
+
+    @Bindable
+    val numberOfPlayers = MutableLiveData<String>()
+
     val scoreConfigLiveData: LiveData<Triple<Int, Int, Int>> =
         object : MediatorLiveData<Triple<Int, Int, Int>>() {
             var win: Int? = null
@@ -63,17 +87,21 @@ class HomeViewModel(personRepository: IPersonRepository, private val preferenceS
             var tie: Int? = null
 
             init {
+
+                val getTrip: () -> Triple<Int, Int, Int> = {
+                    Triple(win ?: 0, loss ?: 0, tie ?: 0)
+                }
                 addSource(winValue) {
                     win = it
-                    value = Triple(win ?: 0, loss ?: 0, tie ?: 0)
+                    value = getTrip()
                 }
                 addSource(lossValue) {
                     loss = it
-                    value = Triple(win ?: 0, loss ?: 0, tie ?: 0)
+                    value = getTrip()
                 }
                 addSource(tieValue) {
                     tie = it
-                    value = Triple(win ?: 0, loss ?: 0, tie ?: 0)
+                    value = getTrip()
                 }
             }
         }

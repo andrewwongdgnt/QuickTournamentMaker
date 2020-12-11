@@ -1,0 +1,7 @@
+fix icons
+have an edit icon in non multi select mode for groups
+have seperate checkboxes and textview so the click area for the checkbox is only that
+edit -> save 
+collapse all / expand all
+italics for empty groups
+fix arrows

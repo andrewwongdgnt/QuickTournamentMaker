@@ -10,6 +10,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.HomeFragmentBinding
+import com.dgnt.quickTournamentMaker.model.management.Group
+import com.dgnt.quickTournamentMaker.model.management.Person
+import com.dgnt.quickTournamentMaker.ui.layout.NonScrollingLinearLayoutManager
 import kotlinx.android.synthetic.main.component_tournament_type_editor.*
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
@@ -75,6 +78,24 @@ class HomeFragment : Fragment(), DIAware {
 
         viewModel.scoreConfigLiveData.observe(viewLifecycleOwner, Observer {
             viewModel.handleScoreConfigChange(it.first, it.second, it.third, roundRobin_rb.id, swiss_rb.id)
+        })
+
+        binding.playerRv.layoutManager = NonScrollingLinearLayoutManager(context!!)
+
+        viewModel.personAndGroupLiveData.observe(viewLifecycleOwner, Observer { (persons, groupEntities) ->
+
+            val groups = groupEntities.map { Group.fromEntity(it) }.sorted()
+
+            val extraGroupExpandableGroupMap = groups.map { it.name }.subtract(persons.map { it.groupName }.toSet()).map { GroupCheckedExpandableGroup(it, listOf()) }
+            val groupExpandableGroupMap = persons.groupBy { it.groupName }.map { it.key to it.value.map { Person.fromEntity(it) } }.map { GroupCheckedExpandableGroup(it.first, it.second.sorted()) }
+
+
+
+
+            val adapter = GroupCheckedExpandableRecyclerViewAdapter((groupExpandableGroupMap + extraGroupExpandableGroupMap).sorted())
+            adapter.groups
+            binding.playerRv.adapter = adapter
+
         })
 
     }

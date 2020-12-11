@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        xmlns:bind="http://schemas.android.com/apk/res-auto">
+        xmlns:bind="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <import type="android.view.View" />
 
         <variable
                 name="vm"
@@ -15,8 +17,7 @@
             android:layout_height="match_parent"
             tools:context=".ui.main.home.HomeFragment">
 
-        <ScrollView
-                android:id="@+id/scrollView"
+        <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
@@ -40,14 +41,14 @@
 
                     <include
                             layout="@layout/component_tournament_general_editor"
-                            bind:vm="@{vm}"/>
+                            bind:vm="@{vm}" />
                 </com.dgnt.quickTournamentMaker.ui.layout.TitledLinearLayout>
 
 
                 <include
                         layout="@layout/component_tournament_type_editor"
-                        bind:vm="@{vm}"
-                        android:paddingTop="@dimen/standard_gap" />
+                        android:paddingTop="@dimen/standard_gap"
+                        bind:vm="@{vm}" />
 
                 <com.dgnt.quickTournamentMaker.ui.layout.TitledLinearLayout
                         android:layout_width="match_parent"
@@ -61,14 +62,40 @@
 
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="@={vm.quickStart}"
                             android:text="@string/quickStart" />
 
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="@{vm.quickStart ? View.VISIBLE : View.GONE}">
+
+                        <EditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/numberOfPlayers"
+                                android:inputType="number"
+                                android:singleLine="true"
+                                android:text="@={vm.numberOfPlayers}" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="@{vm.quickStart ? View.GONE : View.VISIBLE}">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/player_rv"
+
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"/>
+                    </LinearLayout>
 
                 </com.dgnt.quickTournamentMaker.ui.layout.TitledLinearLayout>
 
 
             </LinearLayout>
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/start_fab"
