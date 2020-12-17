@@ -14,9 +14,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
-import com.dgnt.quickTournamentMaker.data.QTMDatabase
-import com.dgnt.quickTournamentMaker.data.management.GroupRepository
-import com.dgnt.quickTournamentMaker.data.management.PersonRepository
 import com.dgnt.quickTournamentMaker.databinding.ManagementFragmentBinding
 import com.dgnt.quickTournamentMaker.model.management.Group
 import com.dgnt.quickTournamentMaker.model.management.Person
@@ -110,7 +107,6 @@ class ManagementFragment : Fragment(), DIAware {
             } else {
                 checkedTextView.checkMarkDrawable = null
             }
-
         }
 
         viewModel.personAndGroupLiveData.observe(viewLifecycleOwner, Observer { (persons, groups) ->
@@ -123,10 +119,11 @@ class ManagementFragment : Fragment(), DIAware {
                 val groupMap = groups.map { it.name to Group.fromEntity(it) }.toMap()
 
                 personToGroupNameMap = persons.map { Person.fromEntity(it) to groupMap.getValue(it.groupName) }.toMap()
+                val nonEmptyGroups = groups.filter { group -> persons.any { it.groupName == group.name } }.map { Group.fromEntity(it) }.toSet()
                 val extraGroupExpandableGroupMap = this.groups.map { it.name }.subtract(persons.map { it.groupName }.toSet()).map { GroupExpandableGroup(it, listOf()) }
                 val groupExpandableGroupMap = persons.groupBy { it.groupName }.map { it.key to it.value.map { Person.fromEntity(it) } }.map { GroupExpandableGroup(it.first, it.second.sorted()) }
 
-                val adapter = GroupExpandableRecyclerViewAdapter(setDrawable, actionModeCallback, selectedPersons, selectedGroups, groupMap, (groupExpandableGroupMap + extraGroupExpandableGroupMap).sorted(), { checkable: Checkable, person: Person -> personClicked(checkable, person) }, { checkable: Checkable, group: Group, editType: GroupEditType -> groupClicked(checkable, group, editType) })
+                val adapter = GroupExpandableRecyclerViewAdapter(setDrawable, actionModeCallback, groupMap, nonEmptyGroups,(groupExpandableGroupMap + extraGroupExpandableGroupMap).sorted(), { checkable: Checkable, person: Person -> personClicked(checkable, person) }, { checkable: Checkable, group: Group, editType: GroupEditType -> groupClicked(checkable, group, editType) })
                 binding.personRv.adapter = adapter
 
                 add_fab.visibility = View.VISIBLE
@@ -182,26 +179,25 @@ class ManagementFragment : Fragment(), DIAware {
 
     private fun groupClicked(checkable: Checkable, group: Group, editType: GroupEditType) {
 
-        if (actionModeCallback.multiSelect == ManagementFragmentActionModeCallBack.SelectType.GROUP) {
-            if (editType == GroupEditType.CHECK) {
+        if (editType == GroupEditType.CHECK && actionModeCallback.multiSelect == ManagementFragmentActionModeCallBack.SelectType.GROUP) {
 
-                val isChecked = !checkable.isChecked
-                if (isChecked)
-                    selectedGroups.add(group)
-                else
-                    selectedGroups.remove(group)
-                checkable.isChecked = isChecked
+            val isChecked = !checkable.isChecked
+            if (isChecked)
+                selectedGroups.add(group)
+            else
+                selectedGroups.remove(group)
+            checkable.isChecked = isChecked
 
-                val menu = actionMode?.menu
-                menu?.findItem(R.id.action_delete)?.isVisible = selectedGroups.size > 0
-                menu?.findItem(R.id.action_move)?.isVisible = false
+            val menu = actionMode?.menu
+            menu?.findItem(R.id.action_delete)?.isVisible = selectedGroups.isNotEmpty()
+            menu?.findItem(R.id.action_move)?.isVisible = false
 
-                actionMode?.title = selectedGroups.size.toString()
-            } else if (editType == GroupEditType.EDIT) {
-                GroupEditorDialogFragment.newInstance(true, getString(R.string.editing, group.name), group).show(activity?.supportFragmentManager!!, GroupEditorDialogFragment.TAG)
-                actionMode?.finish()
-            }
+            actionMode?.title = selectedGroups.size.toString()
+        } else if (editType == GroupEditType.EDIT) {
+            GroupEditorDialogFragment.newInstance(true, getString(R.string.editing, group.name), group).show(activity?.supportFragmentManager!!, GroupEditorDialogFragment.TAG)
+            actionMode?.finish()
         }
+
 
     }
 

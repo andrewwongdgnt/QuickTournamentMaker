@@ -97,7 +97,7 @@ class PersonEditorDialogFragment : DialogFragment() , DIAware {
         val builder = AlertDialog.Builder(activity)
             .setTitle(arguments?.getString(KEY_TITLE))
             .setView(binding.root)
-            .setPositiveButton(if (editing) R.string.edit else R.string.add, null)
+            .setPositiveButton(if (editing) R.string.save else R.string.add, null)
             .setNegativeButton(android.R.string.cancel, null)
         if (arguments?.getBoolean(KEY_EDITING) != true) {
             builder.setNeutralButton(R.string.addAndContinue, null)
