@@ -261,4 +261,6 @@
     <string name="deleteThenMovePlayers">Delete then move players</string>
     <string name="general">General</string>
     <string name="players">Players</string>
+    <string name="expandAll">Expand all</string>
+    <string name="collapseAll">Collapse all</string>
 </resources>

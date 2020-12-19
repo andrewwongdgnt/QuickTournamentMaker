@@ -17,6 +17,7 @@ import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.ManagementFragmentBinding
 import com.dgnt.quickTournamentMaker.model.management.Group
 import com.dgnt.quickTournamentMaker.model.management.Person
+import com.dgnt.quickTournamentMaker.util.update
 import kotlinx.android.synthetic.main.management_fragment.*
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
@@ -38,6 +39,9 @@ class ManagementFragment : Fragment(), DIAware {
 
     private val selectedPersons = mutableSetOf<Person>()
     private val selectedGroups = mutableSetOf<Group>()
+    private val groupMap = mutableMapOf<String, Group>()
+    private val nonEmptyGroups = mutableSetOf<Group>()
+    private val personGroups = mutableListOf<GroupExpandableGroup>()
     private lateinit var actionModeCallback: ManagementFragmentActionModeCallBack
     private lateinit var binding: ManagementFragmentBinding
     private lateinit var viewModel: ManagementViewModel
@@ -109,6 +113,8 @@ class ManagementFragment : Fragment(), DIAware {
             }
         }
 
+
+
         viewModel.personAndGroupLiveData.observe(viewLifecycleOwner, Observer { (persons, groups) ->
 
             Log.d("DGNTTAG", "person: $persons")
@@ -116,15 +122,24 @@ class ManagementFragment : Fragment(), DIAware {
 
             try {
                 this.groups = groups.map { Group.fromEntity(it) }.sorted()
-                val groupMap = groups.map { it.name to Group.fromEntity(it) }.toMap()
+                groupMap.update(groups.map { it.name to Group.fromEntity(it) }.toMap())
 
                 personToGroupNameMap = persons.map { Person.fromEntity(it) to groupMap.getValue(it.groupName) }.toMap()
-                val nonEmptyGroups = groups.filter { group -> persons.any { it.groupName == group.name } }.map { Group.fromEntity(it) }.toSet()
+                nonEmptyGroups.update(groups.filter { group -> persons.any { it.groupName == group.name } }.map { Group.fromEntity(it) }.toSet())
+
                 val extraGroupExpandableGroupMap = this.groups.map { it.name }.subtract(persons.map { it.groupName }.toSet()).map { GroupExpandableGroup(it, listOf()) }
                 val groupExpandableGroupMap = persons.groupBy { it.groupName }.map { it.key to it.value.map { Person.fromEntity(it) } }.map { GroupExpandableGroup(it.first, it.second.sorted()) }
 
-                val adapter = GroupExpandableRecyclerViewAdapter(setDrawable, actionModeCallback, groupMap, nonEmptyGroups,(groupExpandableGroupMap + extraGroupExpandableGroupMap).sorted(), { checkable: Checkable, person: Person -> personClicked(checkable, person) }, { checkable: Checkable, group: Group, editType: GroupEditType -> groupClicked(checkable, group, editType) })
-                binding.personRv.adapter = adapter
+                personGroups.update((groupExpandableGroupMap + extraGroupExpandableGroupMap).sorted())
+
+              //  if (binding.personRv.adapter !is GroupExpandableRecyclerViewAdapter) {
+
+                    val adapter = GroupExpandableRecyclerViewAdapter(setDrawable, actionModeCallback, groupMap, nonEmptyGroups, personGroups, { checkable: Checkable, person: Person -> personClicked(checkable, person) }, { checkable: Checkable, group: Group, editType: GroupEditType -> groupClicked(checkable, group, editType) })
+                    binding.personRv.adapter = adapter
+
+               // } else {
+                //    (binding.personRv.adapter as GroupExpandableRecyclerViewAdapter).notifyDataSetChanged()
+              //  }
 
                 add_fab.visibility = View.VISIBLE
             } catch (e: Exception) {
@@ -132,6 +147,18 @@ class ManagementFragment : Fragment(), DIAware {
                 Log.e("DGNTTAG", "Something happened (Probably groups didn't resolve yet) so just do nothing and hope the next observed event fixes it")
             }
         })
+
+        viewModel.expandAll.observe(viewLifecycleOwner, Observer {
+
+            val adapter = binding.personRv.adapter as GroupExpandableRecyclerViewAdapter
+            adapter.groups.forEach { g ->
+                if ((it && !adapter.isGroupExpanded(g)) || (!it && adapter.isGroupExpanded(g))) {
+                    adapter.toggleGroup(g)
+                }
+            }
+
+        })
+
     }
 
     private fun add() = AddChoiceDialogFragment.newInstance(groups).show(activity?.supportFragmentManager!!, AddChoiceDialogFragment.TAG)

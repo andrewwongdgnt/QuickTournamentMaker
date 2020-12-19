@@ -1,12 +1,20 @@
 package com.dgnt.quickTournamentMaker.ui.main.management
 
+import androidx.databinding.Bindable
 import androidx.databinding.Observable
 import androidx.lifecycle.*
-import com.dgnt.quickTournamentMaker.data.management.*
+import com.dgnt.quickTournamentMaker.data.management.GroupEntity
+import com.dgnt.quickTournamentMaker.data.management.IGroupRepository
+import com.dgnt.quickTournamentMaker.data.management.IPersonRepository
+import com.dgnt.quickTournamentMaker.data.management.PersonEntity
 import com.dgnt.quickTournamentMaker.util.Event
 import kotlinx.coroutines.launch
 
 class ManagementViewModel(private val personRepository: IPersonRepository, groupRepository: IGroupRepository) : ViewModel(), Observable {
+
+
+    @Bindable
+    val expandAll = MutableLiveData<Boolean>()
 
     private val _messageEvent = MutableLiveData<Event<String>>()
     val messageEvent: LiveData<Event<String>>
@@ -38,6 +46,13 @@ class ManagementViewModel(private val personRepository: IPersonRepository, group
         _messageEvent.value = Event(successMsg)
     }
 
+    fun expandAll() {
+        expandAll.value = true
+    }
+
+    fun collapseAll() {
+        expandAll.value = false
+    }
 
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
     }
