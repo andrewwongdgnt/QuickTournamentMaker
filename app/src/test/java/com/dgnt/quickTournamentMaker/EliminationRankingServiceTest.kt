@@ -1,6 +1,9 @@
 package com.dgnt.quickTournamentMaker
 
-import com.dgnt.quickTournamentMaker.model.tournament.*
+import com.dgnt.quickTournamentMaker.model.tournament.MatchUp
+import com.dgnt.quickTournamentMaker.model.tournament.Participant
+import com.dgnt.quickTournamentMaker.model.tournament.Round
+import com.dgnt.quickTournamentMaker.model.tournament.RoundGroup
 import com.dgnt.quickTournamentMaker.service.implementation.EliminationRankingService
 import com.dgnt.quickTournamentMaker.service.interfaces.IEliminationRankingHelperService
 import org.junit.Before
@@ -14,7 +17,7 @@ class EliminationRankingServiceTest {
 
     private val sut = EliminationRankingService(mockEliminationRankingHelperService)
 
-    private lateinit var rounds:List<Round>
+    private lateinit var rounds: List<Round>
 
     @Before
     fun setUp() {
@@ -35,7 +38,9 @@ class EliminationRankingServiceTest {
 
     @Test
     fun testRoundGroupSplitting() {
-        Mockito.verify(mockEliminationRankingHelperService, Mockito.times(1)).calculate(rounds,rounds.dropLast(1),rounds.takeLast(1))
+        Mockito.verify(mockEliminationRankingHelperService, Mockito.times(1)).calculate(rounds, rounds.dropLast(1), rounds.takeLast(1))
     }
+
+
 
 }

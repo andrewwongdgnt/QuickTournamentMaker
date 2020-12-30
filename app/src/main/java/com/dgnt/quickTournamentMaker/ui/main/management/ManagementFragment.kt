@@ -18,6 +18,8 @@ import com.dgnt.quickTournamentMaker.databinding.ManagementFragmentBinding
 import com.dgnt.quickTournamentMaker.model.management.Group
 import com.dgnt.quickTournamentMaker.model.management.Person
 import com.dgnt.quickTournamentMaker.util.update
+import com.thoughtbot.expandablerecyclerview.listeners.GroupExpandCollapseListener
+import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup
 import kotlinx.android.synthetic.main.management_fragment.*
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
@@ -37,6 +39,7 @@ class ManagementFragment : Fragment(), DIAware {
         EDIT, CHECK
     }
 
+    private val groupsExpanded = mutableSetOf<String>()
     private val selectedPersons = mutableSetOf<Person>()
     private val selectedGroups = mutableSetOf<Group>()
     private val groupMap = mutableMapOf<String, Group>()
@@ -122,24 +125,37 @@ class ManagementFragment : Fragment(), DIAware {
 
             try {
                 this.groups = groups.map { Group.fromEntity(it) }.sorted()
+
                 groupMap.update(groups.map { it.name to Group.fromEntity(it) }.toMap())
 
                 personToGroupNameMap = persons.map { Person.fromEntity(it) to groupMap.getValue(it.groupName) }.toMap()
                 nonEmptyGroups.update(groups.filter { group -> persons.any { it.groupName == group.name } }.map { Group.fromEntity(it) }.toSet())
 
-                val extraGroupExpandableGroupMap = this.groups.map { it.name }.subtract(persons.map { it.groupName }.toSet()).map { GroupExpandableGroup(it, listOf()) }
+                val emptyGroupExpandableGroupMap = this.groups.map { it.name }.subtract(persons.map { it.groupName }.toSet()).map { GroupExpandableGroup(it, listOf()) }
                 val groupExpandableGroupMap = persons.groupBy { it.groupName }.map { it.key to it.value.map { Person.fromEntity(it) } }.map { GroupExpandableGroup(it.first, it.second.sorted()) }
 
-                personGroups.update((groupExpandableGroupMap + extraGroupExpandableGroupMap).sorted())
+                personGroups.update((groupExpandableGroupMap + emptyGroupExpandableGroupMap).sorted())
 
-              //  if (binding.personRv.adapter !is GroupExpandableRecyclerViewAdapter) {
+                groupsExpanded.removeAll(groupsExpanded.minus(groupMap.map{it.key}))
 
-                    val adapter = GroupExpandableRecyclerViewAdapter(setDrawable, actionModeCallback, groupMap, nonEmptyGroups, personGroups, { checkable: Checkable, person: Person -> personClicked(checkable, person) }, { checkable: Checkable, group: Group, editType: GroupEditType -> groupClicked(checkable, group, editType) })
-                    binding.personRv.adapter = adapter
+                val adapter = GroupExpandableRecyclerViewAdapter(setDrawable, actionModeCallback, groupMap, nonEmptyGroups, personGroups, { checkable: Checkable, person: Person -> personClicked(checkable, person) }, { checkable: Checkable, group: Group, editType: GroupEditType -> groupClicked(checkable, group, editType) })
+                adapter.setOnGroupExpandCollapseListener(object : GroupExpandCollapseListener {
+                    override fun onGroupExpanded(group: ExpandableGroup<*>) {
+                        groupsExpanded.add(group.title)
+                    }
 
-               // } else {
-                //    (binding.personRv.adapter as GroupExpandableRecyclerViewAdapter).notifyDataSetChanged()
-              //  }
+                    override fun onGroupCollapsed(group: ExpandableGroup<*>) {
+                        groupsExpanded.remove(group.title)
+                    }
+
+                })
+                binding.personRv.adapter = adapter
+                adapter.groups.forEach { g ->
+                    if (groupsExpanded.contains(g.title))
+                        adapter.toggleGroup(g)
+                }
+
+
 
                 add_fab.visibility = View.VISIBLE
             } catch (e: Exception) {
