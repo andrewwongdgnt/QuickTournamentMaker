@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -31,9 +32,9 @@ class HomeFragment : Fragment(), DIAware {
     }
 
     private val groupsExpanded = mutableSetOf<String>()
-    private val selectedPersons = mutableSetOf<String>()
     private val selectedGroups = mutableSetOf<String>()
     private lateinit var allGroups: List<GroupCheckedExpandableGroup>
+    private lateinit var personToGroupNameMap: Map<String, String>
     private lateinit var binding: HomeFragmentBinding
     private lateinit var viewModel: HomeViewModel
     override fun onCreateView(
@@ -90,13 +91,14 @@ class HomeFragment : Fragment(), DIAware {
         viewModel.personAndGroupLiveData.observe(viewLifecycleOwner, Observer { (persons, groupEntities) ->
 
             val groups = groupEntities.map { Group.fromEntity(it) }.sorted()
+            personToGroupNameMap = persons.map { it.name to it.groupName }.toMap()
 
             val emptyGroupExpandableGroupMap = groups.map { it.name }.subtract(persons.map { it.groupName }.toSet()).map { GroupCheckedExpandableGroup(it, listOf()) }
             val groupExpandableGroupMap = persons.groupBy { it.groupName }.map { it.key to it.value.map { Person.fromEntity(it) } }.map { GroupCheckedExpandableGroup(it.first, it.second.sorted()) }
             allGroups = (groupExpandableGroupMap + emptyGroupExpandableGroupMap).sorted()
             groupsExpanded.removeAll(groupsExpanded.minus(groups.map { it.key }))
 
-            val adapter = GroupCheckedExpandableRecyclerViewAdapter(allGroups, selectedPersons, selectedGroups, { person: String, checked: Boolean -> personClicked(person, checked) }, {group:String, checked:Boolean -> groupClicked(group, checked)})
+            val adapter = GroupCheckedExpandableRecyclerViewAdapter(allGroups, selectedGroups, ResourcesCompat.getColor(resources,R.color.colorAccent,null), { person: String -> personClicked(person) }, { group: String, checked: Boolean -> groupClicked(group, checked) })
             adapter.setOnGroupExpandCollapseListener(object : GroupExpandCollapseListener {
                 override fun onGroupExpanded(group: ExpandableGroup<*>) {
                     groupsExpanded.add(group.title)
@@ -119,18 +121,31 @@ class HomeFragment : Fragment(), DIAware {
     }
 
     private fun groupClicked(group: String, checked: Boolean) {
-        if (checked)
+
+        val theGroup = allGroups.find { it.title == group }
+        if (checked) {
             selectedGroups.add(group)
-        else
+            theGroup?.checkSelections()
+        } else {
             selectedGroups.remove(group)
+            theGroup?.clearSelections()
+        }
+        binding.playerRv.adapter?.notifyDataSetChanged()
     }
 
 
-    private fun personClicked(person: String, checked: Boolean) {
-        if (checked)
-            selectedPersons.add(person)
-        else
-            selectedPersons.remove(person)
+    private fun personClicked(person: String) {
+        val groupName = personToGroupNameMap[person]
+        if (groupName != null) {
+            val theGroup = allGroups.find { it.title == groupName }
+
+            if (theGroup?.selectedChildren?.all { it } == true) {
+                selectedGroups.add(groupName)
+            } else  {
+                selectedGroups.remove(groupName)
+            }
+            binding.playerRv.adapter?.notifyDataSetChanged()
+        }
     }
 
 }
