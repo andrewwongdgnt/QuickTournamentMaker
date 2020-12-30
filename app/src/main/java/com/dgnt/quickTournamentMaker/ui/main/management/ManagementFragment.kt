@@ -134,7 +134,7 @@ class ManagementFragment : Fragment(), DIAware {
 
                 groupsExpanded.removeAll(groupsExpanded.minus(groupMap.map { it.key }))
 
-                val adapter = GroupExpandableRecyclerViewAdapter(setDrawable, actionModeCallback, groupMap, nonEmptyGroups, personGroups, { checkable: Checkable, person: Person -> personClicked(checkable, person) }, { checkable: Checkable, group: Group, editType: GroupEditType -> groupClicked(checkable, group, editType) })
+                val adapter = GroupExpandableRecyclerViewAdapter(setDrawable, actionModeCallback, selectedPersons, selectedGroups, groupMap, nonEmptyGroups, personGroups, { checkable: Checkable, person: Person -> personClicked(checkable, person) }, { checkable: Checkable, group: Group, editType: GroupEditType -> groupClicked(checkable, group, editType) })
                 adapter.setOnGroupExpandCollapseListener(object : GroupExpandCollapseListener {
                     override fun onGroupExpanded(group: ExpandableGroup<*>) {
                         groupsExpanded.add(group.title)

@@ -13,6 +13,8 @@ import com.dgnt.quickTournamentMaker.databinding.HomeFragmentBinding
 import com.dgnt.quickTournamentMaker.model.management.Group
 import com.dgnt.quickTournamentMaker.model.management.Person
 import com.dgnt.quickTournamentMaker.ui.layout.NonScrollingLinearLayoutManager
+import com.thoughtbot.expandablerecyclerview.listeners.GroupExpandCollapseListener
+import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup
 import kotlinx.android.synthetic.main.component_tournament_type_editor.*
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
@@ -28,9 +30,12 @@ class HomeFragment : Fragment(), DIAware {
         fun newInstance() = HomeFragment()
     }
 
+    private val groupsExpanded = mutableSetOf<String>()
+    private val selectedPersons = mutableSetOf<String>()
+    private val selectedGroups = mutableSetOf<String>()
+    private lateinit var allGroups: List<GroupCheckedExpandableGroup>
     private lateinit var binding: HomeFragmentBinding
     private lateinit var viewModel: HomeViewModel
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -86,19 +91,46 @@ class HomeFragment : Fragment(), DIAware {
 
             val groups = groupEntities.map { Group.fromEntity(it) }.sorted()
 
-            val extraGroupExpandableGroupMap = groups.map { it.name }.subtract(persons.map { it.groupName }.toSet()).map { GroupCheckedExpandableGroup(it, listOf()) }
+            val emptyGroupExpandableGroupMap = groups.map { it.name }.subtract(persons.map { it.groupName }.toSet()).map { GroupCheckedExpandableGroup(it, listOf()) }
             val groupExpandableGroupMap = persons.groupBy { it.groupName }.map { it.key to it.value.map { Person.fromEntity(it) } }.map { GroupCheckedExpandableGroup(it.first, it.second.sorted()) }
+            allGroups = (groupExpandableGroupMap + emptyGroupExpandableGroupMap).sorted()
+            groupsExpanded.removeAll(groupsExpanded.minus(groups.map { it.key }))
 
+            val adapter = GroupCheckedExpandableRecyclerViewAdapter(allGroups, selectedPersons, selectedGroups, { person: String, checked: Boolean -> personClicked(person, checked) }, {group:String, checked:Boolean -> groupClicked(group, checked)})
+            adapter.setOnGroupExpandCollapseListener(object : GroupExpandCollapseListener {
+                override fun onGroupExpanded(group: ExpandableGroup<*>) {
+                    groupsExpanded.add(group.title)
+                }
 
+                override fun onGroupCollapsed(group: ExpandableGroup<*>) {
+                    groupsExpanded.remove(group.title)
+                }
 
-
-            val adapter = GroupCheckedExpandableRecyclerViewAdapter((groupExpandableGroupMap + extraGroupExpandableGroupMap).sorted())
-            adapter.groups
+            })
             binding.playerRv.adapter = adapter
+            adapter.groups.forEach { g ->
+                if (groupsExpanded.contains(g.title))
+                    adapter.toggleGroup(g)
+            }
+
 
         })
 
     }
 
+    private fun groupClicked(group: String, checked: Boolean) {
+        if (checked)
+            selectedGroups.add(group)
+        else
+            selectedGroups.remove(group)
+    }
+
+
+    private fun personClicked(person: String, checked: Boolean) {
+        if (checked)
+            selectedPersons.add(person)
+        else
+            selectedPersons.remove(person)
+    }
 
 }
