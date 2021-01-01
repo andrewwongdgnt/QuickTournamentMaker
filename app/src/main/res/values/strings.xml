@@ -263,4 +263,6 @@
     <string name="players">Players</string>
     <string name="expandAll">Expand all</string>
     <string name="collapseAll">Collapse all</string>
+    <string name="selectAll">Select all</string>
+    <string name="deselectAll">Deselect all</string>
 </resources>

@@ -14,6 +14,7 @@ import com.dgnt.quickTournamentMaker.databinding.HomeFragmentBinding
 import com.dgnt.quickTournamentMaker.model.management.Group
 import com.dgnt.quickTournamentMaker.model.management.Person
 import com.dgnt.quickTournamentMaker.ui.layout.NonScrollingLinearLayoutManager
+import com.thoughtbot.expandablecheckrecyclerview.models.CheckedExpandableGroup
 import com.thoughtbot.expandablerecyclerview.listeners.GroupExpandCollapseListener
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup
 import kotlinx.android.synthetic.main.component_tournament_type_editor.*
@@ -49,88 +50,118 @@ class HomeFragment : Fragment(), DIAware {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        if (context == null) {
-            return
-        }
+        val fragment = this
+        context?.apply {
+            viewModel = ViewModelProvider(fragment, viewModelFactory).get(HomeViewModel::class.java)
+            binding.vm = viewModel
 
-        viewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
-        binding.vm = viewModel
+            binding.lifecycleOwner = fragment
 
-        binding.lifecycleOwner = this
-        viewModel.tournamentType.value = elimination_rb.id
-        viewModel.seedType.value = randomSeed_rb.id
-        sameSeed_rb.visibility = View.GONE
-        viewModel.tournamentType.observe(viewLifecycleOwner, Observer {
-            viewModel.showRankConfig.value = when (it) {
-                elimination_rb.id, doubleElimination_rb.id, survival_rb.id -> false
-                else -> true
-            }
-            viewModel.showSeedType.value = when (it) {
-                survival_rb.id -> false
-                else -> true
-            }
+            viewModel.numberOfPlayers.value = getString(R.string.numberOfPlayersSelected, 0)
 
-            viewModel.handleTournamentTypeChange(it, roundRobin_rb.id, swiss_rb.id, compareRankFromPriority_rb.id, compareRankFromScore_rb.id)
-
-
-        })
-        viewModel.rankConfig.observe(viewLifecycleOwner, Observer {
-            viewModel.showPriorityContent.value = it == compareRankFromPriority_rb.id
-
-            viewModel.showScoringContent.value = it == compareRankFromScore_rb.id
-
-            viewModel.handleRankConfigChange(it == compareRankFromPriority_rb.id, roundRobin_rb.id, swiss_rb.id)
-        })
-
-        viewModel.scoreConfigLiveData.observe(viewLifecycleOwner, Observer {
-            viewModel.handleScoreConfigChange(it.first, it.second, it.third, roundRobin_rb.id, swiss_rb.id)
-        })
-
-        binding.playerRv.layoutManager = NonScrollingLinearLayoutManager(context!!)
-
-        viewModel.personAndGroupLiveData.observe(viewLifecycleOwner, Observer { (persons, groupEntities) ->
-
-            val groups = groupEntities.map { Group.fromEntity(it) }.sorted()
-            personToGroupNameMap = persons.map { it.name to it.groupName }.toMap()
-
-            val emptyGroupExpandableGroupMap = groups.map { it.name }.subtract(persons.map { it.groupName }.toSet()).map { GroupCheckedExpandableGroup(it, listOf()) }
-            val groupExpandableGroupMap = persons.groupBy { it.groupName }.map { it.key to it.value.map { Person.fromEntity(it) } }.map { GroupCheckedExpandableGroup(it.first, it.second.sorted()) }
-            allGroups = (groupExpandableGroupMap + emptyGroupExpandableGroupMap).sorted()
-            groupsExpanded.removeAll(groupsExpanded.minus(groups.map { it.key }))
-
-            val adapter = GroupCheckedExpandableRecyclerViewAdapter(allGroups, selectedGroups, ResourcesCompat.getColor(resources,R.color.colorAccent,null), { person: String -> personClicked(person) }, { group: String, checked: Boolean -> groupClicked(group, checked) })
-            adapter.setOnGroupExpandCollapseListener(object : GroupExpandCollapseListener {
-                override fun onGroupExpanded(group: ExpandableGroup<*>) {
-                    groupsExpanded.add(group.title)
+            viewModel.tournamentType.value = elimination_rb.id
+            viewModel.seedType.value = randomSeed_rb.id
+            sameSeed_rb.visibility = View.GONE
+            viewModel.tournamentType.observe(viewLifecycleOwner, Observer {
+                viewModel.showRankConfig.value = when (it) {
+                    elimination_rb.id, doubleElimination_rb.id, survival_rb.id -> false
+                    else -> true
+                }
+                viewModel.showSeedType.value = when (it) {
+                    survival_rb.id -> false
+                    else -> true
                 }
 
-                override fun onGroupCollapsed(group: ExpandableGroup<*>) {
-                    groupsExpanded.remove(group.title)
+                viewModel.handleTournamentTypeChange(it, roundRobin_rb.id, swiss_rb.id, compareRankFromPriority_rb.id, compareRankFromScore_rb.id)
+
+
+            })
+            viewModel.rankConfig.observe(viewLifecycleOwner, Observer {
+                viewModel.showPriorityContent.value = it == compareRankFromPriority_rb.id
+
+                viewModel.showScoringContent.value = it == compareRankFromScore_rb.id
+
+                viewModel.handleRankConfigChange(it == compareRankFromPriority_rb.id, roundRobin_rb.id, swiss_rb.id)
+            })
+
+            viewModel.scoreConfigLiveData.observe(viewLifecycleOwner, Observer {
+                viewModel.handleScoreConfigChange(it.first, it.second, it.third, roundRobin_rb.id, swiss_rb.id)
+            })
+
+            binding.playerRv.layoutManager = NonScrollingLinearLayoutManager(this)
+
+            viewModel.personAndGroupLiveData.observe(viewLifecycleOwner, Observer { (persons, groupEntities) ->
+
+                val groups = groupEntities.map { Group.fromEntity(it) }.sorted()
+                personToGroupNameMap = persons.map { it.name to it.groupName }.toMap()
+
+                val emptyGroupExpandableGroupMap = groups.map { it.name }.subtract(persons.map { it.groupName }.toSet()).map { GroupCheckedExpandableGroup(it, listOf()) }
+                val groupExpandableGroupMap = persons.groupBy { it.groupName }.map { it.key to it.value.map { Person.fromEntity(it) } }.map { GroupCheckedExpandableGroup(it.first, it.second.sorted()) }
+                allGroups = (groupExpandableGroupMap + emptyGroupExpandableGroupMap).sorted()
+                groupsExpanded.removeAll(groupsExpanded.minus(groups.map { it.key }))
+
+                val adapter = GroupCheckedExpandableRecyclerViewAdapter(allGroups, selectedGroups, ResourcesCompat.getColor(resources, R.color.colorAccent, null), { person: String -> personClicked(person) }, { group: String, checked: Boolean -> groupClicked(group, checked) })
+                adapter.setOnGroupExpandCollapseListener(object : GroupExpandCollapseListener {
+                    override fun onGroupExpanded(group: ExpandableGroup<*>) {
+                        groupsExpanded.add(group.title)
+                    }
+
+                    override fun onGroupCollapsed(group: ExpandableGroup<*>) {
+                        groupsExpanded.remove(group.title)
+                    }
+
+                })
+                binding.playerRv.adapter = adapter
+                adapter.groups.forEach { g ->
+                    if (groupsExpanded.contains(g.title))
+                        adapter.toggleGroup(g)
+                }
+
+
+            })
+
+            viewModel.expandAll.observe(viewLifecycleOwner, Observer {
+
+                val adapter = binding.playerRv.adapter as GroupCheckedExpandableRecyclerViewAdapter
+                adapter.groups.forEach { g ->
+                    if ((it && !adapter.isGroupExpanded(g)) || (!it && adapter.isGroupExpanded(g))) {
+                        adapter.toggleGroup(g)
+                    }
                 }
 
             })
-            binding.playerRv.adapter = adapter
-            adapter.groups.forEach { g ->
-                if (groupsExpanded.contains(g.title))
-                    adapter.toggleGroup(g)
-            }
+
+            viewModel.selectAll.observe(viewLifecycleOwner, Observer {
+
+                val adapter = binding.playerRv.adapter as GroupCheckedExpandableRecyclerViewAdapter
+                adapter.groups.forEach { g ->
+                    selectGroup(g as GroupCheckedExpandableGroup, it)
+                }
+
+            })
+        }
 
 
-        })
+    }
 
+    private fun selectGroup(group: GroupCheckedExpandableGroup, checked: Boolean) {
+        if (checked) {
+            selectedGroups.add(group.title)
+            group.checkSelections()
+        } else {
+            selectedGroups.remove(group.title)
+            group.clearSelections()
+        }
+        update()
     }
 
     private fun groupClicked(group: String, checked: Boolean) {
 
-        val theGroup = allGroups.find { it.title == group }
-        if (checked) {
-            selectedGroups.add(group)
-            theGroup?.checkSelections()
-        } else {
-            selectedGroups.remove(group)
-            theGroup?.clearSelections()
+        allGroups.find { it.title == group }?.let {
+            selectGroup(it, checked)
         }
-        binding.playerRv.adapter?.notifyDataSetChanged()
+
+
     }
 
 
@@ -141,11 +172,17 @@ class HomeFragment : Fragment(), DIAware {
 
             if (theGroup?.selectedChildren?.all { it } == true) {
                 selectedGroups.add(groupName)
-            } else  {
+            } else {
                 selectedGroups.remove(groupName)
             }
-            binding.playerRv.adapter?.notifyDataSetChanged()
+            update()
         }
+    }
+
+    private fun update(){
+        val adapter = binding.playerRv.adapter as GroupCheckedExpandableRecyclerViewAdapter
+        adapter.notifyDataSetChanged()
+        viewModel.numberOfPlayers.value = getString(R.string.numberOfPlayersSelected, adapter.groups.map { it as CheckedExpandableGroup }.fold(0, { acc, e -> e.selectedChildren.filter { it }.size + acc }))
     }
 
 }

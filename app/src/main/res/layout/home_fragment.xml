@@ -65,30 +65,66 @@
                             android:checked="@={vm.quickStart}"
                             android:text="@string/quickStart" />
 
+
+                    <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/numberOfPlayers"
+                            android:inputType="number"
+                            android:singleLine="true"
+                            android:visibility="@{vm.quickStart ? View.VISIBLE : View.GONE}" />
+
                     <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:visibility="@{vm.quickStart ? View.VISIBLE : View.GONE}">
+                            android:orientation="vertical"
+                            android:visibility="@{vm.quickStart ? View.GONE : View.VISIBLE}">
 
-                        <EditText
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="@={vm.numberOfPlayers}" />
+
+                        <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="@string/numberOfPlayers"
-                                android:inputType="number"
-                                android:singleLine="true"
-                                android:text="@={vm.numberOfPlayers}" />
-                    </LinearLayout>
+                                android:orientation="horizontal">
 
-                    <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:visibility="@{vm.quickStart ? View.GONE : View.VISIBLE}">
+                            <Button
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_vertical"
+                                    android:onClick="@{() -> vm.expandAll()}"
+                                    android:text="@string/expandAll" />
+
+                            <Button
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_vertical"
+                                    android:onClick="@{() -> vm.collapseAll()}"
+                                    android:text="@string/collapseAll" />
+
+                            <Button
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_vertical"
+                                    android:onClick="@{() -> vm.selectAll()}"
+                                    android:text="@string/selectAll" />
+
+                            <Button
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_vertical"
+                                    android:onClick="@{() -> vm.deselectAll()}"
+                                    android:text="@string/deselectAll" />
+                        </LinearLayout>
 
                         <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/player_rv"
 
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"/>
+                                android:layout_height="match_parent" />
                     </LinearLayout>
 
                 </com.dgnt.quickTournamentMaker.ui.layout.TitledLinearLayout>

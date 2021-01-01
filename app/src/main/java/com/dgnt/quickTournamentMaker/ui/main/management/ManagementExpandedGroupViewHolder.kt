@@ -31,7 +31,7 @@ class ManagementExpandedGroupViewHolder(private val binding: GroupItemBinding, p
         }
         itemView.section_header_iv.setOnClickListener {
             if (!selectableGroup)
-                clickListener(binding.sectionHeaderCtv, group, ManagementFragment.GroupEditType.EDIT) else null
+                clickListener(binding.sectionHeaderCtv, group, ManagementFragment.GroupEditType.EDIT)
         }
     }
 

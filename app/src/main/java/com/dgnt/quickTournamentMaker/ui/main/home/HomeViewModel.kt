@@ -80,6 +80,12 @@ class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroup
     @Bindable
     val numberOfPlayers = MutableLiveData<String>()
 
+    @Bindable
+    val expandAll = MutableLiveData<Boolean>()
+
+    @Bindable
+    val selectAll = MutableLiveData<Boolean>()
+
     val scoreConfigLiveData: LiveData<Triple<Int, Int, Int>> =
         object : MediatorLiveData<Triple<Int, Int, Int>>() {
             var win: Int? = null
@@ -165,5 +171,20 @@ class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroup
             preferenceService.setRankScore(tournamentType, RankScoreConfig(win * 0.5f, loss * 0.5f, tie * 0.5f))
     }
 
+    fun expandAll() {
+        expandAll.value = true
+    }
+
+    fun collapseAll() {
+        expandAll.value = false
+    }
+
+    fun selectAll() {
+        selectAll.value = true
+    }
+
+    fun deselectAll() {
+        selectAll.value = false
+    }
 
 }
