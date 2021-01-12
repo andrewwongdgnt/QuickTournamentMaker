@@ -73,7 +73,7 @@ class HomeFragment : Fragment(), DIAware {
                 }
 
                 viewModel.handleTournamentTypeChange(it, roundRobin_rb.id, swiss_rb.id, compareRankFromPriority_rb.id, compareRankFromScore_rb.id)
-
+                viewModel.handleRankConfigHelpMsgChange(it, roundRobin_rb.id, swiss_rb.id, getString(R.string.rankConfigurationHelpMsg, getString(R.string.rankConfigurationForRoundRobinHelpMsg)),getString(R.string.rankConfigurationHelpMsg, getString(R.string.rankConfigurationForSwissHelpMsg)))
 
             })
             viewModel.rankConfig.observe(viewLifecycleOwner, Observer {

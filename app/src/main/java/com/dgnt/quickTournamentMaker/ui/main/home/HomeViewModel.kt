@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.data.management.GroupEntity
 import com.dgnt.quickTournamentMaker.data.management.IGroupRepository
 import com.dgnt.quickTournamentMaker.data.management.IPersonRepository
@@ -49,6 +50,9 @@ class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroup
 
     @Bindable
     override val rankConfig = MutableLiveData<Int>()
+
+    @Bindable
+    override val rankConfigHelpMsg = MutableLiveData<String>()
 
     @Bindable
     override val seedType = MutableLiveData<Int>()
@@ -136,6 +140,16 @@ class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroup
         if (isRankingBasedOnPriority != null)
             rankConfig.value = if (isRankingBasedOnPriority) compareRankFromPriorityRadioButtonId else compareRankFromScoreRadioButton
 
+
+    }
+
+    fun handleRankConfigHelpMsgChange(radioButtonId: Int, roundRobinRadioButtonId: Int, swissRadioButtonId: Int, rankConfigurationForRoundRobinHelpMsg:String, rankConfigurationForSwissHelpMsg:String){
+
+        if (radioButtonId == roundRobinRadioButtonId) {
+            rankConfigHelpMsg.value =  rankConfigurationForRoundRobinHelpMsg
+        } else if (radioButtonId == swissRadioButtonId) {
+            rankConfigHelpMsg.value =  rankConfigurationForSwissHelpMsg
+        }
     }
 
     fun handleRankConfigChange(value: Boolean, roundRobinRadioButtonId: Int, swissRadioButtonId: Int) {

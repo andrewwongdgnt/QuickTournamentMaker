@@ -8,6 +8,7 @@ interface TournamentTypeEditorViewModel {
 
     val tournamentType:MutableLiveData<Int>
     val rankConfig:MutableLiveData<Int>
+    val rankConfigHelpMsg:MutableLiveData<String>
     val seedType:MutableLiveData<Int>
     val showRankConfig:MutableLiveData<Boolean>
     val showSeedType:MutableLiveData<Boolean>

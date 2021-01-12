@@ -27,5 +27,4 @@ object InverseSpinnerBindings {
     fun Spinner.getSelectedValue(): Any? {
         return getSpinnerValue()
     }
-
 }

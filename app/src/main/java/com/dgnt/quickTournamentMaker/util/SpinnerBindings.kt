@@ -12,15 +12,18 @@ object SpinnerBindings {
     fun Spinner.setEntries(entries: List<Any>?) {
         setSpinnerEntries(entries)
     }
+
     @JvmStatic
     @BindingAdapter("onItemSelected")
     fun Spinner.setOnItemSelectedListener(itemSelectedListener: SpinnerExtensions.ItemSelectedListener?) {
         setSpinnerItemSelectedListener(itemSelectedListener)
     }
+
     @JvmStatic
     @BindingAdapter("newValue")
     fun Spinner.setNewValue(newValue: Any?) {
         setSpinnerValue(newValue)
     }
+
 
 }

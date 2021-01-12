@@ -74,7 +74,7 @@
                 android:orientation="vertical"
                 android:paddingTop="@dimen/standard_gap"
                 android:visibility="@{vm.showRankConfig ? View.VISIBLE : View.GONE}"
-                app:showHelp="true"
+                app:helpText="@{vm.rankConfigHelpMsg}"
                 app:titleText="@string/rankConfiguration">
 
             <RadioGroup
