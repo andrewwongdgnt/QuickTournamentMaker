@@ -6,18 +6,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.data.management.GroupEntity
 import com.dgnt.quickTournamentMaker.data.management.IGroupRepository
 import com.dgnt.quickTournamentMaker.data.management.IPersonRepository
 import com.dgnt.quickTournamentMaker.data.management.PersonEntity
-import com.dgnt.quickTournamentMaker.model.tournament.RankScoreConfig
-import com.dgnt.quickTournamentMaker.model.tournament.TournamentType
 import com.dgnt.quickTournamentMaker.service.interfaces.IPreferenceService
 import com.dgnt.quickTournamentMaker.ui.main.common.TournamentGeneralEditorViewModel
 import com.dgnt.quickTournamentMaker.ui.main.common.TournamentTypeEditorViewModel
 
-class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroupRepository, private val preferenceService: IPreferenceService) : ViewModel(), Observable, TournamentGeneralEditorViewModel, TournamentTypeEditorViewModel {
+class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroupRepository, override val preferenceService: IPreferenceService) : ViewModel(), Observable, TournamentGeneralEditorViewModel, TournamentTypeEditorViewModel {
 
     private val persons = personRepository.getAll()
     private val groups = groupRepository.getAll()
@@ -78,6 +75,8 @@ class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroup
     @Bindable
     override val tieValue = MutableLiveData<Int>()
 
+    val scoreConfigLiveData: LiveData<Triple<Int, Int, Int>> = scoreConfigLiveDataCreator()
+
     @Bindable
     val quickStart = MutableLiveData<Boolean>(true)
 
@@ -89,32 +88,6 @@ class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroup
 
     @Bindable
     val selectAll = MutableLiveData<Boolean>()
-
-    val scoreConfigLiveData: LiveData<Triple<Int, Int, Int>> =
-        object : MediatorLiveData<Triple<Int, Int, Int>>() {
-            var win: Int? = null
-            var loss: Int? = null
-            var tie: Int? = null
-
-            init {
-
-                val getTrip: () -> Triple<Int, Int, Int> = {
-                    Triple(win ?: 0, loss ?: 0, tie ?: 0)
-                }
-                addSource(winValue) {
-                    win = it
-                    value = getTrip()
-                }
-                addSource(lossValue) {
-                    loss = it
-                    value = getTrip()
-                }
-                addSource(tieValue) {
-                    tie = it
-                    value = getTrip()
-                }
-            }
-        }
 
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
     }
@@ -128,61 +101,6 @@ class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroup
         print(title.value)
 
         //TODO remove this later
-    }
-
-    fun handleTournamentTypeChange(radioButtonId: Int, roundRobinRadioButtonId: Int, swissRadioButtonId: Int, compareRankFromPriorityRadioButtonId: Int, compareRankFromScoreRadioButton: Int) {
-        val isRankingBasedOnPriority = when (radioButtonId) {
-            roundRobinRadioButtonId -> preferenceService.isRankingBasedOnPriority(TournamentType.ROUND_ROBIN)
-            swissRadioButtonId -> preferenceService.isRankingBasedOnPriority(TournamentType.SWISS)
-            else -> null
-        }
-
-        if (isRankingBasedOnPriority != null)
-            rankConfig.value = if (isRankingBasedOnPriority) compareRankFromPriorityRadioButtonId else compareRankFromScoreRadioButton
-
-
-    }
-
-    fun handleRankConfigHelpMsgChange(radioButtonId: Int, roundRobinRadioButtonId: Int, swissRadioButtonId: Int, rankConfigurationForRoundRobinHelpMsg:String, rankConfigurationForSwissHelpMsg:String){
-
-        if (radioButtonId == roundRobinRadioButtonId) {
-            rankConfigHelpMsg.value =  rankConfigurationForRoundRobinHelpMsg
-        } else if (radioButtonId == swissRadioButtonId) {
-            rankConfigHelpMsg.value =  rankConfigurationForSwissHelpMsg
-        }
-    }
-
-    fun handleRankConfigChange(value: Boolean, roundRobinRadioButtonId: Int, swissRadioButtonId: Int) {
-        val tournamentType = when (tournamentType.value) {
-
-            roundRobinRadioButtonId -> TournamentType.ROUND_ROBIN
-            swissRadioButtonId -> TournamentType.SWISS
-            else -> null
-        }
-
-        if (tournamentType != null) {
-            preferenceService.setRankingBasedOnPriority(tournamentType, value)
-            if (!value) {
-                val rankScoreConfig = preferenceService.getRankScore(tournamentType)
-                winValue.value = (rankScoreConfig.win * 2).toInt()
-                lossValue.value = (rankScoreConfig.loss * 2).toInt()
-                tieValue.value = (rankScoreConfig.tie * 2).toInt()
-            }
-        }
-    }
-
-
-    fun handleScoreConfigChange(win: Int, loss: Int, tie: Int, roundRobinRadioButtonId: Int, swissRadioButtonId: Int) {
-
-        val tournamentType = when (tournamentType.value) {
-
-            roundRobinRadioButtonId -> TournamentType.ROUND_ROBIN
-            swissRadioButtonId -> TournamentType.SWISS
-            else -> null
-        }
-
-        if (tournamentType != null)
-            preferenceService.setRankScore(tournamentType, RankScoreConfig(win * 0.5f, loss * 0.5f, tie * 0.5f))
     }
 
     fun expandAll() {
