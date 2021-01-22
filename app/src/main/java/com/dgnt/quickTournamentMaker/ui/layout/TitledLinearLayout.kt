@@ -34,7 +34,6 @@ class TitledLinearLayout @JvmOverloads constructor(context: Context, attrs: Attr
             AlertDialog.Builder(context)
                 .setMessage(helpText)
                 .setPositiveButton(android.R.string.ok, null)
-                .setNegativeButton(android.R.string.cancel, null)
                 .create().show()
         }
         resolveHelp()

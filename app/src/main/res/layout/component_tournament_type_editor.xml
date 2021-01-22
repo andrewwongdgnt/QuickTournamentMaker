@@ -89,45 +89,13 @@
                         android:layout_height="wrap_content"
                         android:text="@string/priority" />
 
-                <LinearLayout
-                        android:id="@+id/compareRankFromPriorityGroup"
+                <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/priority_rv"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        android:layout_marginLeft="?android:attr/expandableListPreferredChildPaddingLeft"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="?android:attr/expandableListPreferredChildPaddingLeft"
-                        android:orientation="vertical"
-                        android:visibility="@{vm.showPriorityContent ? View.VISIBLE : View.GONE}">
-
-                    <TextView
-                            android:id="@+id/priority1_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:paddingTop="@dimen/priorityRankTextVerticalPadding"
-                            android:paddingBottom="@dimen/priorityRankTextVerticalPadding"
-                            android:text="Win"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                    <TextView
-                            android:id="@+id/priority2_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:paddingTop="@dimen/priorityRankTextVerticalPadding"
-                            android:paddingBottom="@dimen/priorityRankTextVerticalPadding"
-                            android:text="Loss"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                    <TextView
-                            android:id="@+id/priority3_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:paddingTop="@dimen/priorityRankTextVerticalPadding"
-                            android:paddingBottom="@dimen/priorityRankTextVerticalPadding"
-                            android:text="Tie"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                </LinearLayout>
+                        android:visibility="@{vm.showPriorityContent ? View.VISIBLE : View.GONE}"/>
 
                 <RadioButton
                         android:id="@+id/compareRankFromScore_rb"

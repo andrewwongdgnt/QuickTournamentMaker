@@ -26,4 +26,6 @@
 
     <color name="titledLinearLayout">#acacac</color>
     <color name="appBackgroundColor">#FFFFFF</color>
+
+    <color name="dragHighlightColor">#E6E600</color>
 </resources>

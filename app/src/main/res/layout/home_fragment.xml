@@ -32,7 +32,6 @@
                     android:paddingRight="@dimen/activity_horizontal_margin"
                     android:paddingBottom="@dimen/activity_vertical_margin">
 
-
                 <com.dgnt.quickTournamentMaker.ui.layout.TitledLinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -44,8 +43,8 @@
                             bind:vm="@{vm}" />
                 </com.dgnt.quickTournamentMaker.ui.layout.TitledLinearLayout>
 
-
                 <include
+                        android:id="@+id/tournament_type_editor"
                         layout="@layout/component_tournament_type_editor"
                         android:paddingTop="@dimen/standard_gap"
                         bind:vm="@{vm}" />
@@ -83,8 +82,8 @@
                         <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:text="@={vm.numberOfPlayers}" />
+                                android:text="@={vm.numberOfPlayers}"
+                                android:textAppearance="?android:attr/textAppearanceMedium" />
 
                         <LinearLayout
                                 android:layout_width="match_parent"
@@ -122,7 +121,6 @@
 
                         <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/player_rv"
-
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent" />
                     </LinearLayout>

@@ -2,6 +2,8 @@ package com.dgnt.quickTournamentMaker.ui.main.common
 
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import com.dgnt.quickTournamentMaker.model.tournament.RankPriorityConfig
+import com.dgnt.quickTournamentMaker.model.tournament.RankPriorityConfigType
 import com.dgnt.quickTournamentMaker.model.tournament.RankScoreConfig
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentType
 import com.dgnt.quickTournamentMaker.service.interfaces.IPreferenceService
@@ -20,6 +22,7 @@ interface TournamentTypeEditorViewModel {
     val winValue: MutableLiveData<Int>
     val lossValue: MutableLiveData<Int>
     val tieValue: MutableLiveData<Int>
+    val priorityConfig: MutableLiveData<Triple<RankPriorityConfigType, RankPriorityConfigType, RankPriorityConfigType>>
 
     fun scoreConfigLiveDataCreator() =
         object : MediatorLiveData<Triple<Int, Int, Int>>() {
@@ -79,7 +82,9 @@ interface TournamentTypeEditorViewModel {
 
         if (tournamentType != null) {
             preferenceService.setRankingBasedOnPriority(tournamentType, value)
-            if (!value) {
+            if (value) {
+                priorityConfig.value = preferenceService.getRankPriority(tournamentType).tripleRepresentation
+            } else {
                 val rankScoreConfig = preferenceService.getRankScore(tournamentType)
                 winValue.value = (rankScoreConfig.win * 2).toInt()
                 lossValue.value = (rankScoreConfig.loss * 2).toInt()
@@ -88,6 +93,19 @@ interface TournamentTypeEditorViewModel {
         }
     }
 
+
+    fun handlePriorityConfigChange(priorityList: List<RankPriorityConfigType>, roundRobinRadioButtonId: Int, swissRadioButtonId: Int) {
+
+        val tournamentType = when (tournamentType.value) {
+
+            roundRobinRadioButtonId -> TournamentType.ROUND_ROBIN
+            swissRadioButtonId -> TournamentType.SWISS
+            else -> null
+        }
+
+         if (tournamentType != null)
+            preferenceService.setRankPriority(tournamentType, RankPriorityConfig(priorityList[0], priorityList[1], priorityList[2]))
+    }
 
     fun handleScoreConfigChange(win: Int, loss: Int, tie: Int, roundRobinRadioButtonId: Int, swissRadioButtonId: Int) {
 

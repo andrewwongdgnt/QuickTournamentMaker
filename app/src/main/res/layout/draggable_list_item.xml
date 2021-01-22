@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/list_item_horizontal_margin"
+            android:paddingRight="@dimen/list_item_horizontal_margin">
+
+
+        <ImageView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_email" />
+        <TextView
+                android:id="@+id/title_tv"
+                android:paddingLeft="@dimen/standard_gap"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="adasdasss"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+    </LinearLayout>
+</layout>

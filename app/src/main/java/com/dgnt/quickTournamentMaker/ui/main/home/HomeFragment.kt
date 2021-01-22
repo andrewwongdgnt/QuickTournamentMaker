@@ -9,11 +9,16 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.HomeFragmentBinding
 import com.dgnt.quickTournamentMaker.model.management.Group
 import com.dgnt.quickTournamentMaker.model.management.Person
+import com.dgnt.quickTournamentMaker.model.tournament.RankPriorityConfigType
 import com.dgnt.quickTournamentMaker.ui.layout.NonScrollingLinearLayoutManager
+import com.dgnt.quickTournamentMaker.ui.main.common.RankPriorityRecyclerViewAdapter
+import com.dgnt.quickTournamentMaker.ui.main.common.DraggableItemTouchHelperCallback
 import com.thoughtbot.expandablecheckrecyclerview.models.CheckedExpandableGroup
 import com.thoughtbot.expandablerecyclerview.listeners.GroupExpandCollapseListener
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup
@@ -21,6 +26,8 @@ import kotlinx.android.synthetic.main.component_tournament_type_editor.*
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 import org.kodein.di.instance
+import com.dgnt.quickTournamentMaker.util.update
+
 
 class HomeFragment : Fragment(), DIAware {
 
@@ -73,7 +80,7 @@ class HomeFragment : Fragment(), DIAware {
                 }
 
                 viewModel.handleTournamentTypeChange(it, roundRobin_rb.id, swiss_rb.id, compareRankFromPriority_rb.id, compareRankFromScore_rb.id)
-                viewModel.handleRankConfigHelpMsgChange(it, roundRobin_rb.id, swiss_rb.id, getString(R.string.rankConfigurationHelpMsg, getString(R.string.rankConfigurationForRoundRobinHelpMsg)),getString(R.string.rankConfigurationHelpMsg, getString(R.string.rankConfigurationForSwissHelpMsg)))
+                viewModel.handleRankConfigHelpMsgChange(it, roundRobin_rb.id, swiss_rb.id, getString(R.string.rankConfigurationHelpMsg, getString(R.string.rankConfigurationForRoundRobinHelpMsg)), getString(R.string.rankConfigurationHelpMsg, getString(R.string.rankConfigurationForSwissHelpMsg)))
 
             })
             viewModel.rankConfig.observe(viewLifecycleOwner, Observer {
@@ -83,6 +90,23 @@ class HomeFragment : Fragment(), DIAware {
 
                 viewModel.handleRankConfigChange(it == compareRankFromPriority_rb.id, roundRobin_rb.id, swiss_rb.id)
             })
+
+            val priorityList = mutableListOf<RankPriorityConfigType>()
+            val rankPriorityRecyclerViewAdapter = RankPriorityRecyclerViewAdapter(this,priorityList)
+            ItemTouchHelper(DraggableItemTouchHelperCallback(rankPriorityRecyclerViewAdapter)).attachToRecyclerView(binding.tournamentTypeEditor.priorityRv)
+
+            rankPriorityRecyclerViewAdapter.registerAdapterDataObserver(object : AdapterDataObserver() {
+                override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
+                   viewModel.handlePriorityConfigChange(priorityList,roundRobin_rb.id, swiss_rb.id)
+                }
+            })
+
+            viewModel.priorityConfig.observe(viewLifecycleOwner, Observer {
+                priorityList.update(it.toList())
+                rankPriorityRecyclerViewAdapter.notifyDataSetChanged()
+            })
+
+            binding.tournamentTypeEditor.priorityRv.adapter = rankPriorityRecyclerViewAdapter
 
             viewModel.scoreConfigLiveData.observe(viewLifecycleOwner, Observer {
                 viewModel.handleScoreConfigChange(it.first, it.second, it.third, roundRobin_rb.id, swiss_rb.id)
@@ -179,7 +203,7 @@ class HomeFragment : Fragment(), DIAware {
         }
     }
 
-    private fun update(){
+    private fun update() {
         val adapter = binding.playerRv.adapter as GroupCheckedExpandableRecyclerViewAdapter
         adapter.notifyDataSetChanged()
         viewModel.numberOfPlayers.value = getString(R.string.numberOfPlayersSelected, adapter.groups.map { it as CheckedExpandableGroup }.fold(0, { acc, e -> e.selectedChildren.filter { it }.size + acc }))

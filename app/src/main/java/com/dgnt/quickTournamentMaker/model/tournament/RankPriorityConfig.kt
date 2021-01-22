@@ -26,5 +26,6 @@ data class RankPriorityConfig(val first: RankPriorityConfigType, val second: Ran
     }
 
     override val stringTripleRepresentation = Triple(first.shorthand, second.shorthand, third.shorthand)
+    val tripleRepresentation = Triple(first, second, third)
 
 }

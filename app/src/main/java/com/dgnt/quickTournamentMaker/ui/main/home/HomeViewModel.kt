@@ -10,6 +10,7 @@ import com.dgnt.quickTournamentMaker.data.management.GroupEntity
 import com.dgnt.quickTournamentMaker.data.management.IGroupRepository
 import com.dgnt.quickTournamentMaker.data.management.IPersonRepository
 import com.dgnt.quickTournamentMaker.data.management.PersonEntity
+import com.dgnt.quickTournamentMaker.model.tournament.RankPriorityConfigType
 import com.dgnt.quickTournamentMaker.service.interfaces.IPreferenceService
 import com.dgnt.quickTournamentMaker.ui.main.common.TournamentGeneralEditorViewModel
 import com.dgnt.quickTournamentMaker.ui.main.common.TournamentTypeEditorViewModel
@@ -74,6 +75,9 @@ class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroup
 
     @Bindable
     override val tieValue = MutableLiveData<Int>()
+
+    @Bindable
+    override val priorityConfig = MutableLiveData<Triple<RankPriorityConfigType, RankPriorityConfigType, RankPriorityConfigType>>()
 
     val scoreConfigLiveData: LiveData<Triple<Int, Int, Int>> = scoreConfigLiveDataCreator()
 
