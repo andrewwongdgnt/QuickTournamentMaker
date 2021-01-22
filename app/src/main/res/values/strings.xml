@@ -265,4 +265,5 @@
     <string name="collapseAll">Collapse all</string>
     <string name="selectAll">Select all</string>
     <string name="deselectAll">Deselect all</string>
+    <string name="noPlayersExist">No players exist. Add some in the management view</string>
 </resources>

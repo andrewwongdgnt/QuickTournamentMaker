@@ -82,47 +82,61 @@
                         <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@={vm.numberOfPlayers}"
-                                android:textAppearance="?android:attr/textAppearanceMedium" />
+                                android:text="@string/noPlayersExist"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:visibility="@{vm.noPlayers ? View.VISIBLE : View.GONE}"/>
 
                         <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal">
+                                android:orientation="vertical"
+                                android:visibility="@{vm.noPlayers ? View.GONE : View.VISIBLE}">
 
-                            <Button
+                            <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:gravity="center_vertical"
-                                    android:onClick="@{() -> vm.expandAll()}"
-                                    android:text="@string/expandAll" />
+                                    android:text="@={vm.numberOfPlayers}"
+                                    android:textAppearance="?android:attr/textAppearanceMedium" />
 
-                            <Button
-                                    android:layout_width="wrap_content"
+                            <LinearLayout
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:gravity="center_vertical"
-                                    android:onClick="@{() -> vm.collapseAll()}"
-                                    android:text="@string/collapseAll" />
+                                    android:orientation="horizontal">
 
-                            <Button
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center_vertical"
-                                    android:onClick="@{() -> vm.selectAll()}"
-                                    android:text="@string/selectAll" />
+                                <Button
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center_vertical"
+                                        android:onClick="@{() -> vm.expandAll()}"
+                                        android:text="@string/expandAll" />
 
-                            <Button
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center_vertical"
-                                    android:onClick="@{() -> vm.deselectAll()}"
-                                    android:text="@string/deselectAll" />
+                                <Button
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center_vertical"
+                                        android:onClick="@{() -> vm.collapseAll()}"
+                                        android:text="@string/collapseAll" />
+
+                                <Button
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center_vertical"
+                                        android:onClick="@{() -> vm.selectAll()}"
+                                        android:text="@string/selectAll" />
+
+                                <Button
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center_vertical"
+                                        android:onClick="@{() -> vm.deselectAll()}"
+                                        android:text="@string/deselectAll" />
+                            </LinearLayout>
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/player_rv"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent" />
                         </LinearLayout>
-
-                        <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/player_rv"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent" />
                     </LinearLayout>
 
                 </com.dgnt.quickTournamentMaker.ui.layout.TitledLinearLayout>

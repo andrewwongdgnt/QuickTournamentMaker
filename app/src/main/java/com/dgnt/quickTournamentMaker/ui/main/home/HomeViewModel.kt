@@ -93,6 +93,15 @@ class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroup
     @Bindable
     val selectAll = MutableLiveData<Boolean>()
 
+    val noPlayers: LiveData<Boolean> =
+        object : MediatorLiveData<Boolean>() {
+            init {
+                addSource(persons) { persons ->
+                    value = persons.isEmpty()
+                }
+            }
+        }
+
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
     }
 
