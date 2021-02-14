@@ -95,7 +95,7 @@
                             <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@={vm.numberOfPlayers}"
+                                    android:text="@={vm.numberOfPlayersSelected}"
                                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
                             <LinearLayout
@@ -151,7 +151,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
                 android:layout_margin="@dimen/fab_margin"
-                android:onClick="@{()->vm.something()}"
+                android:onClick="@{()->vm.startTournament()}"
                 android:src="@drawable/ic_start_tournament" />
 
 

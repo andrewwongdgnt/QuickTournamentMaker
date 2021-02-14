@@ -16,9 +16,11 @@ import com.dgnt.quickTournamentMaker.databinding.HomeFragmentBinding
 import com.dgnt.quickTournamentMaker.model.management.Group
 import com.dgnt.quickTournamentMaker.model.management.Person
 import com.dgnt.quickTournamentMaker.model.tournament.RankPriorityConfigType
+import com.dgnt.quickTournamentMaker.model.tournament.TournamentType
 import com.dgnt.quickTournamentMaker.ui.layout.NonScrollingLinearLayoutManager
-import com.dgnt.quickTournamentMaker.ui.main.common.RankPriorityRecyclerViewAdapter
 import com.dgnt.quickTournamentMaker.ui.main.common.DraggableItemTouchHelperCallback
+import com.dgnt.quickTournamentMaker.ui.main.common.RankPriorityRecyclerViewAdapter
+import com.dgnt.quickTournamentMaker.util.update
 import com.thoughtbot.expandablecheckrecyclerview.models.CheckedExpandableGroup
 import com.thoughtbot.expandablerecyclerview.listeners.GroupExpandCollapseListener
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup
@@ -26,7 +28,7 @@ import kotlinx.android.synthetic.main.component_tournament_type_editor.*
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 import org.kodein.di.instance
-import com.dgnt.quickTournamentMaker.util.update
+import java.text.DateFormat
 
 
 class HomeFragment : Fragment(), DIAware {
@@ -64,7 +66,9 @@ class HomeFragment : Fragment(), DIAware {
 
             binding.lifecycleOwner = fragment
 
-            viewModel.numberOfPlayers.value = getString(R.string.numberOfPlayersSelected, 0)
+            setVMData(viewModel)
+
+            viewModel.numberOfPlayersSelected.value = getString(R.string.numberOfPlayersSelected, 0)
 
             viewModel.tournamentType.value = elimination_rb.id
             viewModel.seedType.value = randomSeed_rb.id
@@ -79,8 +83,8 @@ class HomeFragment : Fragment(), DIAware {
                     else -> true
                 }
 
-                viewModel.handleTournamentTypeChange(it, roundRobin_rb.id, swiss_rb.id, compareRankFromPriority_rb.id, compareRankFromScore_rb.id)
-                viewModel.handleRankConfigHelpMsgChange(it, roundRobin_rb.id, swiss_rb.id, getString(R.string.rankConfigurationHelpMsg, getString(R.string.rankConfigurationForRoundRobinHelpMsg)), getString(R.string.rankConfigurationHelpMsg, getString(R.string.rankConfigurationForSwissHelpMsg)))
+                viewModel.handleTournamentTypeChange(it)
+                viewModel.handleRankConfigHelpMsgChange(it, getString(R.string.rankConfigurationHelpMsg, getString(R.string.rankConfigurationForRoundRobinHelpMsg)), getString(R.string.rankConfigurationHelpMsg, getString(R.string.rankConfigurationForSwissHelpMsg)))
 
             })
             viewModel.rankConfig.observe(viewLifecycleOwner, Observer {
@@ -88,16 +92,16 @@ class HomeFragment : Fragment(), DIAware {
 
                 viewModel.showScoringContent.value = it == compareRankFromScore_rb.id
 
-                viewModel.handleRankConfigChange(it == compareRankFromPriority_rb.id, roundRobin_rb.id, swiss_rb.id)
+                viewModel.handleRankConfigChange(it == compareRankFromPriority_rb.id)
             })
 
             val priorityList = mutableListOf<RankPriorityConfigType>()
-            val rankPriorityRecyclerViewAdapter = RankPriorityRecyclerViewAdapter(this,priorityList)
+            val rankPriorityRecyclerViewAdapter = RankPriorityRecyclerViewAdapter(this, priorityList)
             ItemTouchHelper(DraggableItemTouchHelperCallback(rankPriorityRecyclerViewAdapter)).attachToRecyclerView(binding.tournamentTypeEditor.priorityRv)
 
             rankPriorityRecyclerViewAdapter.registerAdapterDataObserver(object : AdapterDataObserver() {
                 override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
-                   viewModel.handlePriorityConfigChange(priorityList,roundRobin_rb.id, swiss_rb.id)
+                    viewModel.handlePriorityConfigChange(priorityList)
                 }
             })
 
@@ -109,7 +113,7 @@ class HomeFragment : Fragment(), DIAware {
             binding.tournamentTypeEditor.priorityRv.adapter = rankPriorityRecyclerViewAdapter
 
             viewModel.scoreConfigLiveData.observe(viewLifecycleOwner, Observer {
-                viewModel.handleScoreConfigChange(it.first, it.second, it.third, roundRobin_rb.id, swiss_rb.id)
+                viewModel.handleScoreConfigChange(it.first, it.second, it.third)
             })
 
             binding.playerRv.layoutManager = NonScrollingLinearLayoutManager(this)
@@ -168,6 +172,29 @@ class HomeFragment : Fragment(), DIAware {
 
     }
 
+    private fun setVMData(viewModel: HomeViewModel) {
+        val date = DateFormat.getDateInstance(DateFormat.SHORT).format(System.currentTimeMillis())
+        viewModel.setData(
+            mapOf(
+                Pair(TournamentType.ELIMINATION, getString(R.string.defaultTitle, getString(R.string.elimination), date)),
+                Pair(TournamentType.DOUBLE_ELIMINATION, getString(R.string.defaultTitle, getString(R.string.doubleElimination), date)),
+                Pair(TournamentType.ROUND_ROBIN, getString(R.string.defaultTitle, getString(R.string.roundRobin), date)),
+                Pair(TournamentType.SWISS, getString(R.string.defaultTitle, getString(R.string.swiss), date)),
+                Pair(TournamentType.SURVIVAL, getString(R.string.defaultTitle, getString(R.string.survival), date))
+            ),
+            elimination_rb.id,
+            doubleElimination_rb.id,
+            roundRobin_rb.id,
+            swiss_rb.id,
+            survival_rb.id,
+
+            randomSeed_rb.id,
+            customSeed_rb.id,
+            compareRankFromPriority_rb.id,
+            compareRankFromScore_rb.id
+        )
+    }
+
     private fun selectGroup(group: GroupCheckedExpandableGroup, checked: Boolean) {
         if (checked) {
             selectedGroups.add(group.title)
@@ -180,12 +207,9 @@ class HomeFragment : Fragment(), DIAware {
     }
 
     private fun groupClicked(group: String, checked: Boolean) {
-
         allGroups.find { it.title == group }?.let {
             selectGroup(it, checked)
         }
-
-
     }
 
 
@@ -206,7 +230,9 @@ class HomeFragment : Fragment(), DIAware {
     private fun update() {
         val adapter = binding.playerRv.adapter as GroupCheckedExpandableRecyclerViewAdapter
         adapter.notifyDataSetChanged()
-        viewModel.numberOfPlayers.value = getString(R.string.numberOfPlayersSelected, adapter.groups.map { it as CheckedExpandableGroup }.fold(0, { acc, e -> e.selectedChildren.filter { it }.size + acc }))
+        viewModel.numberOfPlayersSelected.value = getString(R.string.numberOfPlayersSelected, adapter.groups.map { it as CheckedExpandableGroup }.fold(0, { acc, e -> e.selectedChildren.filter { it }.size + acc }))
+        viewModel.selectedPlayers.value = adapter.groups.flatMap { (it as GroupCheckedExpandableGroup).items.zip(it.selectedChildren.asList()) }.filter { it.second }.map { (it.first as Person).name }
+
     }
 
 }

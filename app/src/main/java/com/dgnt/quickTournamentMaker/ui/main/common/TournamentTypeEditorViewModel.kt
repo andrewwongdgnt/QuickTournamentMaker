@@ -7,10 +7,13 @@ import com.dgnt.quickTournamentMaker.model.tournament.RankPriorityConfigType
 import com.dgnt.quickTournamentMaker.model.tournament.RankScoreConfig
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentType
 import com.dgnt.quickTournamentMaker.service.interfaces.IPreferenceService
+import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentInformationCreatorService
 
 interface TournamentTypeEditorViewModel {
 
     val preferenceService: IPreferenceService
+    val tournamentInformationCreatorService: ITournamentInformationCreatorService
+
     val tournamentType: MutableLiveData<Int>
     val rankConfig: MutableLiveData<Int>
     val rankConfigHelpMsg: MutableLiveData<String>
@@ -23,6 +26,20 @@ interface TournamentTypeEditorViewModel {
     val lossValue: MutableLiveData<Int>
     val tieValue: MutableLiveData<Int>
     val priorityConfig: MutableLiveData<Triple<RankPriorityConfigType, RankPriorityConfigType, RankPriorityConfigType>>
+
+    var alternativeTitles: Map<TournamentType, String>
+    var eliminationRadioButtonId: Int
+    var doubleEliminationRadioButtonId: Int
+    var roundRobinRadioButtonId: Int
+    var swissRadioButtonId: Int
+    var survivalRadioButtonId: Int
+
+    var randomSeedingRadioButtonId: Int
+    var customSeedingRadioButtonId: Int
+    var sameSeedingRadioButtonId: Int
+
+    var priorityRankingRadioButtonId: Int
+    var scoreRankingRadioButtonId: Int
 
     fun scoreConfigLiveDataCreator() =
         object : MediatorLiveData<Triple<Int, Int, Int>>() {
@@ -51,7 +68,7 @@ interface TournamentTypeEditorViewModel {
         }
 
 
-    fun handleTournamentTypeChange(radioButtonId: Int, roundRobinRadioButtonId: Int, swissRadioButtonId: Int, compareRankFromPriorityRadioButtonId: Int, compareRankFromScoreRadioButton: Int) {
+    fun handleTournamentTypeChange(radioButtonId: Int) {
         val isRankingBasedOnPriority = when (radioButtonId) {
             roundRobinRadioButtonId -> preferenceService.isRankingBasedOnPriority(TournamentType.ROUND_ROBIN)
             swissRadioButtonId -> preferenceService.isRankingBasedOnPriority(TournamentType.SWISS)
@@ -59,11 +76,11 @@ interface TournamentTypeEditorViewModel {
         }
 
         if (isRankingBasedOnPriority != null)
-            rankConfig.value = if (isRankingBasedOnPriority) compareRankFromPriorityRadioButtonId else compareRankFromScoreRadioButton
+            rankConfig.value = if (isRankingBasedOnPriority) priorityRankingRadioButtonId else scoreRankingRadioButtonId
 
     }
 
-    fun handleRankConfigHelpMsgChange(radioButtonId: Int, roundRobinRadioButtonId: Int, swissRadioButtonId: Int, rankConfigurationForRoundRobinHelpMsg: String, rankConfigurationForSwissHelpMsg: String) {
+    fun handleRankConfigHelpMsgChange(radioButtonId: Int, rankConfigurationForRoundRobinHelpMsg: String, rankConfigurationForSwissHelpMsg: String) {
         if (radioButtonId == roundRobinRadioButtonId) {
             rankConfigHelpMsg.value = rankConfigurationForRoundRobinHelpMsg
         } else if (radioButtonId == swissRadioButtonId) {
@@ -72,7 +89,7 @@ interface TournamentTypeEditorViewModel {
     }
 
 
-    fun handleRankConfigChange(value: Boolean, roundRobinRadioButtonId: Int, swissRadioButtonId: Int) {
+    fun handleRankConfigChange(value: Boolean) {
         val tournamentType = when (tournamentType.value) {
 
             roundRobinRadioButtonId -> TournamentType.ROUND_ROBIN
@@ -94,7 +111,7 @@ interface TournamentTypeEditorViewModel {
     }
 
 
-    fun handlePriorityConfigChange(priorityList: List<RankPriorityConfigType>, roundRobinRadioButtonId: Int, swissRadioButtonId: Int) {
+    fun handlePriorityConfigChange(priorityList: List<RankPriorityConfigType>) {
 
         val tournamentType = when (tournamentType.value) {
 
@@ -103,11 +120,11 @@ interface TournamentTypeEditorViewModel {
             else -> null
         }
 
-         if (tournamentType != null)
+        if (tournamentType != null)
             preferenceService.setRankPriority(tournamentType, RankPriorityConfig(priorityList[0], priorityList[1], priorityList[2]))
     }
 
-    fun handleScoreConfigChange(win: Int, loss: Int, tie: Int, roundRobinRadioButtonId: Int, swissRadioButtonId: Int) {
+    fun handleScoreConfigChange(win: Int, loss: Int, tie: Int) {
 
         val tournamentType = when (tournamentType.value) {
 
