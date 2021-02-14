@@ -30,8 +30,8 @@ class DefaultSelectedPlayersServiceTest {
     @Test
     fun testRandomResolveQuickStart() {
         //Small chance this will fail because of the nature of randomness
-        Assert.assertEquals(quickNames, sut.resolve(names, numberOfPlayers, true, SeedType.RANDOM))
-        Assert.assertEquals(quickNames, sut.resolve(null, numberOfPlayers, true, SeedType.RANDOM))
+        Assert.assertNotEquals(quickNames, sut.resolve(names, numberOfPlayers, true, SeedType.RANDOM))
+        Assert.assertNotEquals(quickNames, sut.resolve(null, numberOfPlayers, true, SeedType.RANDOM))
     }
 
     @Test
