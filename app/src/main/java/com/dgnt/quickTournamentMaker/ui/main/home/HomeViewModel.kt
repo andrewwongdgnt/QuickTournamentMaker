@@ -87,7 +87,7 @@ class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroup
     val quickStart = MutableLiveData<Boolean>(true)
 
     @Bindable
-    val numberOfPlayers = MutableLiveData<Int>()
+    val numberOfPlayers = MutableLiveData<String>()
 
     @Bindable
     val numberOfPlayersSelected = MutableLiveData<String>()
@@ -159,11 +159,11 @@ class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroup
         }
 
         val rankConfig = when (rankConfig.value) {
-            priorityRankingRadioButtonId -> if (priorityConfig.value == null) RankPriorityConfig.DEFAULT else RankPriorityConfig(priorityConfig.value!!.first, priorityConfig.value!!.first, priorityConfig.value!!.first)
-            else -> RankScoreConfig(if (winValue.value == null) 0f else winValue.value!! * 1f, if (lossValue.value == null) 0f else lossValue.value!! * 1f, if (tieValue.value == null) 0f else tieValue.value!! * 1f)
+            priorityRankingRadioButtonId -> priorityConfig.value?.let { RankPriorityConfig(it.first, it.second, it.third) } ?: RankPriorityConfig.DEFAULT
+            else -> RankScoreConfig(winValue.value?.let { it.toFloat() } ?: 0f, lossValue.value?.let { it.toFloat() } ?: 0f, tieValue.value?.let { it.toFloat() } ?: 0f)
         }
 
-        tournamentInformationCreatorService.create(title.value ?: "", alternativeTitles, description.value ?: "", selectedPlayersService.resolve(selectedPlayers.value, numberOfPlayers.value, quickStart.value ?: false, seedType), tournamentType, seedType, rankConfig)
+        tournamentInformationCreatorService.create(title.value ?: "", alternativeTitles, description.value ?: "", selectedPlayersService.resolve(selectedPlayers.value, numberOfPlayers.value?.let { it.toIntOrNull() }, quickStart.value ?: false, seedType), tournamentType, seedType, rankConfig)
 
 
     }

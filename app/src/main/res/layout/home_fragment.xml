@@ -69,7 +69,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/numberOfPlayers"
-                            android:text="@={``+vm.numberOfPlayers}"
+                            android:text="@={vm.numberOfPlayers}"
                             android:inputType="number"
                             android:singleLine="true"
                             android:visibility="@{vm.quickStart ? View.VISIBLE : View.GONE}" />
