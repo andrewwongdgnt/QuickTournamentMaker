@@ -12,11 +12,12 @@ import com.dgnt.quickTournamentMaker.data.management.IPersonRepository
 import com.dgnt.quickTournamentMaker.data.management.PersonEntity
 import com.dgnt.quickTournamentMaker.model.tournament.*
 import com.dgnt.quickTournamentMaker.service.interfaces.IPreferenceService
+import com.dgnt.quickTournamentMaker.service.interfaces.ISelectedPlayersService
 import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentInformationCreatorService
 import com.dgnt.quickTournamentMaker.ui.main.common.TournamentGeneralEditorViewModel
 import com.dgnt.quickTournamentMaker.ui.main.common.TournamentTypeEditorViewModel
 
-class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroupRepository, override val preferenceService: IPreferenceService, override val tournamentInformationCreatorService: ITournamentInformationCreatorService) : ViewModel(), Observable, TournamentGeneralEditorViewModel, TournamentTypeEditorViewModel {
+class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroupRepository, override val preferenceService: IPreferenceService, override val tournamentInformationCreatorService: ITournamentInformationCreatorService, val selectedPlayersService: ISelectedPlayersService) : ViewModel(), Observable, TournamentGeneralEditorViewModel, TournamentTypeEditorViewModel {
 
     private val persons = personRepository.getAll()
     private val groups = groupRepository.getAll()
@@ -84,6 +85,9 @@ class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroup
 
     @Bindable
     val quickStart = MutableLiveData<Boolean>(true)
+
+    @Bindable
+    val numberOfPlayers = MutableLiveData<Int>()
 
     @Bindable
     val numberOfPlayersSelected = MutableLiveData<String>()
@@ -158,7 +162,8 @@ class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroup
             priorityRankingRadioButtonId -> if (priorityConfig.value == null) RankPriorityConfig.DEFAULT else RankPriorityConfig(priorityConfig.value!!.first, priorityConfig.value!!.first, priorityConfig.value!!.first)
             else -> RankScoreConfig(if (winValue.value == null) 0f else winValue.value!! * 1f, if (lossValue.value == null) 0f else lossValue.value!! * 1f, if (tieValue.value == null) 0f else tieValue.value!! * 1f)
         }
-        tournamentInformationCreatorService.create(title.value ?: "", alternativeTitles, description.value ?: "", selectedPlayers.value!!, tournamentType, seedType, rankConfig)
+
+        tournamentInformationCreatorService.create(title.value ?: "", alternativeTitles, description.value ?: "", selectedPlayersService.resolve(selectedPlayers.value, numberOfPlayers.value, quickStart.value ?: false, seedType), tournamentType, seedType, rankConfig)
 
 
     }

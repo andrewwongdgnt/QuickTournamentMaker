@@ -8,6 +8,7 @@ import com.dgnt.quickTournamentMaker.data.tournament.*
 import com.dgnt.quickTournamentMaker.service.implementation.*
 import com.dgnt.quickTournamentMaker.service.interfaces.IPreferenceService
 import com.dgnt.quickTournamentMaker.service.interfaces.IRankingConfigService
+import com.dgnt.quickTournamentMaker.service.interfaces.ISelectedPlayersService
 import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentInformationCreatorService
 import com.dgnt.quickTournamentMaker.ui.main.home.HomeViewModelFactory
 import com.dgnt.quickTournamentMaker.ui.main.management.*
@@ -37,7 +38,7 @@ class QTMApplication() : Application(), DIAware {
         bind<ITournamentRepository>() with singleton { TournamentRepository(instance()) }
 
         //ViewModelFactory
-        bind() from provider { HomeViewModelFactory(instance(), instance(), instance(), instance()) }
+        bind() from provider { HomeViewModelFactory(instance(), instance(), instance(), instance(), instance()) }
         bind() from provider { ManagementViewModelFactory(instance(), instance()) }
         bind() from provider { GroupDeleteViewModelFactory(instance(), instance()) }
         bind() from provider { GroupEditorViewModelFactory(instance(), instance()) }
@@ -48,6 +49,7 @@ class QTMApplication() : Application(), DIAware {
         bind<IRankingConfigService>() with singleton { DefaultRankingConfigService() }
         bind<IPreferenceService>() with singleton { DefaultPreferenceService(PreferenceManager.getDefaultSharedPreferences(instance()), instance()) }
         bind<ITournamentInformationCreatorService>() with singleton { DefaultTournamentInformationCreatorService() }
+        bind<ISelectedPlayersService>() with singleton { DefaultSelectedPlayersService() }
 
 
     }
