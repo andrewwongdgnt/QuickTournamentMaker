@@ -16,6 +16,7 @@ import com.dgnt.quickTournamentMaker.service.interfaces.ISelectedPlayersService
 import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentInformationCreatorService
 import com.dgnt.quickTournamentMaker.ui.main.common.TournamentGeneralEditorViewModel
 import com.dgnt.quickTournamentMaker.ui.main.common.TournamentTypeEditorViewModel
+import com.dgnt.quickTournamentMaker.util.Event
 
 class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroupRepository, override val preferenceService: IPreferenceService, override val tournamentInformationCreatorService: ITournamentInformationCreatorService, val selectedPlayersService: ISelectedPlayersService) : ViewModel(), Observable, TournamentGeneralEditorViewModel, TournamentTypeEditorViewModel {
 
@@ -110,6 +111,14 @@ class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroup
             }
         }
 
+    private val _tournamentInformationEvent = MutableLiveData<Event<TournamentInformation>>()
+    val tournamentInformationEvent: LiveData<Event<TournamentInformation>>
+        get() = _tournamentInformationEvent
+
+    private val _failedToStartTournamentMessage = MutableLiveData<Event<Boolean>>()
+    val failedToStartTournamentMessage: LiveData<Event<Boolean>>
+        get() = _failedToStartTournamentMessage
+
     override lateinit var alternativeTitles: Map<TournamentType, String>
     override var eliminationRadioButtonId = 0
     override var doubleEliminationRadioButtonId = 0
@@ -163,7 +172,11 @@ class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroup
             else -> RankScoreConfig(winValue.value?.let { it.toFloat() } ?: 0f, lossValue.value?.let { it.toFloat() } ?: 0f, tieValue.value?.let { it.toFloat() } ?: 0f)
         }
 
-        tournamentInformationCreatorService.create(title.value ?: "", alternativeTitles, description.value ?: "", selectedPlayersService.resolve(selectedPlayers.value, numberOfPlayers.value?.let { it.toIntOrNull() }, quickStart.value ?: false, seedType), tournamentType, seedType, rankConfig)
+        try {
+            _tournamentInformationEvent.value = Event(tournamentInformationCreatorService.create(title.value ?: "", alternativeTitles, description.value ?: "", selectedPlayersService.resolve(selectedPlayers.value, numberOfPlayers.value?.let { it.toIntOrNull() }, quickStart.value ?: false, seedType), tournamentType, seedType, rankConfig))
+        } catch (e: IllegalArgumentException) {
+            _failedToStartTournamentMessage.value = Event(true)
+        }
 
 
     }

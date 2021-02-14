@@ -1,9 +1,11 @@
 package com.dgnt.quickTournamentMaker.ui.main.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -166,6 +168,21 @@ class HomeFragment : Fragment(), DIAware {
                     selectGroup(g as GroupCheckedExpandableGroup, it)
                 }
 
+            })
+
+            viewModel.tournamentInformationEvent.observe(viewLifecycleOwner, Observer {
+                it.getContentIfNotHandled()?.let {
+                    //TODO start tournament from here
+                    Log.d("DGNTTAG", "tournamentInfo: ${it.toString()}")
+
+                }
+            })
+
+            viewModel.failedToStartTournamentMessage.observe(viewLifecycleOwner, Observer {
+                it.getContentIfNotHandled()?.let {
+                    Toast.makeText(context, R.string.lessThan3Msg, Toast.LENGTH_LONG).show()
+
+                }
             })
         }
 

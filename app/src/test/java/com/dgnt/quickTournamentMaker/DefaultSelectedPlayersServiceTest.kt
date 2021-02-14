@@ -5,6 +5,7 @@ import com.dgnt.quickTournamentMaker.service.implementation.DefaultSelectedPlaye
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
+import java.lang.IllegalArgumentException
 
 class DefaultSelectedPlayersServiceTest {
 
@@ -46,10 +47,20 @@ class DefaultSelectedPlayersServiceTest {
         Assert.assertEquals(quickNames, sut.resolve(names, numberOfPlayers, true, SeedType.SAME))
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException::class)
     fun testBadParameters() {
-        Assert.assertTrue(sut.resolve(names, null, true, SeedType.CUSTOM).isEmpty())
-        Assert.assertTrue(sut.resolve(null, numberOfPlayers, false, SeedType.RANDOM).isEmpty())
+       sut.resolve(names, null, true, SeedType.CUSTOM)
+        sut.resolve(null, numberOfPlayers, false, SeedType.RANDOM)
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun testLessThan3() {
+        sut.resolve(listOf("m","d"), 2, false, SeedType.CUSTOM)
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun testLessThan3QuickStart() {
+        sut.resolve(listOf("m","d"), 2, true, SeedType.CUSTOM)
     }
 
 }
