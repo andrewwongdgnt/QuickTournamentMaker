@@ -12,6 +12,7 @@ import com.dgnt.quickTournamentMaker.service.interfaces.ISelectedPlayersService
 import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentInformationCreatorService
 import com.dgnt.quickTournamentMaker.ui.main.home.HomeViewModelFactory
 import com.dgnt.quickTournamentMaker.ui.main.management.*
+import com.dgnt.quickTournamentMaker.ui.tournament.TournamentViewModelFactory
 import org.kodein.di.*
 import org.kodein.di.android.x.androidXModule
 
@@ -44,6 +45,7 @@ class QTMApplication() : Application(), DIAware {
         bind() from provider { GroupEditorViewModelFactory(instance(), instance()) }
         bind() from provider { MovePersonsViewModelFactory(instance()) }
         bind() from provider { PersonEditorViewModelFactory(instance(), instance()) }
+        bind() from provider { TournamentViewModelFactory() }
 
         //Service
         bind<IRankingConfigService>() with singleton { DefaultRankingConfigService() }
@@ -55,20 +57,6 @@ class QTMApplication() : Application(), DIAware {
     }
 
 
-    //override val kodein = DIAware.lazy {
 
-
-    //var eliminationSeedService = ISeedService()
-//
-//        bind<ConversionService>() with singleton {
-//            unitConversionService
-//        }
-//        bind<CalculatorService>() with singleton {
-//            CalculatorService(unitConversionService)
-//        }
-//        bind<UnitGeneratorService>() with singleton {
-//            UnitGeneratorService()
-//        }
-//}
 
 }

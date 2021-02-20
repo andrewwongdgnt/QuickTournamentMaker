@@ -1,5 +1,6 @@
 package com.dgnt.quickTournamentMaker.ui.main.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -22,6 +23,7 @@ import com.dgnt.quickTournamentMaker.model.tournament.TournamentType
 import com.dgnt.quickTournamentMaker.ui.layout.NonScrollingLinearLayoutManager
 import com.dgnt.quickTournamentMaker.ui.main.common.DraggableItemTouchHelperCallback
 import com.dgnt.quickTournamentMaker.ui.main.common.RankPriorityRecyclerViewAdapter
+import com.dgnt.quickTournamentMaker.ui.tournament.TournamentActivity
 import com.dgnt.quickTournamentMaker.util.update
 import com.thoughtbot.expandablecheckrecyclerview.models.CheckedExpandableGroup
 import com.thoughtbot.expandablerecyclerview.listeners.GroupExpandCollapseListener
@@ -172,8 +174,14 @@ class HomeFragment : Fragment(), DIAware {
 
             viewModel.tournamentInformationEvent.observe(viewLifecycleOwner, Observer {
                 it.getContentIfNotHandled()?.let {
-                    //TODO start tournament from here
-                    Log.d("DGNTTAG", "tournamentInfo: ${it.toString()}")
+
+                    Log.d("DGNTTAG", "tournamentInfo: ${it}")
+
+                    val intent = Intent(this, TournamentActivity::class.java).apply {
+                        putExtra("KEY", it)
+
+                    }
+                    startActivity(intent)
 
                 }
             })
