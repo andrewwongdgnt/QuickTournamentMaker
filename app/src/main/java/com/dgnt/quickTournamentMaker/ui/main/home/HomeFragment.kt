@@ -177,11 +177,7 @@ class HomeFragment : Fragment(), DIAware {
 
                     Log.d("DGNTTAG", "tournamentInfo: ${it}")
 
-                    val intent = Intent(this, TournamentActivity::class.java).apply {
-                        putExtra("KEY", it)
-
-                    }
-                    startActivity(intent)
+                    startActivity(TournamentActivity.createIntent(this, it))
 
                 }
             })
