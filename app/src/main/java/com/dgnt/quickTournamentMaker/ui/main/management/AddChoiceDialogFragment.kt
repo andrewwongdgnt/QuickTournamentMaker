@@ -20,13 +20,13 @@ class AddChoiceDialogFragment : DialogFragment() {
 
         private const val KEY_GROUPS = "KEY_GROUPS"
 
-        fun newInstance(group: List<Group>): AddChoiceDialogFragment {
-            val args = Bundle()
-            args.putParcelableArrayList(KEY_GROUPS, ArrayList<Group>(group))
-            val fragment = AddChoiceDialogFragment()
-            fragment.arguments = args
-            return fragment
-        }
+        fun newInstance(group: List<Group>): AddChoiceDialogFragment =
+            AddChoiceDialogFragment().apply {
+                arguments = Bundle().apply {
+                    putParcelableArrayList(KEY_GROUPS, ArrayList<Group>(group))
+                }
+            }
+
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

@@ -12,9 +12,6 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
-import com.dgnt.quickTournamentMaker.data.QTMDatabase
-import com.dgnt.quickTournamentMaker.data.management.GroupRepository
-import com.dgnt.quickTournamentMaker.data.management.PersonRepository
 import com.dgnt.quickTournamentMaker.databinding.PersonEditorFragmentBinding
 import com.dgnt.quickTournamentMaker.model.management.Group
 import com.dgnt.quickTournamentMaker.model.management.Person
@@ -24,9 +21,10 @@ import org.kodein.di.android.x.di
 import org.kodein.di.instance
 
 
-class PersonEditorDialogFragment : DialogFragment() , DIAware {
+class PersonEditorDialogFragment : DialogFragment(), DIAware {
     override val di by di()
     private val viewModelFactory: PersonEditorViewModelFactory by instance()
+
     companion object {
 
         const val TAG = "PersonEditorDialogFragment"
@@ -37,17 +35,15 @@ class PersonEditorDialogFragment : DialogFragment() , DIAware {
         private const val KEY_GROUP_NAME = "KEY_GROUP_NAME"
         private const val KEY_GROUPS = "KEY_GROUPS"
 
-        fun newInstance(editing: Boolean, title: String, person: Person, groupName: String, groups: List<Group>): PersonEditorDialogFragment {
-            val args = Bundle()
-            args.putBoolean(KEY_EDITING, editing)
-            args.putString(KEY_TITLE, title)
-            args.putParcelable(KEY_PERSON, person)
-            args.putString(KEY_GROUP_NAME, groupName)
-            args.putParcelableArrayList(KEY_GROUPS, ArrayList<Group>(groups))
-            val fragment = PersonEditorDialogFragment()
-            fragment.arguments = args
-            return fragment
-        }
+        fun newInstance(editing: Boolean, title: String, person: Person, groupName: String, groups: List<Group>): PersonEditorDialogFragment =
+            PersonEditorDialogFragment().apply {
+                arguments = Bundle().apply {
+                    putBoolean(KEY_EDITING, editing)
+                    putString(KEY_TITLE, title)
+                    putParcelable(KEY_PERSON, person)
+                    putString(KEY_GROUP_NAME, groupName)
+                }
+            }
     }
 
     private lateinit var binding: PersonEditorFragmentBinding
@@ -108,7 +104,7 @@ class PersonEditorDialogFragment : DialogFragment() , DIAware {
                 viewModel.add(getString(R.string.addSuccessfulMsg, viewModel.name.value), getString(R.string.duplicateMsg, viewModel.name.value), forceOpen = true, forceErase = true)
             }
             alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener { _ ->
-                if (editing){
+                if (editing) {
                     viewModel.edit(getString(R.string.editSuccessfulMsg, viewModel.name.value), getString(R.string.duplicateMsg, viewModel.name.value))
                 } else {
                     viewModel.add(getString(R.string.addSuccessfulMsg, viewModel.name.value), getString(R.string.duplicateMsg, viewModel.name.value), forceOpen = false, forceErase = false)

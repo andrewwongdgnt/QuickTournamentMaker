@@ -11,9 +11,6 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
-import com.dgnt.quickTournamentMaker.data.QTMDatabase
-import com.dgnt.quickTournamentMaker.data.management.GroupRepository
-import com.dgnt.quickTournamentMaker.data.management.PersonRepository
 import com.dgnt.quickTournamentMaker.databinding.GroupDeleteFragmentBinding
 import com.dgnt.quickTournamentMaker.model.management.Group
 import kotlinx.android.synthetic.main.group_delete_fragment.view.*
@@ -26,6 +23,7 @@ import org.kodein.di.instance
 class GroupDeleteDialogFragment : DialogFragment(), DIAware {
     override val di by di()
     private val viewModelFactory: GroupDeleteViewModelFactory by instance()
+
     companion object {
 
         const val TAG = "GroupDeleteDialogFragment"
@@ -33,15 +31,13 @@ class GroupDeleteDialogFragment : DialogFragment(), DIAware {
         private const val KEY_SELECTED_GROUPS = "KEY_SELECTED_GROUPS"
         private const val KEY_GROUPS = "KEY_GROUPS"
 
-        fun newInstance(selectedGroups: List<Group>, groups: List<Group>): GroupDeleteDialogFragment {
-            val args = Bundle()
-            args.putParcelableArrayList(KEY_SELECTED_GROUPS, ArrayList<Group>(selectedGroups))
-
-            args.putParcelableArrayList(KEY_GROUPS, ArrayList<Group>(groups))
-            val fragment = GroupDeleteDialogFragment()
-            fragment.arguments = args
-            return fragment
-        }
+        fun newInstance(selectedGroups: List<Group>, groups: List<Group>): GroupDeleteDialogFragment =
+            GroupDeleteDialogFragment().apply {
+                arguments = Bundle().apply {
+                    putParcelableArrayList(KEY_SELECTED_GROUPS, ArrayList<Group>(selectedGroups))
+                    putParcelableArrayList(KEY_GROUPS, ArrayList<Group>(groups))
+                }
+            }
     }
 
     private lateinit var binding: GroupDeleteFragmentBinding

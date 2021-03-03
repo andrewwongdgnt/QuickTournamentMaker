@@ -9,8 +9,6 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
-import com.dgnt.quickTournamentMaker.data.QTMDatabase
-import com.dgnt.quickTournamentMaker.data.management.PersonRepository
 import com.dgnt.quickTournamentMaker.databinding.MovePersonsFragmentBinding
 import com.dgnt.quickTournamentMaker.model.management.Group
 import com.dgnt.quickTournamentMaker.model.management.Person
@@ -20,7 +18,7 @@ import org.kodein.di.android.x.di
 import org.kodein.di.instance
 
 
-class MovePersonsDialogFragment : DialogFragment() , DIAware {
+class MovePersonsDialogFragment : DialogFragment(), DIAware {
     override val di by di()
     private val viewModelFactory: MovePersonsViewModelFactory by instance()
 
@@ -31,14 +29,13 @@ class MovePersonsDialogFragment : DialogFragment() , DIAware {
         private const val KEY_PERSONS = "KEY_PERSONS"
         private const val KEY_GROUPS = "KEY_GROUPS"
 
-        fun newInstance(persons: List<Person>, group: List<Group>): MovePersonsDialogFragment {
-            val args = Bundle()
-            args.putParcelableArrayList(KEY_PERSONS, ArrayList<Person>(persons))
-            args.putParcelableArrayList(KEY_GROUPS, ArrayList<Group>(group))
-            val fragment = MovePersonsDialogFragment()
-            fragment.arguments = args
-            return fragment
-        }
+        fun newInstance(persons: List<Person>, group: List<Group>): MovePersonsDialogFragment =
+            MovePersonsDialogFragment().apply {
+                arguments = Bundle().apply {
+                    putParcelableArrayList(KEY_PERSONS, ArrayList<Person>(persons))
+                    putParcelableArrayList(KEY_GROUPS, ArrayList<Group>(group))
+                }
+            }
     }
 
     private lateinit var binding: MovePersonsFragmentBinding

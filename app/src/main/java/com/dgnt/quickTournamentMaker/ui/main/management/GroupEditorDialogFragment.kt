@@ -12,9 +12,6 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
-import com.dgnt.quickTournamentMaker.data.QTMDatabase
-import com.dgnt.quickTournamentMaker.data.management.GroupRepository
-import com.dgnt.quickTournamentMaker.data.management.PersonRepository
 import com.dgnt.quickTournamentMaker.databinding.GroupEditorFragmentBinding
 import com.dgnt.quickTournamentMaker.model.management.Group
 import kotlinx.android.synthetic.main.main_activity.*
@@ -26,6 +23,7 @@ import org.kodein.di.instance
 class GroupEditorDialogFragment : DialogFragment(), DIAware {
     override val di by di()
     private val viewModelFactory: GroupEditorViewModelFactory by instance()
+
     companion object {
 
         const val TAG = "GroupEditorDialogFragment"
@@ -34,15 +32,14 @@ class GroupEditorDialogFragment : DialogFragment(), DIAware {
         private const val KEY_TITLE = "KEY_TITLE"
         private const val KEY_GROUP = "KEY_GROUP"
 
-        fun newInstance(editing: Boolean, title: String, group: Group): GroupEditorDialogFragment {
-            val args = Bundle()
-            args.putBoolean(KEY_EDITING, editing)
-            args.putString(KEY_TITLE, title)
-            args.putParcelable(KEY_GROUP, group)
-            val fragment = GroupEditorDialogFragment()
-            fragment.arguments = args
-            return fragment
-        }
+        fun newInstance(editing: Boolean, title: String, group: Group): GroupEditorDialogFragment =
+            GroupEditorDialogFragment().apply {
+                arguments = Bundle().apply {
+                    putBoolean(KEY_EDITING, editing)
+                    putString(KEY_TITLE, title)
+                    putParcelable(KEY_GROUP, group)
+                }
+            }
     }
 
     private lateinit var binding: GroupEditorFragmentBinding
