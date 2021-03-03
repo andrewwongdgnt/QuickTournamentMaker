@@ -18,7 +18,7 @@ import com.dgnt.quickTournamentMaker.ui.main.common.TournamentGeneralEditorViewM
 import com.dgnt.quickTournamentMaker.ui.main.common.TournamentTypeEditorViewModel
 import com.dgnt.quickTournamentMaker.util.Event
 
-class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroupRepository, override val preferenceService: IPreferenceService, override val tournamentInformationCreatorService: ITournamentInformationCreatorService, val selectedPlayersService: ISelectedPlayersService) : ViewModel(), Observable, TournamentGeneralEditorViewModel, TournamentTypeEditorViewModel {
+class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroupRepository, override val preferenceService: IPreferenceService, override val tournamentInformationCreatorService: ITournamentInformationCreatorService, private val selectedPlayersService: ISelectedPlayersService) : ViewModel(), Observable, TournamentGeneralEditorViewModel, TournamentTypeEditorViewModel {
 
     private val persons = personRepository.getAll()
     private val groups = groupRepository.getAll()

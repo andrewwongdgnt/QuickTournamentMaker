@@ -10,7 +10,7 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".ui.tournament.TournamentActivity"></activity>
+        <activity android:name=".ui.tournament.TournamentActivity" />
         <activity
                 android:name=".ui.main.MainActivity"
                 android:configChanges="orientation|screenSize"

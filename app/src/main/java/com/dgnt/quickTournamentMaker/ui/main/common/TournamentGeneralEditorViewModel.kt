@@ -5,9 +5,7 @@ import androidx.lifecycle.MutableLiveData
 
 interface TournamentGeneralEditorViewModel {
 
-
     val title:MutableLiveData<String>
-
 
     val description:MutableLiveData<String>
 }

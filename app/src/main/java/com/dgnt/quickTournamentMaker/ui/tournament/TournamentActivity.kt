@@ -3,7 +3,8 @@ package com.dgnt.quickTournamentMaker.ui.tournament
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -15,7 +16,8 @@ import org.kodein.di.DIAware
 import org.kodein.di.android.di
 import org.kodein.di.instance
 
-class TournamentActivity : AppCompatActivity(), DIAware {
+
+class TournamentActivity : AppCompatActivity(), IEditTournamentDialogFragmentListener, DIAware {
     override val di by di()
     private val viewModelFactory: TournamentViewModelFactory by instance()
 
@@ -30,18 +32,22 @@ class TournamentActivity : AppCompatActivity(), DIAware {
     }
 
     private lateinit var viewModel: TournamentViewModel
+    private lateinit var tournamentInformation: TournamentInformation
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.tournament_activity)
 
+        supportActionBar?.run {
+            setDisplayHomeAsUpEnabled(true)
+        }
 
         val binding = DataBindingUtil.setContentView<TournamentActivityBinding>(this, R.layout.tournament_activity)
 
         viewModel = ViewModelProvider(this, viewModelFactory).get(TournamentViewModel::class.java)
         binding.vm = viewModel
 
-        val tournamentInformation = intent.getParcelableExtra<TournamentInformation>(TOURNAMENT_ACTIVITY_EXTRA)
+        tournamentInformation = intent.getParcelableExtra(TOURNAMENT_ACTIVITY_EXTRA)
         viewModel.setData(tournamentInformation)
 
         viewModel.title.observe(this, Observer {
@@ -49,4 +55,27 @@ class TournamentActivity : AppCompatActivity(), DIAware {
         })
 
     }
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.actions_tournament, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_editTournament -> EditTournamentDialogFragment.newInstance(viewModel.title.value ?: "", viewModel.description.value ?: "").show(supportFragmentManager, EditTournamentDialogFragment.TAG)
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onEditTournament(title: String, description: String) {
+        viewModel.title.value = title
+        viewModel.description.value = description
+    }
+
+
 }
