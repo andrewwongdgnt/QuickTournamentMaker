@@ -13,17 +13,17 @@ import com.dgnt.quickTournamentMaker.databinding.EditTournamentFragmentBinding
 import com.dgnt.quickTournamentMaker.model.tournament.Participant
 import kotlinx.android.synthetic.main.main_activity.*
 
-class EditTournamentDialogFragment : DialogFragment() {
+class EditTournamentDialogFragment : DialogFragment(), IEditParticipantDialogFragmentListener {
 
     companion object {
 
-        const val TAG = "EditTournamentFragment"
+        const val TAG = "EditTournamentDialogFragment"
 
         private const val KEY_TITLE = "KEY_TITLE"
         private const val KEY_DESCRIPTION = "KEY_DESCRIPTION"
         private const val KEY_PARTICIPANTS = "KEY_PARTICIPANTS"
 
-        fun newInstance(title: String, description: String, participants:Array<Participant>): EditTournamentDialogFragment =
+        fun newInstance(title: String, description: String, participants: Array<Participant>) =
             EditTournamentDialogFragment().apply {
                 arguments = Bundle().apply {
                     putString(KEY_TITLE, title)
@@ -34,7 +34,8 @@ class EditTournamentDialogFragment : DialogFragment() {
             }
 
     }
-    internal lateinit var listener: IEditTournamentDialogFragmentListener
+
+    private lateinit var listener: IEditTournamentDialogFragmentListener
 
     private lateinit var binding: EditTournamentFragmentBinding
     private lateinit var viewModel: EditTournamentViewModel
@@ -44,13 +45,14 @@ class EditTournamentDialogFragment : DialogFragment() {
         try {
             listener = context as IEditTournamentDialogFragmentListener
         } catch (e: ClassCastException) {
-            throw ClassCastException((context.toString() +
-                    " must implement IDialogFragmentListener"))
+            throw ClassCastException(
+                (context.toString() +
+                        " must implement IEditTournamentDialogFragmentListener")
+            )
         }
     }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?
-    ): Dialog {
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
         if (activity == null || activity?.layoutInflater == null) {
             return super.onCreateDialog(savedInstanceState)
@@ -64,7 +66,7 @@ class EditTournamentDialogFragment : DialogFragment() {
 
         viewModel.setData(arguments?.getString(KEY_TITLE)!!, arguments?.getString(KEY_DESCRIPTION)!!)
 
-        val participants = arguments?.getParcelableArray(KEY_PARTICIPANTS)?.toList()?.map{it as Participant}?:listOf()
+        val participants = arguments?.getParcelableArray(KEY_PARTICIPANTS)?.toList()?.map { it as Participant } ?: listOf()
 
         binding.participantRv.adapter = ParticipantRecyclerViewAdapter(participants)
 
@@ -73,12 +75,13 @@ class EditTournamentDialogFragment : DialogFragment() {
             .setView(binding.root)
             .setPositiveButton(android.R.string.ok) { _, _ ->
 
-                listener.onEditTournament(viewModel.title.value?:"", viewModel.description.value?:"")
+                listener.onEditTournament(viewModel.title.value ?: "", viewModel.description.value ?: "")
             }
             .setNegativeButton(android.R.string.cancel, null)
             .create()
 
     }
+
     override fun onStart() {
         super.onStart()
         dialog?.window?.setLayout(
@@ -86,5 +89,9 @@ class EditTournamentDialogFragment : DialogFragment() {
             WindowManager.LayoutParams.WRAP_CONTENT
         )
 
+    }
+
+    override fun onEditParticipant(displayName: String, note: String, color: Int) {
+        TODO("Not yet implemented")
     }
 }

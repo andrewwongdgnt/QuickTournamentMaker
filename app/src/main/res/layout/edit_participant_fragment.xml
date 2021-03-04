@@ -6,7 +6,7 @@
 
         <variable
                 name="vm"
-                type="com.dgnt.quickTournamentMaker.ui.main.management.PersonEditorViewModel" />
+                type="com.dgnt.quickTournamentMaker.ui.tournament.EditParticipantViewModel" />
 
     </data>
 
@@ -30,11 +30,12 @@
                     android:layout_height="wrap_content"
                     android:imeOptions="actionDone"
                     android:inputType="text"
-                    android:hint="@string/name"
-                    android:text="@={vm.name}" />\
+                    android:hint="@string/displayName"
+                    android:text="@={vm.name}" />
+
 
             <EditText
-                    android:id="@+id/personNote_et"
+                    android:id="@+id/participantNote_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -49,19 +50,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/standard_gap"
-                    android:text="@string/group"
+                    android:text="@string/displayedColor"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
-            <Spinner
-                    android:id="@+id/group_spinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:entries="@{vm.groupNames}"
-                    app:selectedValue="@{vm.groupName}"
-                    app:onItemSelected="@{(selectedValue) -> vm.setNewGroupName(selectedValue)}" />
+<!--            <Spinner-->
+<!--                    android:id="@+id/group_spinner"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    app:entries="@{vm.groupNames}"-->
+<!--                    app:selectedValue="@{vm.groupName}"-->
+<!--                    app:onItemSelected="@{(selectedValue) -> vm.setNewGroupName(selectedValue)}" />-->
 
         </LinearLayout>
     </ScrollView>
-
-
 </layout>
