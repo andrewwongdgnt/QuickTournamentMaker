@@ -73,7 +73,7 @@ class GroupDeleteDialogFragment : DialogFragment(), DIAware {
             .setTitle(getString(R.string.deletingGroups, selectedGroups.size))
             .setView(binding.root)
             .setPositiveButton(R.string.deleteWithPlayers) { _, _ ->
-                viewModel.deleteWithPlayers(selectedGroups.map { it.toEntity() }, getString(R.string.deleteGroupSuccessfulMsg, selectedGroups.size))
+                viewModel.deleteWithPersons(selectedGroups.map { it.toEntity() }, getString(R.string.deleteGroupSuccessfulMsg, selectedGroups.size))
             }
             .setNegativeButton(android.R.string.cancel, null)
             .setNeutralButton(R.string.deleteThenMovePlayers) { _, _ ->

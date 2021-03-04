@@ -53,7 +53,7 @@ class GroupDeleteViewModel(private val personRepository: IPersonRepository, priv
         _messageEvent.value = Event(successMsg)
     }
 
-    fun deleteWithPlayers(selectedGroups: List<GroupEntity>,successMsg: String) = viewModelScope.launch {
+    fun deleteWithPersons(selectedGroups: List<GroupEntity>, successMsg: String) = viewModelScope.launch {
         groupRepository.delete(selectedGroups)
         personRepository.deleteViaGroup(selectedGroups.map { it.name })
         _messageEvent.value = Event(successMsg)

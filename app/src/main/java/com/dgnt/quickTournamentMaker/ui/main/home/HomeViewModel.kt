@@ -10,15 +10,16 @@ import com.dgnt.quickTournamentMaker.data.management.GroupEntity
 import com.dgnt.quickTournamentMaker.data.management.IGroupRepository
 import com.dgnt.quickTournamentMaker.data.management.IPersonRepository
 import com.dgnt.quickTournamentMaker.data.management.PersonEntity
+import com.dgnt.quickTournamentMaker.model.management.Person
 import com.dgnt.quickTournamentMaker.model.tournament.*
 import com.dgnt.quickTournamentMaker.service.interfaces.IPreferenceService
-import com.dgnt.quickTournamentMaker.service.interfaces.ISelectedPlayersService
+import com.dgnt.quickTournamentMaker.service.interfaces.ISelectedPersonsService
 import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentInformationCreatorService
 import com.dgnt.quickTournamentMaker.ui.main.common.TournamentGeneralEditorViewModel
 import com.dgnt.quickTournamentMaker.ui.main.common.TournamentTypeEditorViewModel
 import com.dgnt.quickTournamentMaker.util.Event
 
-class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroupRepository, override val preferenceService: IPreferenceService, override val tournamentInformationCreatorService: ITournamentInformationCreatorService, private val selectedPlayersService: ISelectedPlayersService) : ViewModel(), Observable, TournamentGeneralEditorViewModel, TournamentTypeEditorViewModel {
+class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroupRepository, override val preferenceService: IPreferenceService, override val tournamentInformationCreatorService: ITournamentInformationCreatorService, private val selectedPersonsService: ISelectedPersonsService) : ViewModel(), Observable, TournamentGeneralEditorViewModel, TournamentTypeEditorViewModel {
 
     private val persons = personRepository.getAll()
     private val groups = groupRepository.getAll()
@@ -88,13 +89,13 @@ class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroup
     val quickStart = MutableLiveData<Boolean>(true)
 
     @Bindable
-    val numberOfPlayers = MutableLiveData<String>()
+    val numberOfParticipants = MutableLiveData<String>()
 
     @Bindable
-    val numberOfPlayersSelected = MutableLiveData<String>()
+    val numberOfPersonsSelected = MutableLiveData<String>()
 
     @Bindable
-    val selectedPlayers = MutableLiveData<List<String>>()
+    val selectedPersons = MutableLiveData<List<Person>>()
 
     @Bindable
     val expandAll = MutableLiveData<Boolean>()
@@ -102,7 +103,7 @@ class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroup
     @Bindable
     val selectAll = MutableLiveData<Boolean>()
 
-    val noPlayers: LiveData<Boolean> =
+    val noPersons: LiveData<Boolean> =
         object : MediatorLiveData<Boolean>() {
             init {
                 addSource(persons) { persons ->
@@ -173,7 +174,7 @@ class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroup
         }
 
         try {
-            _tournamentInformationEvent.value = Event(tournamentInformationCreatorService.create(title.value ?: "", alternativeTitles, description.value ?: "", selectedPlayersService.resolve(selectedPlayers.value, numberOfPlayers.value?.let { it.toIntOrNull() }, quickStart.value ?: false, seedType), tournamentType, seedType, rankConfig))
+            _tournamentInformationEvent.value = Event(tournamentInformationCreatorService.create(title.value ?: "", alternativeTitles, description.value ?: "", selectedPersonsService.resolve(selectedPersons.value, numberOfParticipants.value?.let { it.toIntOrNull() }, quickStart.value ?: false, seedType), tournamentType, seedType, rankConfig))
         } catch (e: IllegalArgumentException) {
             _failedToStartTournamentMessage.value = Event(true)
         }

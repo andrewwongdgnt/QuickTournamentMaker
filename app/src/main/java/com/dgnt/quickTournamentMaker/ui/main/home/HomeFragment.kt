@@ -1,6 +1,5 @@
 package com.dgnt.quickTournamentMaker.ui.main.home
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -72,7 +71,7 @@ class HomeFragment : Fragment(), DIAware {
 
             setVMData(viewModel)
 
-            viewModel.numberOfPlayersSelected.value = getString(R.string.numberOfPlayersSelected, 0)
+            viewModel.numberOfPersonsSelected.value = getString(R.string.numberOfPlayersSelected, 0)
 
             viewModel.tournamentType.value = elimination_rb.id
             viewModel.seedType.value = randomSeed_rb.id
@@ -120,7 +119,7 @@ class HomeFragment : Fragment(), DIAware {
                 viewModel.handleScoreConfigChange(it.first, it.second, it.third)
             })
 
-            binding.playerRv.layoutManager = NonScrollingLinearLayoutManager(this)
+            binding.personToParticipateRv.layoutManager = NonScrollingLinearLayoutManager(this)
 
             viewModel.personAndGroupLiveData.observe(viewLifecycleOwner, Observer { (persons, groupEntities) ->
 
@@ -143,7 +142,7 @@ class HomeFragment : Fragment(), DIAware {
                     }
 
                 })
-                binding.playerRv.adapter = adapter
+                binding.personToParticipateRv.adapter = adapter
                 adapter.groups.forEach { g ->
                     if (groupsExpanded.contains(g.title))
                         adapter.toggleGroup(g)
@@ -154,7 +153,7 @@ class HomeFragment : Fragment(), DIAware {
 
             viewModel.expandAll.observe(viewLifecycleOwner, Observer {
 
-                val adapter = binding.playerRv.adapter as GroupCheckedExpandableRecyclerViewAdapter
+                val adapter = binding.personToParticipateRv.adapter as GroupCheckedExpandableRecyclerViewAdapter
                 adapter.groups.forEach { g ->
                     if ((it && !adapter.isGroupExpanded(g)) || (!it && adapter.isGroupExpanded(g))) {
                         adapter.toggleGroup(g)
@@ -165,7 +164,7 @@ class HomeFragment : Fragment(), DIAware {
 
             viewModel.selectAll.observe(viewLifecycleOwner, Observer {
 
-                val adapter = binding.playerRv.adapter as GroupCheckedExpandableRecyclerViewAdapter
+                val adapter = binding.personToParticipateRv.adapter as GroupCheckedExpandableRecyclerViewAdapter
                 adapter.groups.forEach { g ->
                     selectGroup(g as GroupCheckedExpandableGroup, it)
                 }
@@ -250,10 +249,10 @@ class HomeFragment : Fragment(), DIAware {
     }
 
     private fun update() {
-        val adapter = binding.playerRv.adapter as GroupCheckedExpandableRecyclerViewAdapter
+        val adapter = binding.personToParticipateRv.adapter as GroupCheckedExpandableRecyclerViewAdapter
         adapter.notifyDataSetChanged()
-        viewModel.numberOfPlayersSelected.value = getString(R.string.numberOfPlayersSelected, adapter.groups.map { it as CheckedExpandableGroup }.fold(0, { acc, e -> e.selectedChildren.filter { it }.size + acc }))
-        viewModel.selectedPlayers.value = adapter.groups.flatMap { (it as GroupCheckedExpandableGroup).items.zip(it.selectedChildren.asList()) }.filter { it.second }.map { (it.first as Person).name }
+        viewModel.numberOfPersonsSelected.value = getString(R.string.numberOfPlayersSelected, adapter.groups.map { it as CheckedExpandableGroup }.fold(0, { acc, e -> e.selectedChildren.filter { it }.size + acc }))
+        viewModel.selectedPersons.value = adapter.groups.flatMap { (it as GroupCheckedExpandableGroup).items.zip(it.selectedChildren.asList()) }.filter { it.second }.map { it.first as Person }
 
     }
 

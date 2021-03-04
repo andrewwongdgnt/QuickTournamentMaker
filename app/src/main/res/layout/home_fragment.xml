@@ -69,7 +69,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/numberOfPlayers"
-                            android:text="@={vm.numberOfPlayers}"
+                            android:text="@={vm.numberOfParticipants}"
                             android:inputType="number"
                             android:singleLine="true"
                             android:visibility="@{vm.quickStart ? View.VISIBLE : View.GONE}" />
@@ -85,18 +85,18 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/noPlayersExist"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:visibility="@{vm.noPlayers ? View.VISIBLE : View.GONE}"/>
+                                android:visibility="@{vm.noPersons ? View.VISIBLE : View.GONE}"/>
 
                         <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
-                                android:visibility="@{vm.noPlayers ? View.GONE : View.VISIBLE}">
+                                android:visibility="@{vm.noPersons ? View.GONE : View.VISIBLE}">
 
                             <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@={vm.numberOfPlayersSelected}"
+                                    android:text="@={vm.numberOfPersonsSelected}"
                                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
                             <LinearLayout
@@ -134,7 +134,7 @@
                             </LinearLayout>
 
                             <androidx.recyclerview.widget.RecyclerView
-                                    android:id="@+id/player_rv"
+                                    android:id="@+id/personToParticipate_rv"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent" />
                         </LinearLayout>

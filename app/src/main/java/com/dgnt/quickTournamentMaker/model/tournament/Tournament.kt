@@ -13,7 +13,7 @@ enum class SeedType {
     RANDOM,CUSTOM,SAME
 }
 @Parcelize
-data class TournamentInformation(val title: String, val description: String, val persons:List<String>, val tournamentType:TournamentType, val seedType:SeedType, val rankConfig:IRankConfig, val creationDate:Date, val lastModifiedDate:Date?=null): Parcelable
+data class TournamentInformation(val title: String, val description: String, val participants:List<Participant>, val tournamentType:TournamentType, val seedType:SeedType, val rankConfig:IRankConfig, val creationDate:Date, val lastModifiedDate:Date?=null): Parcelable
 
 data class Tournament(val tournamentInformation: TournamentInformation) {
 }
