@@ -2,7 +2,7 @@ package com.dgnt.quickTournamentMaker.ui.tournament
 
 import androidx.fragment.app.DialogFragment
 
-interface IEditTournamentDialogFragmentListener {
+interface ITournamentEditorDialogFragmentListener {
 
     /**
      * handles the change

@@ -1,6 +1,6 @@
 package com.dgnt.quickTournamentMaker.ui.tournament
 
-interface IEditParticipantDialogFragmentListener {
+interface IParticipantEditorDialogFragmentListener {
 
     /**
      * handles the change

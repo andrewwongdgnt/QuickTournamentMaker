@@ -9,22 +9,20 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.EditParticipantFragmentBinding
-import com.dgnt.quickTournamentMaker.databinding.EditTournamentFragmentBinding
-import com.dgnt.quickTournamentMaker.model.tournament.Participant
 import kotlinx.android.synthetic.main.main_activity.*
 
-class EditParticipantDialogFragment : DialogFragment() {
+class ParticipantEditorDialogFragment : DialogFragment() {
 
     companion object {
 
-        const val TAG = "EditParticipantDialogFragment"
+        const val TAG = "ParticipantEditorDialogFragment"
 
         private const val KEY_DISPLAY_NAME = "KEY_DISPLAY_NAME"
         private const val KEY_NOTE = "KEY_NOTE"
         private const val KEY_COLOR = "KEY_COLOR"
 
         fun newInstance(title: String, description: String, color:Int) =
-            EditParticipantDialogFragment().apply {
+            ParticipantEditorDialogFragment().apply {
                 arguments = Bundle().apply {
                     putString(KEY_DISPLAY_NAME, title)
                     putString(KEY_NOTE, description)
@@ -34,18 +32,18 @@ class EditParticipantDialogFragment : DialogFragment() {
             }
 
     }
-    private lateinit var listener: IEditParticipantDialogFragmentListener
+    private lateinit var listenerEditor: IParticipantEditorDialogFragmentListener
 
     private lateinit var binding: EditParticipantFragmentBinding
-    private lateinit var viewModel: EditParticipantViewModel
+    private lateinit var editorViewModel: ParticipantEditorViewModel
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
-            listener = context as IEditParticipantDialogFragmentListener
+            listenerEditor = context as IParticipantEditorDialogFragmentListener
         } catch (e: ClassCastException) {
             throw ClassCastException(
                 (context.toString() +
-                        " must implement IEditParticipantDialogFragmentListener")
+                        " must implement IParticipantEditorDialogFragmentListener")
             )
         }
     }
@@ -56,8 +54,8 @@ class EditParticipantDialogFragment : DialogFragment() {
         }
         binding = DataBindingUtil.inflate(activity?.layoutInflater!!, R.layout.edit_participant_fragment, container, false)
 
-        viewModel = ViewModelProvider(this).get(EditParticipantViewModel::class.java)
-        binding.vm = viewModel
+        editorViewModel = ViewModelProvider(this).get(ParticipantEditorViewModel::class.java)
+        binding.vm = editorViewModel
         binding.lifecycleOwner = this
 
         val displayName =  arguments?.getString(KEY_DISPLAY_NAME)!!
@@ -67,7 +65,7 @@ class EditParticipantDialogFragment : DialogFragment() {
             .setView(binding.root)
             .setPositiveButton(android.R.string.ok) { _, _ ->
 
-                listener.onEditParticipant(viewModel.name.value ?: "", viewModel.note.value ?: "", 9)
+                listenerEditor.onEditParticipant(editorViewModel.name.value ?: "", editorViewModel.note.value ?: "", 9)
             }
             .setNegativeButton(android.R.string.cancel, null)
             .create()

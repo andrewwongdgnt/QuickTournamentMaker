@@ -17,7 +17,7 @@ import org.kodein.di.android.di
 import org.kodein.di.instance
 
 
-class TournamentActivity : AppCompatActivity(), IEditTournamentDialogFragmentListener, DIAware {
+class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentListener, DIAware {
     override val di by di()
     private val viewModelFactory: TournamentViewModelFactory by instance()
 
@@ -68,7 +68,7 @@ class TournamentActivity : AppCompatActivity(), IEditTournamentDialogFragmentLis
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_editTournament -> EditTournamentDialogFragment.newInstance(viewModel.title.value ?: "", viewModel.description.value ?: "", viewModel.participants.value?.run { toTypedArray() } ?: arrayOf()).show(supportFragmentManager, EditTournamentDialogFragment.TAG)
+            R.id.action_editTournament -> TournamentEditorDialogFragment.newInstance(viewModel.title.value ?: "", viewModel.description.value ?: "", viewModel.participants.value?.run { toTypedArray() } ?: arrayOf()).show(supportFragmentManager, TournamentEditorDialogFragment.TAG)
         }
         return super.onOptionsItemSelected(item)
     }

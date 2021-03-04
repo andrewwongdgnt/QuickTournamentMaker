@@ -4,14 +4,13 @@ import androidx.databinding.Bindable
 import androidx.databinding.Observable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.dgnt.quickTournamentMaker.ui.main.common.TournamentGeneralEditorViewModel
 
-class EditTournamentViewModel : Observable, ViewModel(), TournamentGeneralEditorViewModel {
+class ParticipantEditorViewModel : Observable,ViewModel() {
     @Bindable
-    override val title = MutableLiveData<String>()
+     val name = MutableLiveData<String>()
 
     @Bindable
-    override val description = MutableLiveData<String>()
+    val note = MutableLiveData<String>()
 
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
     }
@@ -19,9 +18,9 @@ class EditTournamentViewModel : Observable, ViewModel(), TournamentGeneralEditor
     override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
     }
 
-    fun setData(title: String, description: String) {
-        this.title.value = title
-        this.description.value = description
+    fun setData(name: String, note: String) {
+        this.name.value = name
+        this.note.value = note
 
     }
 }

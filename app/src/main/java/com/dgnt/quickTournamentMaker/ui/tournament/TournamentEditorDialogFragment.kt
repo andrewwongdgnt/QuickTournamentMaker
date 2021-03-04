@@ -13,18 +13,18 @@ import com.dgnt.quickTournamentMaker.databinding.EditTournamentFragmentBinding
 import com.dgnt.quickTournamentMaker.model.tournament.Participant
 import kotlinx.android.synthetic.main.main_activity.*
 
-class EditTournamentDialogFragment : DialogFragment(), IEditParticipantDialogFragmentListener {
+class TournamentEditorDialogFragment : DialogFragment(), IParticipantEditorDialogFragmentListener {
 
     companion object {
 
-        const val TAG = "EditTournamentDialogFragment"
+        const val TAG = "TournamentEditorDialogFragment"
 
         private const val KEY_TITLE = "KEY_TITLE"
         private const val KEY_DESCRIPTION = "KEY_DESCRIPTION"
         private const val KEY_PARTICIPANTS = "KEY_PARTICIPANTS"
 
         fun newInstance(title: String, description: String, participants: Array<Participant>) =
-            EditTournamentDialogFragment().apply {
+            TournamentEditorDialogFragment().apply {
                 arguments = Bundle().apply {
                     putString(KEY_TITLE, title)
                     putString(KEY_DESCRIPTION, description)
@@ -35,19 +35,19 @@ class EditTournamentDialogFragment : DialogFragment(), IEditParticipantDialogFra
 
     }
 
-    private lateinit var listener: IEditTournamentDialogFragmentListener
+    private lateinit var listenerEditor: ITournamentEditorDialogFragmentListener
 
     private lateinit var binding: EditTournamentFragmentBinding
-    private lateinit var viewModel: EditTournamentViewModel
+    private lateinit var editorViewModel: TournamentEditorViewModel
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
-            listener = context as IEditTournamentDialogFragmentListener
+            listenerEditor = context as ITournamentEditorDialogFragmentListener
         } catch (e: ClassCastException) {
             throw ClassCastException(
                 (context.toString() +
-                        " must implement IEditTournamentDialogFragmentListener")
+                        " must implement ITournamentEditorDialogFragmentListener")
             )
         }
     }
@@ -60,11 +60,11 @@ class EditTournamentDialogFragment : DialogFragment(), IEditParticipantDialogFra
 
         binding = DataBindingUtil.inflate(activity?.layoutInflater!!, R.layout.edit_tournament_fragment, container, false)
 
-        viewModel = ViewModelProvider(this).get(EditTournamentViewModel::class.java)
-        binding.vm = viewModel
+        editorViewModel = ViewModelProvider(this).get(TournamentEditorViewModel::class.java)
+        binding.vm = editorViewModel
         binding.lifecycleOwner = this
 
-        viewModel.setData(arguments?.getString(KEY_TITLE)!!, arguments?.getString(KEY_DESCRIPTION)!!)
+        editorViewModel.setData(arguments?.getString(KEY_TITLE)!!, arguments?.getString(KEY_DESCRIPTION)!!)
 
         val participants = arguments?.getParcelableArray(KEY_PARTICIPANTS)?.toList()?.map { it as Participant } ?: listOf()
 
@@ -75,7 +75,7 @@ class EditTournamentDialogFragment : DialogFragment(), IEditParticipantDialogFra
             .setView(binding.root)
             .setPositiveButton(android.R.string.ok) { _, _ ->
 
-                listener.onEditTournament(viewModel.title.value ?: "", viewModel.description.value ?: "")
+                listenerEditor.onEditTournament(editorViewModel.title.value ?: "", editorViewModel.description.value ?: "")
             }
             .setNegativeButton(android.R.string.cancel, null)
             .create()

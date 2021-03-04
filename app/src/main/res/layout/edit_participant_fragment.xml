@@ -6,7 +6,7 @@
 
         <variable
                 name="vm"
-                type="com.dgnt.quickTournamentMaker.ui.tournament.EditParticipantViewModel" />
+                type="com.dgnt.quickTournamentMaker.ui.tournament.ParticipantEditorViewModel" />
 
     </data>
 
