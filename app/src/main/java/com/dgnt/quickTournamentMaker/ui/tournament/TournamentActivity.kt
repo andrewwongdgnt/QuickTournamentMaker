@@ -55,6 +55,7 @@ class TournamentActivity : AppCompatActivity(), IEditTournamentDialogFragmentLis
         })
 
     }
+
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
@@ -67,7 +68,7 @@ class TournamentActivity : AppCompatActivity(), IEditTournamentDialogFragmentLis
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_editTournament -> EditTournamentDialogFragment.newInstance(viewModel.title.value ?: "", viewModel.description.value ?: "").show(supportFragmentManager, EditTournamentDialogFragment.TAG)
+            R.id.action_editTournament -> EditTournamentDialogFragment.newInstance(viewModel.title.value ?: "", viewModel.description.value ?: "", viewModel.participants.value?.run { toTypedArray() } ?: arrayOf()).show(supportFragmentManager, EditTournamentDialogFragment.TAG)
         }
         return super.onOptionsItemSelected(item)
     }

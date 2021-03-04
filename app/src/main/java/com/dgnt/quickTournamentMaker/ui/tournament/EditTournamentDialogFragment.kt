@@ -10,6 +10,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.EditTournamentFragmentBinding
+import com.dgnt.quickTournamentMaker.model.tournament.Participant
 import kotlinx.android.synthetic.main.main_activity.*
 
 class EditTournamentDialogFragment : DialogFragment() {
@@ -20,12 +21,14 @@ class EditTournamentDialogFragment : DialogFragment() {
 
         private const val KEY_TITLE = "KEY_TITLE"
         private const val KEY_DESCRIPTION = "KEY_DESCRIPTION"
+        private const val KEY_PARTICIPANTS = "KEY_PARTICIPANTS"
 
-        fun newInstance(title: String, description: String): EditTournamentDialogFragment =
+        fun newInstance(title: String, description: String, participants:Array<Participant>): EditTournamentDialogFragment =
             EditTournamentDialogFragment().apply {
                 arguments = Bundle().apply {
                     putString(KEY_TITLE, title)
                     putString(KEY_DESCRIPTION, description)
+                    putParcelableArray(KEY_PARTICIPANTS, participants)
                 }
 
             }
@@ -35,7 +38,6 @@ class EditTournamentDialogFragment : DialogFragment() {
 
     private lateinit var binding: EditTournamentFragmentBinding
     private lateinit var viewModel: EditTournamentViewModel
-    private lateinit var alertDialog: AlertDialog
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -61,6 +63,10 @@ class EditTournamentDialogFragment : DialogFragment() {
         binding.lifecycleOwner = this
 
         viewModel.setData(arguments?.getString(KEY_TITLE)!!, arguments?.getString(KEY_DESCRIPTION)!!)
+
+        val participants = arguments?.getParcelableArray(KEY_PARTICIPANTS)?.toList()?.map{it as Participant}?:listOf()
+
+        binding.participantRv.adapter = ParticipantRecyclerViewAdapter(participants)
 
         return AlertDialog.Builder(activity)
             .setTitle(R.string.editTournament)
