@@ -8,17 +8,11 @@ import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.model.management.Group
 
 class GroupRecyclerViewAdapter(private val groups: List<Group>, private val onClickListener: (Group) -> Unit) : RecyclerView.Adapter<GroupViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupViewHolder{
-        return GroupViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.single_checkable_list_item, parent, false),  onClickListener)
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = GroupViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.list_item, parent, false), onClickListener)
 
-    override fun onBindViewHolder(holder: GroupViewHolder, position: Int){
-       holder.bind(groups[position])
-    }
+    override fun onBindViewHolder(holder: GroupViewHolder, position: Int) = holder.bind(groups[position])
 
-    override fun getItemCount(): Int {
-       return groups.size
-    }
+    override fun getItemCount() = groups.size
 
 
 }

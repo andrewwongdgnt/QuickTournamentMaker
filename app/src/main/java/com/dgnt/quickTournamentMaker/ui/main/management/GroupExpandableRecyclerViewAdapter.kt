@@ -16,7 +16,7 @@ class GroupExpandableRecyclerViewAdapter(private val setDrawable: (CheckedTextVi
 
     override fun onCreateGroupViewHolder(parent: ViewGroup, viewType: Int): ManagementExpandedGroupViewHolder = ManagementExpandedGroupViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.group_item, parent, false), nonEmptyGroups, selectedGroups, groupClickListener)
 
-    override fun onCreateChildViewHolder(parent: ViewGroup, viewType: Int): ExpandedPersonViewHolder = ExpandedPersonViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.person_item, parent, false), setDrawable, selectedPersons, personClickListener)
+    override fun onCreateChildViewHolder(parent: ViewGroup, viewType: Int): ExpandedPersonViewHolder = ExpandedPersonViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.single_checkable_list_item, parent, false), setDrawable, selectedPersons, personClickListener)
 
     override fun onBindChildViewHolder(holder: ExpandedPersonViewHolder, flatPosition: Int, group: ExpandableGroup<*>, childIndex: Int) = holder.bind((group as GroupExpandableGroup).items[childIndex], actionModeCallback.multiSelect == ManagementFragmentActionModeCallBack.SelectType.PERSON)
 

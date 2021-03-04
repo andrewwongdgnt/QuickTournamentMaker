@@ -15,12 +15,15 @@
             android:paddingBottom="@dimen/list_item_vertical_margin"
             android:focusable="true">
 
-        <TextView
-                android:id="@+id/list_item_ctv"
+        <CheckedTextView
+                android:id="@+id/checkable_list_item_ctv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="Hello"
                 android:gravity="center_vertical"
+                android:paddingStart="?android:attr/expandableListPreferredChildPaddingLeft"
+                android:paddingEnd="0dp"
+                android:checkMark="?android:attr/listChoiceIndicatorMultiple"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
 
