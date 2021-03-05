@@ -12,6 +12,7 @@ import com.dgnt.quickTournamentMaker.service.interfaces.ISelectedPersonsService
 import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentInformationCreatorService
 import com.dgnt.quickTournamentMaker.ui.main.home.HomeViewModelFactory
 import com.dgnt.quickTournamentMaker.ui.main.management.*
+import com.dgnt.quickTournamentMaker.ui.tournament.ParticipantEditorViewModelFactory
 import com.dgnt.quickTournamentMaker.ui.tournament.TournamentEditorViewModelFactory
 import com.dgnt.quickTournamentMaker.ui.tournament.TournamentViewModelFactory
 import org.kodein.di.*
@@ -48,6 +49,7 @@ class QTMApplication() : Application(), DIAware {
         bind() from provider { PersonEditorViewModelFactory(instance(), instance()) }
         bind() from provider { TournamentViewModelFactory() }
         bind() from provider { TournamentEditorViewModelFactory() }
+        bind() from provider { ParticipantEditorViewModelFactory() }
 
         //Service
         bind<IRankingConfigService>() with singleton { DefaultRankingConfigService() }

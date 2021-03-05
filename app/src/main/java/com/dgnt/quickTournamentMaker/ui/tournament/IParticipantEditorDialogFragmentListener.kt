@@ -1,13 +1,13 @@
 package com.dgnt.quickTournamentMaker.ui.tournament
 
+import com.dgnt.quickTournamentMaker.model.tournament.Participant
+
 interface IParticipantEditorDialogFragmentListener {
 
     /**
      * handles the change
      *
-     * @param displayName the new name
-     * @param note the new note
-     * @param color the new color
+     * @param participant the updated participant
      */
-    fun onEditParticipant(displayName:String, note: String, color:Int)
+    fun onEditParticipant(participant:Participant)
 }
