@@ -4,14 +4,14 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.ParticipantEditorFragmentBinding
+import com.dgnt.quickTournamentMaker.model.tournament.ColorInfo
 import com.dgnt.quickTournamentMaker.model.tournament.Participant
+import com.dgnt.quickTournamentMaker.util.TournamentUtil
 import kotlinx.android.synthetic.main.main_activity.*
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
@@ -39,6 +39,8 @@ class ParticipantEditorDialogFragment : DialogFragment(), DIAware {
 
     private lateinit var listenerEditor: IParticipantEditorDialogFragmentListener
 
+    private lateinit var key: String
+
     private lateinit var binding: ParticipantEditorFragmentBinding
     private lateinit var viewModel: ParticipantEditorViewModel
     override fun onAttach(context: Context) {
@@ -59,23 +61,18 @@ class ParticipantEditorDialogFragment : DialogFragment(), DIAware {
         binding.lifecycleOwner = this
 
         val participant = arguments?.getParcelable<Participant>(KEY_PARTICIPANT)!!
+        key = participant.key
 
-        viewModel.setData(participant)
-
-        viewModel.name.observe(activity!!, Observer {
-            participant.displayName = it
+        viewModel.setData(participant, resources.getStringArray(R.array.colorOptionsNames).asList().zip(resources.getIntArray(R.array.colorOptions).asList()).map {
+            ColorInfo(it.first, it.second)
         })
 
-        viewModel.note.observe(activity!!, Observer {
-            participant.note = it
-        })
 
         return AlertDialog.Builder(activity)
             .setTitle(getString(R.string.editing, participant.displayName))
             .setView(binding.root)
             .setPositiveButton(android.R.string.ok) { _, _ ->
-
-                listenerEditor.onEditParticipant(participant)
+                listenerEditor.onEditParticipant(key, viewModel.name.value ?: "", viewModel.note.value ?: "", viewModel.color.value?.hex ?: TournamentUtil.DEFAULT_DISPLAY_COLOR)
             }
             .setNegativeButton(android.R.string.cancel, null)
             .create()

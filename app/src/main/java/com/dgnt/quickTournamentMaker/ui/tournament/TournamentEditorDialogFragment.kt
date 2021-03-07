@@ -76,7 +76,6 @@ class TournamentEditorDialogFragment : DialogFragment(), DIAware, IParticipantEd
             .setTitle(R.string.editTournament)
             .setView(binding.root)
             .setPositiveButton(android.R.string.ok) { _, _ ->
-
                 listenerEditor.onEditTournament(viewModel.title.value ?: "", viewModel.description.value ?: "")
             }
             .setNegativeButton(android.R.string.cancel, null)
@@ -93,11 +92,11 @@ class TournamentEditorDialogFragment : DialogFragment(), DIAware, IParticipantEd
 
     }
 
-    override fun onEditParticipant(participant: Participant) {
-        participants.find { it.key == participant.key }?.also {
-            it.displayName = participant.displayName
-            it.note = participant.note
-            it.color = participant.color
+    override fun onEditParticipant(key: String, name: String, note: String, color: Int) {
+        participants.find { it.key == key }?.also {
+            it.displayName = name
+            it.note = note
+            it.color = color
         }?.apply {
             updateParticipantList()
         }

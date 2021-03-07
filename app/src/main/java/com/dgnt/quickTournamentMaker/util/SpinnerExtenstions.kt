@@ -1,11 +1,13 @@
 package com.dgnt.quickTournamentMaker.util
 
 
+import android.R
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.databinding.InverseBindingListener
+import com.dgnt.quickTournamentMaker.ui.adapter.ColorAdapter
 
 object SpinnerExtensions {
 
@@ -14,8 +16,8 @@ object SpinnerExtensions {
      */
     fun Spinner.setSpinnerEntries(entries: List<Any>?) {
         if (entries != null) {
-            val arrayAdapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, entries)
-            arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            val arrayAdapter = ColorAdapter(context, R.layout.simple_spinner_item, entries)
+            arrayAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
             adapter = arrayAdapter
         }
     }
@@ -29,9 +31,9 @@ object SpinnerExtensions {
         } else {
             onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                  //  if (tag != position) {
-                        listener.onItemSelected(parent.getItemAtPosition(position))
-                  //  }
+                    //  if (tag != position) {
+                    listener.onItemSelected(parent.getItemAtPosition(position))
+                    //  }
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>) {}
@@ -49,8 +51,8 @@ object SpinnerExtensions {
             onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                     //if (tag != position) {
-                        listener.onChange()
-                  //  }
+                    listener.onChange()
+                    //  }
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>) {}
@@ -62,7 +64,7 @@ object SpinnerExtensions {
      * set spinner value
      */
     fun Spinner.setSpinnerValue(value: Any?) {
-        if (adapter != null ) {
+        if (adapter != null) {
             val position = (adapter as ArrayAdapter<Any>).getPosition(value)
             setSelection(position, false)
             //tag = position

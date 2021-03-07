@@ -2,7 +2,7 @@ package com.dgnt.quickTournamentMaker.ui.main.common
 
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.color.MaterialColors.ALPHA_FULL
+import com.dgnt.quickTournamentMaker.ui.adapter.IItemTouchHelperAdapter
 
 
 class DraggableItemTouchHelperCallback(private val itemTouchHelperAdapter: IItemTouchHelperAdapter) : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0) {

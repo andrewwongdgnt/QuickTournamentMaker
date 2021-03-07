@@ -7,6 +7,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.model.tournament.RankPriorityConfigType
+import com.dgnt.quickTournamentMaker.ui.adapter.IItemTouchHelperAdapter
 import java.util.*
 
 class RankPriorityRecyclerViewAdapter(private val context: Context, private val items: List<RankPriorityConfigType>) : RecyclerView.Adapter<DraggableItemViewHolder>(), IItemTouchHelperAdapter {

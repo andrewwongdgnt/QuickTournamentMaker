@@ -7,7 +7,10 @@ interface IParticipantEditorDialogFragmentListener {
     /**
      * handles the change
      *
-     * @param participant the updated participant
+     * @param key the key that identifies a participant
+     * @param name the new name
+     * @param note the new note
+     * @param color the new color
      */
-    fun onEditParticipant(participant:Participant)
+    fun onEditParticipant(key:String, name:String,note:String,color:Int)
 }

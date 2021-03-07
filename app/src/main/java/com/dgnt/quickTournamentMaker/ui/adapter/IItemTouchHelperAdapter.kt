@@ -1,4 +1,4 @@
-package com.dgnt.quickTournamentMaker.ui.main.common
+package com.dgnt.quickTournamentMaker.ui.adapter
 
 /*
  * Copyright (C) 2015 Paul Burke

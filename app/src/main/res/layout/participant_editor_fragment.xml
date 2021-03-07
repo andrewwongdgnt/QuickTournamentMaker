@@ -53,13 +53,13 @@
                     android:text="@string/displayedColor"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
-<!--            <Spinner-->
-<!--                    android:id="@+id/group_spinner"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    app:entries="@{vm.groupNames}"-->
-<!--                    app:selectedValue="@{vm.groupName}"-->
-<!--                    app:onItemSelected="@{(selectedValue) -> vm.setNewGroupName(selectedValue)}" />-->
+            <Spinner
+                    android:id="@+id/group_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:entries="@{vm.colors}"
+                    app:selectedValue="@{vm.color}"
+                    app:onItemSelected="@{(selectedValue) -> vm.setNewColor(selectedValue)}" />
 
         </LinearLayout>
     </ScrollView>

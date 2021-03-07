@@ -16,8 +16,7 @@ data class Group(var id: String, var name: String, var note: String, var favouri
 
     override fun equals(other: Any?): Boolean {
         if (other is Group) {
-            val otherGroup = other as Group
-            return otherGroup.id == id
+            return other.id == id
         }
         return super.equals(other)
     }

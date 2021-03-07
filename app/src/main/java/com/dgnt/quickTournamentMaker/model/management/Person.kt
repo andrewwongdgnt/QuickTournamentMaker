@@ -11,8 +11,7 @@ data class Person(val id: String, var name: String, var note: String) : IKeyable
     override fun compareTo(other: Person): Int = name.compareTo(other.name)
     override fun equals(other: Any?): Boolean {
         if (other is Person) {
-            val otherPerson = other as Person
-            return otherPerson.id == id
+            return other.id == id
         }
         return super.equals(other)
     }
