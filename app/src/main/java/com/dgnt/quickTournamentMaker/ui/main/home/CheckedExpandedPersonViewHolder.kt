@@ -7,14 +7,14 @@ import com.thoughtbot.expandablecheckrecyclerview.viewholders.CheckableChildView
 
 
 class CheckedExpandedPersonViewHolder(private val binding: SingleCheckableListItemBinding, private val clickListener: (String) -> Unit) : CheckableChildViewHolder(binding.root) {
-    fun bind(person: Person) {
-        binding.checkableListItemCtv.text = person.name
-
-        binding.root.setOnClickListener {
-            this.onClick(it)
-            clickListener(person.name)
+    fun bind(person: Person) =
+        binding.let  {
+            it.checkableListItemCtv.text = person.name
+            it.root.setOnClickListener {
+                this.onClick(it)
+                clickListener(person.name)
+            }
         }
-    }
 
     override fun getCheckable(): Checkable = binding.checkableListItemCtv
 

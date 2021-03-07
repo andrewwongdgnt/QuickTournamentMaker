@@ -176,18 +176,23 @@ class ManagementFragment : Fragment(), DIAware {
     private fun personClicked(checkable: Checkable, person: Person) {
 
         if (actionModeCallback.multiSelect == ManagementFragmentActionModeCallBack.SelectType.PERSON) {
-            val isChecked = !checkable.isChecked
-            if (isChecked)
-                selectedPersons.add(person)
-            else
-                selectedPersons.remove(person)
-            checkable.isChecked = isChecked
+            (!checkable.isChecked).let {
+                if (it)
+                    selectedPersons.add(person)
+                else
+                    selectedPersons.remove(person)
+                checkable.isChecked = it
+            }
 
-            val menu = actionMode?.menu
-            menu?.findItem(R.id.action_delete)?.isVisible = selectedPersons.size > 0
-            menu?.findItem(R.id.action_move)?.isVisible = selectedPersons.size > 0
-
-            actionMode?.title = selectedPersons.size.toString()
+            actionMode?.run {
+                menu.run {
+                    (selectedPersons.size > 0).let {
+                        findItem(R.id.action_delete).isVisible = it
+                        findItem(R.id.action_move).isVisible = it
+                    }
+                }
+                title = selectedPersons.size.toString()
+            }
         } else if (actionModeCallback.multiSelect == ManagementFragmentActionModeCallBack.SelectType.NONE)
             PersonEditorDialogFragment.newInstance(true, getString(R.string.editing, person.name), person, personToGroupNameMap[person]?.name ?: "", groups).show(activity?.supportFragmentManager!!, PersonEditorDialogFragment.TAG)
 
@@ -218,18 +223,21 @@ class ManagementFragment : Fragment(), DIAware {
 
         if (editType == GroupEditType.CHECK && actionModeCallback.multiSelect == ManagementFragmentActionModeCallBack.SelectType.GROUP) {
 
-            val isChecked = !checkable.isChecked
-            if (isChecked)
-                selectedGroups.add(group)
-            else
-                selectedGroups.remove(group)
-            checkable.isChecked = isChecked
+            (!checkable.isChecked).let {
+                if (it)
+                    selectedGroups.add(group)
+                else
+                    selectedGroups.remove(group)
+                checkable.isChecked = it
+            }
 
-            val menu = actionMode?.menu
-            menu?.findItem(R.id.action_delete)?.isVisible = selectedGroups.isNotEmpty()
-            menu?.findItem(R.id.action_move)?.isVisible = false
-
-            actionMode?.title = selectedGroups.size.toString()
+            actionMode?.run {
+                menu.run {
+                    findItem(R.id.action_delete).isVisible = selectedGroups.isNotEmpty()
+                    findItem(R.id.action_move).isVisible = false
+                }
+                title = selectedGroups.size.toString()
+            }
         } else if (editType == GroupEditType.EDIT) {
             GroupEditorDialogFragment.newInstance(true, getString(R.string.editing, group.name), group).show(activity?.supportFragmentManager!!, GroupEditorDialogFragment.TAG)
             actionMode?.finish()

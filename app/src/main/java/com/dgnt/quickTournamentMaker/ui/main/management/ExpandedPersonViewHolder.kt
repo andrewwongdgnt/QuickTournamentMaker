@@ -8,17 +8,16 @@ import com.thoughtbot.expandablerecyclerview.viewholders.ChildViewHolder
 
 
 class ExpandedPersonViewHolder(private val binding: SingleCheckableListItemBinding, private val setDrawable: (CheckedTextView, Boolean) -> Unit, private val selectedPersons: Set<Person>, private val clickListener: (Checkable, Person) -> Unit) : ChildViewHolder(binding.root) {
-    fun bind(person: Person, selectable: Boolean) {
-
-        binding.checkableListItemCtv.text = person.name
-        setDrawable(binding.checkableListItemCtv, selectable)
-
-        binding.checkableListItemCtv.isChecked = if (!selectable) false else selectedPersons.contains(person)
-
-        itemView.setOnClickListener {
-            clickListener(binding.checkableListItemCtv, person)
+    fun bind(person: Person, selectable: Boolean) =
+        binding.checkableListItemCtv.run{
+            text = person.name
+            setDrawable(binding.checkableListItemCtv, selectable)
+            isChecked = if (!selectable) false else selectedPersons.contains(person)
+            itemView.setOnClickListener {
+                clickListener(this, person)
+            }
         }
 
-    }
+
 
 }

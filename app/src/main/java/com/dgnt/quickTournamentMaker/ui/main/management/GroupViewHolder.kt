@@ -7,9 +7,11 @@ import com.dgnt.quickTournamentMaker.model.management.Group
 class GroupViewHolder(private val binding: ListItemBinding, private val onClickListener: (Group) -> Unit) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(group: Group) {
-        binding.listItemTv.text = group.name
-        binding.root.setOnClickListener {
-            onClickListener(group)
+        binding.run{
+            listItemTv.text = group.name
+            root.setOnClickListener {
+                onClickListener(group)
+            }
         }
     }
 
