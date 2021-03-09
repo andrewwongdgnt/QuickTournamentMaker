@@ -194,7 +194,7 @@ class HomeFragment : Fragment(), DIAware {
 
     private fun setVMData(viewModel: HomeViewModel) {
         val date = DateFormat.getDateInstance(DateFormat.SHORT).format(System.currentTimeMillis())
-        //TODO dont pass the date here. Do it in DefaultTournamentInformationCreatorService
+        //TODO dont pass the date here. Do it in TournamentInformationCreatorService
         viewModel.setData(
             mapOf(
                 Pair(TournamentType.ELIMINATION, getString(R.string.defaultTitle, getString(R.string.elimination), date)),

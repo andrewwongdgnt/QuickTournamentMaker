@@ -7,7 +7,7 @@ import com.dgnt.quickTournamentMaker.model.tournament.TournamentType
 import com.dgnt.quickTournamentMaker.service.interfaces.IPreferenceService
 import com.dgnt.quickTournamentMaker.service.interfaces.IRankingConfigService
 
-class DefaultPreferenceService(private val sharedPreferences: SharedPreferences, private val rankingConfigService: IRankingConfigService) : IPreferenceService {
+class PreferenceService(private val sharedPreferences: SharedPreferences, private val rankingConfigService: IRankingConfigService) : IPreferenceService {
 
     companion object {
         private const val PREF_SWISS_RANKING_CONFIG_KEY = "rankSwissRankingConfigKey"

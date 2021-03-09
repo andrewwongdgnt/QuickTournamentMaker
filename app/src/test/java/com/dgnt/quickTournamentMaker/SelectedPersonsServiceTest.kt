@@ -3,14 +3,14 @@ package com.dgnt.quickTournamentMaker
 import com.dgnt.quickTournamentMaker.model.management.Person
 import com.dgnt.quickTournamentMaker.model.tournament.Participant
 import com.dgnt.quickTournamentMaker.model.tournament.SeedType
-import com.dgnt.quickTournamentMaker.service.implementation.DefaultSelectedPersonsService
+import com.dgnt.quickTournamentMaker.service.implementation.SelectedPersonsService
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
-class DefaultSelectedPersonsServiceTest {
+class SelectedPersonsServiceTest {
 
-    private val sut = DefaultSelectedPersonsService()
+    private val sut = SelectedPersonsService()
     private lateinit var persons: List<Person>
     private var numberOfParticipants = 30
     private lateinit var fullParticipants: List<Participant>

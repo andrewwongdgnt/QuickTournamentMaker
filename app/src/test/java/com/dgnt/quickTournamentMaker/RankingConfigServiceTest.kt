@@ -3,7 +3,7 @@ package com.dgnt.quickTournamentMaker
 import com.dgnt.quickTournamentMaker.model.tournament.RankPriorityConfig
 import com.dgnt.quickTournamentMaker.model.tournament.RankPriorityConfigType
 import com.dgnt.quickTournamentMaker.model.tournament.RankScoreConfig
-import com.dgnt.quickTournamentMaker.service.implementation.DefaultRankingConfigService
+import com.dgnt.quickTournamentMaker.service.implementation.RankingConfigService
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -11,9 +11,9 @@ import org.junit.runner.RunWith
 import org.powermock.modules.junit4.PowerMockRunner
 
 @RunWith(PowerMockRunner::class)
-class DefaultRankingConfigServiceTest {
+class RankingConfigServiceTest {
 
-    private val sut = DefaultRankingConfigService()
+    private val sut = RankingConfigService()
 
     @Before
     fun setUp() {

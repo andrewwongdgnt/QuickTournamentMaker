@@ -6,7 +6,7 @@ import com.dgnt.quickTournamentMaker.model.tournament.SeedType
 import com.dgnt.quickTournamentMaker.service.interfaces.ISelectedPersonsService
 import com.dgnt.quickTournamentMaker.util.shuffledIf
 
-class DefaultSelectedPersonsService : ISelectedPersonsService {
+class SelectedPersonsService : ISelectedPersonsService {
     override fun resolve(persons: List<Person>?, numberOfParticipants: Int?, quickStart: Boolean, seedType: SeedType): List<Participant> =
         //TODO this 3 magic number
         when {

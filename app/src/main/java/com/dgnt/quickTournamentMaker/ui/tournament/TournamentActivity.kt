@@ -37,22 +37,22 @@ class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentL
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.tournament_activity)
-
+        tournamentInformation = intent.getParcelableExtra(TOURNAMENT_ACTIVITY_EXTRA)
         supportActionBar?.run {
             setDisplayHomeAsUpEnabled(true)
         }
+        val tournamentActivity = this
+        viewModel = ViewModelProvider(this, viewModelFactory).get(TournamentViewModel::class.java).apply {
+            DataBindingUtil.setContentView<TournamentActivityBinding>(tournamentActivity, R.layout.tournament_activity).also {
+                it.vm = this
+            }
 
-        val binding = DataBindingUtil.setContentView<TournamentActivityBinding>(this, R.layout.tournament_activity)
+            setData(tournamentInformation)
 
-        viewModel = ViewModelProvider(this, viewModelFactory).get(TournamentViewModel::class.java)
-        binding.vm = viewModel
-
-        tournamentInformation = intent.getParcelableExtra(TOURNAMENT_ACTIVITY_EXTRA)
-        viewModel.setData(tournamentInformation)
-
-        viewModel.title.observe(this, Observer {
-            title = it
-        })
+            title.observe(tournamentActivity, Observer {
+                tournamentActivity.title = it
+            })
+        }
 
     }
 
@@ -73,9 +73,11 @@ class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentL
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onEditTournament(title: String, description: String) {
-        viewModel.title.value = title
-        viewModel.description.value = description
+    override fun onEditTournament(newTitle: String, newDescription: String) {
+        viewModel.run {
+            title.value = newTitle
+            description.value = newDescription
+        }
     }
 
 

@@ -5,7 +5,7 @@ import com.dgnt.quickTournamentMaker.model.tournament.RankPriorityConfigType
 import com.dgnt.quickTournamentMaker.model.tournament.RankScoreConfig
 import com.dgnt.quickTournamentMaker.service.interfaces.IRankingConfigService
 
-class DefaultRankingConfigService : IRankingConfigService {
+class RankingConfigService : IRankingConfigService {
 
     private val winLossTieRegex = """w|l|t""".toRegex()
 

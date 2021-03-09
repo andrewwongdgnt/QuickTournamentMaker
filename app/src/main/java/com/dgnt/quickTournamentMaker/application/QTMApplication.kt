@@ -52,10 +52,10 @@ class QTMApplication() : Application(), DIAware {
         bind() from provider { ParticipantEditorViewModelFactory() }
 
         //Service
-        bind<IRankingConfigService>() with singleton { DefaultRankingConfigService() }
-        bind<IPreferenceService>() with singleton { DefaultPreferenceService(PreferenceManager.getDefaultSharedPreferences(instance()), instance()) }
-        bind<ITournamentInformationCreatorService>() with singleton { DefaultTournamentInformationCreatorService() }
-        bind<ISelectedPersonsService>() with singleton { DefaultSelectedPersonsService() }
+        bind<IRankingConfigService>() with singleton { RankingConfigService() }
+        bind<IPreferenceService>() with singleton { PreferenceService(PreferenceManager.getDefaultSharedPreferences(instance()), instance()) }
+        bind<ITournamentInformationCreatorService>() with singleton { TournamentInformationCreatorService() }
+        bind<ISelectedPersonsService>() with singleton { SelectedPersonsService() }
 
 
     }
