@@ -19,4 +19,9 @@ enum class SeedType {
 data class TournamentInformation(val title: String, val description: String, val participants: List<Participant>, val tournamentType: TournamentType, val seedType: SeedType, val rankConfig: IRankConfig, val creationDate: Date, val lastModifiedDate: Date? = null) : Parcelable
 
 data class Tournament(val tournamentInformation: TournamentInformation, val roundGroups: List<RoundGroup>, val roundUpdateService: IRoundUpdateService, val rankingService: IRankingService, val matchUpStatusTransformService: IMatchUpStatusTransformService) {
+
+    val matchUps = roundGroups.flatMap {
+        it.rounds.flatMapIndexed { i, r -> r.matchUps.map { Pair(i, it) } }
+    }
+
 }
