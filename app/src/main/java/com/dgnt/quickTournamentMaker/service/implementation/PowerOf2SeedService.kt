@@ -1,18 +1,17 @@
 package com.dgnt.quickTournamentMaker.service.implementation
 
-import com.dgnt.quickTournamentMaker.model.management.Person
 import com.dgnt.quickTournamentMaker.model.tournament.Participant
 import com.dgnt.quickTournamentMaker.service.interfaces.ISeedService
 
 class PowerOf2SeedService : ISeedService {
-    override fun seed(people: List<Person>): List<Participant> {
+    override fun seed(participants: List<Participant>): List<Participant> {
 
-        val nextPowerOf2 = nextPowerOf2(people.size)
+        val nextPowerOf2 = nextPowerOf2(participants.size)
 
-        val indexToStartAddingByes = nextPowerOf2 - (nextPowerOf2 - people.size) * 2
+        val indexToStartAddingByes = nextPowerOf2 - (nextPowerOf2 - participants.size) * 2
 
-        val peopleIterator = people.iterator()
-        return (0 until nextPowerOf2).mapIndexed { i, _ -> if (i >= indexToStartAddingByes && i%2==1) Participant.BYE_PARTICIPANT else Participant(peopleIterator.next()) }
+        val peopleIterator = participants.iterator()
+        return (0 until nextPowerOf2).mapIndexed { i, _ -> if (i >= indexToStartAddingByes && i % 2 == 1) Participant.BYE_PARTICIPANT else peopleIterator.next() }
 
     }
 

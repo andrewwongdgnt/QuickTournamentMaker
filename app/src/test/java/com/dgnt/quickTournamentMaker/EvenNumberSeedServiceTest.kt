@@ -1,6 +1,5 @@
 package com.dgnt.quickTournamentMaker
 
-import com.dgnt.quickTournamentMaker.model.management.Person
 import com.dgnt.quickTournamentMaker.model.tournament.Participant
 import com.dgnt.quickTournamentMaker.service.implementation.EvenNumberSeedService
 import org.junit.Assert
@@ -10,36 +9,36 @@ import org.junit.Test
 class EvenNumberSeedServiceTest {
 
     private val sut = EvenNumberSeedService()
-    private lateinit var people: List<Person>
+    private lateinit var participants: List<Participant>
 
     @Before
     fun setUp() {
-        people = listOf(Data.ANDREW_PERSON, Data.KYRA_PERSON, Data.DGNT_PERSON, Data.KELSEY_PERSON, Data.FIRE_PERSON, Data.SUPER_PERSON, Data.HERO_PERSON, Data.DEMON_PERSON)
+        participants = listOf(Data.ANDREW, Data.KYRA, Data.DGNT, Data.KELSEY, Data.FIRE, Data.SUPER, Data.HERO, Data.DEMON)
     }
 
     @Test
     fun testSeedEven() {
-        val participants= sut.seed(people)
-        Assert.assertEquals(Data.ANDREW_PERSON, participants[0].person)
-        Assert.assertEquals(Data.KYRA_PERSON, participants[1].person)
-        Assert.assertEquals(Data.DGNT_PERSON, participants[2].person)
-        Assert.assertEquals(Data.KELSEY_PERSON, participants[3].person)
-        Assert.assertEquals(Data.FIRE_PERSON, participants[4].person)
-        Assert.assertEquals(Data.SUPER_PERSON, participants[5].person)
-        Assert.assertEquals(Data.HERO_PERSON, participants[6].person)
-        Assert.assertEquals(Data.DEMON_PERSON, participants[7].person)
+        val participants= sut.seed(participants)
+        Assert.assertEquals(Data.ANDREW, participants[0])
+        Assert.assertEquals(Data.KYRA, participants[1])
+        Assert.assertEquals(Data.DGNT, participants[2])
+        Assert.assertEquals(Data.KELSEY, participants[3])
+        Assert.assertEquals(Data.FIRE, participants[4])
+        Assert.assertEquals(Data.SUPER, participants[5])
+        Assert.assertEquals(Data.HERO, participants[6])
+        Assert.assertEquals(Data.DEMON, participants[7])
     }
 
     @Test
     fun testSeedOdd() {
-        val participants= sut.seed(people.dropLast(1))
-        Assert.assertEquals(Data.ANDREW_PERSON, participants[0].person)
-        Assert.assertEquals(Data.KYRA_PERSON, participants[1].person)
-        Assert.assertEquals(Data.DGNT_PERSON, participants[2].person)
-        Assert.assertEquals(Data.KELSEY_PERSON, participants[3].person)
-        Assert.assertEquals(Data.FIRE_PERSON, participants[4].person)
-        Assert.assertEquals(Data.SUPER_PERSON, participants[5].person)
-        Assert.assertEquals(Data.HERO_PERSON, participants[6].person)
+        val participants= sut.seed(participants.dropLast(1))
+        Assert.assertEquals(Data.ANDREW, participants[0])
+        Assert.assertEquals(Data.KYRA, participants[1])
+        Assert.assertEquals(Data.DGNT, participants[2])
+        Assert.assertEquals(Data.KELSEY, participants[3])
+        Assert.assertEquals(Data.FIRE, participants[4])
+        Assert.assertEquals(Data.SUPER, participants[5])
+        Assert.assertEquals(Data.HERO, participants[6])
         Assert.assertEquals(Participant.BYE_PARTICIPANT, participants[7])
     }
 

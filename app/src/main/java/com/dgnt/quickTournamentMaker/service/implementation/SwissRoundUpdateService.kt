@@ -85,7 +85,7 @@ class SwissRoundUpdateService(private val rankingService: IRankingService) : IRo
     }
 
     private fun getProperPairing(rankedParticipantList: List<Participant>, matchUpHistory: Set<Pair<Participant, Participant>>): List<Pair<Participant, Participant>>? {
-        if (rankedParticipantList.size === 2) {
+        if (rankedParticipantList.size == 2) {
             val participant1 = rankedParticipantList[0]
             val participant2 = rankedParticipantList[1]
             return if (!matchUpHistory.contains(toPair(participant1, participant2))) {

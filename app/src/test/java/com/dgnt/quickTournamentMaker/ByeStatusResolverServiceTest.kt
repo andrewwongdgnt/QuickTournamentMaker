@@ -24,9 +24,13 @@ class ByeStatusResolverServiceTest {
 
     @Test
     fun testFirstRound() {
+        Assert.assertEquals(MatchUpStatus.DEFAULT, roundGroups[0].rounds[0].matchUps[0].status)
+        Assert.assertEquals(MatchUpStatus.DEFAULT, roundGroups[0].rounds[0].matchUps[1].status)
         Assert.assertEquals(MatchUpStatus.DEFAULT, roundGroups[0].rounds[0].matchUps[2].status)
         Assert.assertEquals(MatchUpStatus.DEFAULT, roundGroups[0].rounds[0].matchUps[3].status)
         sut.resolve(roundGroups,Pair(0,0))
+        Assert.assertEquals(MatchUpStatus.DEFAULT, roundGroups[0].rounds[0].matchUps[0].status)
+        Assert.assertEquals(MatchUpStatus.DEFAULT, roundGroups[0].rounds[0].matchUps[1].status)
         Assert.assertEquals(MatchUpStatus.P1_WINNER, roundGroups[0].rounds[0].matchUps[2].status)
         Assert.assertEquals(MatchUpStatus.P1_WINNER, roundGroups[0].rounds[0].matchUps[3].status)
     }

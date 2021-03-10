@@ -1,6 +1,5 @@
 package com.dgnt.quickTournamentMaker
 
-import com.dgnt.quickTournamentMaker.model.management.Person
 import com.dgnt.quickTournamentMaker.model.tournament.Participant
 import com.dgnt.quickTournamentMaker.service.implementation.PowerOf2SeedService
 import org.junit.Assert
@@ -10,68 +9,68 @@ import org.junit.Test
 class PowerOf2SeedServiceTest {
 
     private val sut = PowerOf2SeedService()
-    private lateinit var people: List<Person>
+    private lateinit var participants: List<Participant>
 
     @Before
     fun setUp() {
-        people = listOf(Data.ANDREW_PERSON, Data.KYRA_PERSON, Data.DGNT_PERSON, Data.KELSEY_PERSON, Data.FIRE_PERSON, Data.SUPER_PERSON, Data.HERO_PERSON, Data.DEMON_PERSON)
+        participants = listOf(Data.ANDREW, Data.KYRA, Data.DGNT, Data.KELSEY, Data.FIRE, Data.SUPER, Data.HERO, Data.DEMON)
 
     }
 
     @Test
     fun testSeedWithExactPowerOf2_8() {
-        val participants= sut.seed(people)
-        Assert.assertEquals(Data.ANDREW_PERSON, participants[0].person)
-        Assert.assertEquals(Data.KYRA_PERSON, participants[1].person)
-        Assert.assertEquals(Data.DGNT_PERSON, participants[2].person)
-        Assert.assertEquals(Data.KELSEY_PERSON, participants[3].person)
-        Assert.assertEquals(Data.FIRE_PERSON, participants[4].person)
-        Assert.assertEquals(Data.SUPER_PERSON, participants[5].person)
-        Assert.assertEquals(Data.HERO_PERSON, participants[6].person)
-        Assert.assertEquals(Data.DEMON_PERSON, participants[7].person)
+        val participants= sut.seed(participants)
+        Assert.assertEquals(Data.ANDREW, participants[0])
+        Assert.assertEquals(Data.KYRA, participants[1])
+        Assert.assertEquals(Data.DGNT, participants[2])
+        Assert.assertEquals(Data.KELSEY, participants[3])
+        Assert.assertEquals(Data.FIRE, participants[4])
+        Assert.assertEquals(Data.SUPER, participants[5])
+        Assert.assertEquals(Data.HERO, participants[6])
+        Assert.assertEquals(Data.DEMON, participants[7])
     }
 
     @Test
     fun testSeedWithoutPowerOf2_4() {
-        val participants= sut.seed(people.dropLast(4))
-        Assert.assertEquals(Data.ANDREW_PERSON, participants[0].person)
-        Assert.assertEquals(Data.KYRA_PERSON, participants[1].person)
-        Assert.assertEquals(Data.DGNT_PERSON, participants[2].person)
-        Assert.assertEquals(Data.KELSEY_PERSON, participants[3].person)
+        val participants= sut.seed(participants.dropLast(4))
+        Assert.assertEquals(Data.ANDREW, participants[0])
+        Assert.assertEquals(Data.KYRA, participants[1])
+        Assert.assertEquals(Data.DGNT, participants[2])
+        Assert.assertEquals(Data.KELSEY, participants[3])
     }
 
     @Test
     fun testSeedWithoutPowerOf2_3() {
-        val participants= sut.seed(people.dropLast(5))
-        Assert.assertEquals(Data.ANDREW_PERSON, participants[0].person)
-        Assert.assertEquals(Data.KYRA_PERSON, participants[1].person)
-        Assert.assertEquals(Data.DGNT_PERSON, participants[2].person)
+        val participants= sut.seed(participants.dropLast(5))
+        Assert.assertEquals(Data.ANDREW, participants[0])
+        Assert.assertEquals(Data.KYRA, participants[1])
+        Assert.assertEquals(Data.DGNT, participants[2])
         Assert.assertEquals(Participant.BYE_PARTICIPANT, participants[3])
     }
 
     @Test
     fun testSeedWithoutPowerOf2_5() {
-        val participants= sut.seed(people.dropLast(3))
-        Assert.assertEquals(Data.ANDREW_PERSON, participants[0].person)
-        Assert.assertEquals(Data.KYRA_PERSON, participants[1].person)
-        Assert.assertEquals(Data.DGNT_PERSON, participants[2].person)
+        val participants= sut.seed(participants.dropLast(3))
+        Assert.assertEquals(Data.ANDREW, participants[0])
+        Assert.assertEquals(Data.KYRA, participants[1])
+        Assert.assertEquals(Data.DGNT, participants[2])
         Assert.assertEquals(Participant.BYE_PARTICIPANT, participants[3])
-        Assert.assertEquals(Data.KELSEY_PERSON, participants[4].person)
+        Assert.assertEquals(Data.KELSEY, participants[4])
         Assert.assertEquals(Participant.BYE_PARTICIPANT, participants[5])
-        Assert.assertEquals(Data.FIRE_PERSON, participants[6].person)
+        Assert.assertEquals(Data.FIRE, participants[6])
         Assert.assertEquals(Participant.BYE_PARTICIPANT, participants[7])
     }
 
     @Test
     fun testSeedWithoutPowerOf2_6() {
-        val participants= sut.seed(people.dropLast(2))
-        Assert.assertEquals(Data.ANDREW_PERSON, participants[0].person)
-        Assert.assertEquals(Data.KYRA_PERSON, participants[1].person)
-        Assert.assertEquals(Data.DGNT_PERSON, participants[2].person)
-        Assert.assertEquals(Data.KELSEY_PERSON, participants[3].person)
-        Assert.assertEquals(Data.FIRE_PERSON, participants[4].person)
+        val participants= sut.seed(participants.dropLast(2))
+        Assert.assertEquals(Data.ANDREW, participants[0])
+        Assert.assertEquals(Data.KYRA, participants[1])
+        Assert.assertEquals(Data.DGNT, participants[2])
+        Assert.assertEquals(Data.KELSEY, participants[3])
+        Assert.assertEquals(Data.FIRE, participants[4])
         Assert.assertEquals(Participant.BYE_PARTICIPANT, participants[5])
-        Assert.assertEquals(Data.SUPER_PERSON, participants[6].person)
+        Assert.assertEquals(Data.SUPER, participants[6])
         Assert.assertEquals(Participant.BYE_PARTICIPANT, participants[7])
     }
 

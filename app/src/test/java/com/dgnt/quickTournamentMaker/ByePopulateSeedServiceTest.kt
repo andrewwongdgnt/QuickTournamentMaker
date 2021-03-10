@@ -13,44 +13,44 @@ class ByePopulateSeedServiceTest {
 
     @Before
     fun setUp() {
-        participants = sut.seed(listOf(Data.ANDREW_PERSON, Data.KYRA_PERSON, Data.DGNT_PERSON, Data.KELSEY_PERSON, Data.FIRE_PERSON, Data.SUPER_PERSON, Data.HERO_PERSON, Data.DEMON_PERSON))
+        participants = sut.seed(listOf(Data.ANDREW, Data.KYRA, Data.DGNT, Data.KELSEY, Data.FIRE, Data.SUPER, Data.HERO, Data.DEMON))
     }
 
     @Test
     fun testSeedEven() {
-        Assert.assertEquals(Data.ANDREW_PERSON, participants[0].person)
+        Assert.assertEquals(Data.ANDREW, participants[0])
         Assert.assertEquals(Participant.BYE_PARTICIPANT, participants[1])
-        Assert.assertEquals(Data.KYRA_PERSON, participants[2].person)
+        Assert.assertEquals(Data.KYRA, participants[2])
         Assert.assertEquals(Participant.BYE_PARTICIPANT, participants[3])
-        Assert.assertEquals(Data.DGNT_PERSON, participants[4].person)
+        Assert.assertEquals(Data.DGNT, participants[4])
         Assert.assertEquals(Participant.BYE_PARTICIPANT, participants[5])
-        Assert.assertEquals(Data.KELSEY_PERSON, participants[6].person)
+        Assert.assertEquals(Data.KELSEY, participants[6])
         Assert.assertEquals(Participant.BYE_PARTICIPANT, participants[7])
-        Assert.assertEquals(Data.FIRE_PERSON, participants[8].person)
+        Assert.assertEquals(Data.FIRE, participants[8])
         Assert.assertEquals(Participant.BYE_PARTICIPANT, participants[9])
-        Assert.assertEquals(Data.SUPER_PERSON, participants[10].person)
+        Assert.assertEquals(Data.SUPER, participants[10])
         Assert.assertEquals(Participant.BYE_PARTICIPANT, participants[11])
-        Assert.assertEquals(Data.HERO_PERSON, participants[12].person)
+        Assert.assertEquals(Data.HERO, participants[12])
         Assert.assertEquals(Participant.BYE_PARTICIPANT, participants[13])
-        Assert.assertEquals(Data.DEMON_PERSON, participants[14].person)
+        Assert.assertEquals(Data.DEMON, participants[14])
         Assert.assertEquals(Participant.BYE_PARTICIPANT, participants[15])
     }
 
     @Test
     fun testSeedOdd() {
-        Assert.assertEquals(Data.ANDREW_PERSON, participants[0].person)
+        Assert.assertEquals(Data.ANDREW, participants[0])
         Assert.assertEquals(Participant.BYE_PARTICIPANT, participants[1])
-        Assert.assertEquals(Data.KYRA_PERSON, participants[2].person)
+        Assert.assertEquals(Data.KYRA, participants[2])
         Assert.assertEquals(Participant.BYE_PARTICIPANT, participants[3])
-        Assert.assertEquals(Data.DGNT_PERSON, participants[4].person)
+        Assert.assertEquals(Data.DGNT, participants[4])
         Assert.assertEquals(Participant.BYE_PARTICIPANT, participants[5])
-        Assert.assertEquals(Data.KELSEY_PERSON, participants[6].person)
+        Assert.assertEquals(Data.KELSEY, participants[6])
         Assert.assertEquals(Participant.BYE_PARTICIPANT, participants[7])
-        Assert.assertEquals(Data.FIRE_PERSON, participants[8].person)
+        Assert.assertEquals(Data.FIRE, participants[8])
         Assert.assertEquals(Participant.BYE_PARTICIPANT, participants[9])
-        Assert.assertEquals(Data.SUPER_PERSON, participants[10].person)
+        Assert.assertEquals(Data.SUPER, participants[10])
         Assert.assertEquals(Participant.BYE_PARTICIPANT, participants[11])
-        Assert.assertEquals(Data.HERO_PERSON, participants[12].person)
+        Assert.assertEquals(Data.HERO, participants[12])
         Assert.assertEquals(Participant.BYE_PARTICIPANT, participants[13])
     }
 

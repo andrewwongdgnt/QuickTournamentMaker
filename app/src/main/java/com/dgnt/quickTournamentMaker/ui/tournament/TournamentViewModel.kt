@@ -6,8 +6,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dgnt.quickTournamentMaker.model.tournament.Participant
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
+import com.dgnt.quickTournamentMaker.service.implementation.TournamentBuilderService
+import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentBuilderService
 
-class TournamentViewModel : ViewModel(), Observable {
+class TournamentViewModel(private val tournamentBuilderService: ITournamentBuilderService) : ViewModel(), Observable {
 
 
     @Bindable
@@ -29,5 +31,6 @@ class TournamentViewModel : ViewModel(), Observable {
         title.value = tournamentInformation.title
         description.value = tournamentInformation.description
         participants.value = tournamentInformation.participants
+        val tournament = tournamentBuilderService.build(tournamentInformation)
     }
 }
