@@ -19,7 +19,6 @@ import com.dgnt.quickTournamentMaker.model.management.Group
 import com.dgnt.quickTournamentMaker.model.management.Person
 import com.thoughtbot.expandablerecyclerview.listeners.GroupExpandCollapseListener
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup
-import kotlinx.android.synthetic.main.management_fragment.*
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 import org.kodein.di.instance
@@ -52,7 +51,7 @@ class ManagementFragment : Fragment(), DIAware {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.management_fragment, container, false)
+        binding = ManagementFragmentBinding.inflate(inflater)
         return binding.root;
     }
 
@@ -84,7 +83,7 @@ class ManagementFragment : Fragment(), DIAware {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        add_fab.setOnClickListener { add() }
+        binding.addFab.setOnClickListener { add() }
 
         actionModeCallback = ManagementFragmentActionModeCallBack(binding, selectedPersons, selectedGroups) { menuId: Int, persons: Set<Person>, groups: Set<Group> -> menuResolver(menuId, persons, groups) }
 
@@ -151,7 +150,7 @@ class ManagementFragment : Fragment(), DIAware {
                         adapter.toggleGroup(g)
                 }
 
-                add_fab.visibility = View.VISIBLE
+                binding.addFab.visibility = View.VISIBLE
             } catch (e: Exception) {
 
                 Log.e("DGNTTAG", "Something happened (Probably groups didn't resolve yet) so just do nothing and hope the next observed event fixes it")

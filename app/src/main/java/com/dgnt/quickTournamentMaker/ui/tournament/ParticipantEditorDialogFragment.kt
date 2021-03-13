@@ -1,10 +1,8 @@
 package com.dgnt.quickTournamentMaker.ui.tournament
 
 import android.app.AlertDialog
-import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
@@ -12,7 +10,6 @@ import com.dgnt.quickTournamentMaker.databinding.ParticipantEditorFragmentBindin
 import com.dgnt.quickTournamentMaker.model.tournament.ColorInfo
 import com.dgnt.quickTournamentMaker.model.tournament.Participant
 import com.dgnt.quickTournamentMaker.util.TournamentUtil
-import kotlinx.android.synthetic.main.main_activity.*
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 import org.kodein.di.instance
@@ -50,32 +47,31 @@ class ParticipantEditorDialogFragment : DialogFragment(), DIAware {
 
     }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        if (activity == null || activity?.layoutInflater == null) {
-            return super.onCreateDialog(savedInstanceState)
+    override fun onCreateDialog(savedInstanceState: Bundle?) =
+        activity?.let { activity ->
+            binding = ParticipantEditorFragmentBinding.inflate(layoutInflater)
+
+            viewModel = ViewModelProvider(this, viewModelFactory).get(ParticipantEditorViewModel::class.java)
+            binding.vm = viewModel
+            binding.lifecycleOwner = this
+
+            val participant = arguments?.getParcelable<Participant>(KEY_PARTICIPANT)!!
+            key = participant.key
+
+            viewModel.setData(participant, resources.getStringArray(R.array.colorOptionsNames).asList().zip(resources.getIntArray(R.array.colorOptions).asList()).map {
+                ColorInfo(it.first, it.second)
+            })
+
+            AlertDialog.Builder(activity)
+                .setTitle(getString(R.string.editing, participant.displayName))
+                .setView(binding.root)
+                .setPositiveButton(android.R.string.ok) { _, _ ->
+                    listenerEditor.onEditParticipant(key, viewModel.name.value ?: "", viewModel.note.value ?: "", viewModel.color.value?.hex ?: TournamentUtil.DEFAULT_DISPLAY_COLOR)
+                }
+                .setNegativeButton(android.R.string.cancel, null)
+                .create()
+        } ?: run {
+            super.onCreateDialog(savedInstanceState)
         }
-        binding = DataBindingUtil.inflate(activity?.layoutInflater!!, R.layout.participant_editor_fragment, container, false)
-
-        viewModel = ViewModelProvider(this, viewModelFactory).get(ParticipantEditorViewModel::class.java)
-        binding.vm = viewModel
-        binding.lifecycleOwner = this
-
-        val participant = arguments?.getParcelable<Participant>(KEY_PARTICIPANT)!!
-        key = participant.key
-
-        viewModel.setData(participant, resources.getStringArray(R.array.colorOptionsNames).asList().zip(resources.getIntArray(R.array.colorOptions).asList()).map {
-            ColorInfo(it.first, it.second)
-        })
-
-
-        return AlertDialog.Builder(activity)
-            .setTitle(getString(R.string.editing, participant.displayName))
-            .setView(binding.root)
-            .setPositiveButton(android.R.string.ok) { _, _ ->
-                listenerEditor.onEditParticipant(key, viewModel.name.value ?: "", viewModel.note.value ?: "", viewModel.color.value?.hex ?: TournamentUtil.DEFAULT_DISPLAY_COLOR)
-            }
-            .setNegativeButton(android.R.string.cancel, null)
-            .create()
-    }
 
 }

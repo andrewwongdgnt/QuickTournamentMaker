@@ -27,7 +27,6 @@ import com.dgnt.quickTournamentMaker.util.update
 import com.thoughtbot.expandablecheckrecyclerview.models.CheckedExpandableGroup
 import com.thoughtbot.expandablerecyclerview.listeners.GroupExpandCollapseListener
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup
-import kotlinx.android.synthetic.main.component_tournament_type_editor.*
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 import org.kodein.di.instance
@@ -54,7 +53,7 @@ class HomeFragment : Fragment(), DIAware {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment, container, false)
+        binding = HomeFragmentBinding.inflate(inflater)
         return binding.root;
     }
 
@@ -62,6 +61,7 @@ class HomeFragment : Fragment(), DIAware {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+                
         val fragment = this
         context?.apply {
             viewModel = ViewModelProvider(fragment, viewModelFactory).get(HomeViewModel::class.java)
@@ -73,16 +73,16 @@ class HomeFragment : Fragment(), DIAware {
 
             viewModel.numberOfPersonsSelected.value = getString(R.string.numberOfPlayersSelected, 0)
 
-            viewModel.tournamentType.value = elimination_rb.id
-            viewModel.seedType.value = randomSeed_rb.id
-            sameSeed_rb.visibility = View.GONE
+            viewModel.tournamentType.value = binding.tournamentTypeEditor.eliminationRb.id
+            viewModel.seedType.value = binding.tournamentTypeEditor.randomSeedRb.id
+            binding.tournamentTypeEditor.sameSeedRb.visibility = View.GONE
             viewModel.tournamentType.observe(viewLifecycleOwner, Observer {
                 viewModel.showRankConfig.value = when (it) {
-                    elimination_rb.id, doubleElimination_rb.id, survival_rb.id -> false
+                    binding.tournamentTypeEditor.eliminationRb.id, binding.tournamentTypeEditor.doubleEliminationRb.id, binding.tournamentTypeEditor.survivalRb.id -> false
                     else -> true
                 }
                 viewModel.showSeedType.value = when (it) {
-                    survival_rb.id -> false
+                    binding.tournamentTypeEditor.survivalRb.id -> false
                     else -> true
                 }
 
@@ -91,11 +91,11 @@ class HomeFragment : Fragment(), DIAware {
 
             })
             viewModel.rankConfig.observe(viewLifecycleOwner, Observer {
-                viewModel.showPriorityContent.value = it == compareRankFromPriority_rb.id
+                viewModel.showPriorityContent.value = it == binding.tournamentTypeEditor.compareRankFromPriorityRb.id
 
-                viewModel.showScoringContent.value = it == compareRankFromScore_rb.id
+                viewModel.showScoringContent.value = it == binding.tournamentTypeEditor.compareRankFromScoreRb.id
 
-                viewModel.handleRankConfigChange(it == compareRankFromPriority_rb.id)
+                viewModel.handleRankConfigChange(it == binding.tournamentTypeEditor.compareRankFromPriorityRb.id)
             })
 
             val priorityList = mutableListOf<RankPriorityConfigType>()
@@ -203,16 +203,16 @@ class HomeFragment : Fragment(), DIAware {
                 Pair(TournamentType.SWISS, getString(R.string.defaultTitle, getString(R.string.swiss), date)),
                 Pair(TournamentType.SURVIVAL, getString(R.string.defaultTitle, getString(R.string.survival), date))
             ),
-            elimination_rb.id,
-            doubleElimination_rb.id,
-            roundRobin_rb.id,
-            swiss_rb.id,
-            survival_rb.id,
+            binding.tournamentTypeEditor.eliminationRb.id,
+            binding.tournamentTypeEditor.doubleEliminationRb.id,
+            binding.tournamentTypeEditor.roundRobinRb.id,
+            binding.tournamentTypeEditor.swissRb.id,
+            binding.tournamentTypeEditor.survivalRb.id,
 
-            randomSeed_rb.id,
-            customSeed_rb.id,
-            compareRankFromPriority_rb.id,
-            compareRankFromScore_rb.id
+            binding.tournamentTypeEditor.randomSeedRb.id,
+            binding.tournamentTypeEditor.customSeedRb.id,
+            binding.tournamentTypeEditor.compareRankFromPriorityRb.id,
+            binding.tournamentTypeEditor.compareRankFromScoreRb.id
         )
     }
 

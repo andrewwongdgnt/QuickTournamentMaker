@@ -43,9 +43,9 @@ class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentL
         }
         val tournamentActivity = this
         viewModel = ViewModelProvider(this, viewModelFactory).get(TournamentViewModel::class.java).apply {
-            DataBindingUtil.setContentView<TournamentActivityBinding>(tournamentActivity, R.layout.tournament_activity).also {
+            setContentView(TournamentActivityBinding.inflate(layoutInflater).also {
                 it.vm = this
-            }
+            }.root)
 
             setData(tournamentInformation)
 
