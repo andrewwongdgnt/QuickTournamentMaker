@@ -45,7 +45,7 @@ class GroupEditorDialogFragment : DialogFragment(), DIAware {
     override fun onCreateDialog(savedInstanceState: Bundle?) =
         activity?.let { activity ->
 
-            binding = GroupEditorFragmentBinding.inflate(layoutInflater)
+            binding = GroupEditorFragmentBinding.inflate(activity.layoutInflater)
 
             viewModel = ViewModelProvider(this, viewModelFactory).get(GroupEditorViewModel::class.java)
             binding.vm = viewModel

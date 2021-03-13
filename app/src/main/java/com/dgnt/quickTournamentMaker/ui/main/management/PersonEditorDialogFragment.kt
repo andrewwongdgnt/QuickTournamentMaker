@@ -45,30 +45,17 @@ class PersonEditorDialogFragment : DialogFragment(), DIAware {
 
     private lateinit var binding: PersonEditorFragmentBinding
     private lateinit var viewModel: PersonEditorViewModel
-    private lateinit var alertDialog: AlertDialog
 
     override fun onCreateDialog(savedInstanceState: Bundle?) =
 
         activity?.let { activity ->
 
-            binding = PersonEditorFragmentBinding.inflate(layoutInflater)
+            binding = PersonEditorFragmentBinding.inflate(activity.layoutInflater)
 
             viewModel = ViewModelProvider(this, viewModelFactory).get(PersonEditorViewModel::class.java)
             binding.vm = viewModel
             binding.lifecycleOwner = this
-            binding.personNameEt.addTextChangedListener(object : TextWatcher {
-                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                }
 
-                override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-                }
-
-                override fun afterTextChanged(s: Editable) {
-                    val enabled = s.isNotBlank()
-                    alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = enabled
-                    alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL).isEnabled = enabled
-                }
-            })
 
             viewModel.resultEvent.observe(activity!!, Observer {
                 it.getContentIfNotHandled()?.let { triple ->
@@ -100,7 +87,6 @@ class PersonEditorDialogFragment : DialogFragment(), DIAware {
                 }
                 .create()
                 .apply {
-
                     setOnShowListener { _ ->
                         getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener { _ ->
                             viewModel.add(getString(R.string.addSuccessfulMsg, viewModel.name.value), getString(R.string.duplicateMsg, viewModel.name.value), forceOpen = true, forceErase = true)
@@ -119,6 +105,19 @@ class PersonEditorDialogFragment : DialogFragment(), DIAware {
 
                     }
 
+                    binding.personNameEt.addTextChangedListener(object : TextWatcher {
+                        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                        }
+
+                        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+                        }
+
+                        override fun afterTextChanged(s: Editable) {
+                            val enabled = s.isNotBlank()
+                            getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = enabled
+                            getButton(AlertDialog.BUTTON_NEUTRAL).isEnabled = enabled
+                        }
+                    })
                 }
         } ?: run {
             super.onCreateDialog(savedInstanceState)

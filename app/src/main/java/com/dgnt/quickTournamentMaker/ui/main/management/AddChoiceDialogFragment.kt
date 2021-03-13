@@ -30,7 +30,7 @@ class AddChoiceDialogFragment : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?) =
 
         activity?.let { activity ->
-            val binding = AddChoiceFragmentBinding.inflate(layoutInflater)
+            val binding = AddChoiceFragmentBinding.inflate(activity.layoutInflater)
             AlertDialog.Builder(activity)
                 .setTitle(getString(R.string.addWhich))
                 .setView(binding.root)

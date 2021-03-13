@@ -49,7 +49,7 @@ class ParticipantEditorDialogFragment : DialogFragment(), DIAware {
 
     override fun onCreateDialog(savedInstanceState: Bundle?) =
         activity?.let { activity ->
-            binding = ParticipantEditorFragmentBinding.inflate(layoutInflater)
+            binding = ParticipantEditorFragmentBinding.inflate(activity.layoutInflater)
 
             viewModel = ViewModelProvider(this, viewModelFactory).get(ParticipantEditorViewModel::class.java)
             binding.vm = viewModel

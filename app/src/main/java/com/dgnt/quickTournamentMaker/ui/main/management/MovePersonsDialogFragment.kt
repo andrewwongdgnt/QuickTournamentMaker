@@ -43,7 +43,7 @@ class MovePersonsDialogFragment : DialogFragment(), DIAware {
 
         activity?.let { activity ->
 
-            binding = MovePersonsFragmentBinding.inflate(layoutInflater)
+            binding = MovePersonsFragmentBinding.inflate(activity.layoutInflater)
 
             viewModel = ViewModelProvider(this, viewModelFactory).get(MovePersonsViewModel::class.java)
             binding.vm = viewModel

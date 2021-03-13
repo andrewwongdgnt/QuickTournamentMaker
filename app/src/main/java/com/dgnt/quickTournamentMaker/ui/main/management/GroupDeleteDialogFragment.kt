@@ -45,7 +45,7 @@ class GroupDeleteDialogFragment : DialogFragment(), DIAware {
     override fun onCreateDialog(savedInstanceState: Bundle?) =
         activity?.let { activity ->
 
-            binding = GroupDeleteFragmentBinding.inflate(layoutInflater)
+            binding = GroupDeleteFragmentBinding.inflate(activity.layoutInflater)
 
             viewModel = ViewModelProvider(this, viewModelFactory).get(GroupDeleteViewModel::class.java)
             binding.vm = viewModel

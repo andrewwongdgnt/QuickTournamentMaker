@@ -57,7 +57,7 @@ class TournamentEditorDialogFragment : DialogFragment(), DIAware, IParticipantEd
         activity?.let { activity ->
 
 
-            binding = TournamentEditorFragmentBinding.inflate(layoutInflater)
+            binding = TournamentEditorFragmentBinding.inflate(activity.layoutInflater)
 
             viewModel = ViewModelProvider(this, viewModelFactory).get(TournamentEditorViewModel::class.java)
             binding.vm = viewModel
