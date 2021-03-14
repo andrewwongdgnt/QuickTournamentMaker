@@ -24,8 +24,8 @@ class SwissRoundGeneratorServiceTest {
         PowerMockito.`when`(mockParticipantService.createRound(participants)).thenReturn(
             Round(
                 listOf(
-                    MatchUp(Data.ANDREW,Data.KYRA),
-                    MatchUp(Data.DGNT,Data.KELSEY)
+                    MatchUp(Data.ANDREW, Data.KYRA),
+                    MatchUp(Data.DGNT, Data.KELSEY)
                 )
             )
         );
@@ -54,8 +54,8 @@ class SwissRoundGeneratorServiceTest {
     @Test
     fun testParticipantPlacements() {
         val rounds = roundGroups[0].rounds
-        for (i in 1..2){
-            for (j in 0..1){
+        for (i in 1..2) {
+            for (j in 0..1) {
                 val matchUp = rounds[i].matchUps[j]
                 Assert.assertEquals(Participant.NULL_PARTICIPANT, matchUp.participant1)
                 Assert.assertEquals(Participant.NULL_PARTICIPANT, matchUp.participant2)
