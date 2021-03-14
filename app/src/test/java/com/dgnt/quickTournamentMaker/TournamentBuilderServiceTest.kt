@@ -1,9 +1,6 @@
 package com.dgnt.quickTournamentMaker
 
-import com.dgnt.quickTournamentMaker.model.tournament.RankPriorityConfig
-import com.dgnt.quickTournamentMaker.model.tournament.SeedType
-import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
-import com.dgnt.quickTournamentMaker.model.tournament.TournamentType
+import com.dgnt.quickTournamentMaker.model.tournament.*
 import com.dgnt.quickTournamentMaker.service.data.TournamentTypeServices
 import com.dgnt.quickTournamentMaker.service.implementation.TournamentBuilderService
 import com.dgnt.quickTournamentMaker.service.interfaces.*
@@ -108,66 +105,98 @@ class TournamentBuilderServiceTest {
 
     @Test
     fun testEliminationServiceCall() {
-        sut.build(eliminationTournamentInformation)
-        Mockito.verify(mockEliminationRoundGeneratorService, Mockito.times(1)).build(MockitoHelper.anyObject())
-        Mockito.verify(mockEliminationSeedService, Mockito.times(1)).seed(MockitoHelper.anyObject())
+        sut.build(eliminationTournamentInformation).also{
+            Mockito.verify(mockEliminationRoundGeneratorService, Mockito.times(1)).build(MockitoHelper.anyObject())
+            Mockito.verify(mockEliminationSeedService, Mockito.times(1)).seed(MockitoHelper.anyObject())
+        }
     }
 
     @Test
     fun testDoubleEliminationServiceCall() {
-        sut.build(doubleEliminationTournamentInformation)
-        Mockito.verify(mockDoubleEliminationRoundGeneratorService, Mockito.times(1)).build(MockitoHelper.anyObject())
-        Mockito.verify(mockDoubleEliminationSeedService, Mockito.times(1)).seed(MockitoHelper.anyObject())
+        sut.build(doubleEliminationTournamentInformation).also {
+            Mockito.verify(mockDoubleEliminationRoundGeneratorService, Mockito.times(1)).build(MockitoHelper.anyObject())
+            Mockito.verify(mockDoubleEliminationSeedService, Mockito.times(1)).seed(MockitoHelper.anyObject())
+        }
     }
 
     @Test
     fun testRoundRobinServiceCall() {
-        sut.build(roundRobinTournamentInformation)
-        Mockito.verify(mockRoundRobinRoundGeneratorService, Mockito.times(1)).build(MockitoHelper.anyObject())
-        Mockito.verify(mockRoundRobinSeedService, Mockito.times(1)).seed(MockitoHelper.anyObject())
+        sut.build(roundRobinTournamentInformation).also {
+            Mockito.verify(mockRoundRobinRoundGeneratorService, Mockito.times(1)).build(MockitoHelper.anyObject())
+            Mockito.verify(mockRoundRobinSeedService, Mockito.times(1)).seed(MockitoHelper.anyObject())
+        }
     }
 
     @Test
     fun testSwissServiceCall() {
-        sut.build(swissTournamentInformation)
-        Mockito.verify(mockSwissRoundGeneratorService, Mockito.times(1)).build(MockitoHelper.anyObject())
-        Mockito.verify(mockSwissSeedService, Mockito.times(1)).seed(MockitoHelper.anyObject())
+        sut.build(swissTournamentInformation).also {
+            Mockito.verify(mockSwissRoundGeneratorService, Mockito.times(1)).build(MockitoHelper.anyObject())
+            Mockito.verify(mockSwissSeedService, Mockito.times(1)).seed(MockitoHelper.anyObject())
+        }
     }
 
     @Test
     fun testSurvivalServiceCall() {
-        sut.build(survivalTournamentInformation)
-        Mockito.verify(mockSurvivalRoundGeneratorService, Mockito.times(1)).build(MockitoHelper.anyObject())
-        Mockito.verify(mockSurvivalSeedService, Mockito.times(1)).seed(MockitoHelper.anyObject())
+        sut.build(survivalTournamentInformation).also {
+            Mockito.verify(mockSurvivalRoundGeneratorService, Mockito.times(1)).build(MockitoHelper.anyObject())
+            Mockito.verify(mockSurvivalSeedService, Mockito.times(1)).seed(MockitoHelper.anyObject())
+        }
     }
 
     @Test
     fun testEquality() {
-        val eliminationTournament = sut.build(eliminationTournamentInformation)
-        Assert.assertEquals(mockEliminationRoundUpdateService, eliminationTournament.roundUpdateService)
-        Assert.assertEquals(mockEliminationRankingService, eliminationTournament.rankingService)
-        Assert.assertEquals(mockEliminationMatchUpStatusTransformService, eliminationTournament.matchUpStatusTransformService)
+        sut.build(eliminationTournamentInformation).run{
+            Assert.assertEquals(mockEliminationRoundUpdateService, roundUpdateService)
+            Assert.assertEquals(mockEliminationRankingService, rankingService)
+            Assert.assertEquals(mockEliminationMatchUpStatusTransformService, matchUpStatusTransformService)
+        }
 
-        val doubleEliminationTournament = sut.build(doubleEliminationTournamentInformation)
-        Assert.assertEquals(mockDoubleEliminationRoundUpdateService, doubleEliminationTournament.roundUpdateService)
-        Assert.assertEquals(mockDoubleEliminationRankingService, doubleEliminationTournament.rankingService)
-        Assert.assertEquals(mockDoubleEliminationMatchUpStatusTransformService, doubleEliminationTournament.matchUpStatusTransformService)
+        sut.build(doubleEliminationTournamentInformation).run {
+            Assert.assertEquals(mockDoubleEliminationRoundUpdateService, roundUpdateService)
+            Assert.assertEquals(mockDoubleEliminationRankingService, rankingService)
+            Assert.assertEquals(mockDoubleEliminationMatchUpStatusTransformService, matchUpStatusTransformService)
+        }
+        sut.build(roundRobinTournamentInformation).run {
+            Assert.assertEquals(mockRoundRobinRoundUpdateService, roundUpdateService)
+            Assert.assertEquals(mockRoundRobinRankingService, rankingService)
+            Assert.assertEquals(mockRoundRobinMatchUpStatusTransformService, matchUpStatusTransformService)
+        }
 
-        val roundRobinTournament = sut.build(roundRobinTournamentInformation)
-        Assert.assertEquals(mockRoundRobinRoundUpdateService, roundRobinTournament.roundUpdateService)
-        Assert.assertEquals(mockRoundRobinRankingService, roundRobinTournament.rankingService)
-        Assert.assertEquals(mockRoundRobinMatchUpStatusTransformService, roundRobinTournament.matchUpStatusTransformService)
+        sut.build(swissTournamentInformation).run {
+            Assert.assertEquals(mockSwissRoundUpdateService, roundUpdateService)
+            Assert.assertEquals(mockSwissRankingService, rankingService)
+            Assert.assertEquals(mockSwissMatchUpStatusTransformService, matchUpStatusTransformService)
+        }
 
-        val swissTournament = sut.build(swissTournamentInformation)
-        Assert.assertEquals(mockSwissRoundUpdateService, swissTournament.roundUpdateService)
-        Assert.assertEquals(mockSwissRankingService, swissTournament.rankingService)
-        Assert.assertEquals(mockSwissMatchUpStatusTransformService, swissTournament.matchUpStatusTransformService)
+        sut.build(survivalTournamentInformation).run {
+            Assert.assertEquals(mockSurvivalRoundUpdateService, roundUpdateService)
+            Assert.assertEquals(mockSurvivalRankingService, rankingService)
+            Assert.assertEquals(mockSurvivalMatchUpStatusTransformService, matchUpStatusTransformService)
+        }
 
-        val survivalTournament = sut.build(survivalTournamentInformation)
-        Assert.assertEquals(mockSurvivalRoundUpdateService, survivalTournament.roundUpdateService)
-        Assert.assertEquals(mockSurvivalRankingService, survivalTournament.rankingService)
-        Assert.assertEquals(mockSurvivalMatchUpStatusTransformService, survivalTournament.matchUpStatusTransformService)
+    }
 
+    @Test
+    fun testMatchUps(){
+        val round1 = Round(listOf(MatchUp(Data.ANDREW, Data.KYRA), MatchUp(Data.DGNT, Data.KELSEY), MatchUp(Data.FIRE, Data.SUPER), MatchUp(Data.HERO, Data.DEMON)))
+        val round2 = Round(listOf(MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT), MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)))
+        val round3 = Round(listOf(MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)))
+        PowerMockito.`when`(mockEliminationRoundGeneratorService.build(MockitoHelper.anyObject())).thenReturn(listOf(RoundGroup(listOf(round1, round2, round3))))
+
+       sut.build(eliminationTournamentInformation).run {
+
+           Assert.assertEquals(7, matchUps.size)
+           Assert.assertEquals(4, matchUps.map { it.first }.filter{it==0}.size)
+           Assert.assertEquals(2, matchUps.map { it.first }.filter{it==1}.size)
+           Assert.assertEquals(1, matchUps.map { it.first }.filter{it==2}.size)
+           Assert.assertEquals(Pair(Data.ANDREW, Data.KYRA), matchUps[0].second.run { Pair(participant1,participant2) })
+           Assert.assertEquals(Pair(Data.DGNT, Data.KELSEY), matchUps[1].second.run { Pair(participant1,participant2) })
+           Assert.assertEquals(Pair(Data.FIRE, Data.SUPER), matchUps[2].second.run { Pair(participant1,participant2) })
+           Assert.assertEquals(Pair(Data.HERO, Data.DEMON), matchUps[3].second.run { Pair(participant1,participant2) })
+           Assert.assertEquals(Pair(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT), matchUps[4].second.run { Pair(participant1,participant2) })
+           Assert.assertEquals(Pair(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT), matchUps[5].second.run { Pair(participant1,participant2) })
+           Assert.assertEquals(Pair(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT), matchUps[6].second.run { Pair(participant1,participant2) })
+       }
     }
 
 
