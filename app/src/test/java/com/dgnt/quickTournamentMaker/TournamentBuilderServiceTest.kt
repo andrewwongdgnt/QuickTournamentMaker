@@ -89,15 +89,15 @@ class TournamentBuilderServiceTest {
         )
     )
 
-    private val eliminationTournamentInformation = TournamentInformation("title","description", listOf(Data.ANDREW,Data.DEMON,Data.DGNT), TournamentType.ELIMINATION, SeedType.CUSTOM, RankPriorityConfig.DEFAULT, Calendar.getInstance().time)
+    private val eliminationTournamentInformation = TournamentInformation("title", "description", listOf(Data.ANDREW, Data.DEMON, Data.DGNT), TournamentType.ELIMINATION, SeedType.CUSTOM, RankPriorityConfig.DEFAULT, Calendar.getInstance().time)
 
-    private val doubleEliminationTournamentInformation = TournamentInformation("title","description", listOf(Data.ANDREW,Data.DEMON,Data.DGNT), TournamentType.DOUBLE_ELIMINATION, SeedType.CUSTOM, RankPriorityConfig.DEFAULT, Calendar.getInstance().time)
+    private val doubleEliminationTournamentInformation = TournamentInformation("title", "description", listOf(Data.ANDREW, Data.DEMON, Data.DGNT), TournamentType.DOUBLE_ELIMINATION, SeedType.CUSTOM, RankPriorityConfig.DEFAULT, Calendar.getInstance().time)
 
-    private val roundRobinTournamentInformation = TournamentInformation("title","description", listOf(Data.ANDREW,Data.DEMON,Data.DGNT), TournamentType.ROUND_ROBIN, SeedType.CUSTOM, RankPriorityConfig.DEFAULT, Calendar.getInstance().time)
+    private val roundRobinTournamentInformation = TournamentInformation("title", "description", listOf(Data.ANDREW, Data.DEMON, Data.DGNT), TournamentType.ROUND_ROBIN, SeedType.CUSTOM, RankPriorityConfig.DEFAULT, Calendar.getInstance().time)
 
-    private val swissTournamentInformation = TournamentInformation("title","description", listOf(Data.ANDREW,Data.DEMON,Data.DGNT), TournamentType.SWISS, SeedType.CUSTOM, RankPriorityConfig.DEFAULT, Calendar.getInstance().time)
+    private val swissTournamentInformation = TournamentInformation("title", "description", listOf(Data.ANDREW, Data.DEMON, Data.DGNT), TournamentType.SWISS, SeedType.CUSTOM, RankPriorityConfig.DEFAULT, Calendar.getInstance().time)
 
-    private val survivalTournamentInformation = TournamentInformation("title","description", listOf(Data.ANDREW,Data.DEMON,Data.DGNT), TournamentType.SURVIVAL, SeedType.CUSTOM, RankPriorityConfig.DEFAULT, Calendar.getInstance().time)
+    private val survivalTournamentInformation = TournamentInformation("title", "description", listOf(Data.ANDREW, Data.DEMON, Data.DGNT), TournamentType.SURVIVAL, SeedType.CUSTOM, RankPriorityConfig.DEFAULT, Calendar.getInstance().time)
 
     @Before
     fun setUp() {
@@ -105,7 +105,7 @@ class TournamentBuilderServiceTest {
 
     @Test
     fun testEliminationServiceCall() {
-        sut.build(eliminationTournamentInformation).also{
+        sut.build(eliminationTournamentInformation).also {
             Mockito.verify(mockEliminationRoundGeneratorService, Mockito.times(1)).build(MockitoHelper.anyObject())
             Mockito.verify(mockEliminationSeedService, Mockito.times(1)).seed(MockitoHelper.anyObject())
         }
@@ -145,7 +145,7 @@ class TournamentBuilderServiceTest {
 
     @Test
     fun testEquality() {
-        sut.build(eliminationTournamentInformation).run{
+        sut.build(eliminationTournamentInformation).run {
             Assert.assertEquals(mockEliminationRoundUpdateService, roundUpdateService)
             Assert.assertEquals(mockEliminationRankingService, rankingService)
             Assert.assertEquals(mockEliminationMatchUpStatusTransformService, matchUpStatusTransformService)
@@ -177,28 +177,26 @@ class TournamentBuilderServiceTest {
     }
 
     @Test
-    fun testMatchUps(){
+    fun testMatchUps() {
         val round1 = Round(listOf(MatchUp(Data.ANDREW, Data.KYRA), MatchUp(Data.DGNT, Data.KELSEY), MatchUp(Data.FIRE, Data.SUPER), MatchUp(Data.HERO, Data.DEMON)))
         val round2 = Round(listOf(MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT), MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)))
         val round3 = Round(listOf(MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)))
         PowerMockito.`when`(mockEliminationRoundGeneratorService.build(MockitoHelper.anyObject())).thenReturn(listOf(RoundGroup(listOf(round1, round2, round3))))
 
-       sut.build(eliminationTournamentInformation).run {
-
-           Assert.assertEquals(7, matchUps.size)
-           Assert.assertEquals(4, matchUps.map { it.first }.filter{it==0}.size)
-           Assert.assertEquals(2, matchUps.map { it.first }.filter{it==1}.size)
-           Assert.assertEquals(1, matchUps.map { it.first }.filter{it==2}.size)
-           Assert.assertEquals(Pair(Data.ANDREW, Data.KYRA), matchUps[0].second.run { Pair(participant1,participant2) })
-           Assert.assertEquals(Pair(Data.DGNT, Data.KELSEY), matchUps[1].second.run { Pair(participant1,participant2) })
-           Assert.assertEquals(Pair(Data.FIRE, Data.SUPER), matchUps[2].second.run { Pair(participant1,participant2) })
-           Assert.assertEquals(Pair(Data.HERO, Data.DEMON), matchUps[3].second.run { Pair(participant1,participant2) })
-           Assert.assertEquals(Pair(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT), matchUps[4].second.run { Pair(participant1,participant2) })
-           Assert.assertEquals(Pair(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT), matchUps[5].second.run { Pair(participant1,participant2) })
-           Assert.assertEquals(Pair(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT), matchUps[6].second.run { Pair(participant1,participant2) })
-       }
+        sut.build(eliminationTournamentInformation).run {
+            Assert.assertEquals(7, matchUps.size)
+            Assert.assertEquals(4, matchUps.map { it.first }.filter { it == round1 }.size)
+            Assert.assertEquals(2, matchUps.map { it.first }.filter { it == round2 }.size)
+            Assert.assertEquals(1, matchUps.map { it.first }.filter { it == round3 }.size)
+            Assert.assertEquals(Pair(Data.ANDREW, Data.KYRA), matchUps[0].second.run { Pair(participant1, participant2) })
+            Assert.assertEquals(Pair(Data.DGNT, Data.KELSEY), matchUps[1].second.run { Pair(participant1, participant2) })
+            Assert.assertEquals(Pair(Data.FIRE, Data.SUPER), matchUps[2].second.run { Pair(participant1, participant2) })
+            Assert.assertEquals(Pair(Data.HERO, Data.DEMON), matchUps[3].second.run { Pair(participant1, participant2) })
+            Assert.assertEquals(Pair(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT), matchUps[4].second.run { Pair(participant1, participant2) })
+            Assert.assertEquals(Pair(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT), matchUps[5].second.run { Pair(participant1, participant2) })
+            Assert.assertEquals(Pair(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT), matchUps[6].second.run { Pair(participant1, participant2) })
+        }
     }
-
 
 
 }
