@@ -31,7 +31,7 @@
                     android:imeOptions="actionDone"
                     android:inputType="text"
                     android:hint="@string/name"
-                    android:text="@={vm.name}" />\
+                    android:text="@={vm.name}" />
 
             <EditText
                     android:id="@+id/personNote_et"

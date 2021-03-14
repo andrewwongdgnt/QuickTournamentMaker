@@ -3,6 +3,7 @@ package com.dgnt.quickTournamentMaker.ui.tournament
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
@@ -74,4 +75,12 @@ class ParticipantEditorDialogFragment : DialogFragment(), DIAware {
             super.onCreateDialog(savedInstanceState)
         }
 
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
+
+    }
 }
