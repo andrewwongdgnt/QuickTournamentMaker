@@ -23,9 +23,10 @@ class SwissRoundGeneratorServiceTest {
         val participants = listOf(Data.ANDREW, Data.KYRA, Data.DGNT, Data.KELSEY)
         PowerMockito.`when`(mockParticipantService.createRound(participants)).thenReturn(
             Round(
+                0, 0,
                 listOf(
-                    MatchUp(Data.ANDREW, Data.KYRA),
-                    MatchUp(Data.DGNT, Data.KELSEY)
+                    MatchUp(0, 0, 0, Data.ANDREW, Data.KYRA),
+                    MatchUp(0, 0, 1, Data.DGNT, Data.KELSEY)
                 )
             )
         );

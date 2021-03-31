@@ -1,6 +1,9 @@
 package com.dgnt.quickTournamentMaker
 
-import com.dgnt.quickTournamentMaker.model.tournament.*
+import com.dgnt.quickTournamentMaker.model.tournament.MatchUp
+import com.dgnt.quickTournamentMaker.model.tournament.Participant
+import com.dgnt.quickTournamentMaker.model.tournament.Round
+import com.dgnt.quickTournamentMaker.model.tournament.RoundGroup
 import com.dgnt.quickTournamentMaker.service.implementation.SurvivalRankingService
 import org.junit.Assert
 import org.junit.Before
@@ -20,13 +23,15 @@ class SurvivalRankingServiceTest {
 
         val initialState = listOf(
             RoundGroup(
+                0,
                 listOf(
                     Round(
+                        0, 0,
                         listOf(
-                            MatchUp(Data.ANDREW, Participant.NULL_PARTICIPANT),
-                            MatchUp(Data.KYRA, Participant.NULL_PARTICIPANT),
-                            MatchUp(Data.DGNT, Participant.NULL_PARTICIPANT),
-                            MatchUp(Data.KELSEY, Participant.NULL_PARTICIPANT)
+                            MatchUp(0, 0, 0, Data.ANDREW, Participant.NULL_PARTICIPANT),
+                            MatchUp(0, 0, 1, Data.KYRA, Participant.NULL_PARTICIPANT),
+                            MatchUp(0, 0, 2, Data.DGNT, Participant.NULL_PARTICIPANT),
+                            MatchUp(0, 0, 3, Data.KELSEY, Participant.NULL_PARTICIPANT)
                         )
                     )
                 )
@@ -38,19 +43,23 @@ class SurvivalRankingServiceTest {
 
         val normalState = listOf(
             RoundGroup(
+                0,
                 listOf(
-                    Round(listOf(
-                        MatchUp(Data.ANDREW, Participant.NULL_PARTICIPANT),
-                        MatchUp(Data.KYRA, Participant.NULL_PARTICIPANT)
-                    )
+                    Round(
+                        0, 0, listOf(
+                            MatchUp(0, 0, 0, Data.ANDREW, Participant.NULL_PARTICIPANT),
+                            MatchUp(0, 0, 1, Data.KYRA, Participant.NULL_PARTICIPANT)
+                        )
                     ),
-                    Round(listOf(
-                        MatchUp(Data.DGNT, Participant.NULL_PARTICIPANT)
-                    )
+                    Round(
+                        0, 1, listOf(
+                            MatchUp(0, 1, 0, Data.DGNT, Participant.NULL_PARTICIPANT)
+                        )
                     ),
-                    Round(listOf(
-                        MatchUp(Data.KELSEY, Participant.NULL_PARTICIPANT)
-                    )
+                    Round(
+                        0, 2, listOf(
+                            MatchUp(0, 2, 0, Data.KELSEY, Participant.NULL_PARTICIPANT)
+                        )
                     )
                 )
             )

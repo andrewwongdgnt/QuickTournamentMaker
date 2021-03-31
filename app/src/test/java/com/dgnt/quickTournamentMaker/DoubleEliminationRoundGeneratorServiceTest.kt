@@ -29,10 +29,26 @@ class DoubleEliminationRoundGeneratorServiceTest {
         val participants = listOf(Data.ANDREW, Data.KYRA, Data.DGNT, Data.KELSEY, Data.FIRE, Data.SUPER, Data.HERO, Data.DEMON)
 
 
-        val round1 = Round(listOf(MatchUp(Data.ANDREW, Data.KYRA), MatchUp(Data.DGNT, Data.KELSEY), MatchUp(Data.FIRE, Data.SUPER), MatchUp(Data.HERO, Data.DEMON)))
-        val round2 = Round(listOf(MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT), MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)))
-        val round3 = Round(listOf(MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)))
-        PowerMockito.`when`(mockRoundGeneratorService.build(participants)).thenReturn(listOf(RoundGroup(listOf(round1, round2, round3))))
+        val round1 = Round(
+            0, 0, listOf(
+                MatchUp(0, 0, 0, Data.ANDREW, Data.KYRA),
+                MatchUp(0, 0, 1, Data.DGNT, Data.KELSEY),
+                MatchUp(0, 0, 2, Data.FIRE, Data.SUPER),
+                MatchUp(0, 0, 3, Data.HERO, Data.DEMON)
+            )
+        )
+        val round2 = Round(
+            0, 1, listOf(
+                MatchUp(0, 1, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT),
+                MatchUp(0, 1, 1, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)
+            )
+        )
+        val round3 = Round(
+            0, 2, listOf(
+                MatchUp(0, 2, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)
+            )
+        )
+        PowerMockito.`when`(mockRoundGeneratorService.build(participants)).thenReturn(listOf(RoundGroup(0, listOf(round1, round2, round3))))
 
         roundGroups = sut.build(participants)
 

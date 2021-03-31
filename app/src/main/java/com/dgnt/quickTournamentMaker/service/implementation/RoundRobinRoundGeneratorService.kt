@@ -16,8 +16,9 @@ class RoundRobinRoundGeneratorService(private val participantService: IParticipa
         rounds.add(round1)
         for (i in 2 until orderedParticipants.size) {
 
-            rounds.add(Round((orderedParticipants.indices step 2).map {
-                val matchUpIndex = it / 2;
+            val roundIndex = i-1
+            rounds.add(Round(0,roundIndex,(orderedParticipants.indices step 2).map {
+                val matchUpIndex = it / 2
                 val previousRound = rounds.last()
 
                 val currentParticipant1: Participant
@@ -39,10 +40,10 @@ class RoundRobinRoundGeneratorService(private val participantService: IParticipa
                 }
 
 
-                MatchUp(currentParticipant1, currentParticipant2)
+                MatchUp(0,roundIndex,matchUpIndex,currentParticipant1, currentParticipant2)
             }))
         }
-        return listOf(RoundGroup(rounds))
+        return listOf(RoundGroup(0,rounds))
 
     }
 }

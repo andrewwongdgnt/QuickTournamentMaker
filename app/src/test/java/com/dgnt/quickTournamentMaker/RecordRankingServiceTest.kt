@@ -21,29 +21,31 @@ class RecordRankingServiceTest {
     fun setUp() {
 
         val initialState = listOf(
-            RoundGroup(
+            RoundGroup(0,
                 listOf(
-                    Round(listOf(
-                        MatchUp(Data.ANDREW, Data.KYRA).apply {
+                    Round(0, 0, listOf(
+                        MatchUp(0, 0, 0, Data.ANDREW, Data.KYRA).apply {
                             participant1.record = Record()
                             participant2.record = Record()
                         },
-                        MatchUp(Data.DGNT, Data.KELSEY).apply {
+                        MatchUp(0, 0, 1, Data.DGNT, Data.KELSEY).apply {
                             participant1.record = Record()
                             participant2.record = Record()
                         }
                     )
                     ),
                     Round(
+                        0, 1,
                         listOf(
-                            MatchUp(Data.ANDREW, Data.DGNT),
-                            MatchUp(Data.KELSEY, Data.KYRA)
+                            MatchUp(0, 1, 0, Data.ANDREW, Data.DGNT),
+                            MatchUp(0, 1, 1, Data.KELSEY, Data.KYRA)
                         )
                     ),
                     Round(
+                        0, 2,
                         listOf(
-                            MatchUp(Data.ANDREW, Data.KELSEY),
-                            MatchUp(Data.KYRA, Data.DGNT)
+                            MatchUp(0, 2, 0, Data.ANDREW, Data.KELSEY),
+                            MatchUp(0, 2, 1, Data.KYRA, Data.DGNT)
                         )
                     )
                 )
@@ -54,29 +56,31 @@ class RecordRankingServiceTest {
         initialStateUnknownRank = initialStateRank.unknown
 
         val normalState = listOf(
-            RoundGroup(
+            RoundGroup(0,
                 listOf(
-                    Round(listOf(
-                        MatchUp(Data.ANDREW, Data.KYRA).apply {
+                    Round(0, 0, listOf(
+                        MatchUp(0, 0, 0, Data.ANDREW, Data.KYRA).apply {
                             participant1.record = Record(0, 1, 2)
                             participant2.record = Record(0, 2, 1)
                         },
-                        MatchUp(Data.DGNT, Data.KELSEY).apply {
+                        MatchUp(0, 0, 1, Data.DGNT, Data.KELSEY).apply {
                             participant1.record = Record(2, 1, 0)
                             participant2.record = Record(2, 0, 1)
                         }
                     )
                     ),
                     Round(
+                        0, 1,
                         listOf(
-                            MatchUp(Data.ANDREW, Data.DGNT),
-                            MatchUp(Data.KELSEY, Data.KYRA)
+                            MatchUp(0, 1, 0, Data.ANDREW, Data.DGNT),
+                            MatchUp(0, 1, 1, Data.KELSEY, Data.KYRA)
                         )
                     ),
                     Round(
+                        0, 2,
                         listOf(
-                            MatchUp(Data.ANDREW, Data.KELSEY),
-                            MatchUp(Data.KYRA, Data.DGNT)
+                            MatchUp(0, 2, 0, Data.ANDREW, Data.KELSEY),
+                            MatchUp(0, 2, 1, Data.KYRA, Data.DGNT)
                         )
                     )
                 )
@@ -87,29 +91,31 @@ class RecordRankingServiceTest {
         normalStateUnknownRank = normalStateRank.unknown
 
         val withByeState = listOf(
-            RoundGroup(
+            RoundGroup(0,
                 listOf(
-                    Round(listOf(
-                        MatchUp(Data.ANDREW, Data.KYRA).apply {
+                    Round(0, 0, listOf(
+                        MatchUp(0, 0, 0, Data.ANDREW, Data.KYRA).apply {
                             participant1.record = Record(0, 1, 2)
                             participant2.record = Record(0, 2, 1)
                         },
-                        MatchUp(Data.DGNT, Participant.BYE_PARTICIPANT).apply {
+                        MatchUp(0, 0, 1, Data.DGNT, Participant.BYE_PARTICIPANT).apply {
                             participant1.record = Record(2, 1, 0)
                             participant2.record = Record(86, 0, 0)
                         }
                     )
                     ),
                     Round(
+                        0, 1,
                         listOf(
-                            MatchUp(Data.ANDREW, Data.DGNT),
-                            MatchUp(Participant.BYE_PARTICIPANT, Data.KYRA)
+                            MatchUp(0, 1, 0, Data.ANDREW, Data.DGNT),
+                            MatchUp(0, 1, 1, Participant.BYE_PARTICIPANT, Data.KYRA)
                         )
                     ),
                     Round(
+                        0, 2,
                         listOf(
-                            MatchUp(Data.ANDREW, Participant.BYE_PARTICIPANT),
-                            MatchUp(Data.KYRA, Data.DGNT)
+                            MatchUp(0, 2, 0, Data.ANDREW, Participant.BYE_PARTICIPANT),
+                            MatchUp(0, 2, 1, Data.KYRA, Data.DGNT)
                         )
                     )
                 )
@@ -122,7 +128,7 @@ class RecordRankingServiceTest {
 
     @Test
     fun testInitialStateKnownRankingTotal() {
-        Assert.assertEquals(1,initialStateKnownRank.size)
+        Assert.assertEquals(1, initialStateKnownRank.size)
     }
 
     @Test
@@ -137,7 +143,7 @@ class RecordRankingServiceTest {
 
     @Test
     fun testNormalStateKnownRankingTotal() {
-        Assert.assertEquals(4,normalStateKnownRank.size)
+        Assert.assertEquals(4, normalStateKnownRank.size)
     }
 
     @Test
@@ -158,14 +164,14 @@ class RecordRankingServiceTest {
 
     @Test
     fun testNormalStateUnknownRankingTotal() {
-        Assert.assertEquals(0,normalStateUnknownRank.size)
+        Assert.assertEquals(0, normalStateUnknownRank.size)
     }
 
     //----------
 
     @Test
     fun testWithByeStateKnownRankingTotal() {
-        Assert.assertEquals(3,withByeStateKnownRank.size)
+        Assert.assertEquals(3, withByeStateKnownRank.size)
     }
 
     @Test
@@ -184,7 +190,7 @@ class RecordRankingServiceTest {
 
     @Test
     fun testWithByeStateUnknownRankingTotal() {
-        Assert.assertEquals(0,withByeStateUnknownRank.size)
+        Assert.assertEquals(0, withByeStateUnknownRank.size)
     }
 
 }

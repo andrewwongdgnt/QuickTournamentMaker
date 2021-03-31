@@ -15,12 +15,12 @@ class SwissRoundGeneratorService(private val participantService: IParticipantSer
         val rounds = ArrayList<Round>()
         rounds.add(round1)
         for (i in 2 until orderedParticipants.size) {
-
-            rounds.add(Round((orderedParticipants.indices step 2).map {
-                MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)
+            val roundIndex = i-1
+            rounds.add(Round(0,roundIndex,(orderedParticipants.indices step 2).map {
+                MatchUp(0,roundIndex,it/2,Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)
             }))
         }
-        return listOf(RoundGroup(rounds))
+        return listOf(RoundGroup(0, rounds))
 
     }
 }

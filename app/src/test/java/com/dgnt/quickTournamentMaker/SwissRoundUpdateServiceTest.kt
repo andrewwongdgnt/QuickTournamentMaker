@@ -18,29 +18,53 @@ class SwissRoundUpdateServiceTest {
     @Before
     fun setUp() {
 
-        val round1 = Round(listOf(MatchUp(Data.ANDREW, Data.KYRA), MatchUp(Data.DGNT, Data.KELSEY), MatchUp(Data.FIRE, Data.SUPER), MatchUp(Data.HERO, Data.DEMON)))
+        val round1 = Round(
+            0, 0, listOf(
+                MatchUp(0, 0, 0, Data.ANDREW, Data.KYRA),
+                MatchUp(0, 0, 1, Data.DGNT, Data.KELSEY),
+                MatchUp(0, 0, 2, Data.FIRE, Data.SUPER),
+                MatchUp(0, 0, 3, Data.HERO, Data.DEMON)
+            )
+        )
         val rounds = (1..7).map {
             if (it == 1)
                 round1
             else
-                Round(listOf(MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT), MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT), MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT), MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)))
+                Round(
+                    0, it - 1, listOf(
+                        MatchUp(0, it - 1, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT),
+                        MatchUp(0, it - 1, 1, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT),
+                        MatchUp(0, it - 1, 2, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT),
+                        MatchUp(0, it - 1, 3, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)
+                    )
+                )
         }
-        roundGroups = listOf(RoundGroup(rounds))
+        roundGroups = listOf(RoundGroup(0, rounds))
 
 
-        val round1WithBye = Round(listOf(MatchUp(Data.ANDREW, Data.FIRE), MatchUp(Data.KYRA, Participant.BYE_PARTICIPANT)))
+        val round1WithBye = Round(
+            0, 0, listOf(
+                MatchUp(0, 0, 0, Data.ANDREW, Data.FIRE),
+                MatchUp(0, 0, 1, Data.KYRA, Participant.BYE_PARTICIPANT)
+            )
+        )
         val roundsWithBye = (1..3).map {
             if (it == 1)
                 round1WithBye
             else
-                Round(listOf(MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT), MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)))
+                Round(
+                    0, it - 1, listOf(
+                        MatchUp(0, it - 1, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT),
+                        MatchUp(0, it - 1, 1, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)
+                    )
+                )
         }
-        roundGroupsWithBye = listOf(RoundGroup(roundsWithBye))
+        roundGroupsWithBye = listOf(RoundGroup(0, roundsWithBye))
 
     }
 
     private fun helperMockRankingService(list: List<Set<Participant>>) {
-        PowerMockito.`when`(mockRankingService.calculate(MockitoHelper.anyObject(),MockitoHelper.anyObject())).thenReturn(
+        PowerMockito.`when`(mockRankingService.calculate(MockitoHelper.anyObject(), MockitoHelper.anyObject())).thenReturn(
             Rank(list, setOf())
         );
     }
@@ -308,6 +332,7 @@ class SwissRoundUpdateServiceTest {
         assertRound3NullParticipants()
         assertRound4NullParticipants()
     }
+
     @Test
     fun testDistributionWithBye() {
 

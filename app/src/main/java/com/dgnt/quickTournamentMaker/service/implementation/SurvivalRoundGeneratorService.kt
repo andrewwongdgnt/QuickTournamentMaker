@@ -12,15 +12,16 @@ class SurvivalRoundGeneratorService(private val participantService: IParticipant
 
         val round1 = participantService.createRound(orderedParticipants)
         val totalParticipants = orderedParticipants.size / 2
-        val rounds = (1 until totalParticipants).map {
-            when (it) {
-                1 -> round1
-                else -> Round(
-                    (1..totalParticipants).map { MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT) }
+        val rounds = (0 until totalParticipants-1).map {roundIndex ->
+
+            when (roundIndex) {
+                0 -> round1
+                else -> Round(0,roundIndex,
+                    (1..totalParticipants).map { MatchUp(0,roundIndex,it,Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT) }
                 )
             }
         }
 
-        return listOf(RoundGroup(rounds))
+        return listOf(RoundGroup(0,rounds))
     }
 }

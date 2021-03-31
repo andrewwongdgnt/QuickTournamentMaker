@@ -12,21 +12,23 @@ class EliminationRoundGeneratorService(private val participantService: IParticip
 
         val round1 = participantService.createRound(orderedParticipants)
 
-        val rounds: MutableList<Round> = ArrayList();
+        val rounds: MutableList<Round> = mutableListOf()
         rounds.add(round1)
 
         val totalParticipants = orderedParticipants.size
 
         var matchUpTotal: Double = totalParticipants / 4.0
+        var roundIndex = 1;
         while (matchUpTotal >= 1) {
 
-            val round = Round((1..matchUpTotal.toInt()).map { MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT) })
+            val round = Round(0, roundIndex, (0 until matchUpTotal.toInt()).map { matchUpIndex -> MatchUp(0, roundIndex, matchUpIndex, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT) })
             rounds.add(round)
 
             matchUpTotal *= 0.5
+            roundIndex++
         }
 
-        return listOf(RoundGroup(rounds))
+        return listOf(RoundGroup(0,rounds))
     }
 
 }

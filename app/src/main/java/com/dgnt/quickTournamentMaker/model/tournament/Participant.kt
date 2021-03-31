@@ -15,14 +15,13 @@ enum class ParticipantPosition {
 }
 
 @Parcelize
-data class Participant(var person: Person, val participantType: ParticipantType = ParticipantType.NORMAL, var displayName: String = person.name, var note: String = person.note) : IKeyable, Comparable<Participant>,
-    Parcelable {
+data class Participant(var person: Person, val participantType: ParticipantType = ParticipantType.NORMAL, var displayName: String = person.name, var note: String = person.note) : IKeyable, Comparable<Participant>, Parcelable {
     companion object {
         val NULL_PARTICIPANT =
-            Participant(Person("","", ""), ParticipantType.NULL)
+            Participant(Person("", "", ""), ParticipantType.NULL)
 
         val BYE_PARTICIPANT =
-            Participant(Person("","", ""), ParticipantType.BYE)
+            Participant(Person("", "", ""), ParticipantType.BYE)
     }
 
     var record: Record = Record()

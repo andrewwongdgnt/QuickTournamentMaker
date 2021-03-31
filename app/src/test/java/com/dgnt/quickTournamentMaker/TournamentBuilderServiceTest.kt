@@ -99,8 +99,24 @@ class TournamentBuilderServiceTest {
 
     private val survivalTournamentInformation = TournamentInformation("title", "description", listOf(Data.ANDREW, Data.DEMON, Data.DGNT), TournamentType.SURVIVAL, SeedType.CUSTOM, RankPriorityConfig.DEFAULT, Calendar.getInstance().time)
 
+    private lateinit var round1: Round
+    private lateinit var round2: Round
+    private lateinit var round3: Round
+
     @Before
     fun setUp() {
+
+        round1 = Round(0,0,listOf(
+            MatchUp(0,0,0,Data.ANDREW, Data.KYRA),
+            MatchUp(0,0,1,Data.DGNT, Data.KELSEY),
+            MatchUp(0,0,2,Data.FIRE, Data.SUPER),
+            MatchUp(0,0,3,Data.HERO, Data.DEMON)))
+        round2 = Round(0,1,listOf(
+            MatchUp(0,1,0,Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT),
+            MatchUp(0,1,1,Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)))
+        round3 = Round(0,2,listOf(
+            MatchUp(0,2,0,Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)))
+        PowerMockito.`when`(mockEliminationRoundGeneratorService.build(MockitoHelper.anyObject())).thenReturn(listOf(RoundGroup(0,listOf(round1, round2, round3))))
     }
 
     @Test
@@ -178,10 +194,7 @@ class TournamentBuilderServiceTest {
 
     @Test
     fun testMatchUps() {
-        val round1 = Round(listOf(MatchUp(Data.ANDREW, Data.KYRA), MatchUp(Data.DGNT, Data.KELSEY), MatchUp(Data.FIRE, Data.SUPER), MatchUp(Data.HERO, Data.DEMON)))
-        val round2 = Round(listOf(MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT), MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)))
-        val round3 = Round(listOf(MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)))
-        PowerMockito.`when`(mockEliminationRoundGeneratorService.build(MockitoHelper.anyObject())).thenReturn(listOf(RoundGroup(listOf(round1, round2, round3))))
+
 
         sut.build(eliminationTournamentInformation).run {
             Assert.assertEquals(7, matchUps.size)
@@ -195,6 +208,17 @@ class TournamentBuilderServiceTest {
             Assert.assertEquals(Pair(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT), matchUps[4].second.run { Pair(participant1, participant2) })
             Assert.assertEquals(Pair(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT), matchUps[5].second.run { Pair(participant1, participant2) })
             Assert.assertEquals(Pair(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT), matchUps[6].second.run { Pair(participant1, participant2) })
+        }
+    }
+
+
+    @Test
+    fun testRounds() {
+        sut.build(eliminationTournamentInformation).run {
+            Assert.assertEquals(3, rounds.size)
+            Assert.assertEquals(round1, rounds[0])
+            Assert.assertEquals(round2, rounds[1])
+            Assert.assertEquals(round3, rounds[2])
         }
     }
 

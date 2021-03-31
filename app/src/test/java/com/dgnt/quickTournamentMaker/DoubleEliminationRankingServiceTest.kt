@@ -24,22 +24,67 @@ class DoubleEliminationRankingServiceTest {
 
         roundGroups = listOf(
             RoundGroup(
+                0,
                 listOf(
-                    Round(listOf(MatchUp(Data.ANDREW, Data.KYRA), MatchUp(Data.DGNT, Data.KELSEY), MatchUp(Data.FIRE, Data.SUPER), MatchUp(Data.HERO, Data.DEMON))),
-                    Round(listOf(MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT), MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT))),
-                    Round(listOf(MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)))
+                    Round(
+                        0, 0, listOf(
+                            MatchUp(0, 0, 0, Data.ANDREW, Data.KYRA),
+                            MatchUp(0, 0, 1, Data.DGNT, Data.KELSEY),
+                            MatchUp(0, 0, 2, Data.FIRE, Data.SUPER),
+                            MatchUp(0, 0, 3, Data.HERO, Data.DEMON)
+                        )
+                    ),
+                    Round(
+                        0, 1, listOf(
+                            MatchUp(0, 1, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT),
+                            MatchUp(0, 1, 1, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)
+                        )
+                    ),
+                    Round(
+                        0, 2, listOf(
+                            MatchUp(0, 2, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)
+                        )
+                    )
                 )
             ), RoundGroup(
+                1,
                 listOf(
-                    Round(listOf(MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT), MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT))),
-                    Round(listOf(MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT), MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT))),
-                    Round(listOf(MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT))),
-                    Round(listOf(MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)))
+                    Round(
+                        1, 0, listOf(
+                            MatchUp(1, 0, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT),
+                            MatchUp(1, 0, 1, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)
+                        )
+                    ),
+                    Round(
+                        1, 1, listOf(
+                            MatchUp(1, 1, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT),
+                            MatchUp(1, 1, 1, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)
+                        )
+                    ),
+                    Round(
+                        1, 2, listOf(
+                            MatchUp(1, 2, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)
+                        )
+                    ),
+                    Round(
+                        1, 3, listOf(
+                            MatchUp(1, 3, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)
+                        )
+                    )
                 )
             ), RoundGroup(
+                2,
                 listOf(
-                    Round(listOf(MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT))),
-                    Round(listOf(MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)))
+                    Round(
+                        2, 0, listOf(
+                            MatchUp(2, 0, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)
+                        )
+                    ),
+                    Round(
+                        2, 1, listOf(
+                            MatchUp(2, 1, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)
+                        )
+                    )
                 )
             )
         )

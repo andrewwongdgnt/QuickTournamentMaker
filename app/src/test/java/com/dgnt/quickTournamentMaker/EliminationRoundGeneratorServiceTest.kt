@@ -22,11 +22,12 @@ class EliminationRoundGeneratorServiceTest {
         val participants = listOf(Data.ANDREW, Data.KYRA, Data.DGNT, Data.KELSEY, Data.FIRE, Data.SUPER, Data.HERO, Data.DEMON)
         PowerMockito.`when`(mockParticipantService.createRound(participants)).thenReturn(
             Round(
+                0, 0,
                 listOf(
-                    MatchUp(Data.ANDREW,Data.KYRA),
-                    MatchUp(Data.DGNT,Data.KELSEY),
-                    MatchUp(Data.FIRE,Data.SUPER),
-                    MatchUp(Data.HERO,Data.DEMON)
+                    MatchUp(0, 0, 0, Data.ANDREW, Data.KYRA),
+                    MatchUp(0, 0, 1, Data.DGNT, Data.KELSEY),
+                    MatchUp(0, 0, 2, Data.FIRE, Data.SUPER),
+                    MatchUp(0, 0, 3, Data.HERO, Data.DEMON)
                 )
             )
         );
@@ -40,7 +41,7 @@ class EliminationRoundGeneratorServiceTest {
 
     @Test
     fun testTotalRounds() {
-        Assert.assertEquals(3,roundGroups[0].rounds.size)
+        Assert.assertEquals(3, roundGroups[0].rounds.size)
     }
 
     @Test

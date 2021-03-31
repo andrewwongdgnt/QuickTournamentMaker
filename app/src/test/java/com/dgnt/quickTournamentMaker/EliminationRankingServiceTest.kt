@@ -24,10 +24,27 @@ class EliminationRankingServiceTest {
 
         val roundGroups = listOf(
             RoundGroup(
+                0,
                 listOf(
-                    Round(listOf(MatchUp(Data.ANDREW, Data.KYRA), MatchUp(Data.DGNT, Data.KELSEY), MatchUp(Data.FIRE, Data.SUPER), MatchUp(Data.HERO, Data.DEMON))),
-                    Round(listOf(MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT), MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT))),
-                    Round(listOf(MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)))
+                    Round(
+                        0, 0, listOf(
+                            MatchUp(0, 0, 0, Data.ANDREW, Data.KYRA),
+                            MatchUp(0, 0, 1, Data.DGNT, Data.KELSEY),
+                            MatchUp(0, 0, 2, Data.FIRE, Data.SUPER),
+                            MatchUp(0, 0, 3, Data.HERO, Data.DEMON)
+                        )
+                    ),
+                    Round(
+                        0, 1, listOf(
+                            MatchUp(0, 1, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT),
+                            MatchUp(0, 1, 1, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)
+                        )
+                    ),
+                    Round(
+                        0, 2, listOf(
+                            MatchUp(0, 2, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)
+                        )
+                    )
                 )
             )
         )
@@ -40,7 +57,6 @@ class EliminationRankingServiceTest {
     fun testRoundGroupSplitting() {
         Mockito.verify(mockEliminationRankingHelperService, Mockito.times(1)).calculate(rounds, rounds.dropLast(1), rounds.takeLast(1))
     }
-
 
 
 }

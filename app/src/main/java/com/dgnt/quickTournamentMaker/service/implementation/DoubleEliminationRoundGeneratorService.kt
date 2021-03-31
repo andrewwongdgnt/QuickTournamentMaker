@@ -11,22 +11,23 @@ class DoubleEliminationRoundGeneratorService(private val roundGeneratorService: 
 
         val winnersBracket = roundGeneratorService.build(orderedParticipants)[0]
 
-        val loserBracket = RoundGroup(winnersBracket.rounds
+        val loserBracket = RoundGroup(1,winnersBracket.rounds
             .map { it.matchUps.size / 2 }
             .dropLast(1)
-            .map { matchUpTotal ->
-                (1..2).map {
-                    (Round((1..matchUpTotal)
-                        .map { MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT) })
+            .mapIndexed { i, matchUpTotal ->
+                (0..1).map { m ->
+                    val roundIndex = i * 2 + m
+                    (Round(1, roundIndex, (0 until matchUpTotal)
+                        .map { matchUpIndex -> MatchUp(1, roundIndex, matchUpIndex, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT) })
                             )
                 }
             }.flatten()
         )
 
-        val finalBracket = RoundGroup(
+        val finalBracket = RoundGroup(2,
             listOf(
-                Round(listOf(MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT))),//mandatory round
-                Round(listOf(MatchUp(Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)))//extra round
+                Round(2, 0, listOf(MatchUp(2, 0, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT))),//mandatory round
+                Round(2, 1, listOf(MatchUp(2, 1, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)))//extra round
             )
         )
 

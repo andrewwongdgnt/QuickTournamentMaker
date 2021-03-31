@@ -1,14 +1,25 @@
 package com.dgnt.quickTournamentMaker.model.tournament
 
+import android.os.Parcelable
+import com.dgnt.quickTournamentMaker.model.IKeyable
 import com.dgnt.quickTournamentMaker.util.TournamentUtil
+import kotlinx.android.parcel.Parcelize
 
 
 enum class MatchUpStatus {
     DEFAULT, P1_WINNER, P2_WINNER, TIE,
 }
 
-data class MatchUp(var participant1: Participant, var participant2: Participant) {
+@Parcelize
+data class MatchUp(
+    val roundGroupIndex: Int,
+    val roundIndex: Int,
+    val matchUpIndex: Int,
+    var participant1: Participant,
+    var participant2: Participant
+) : IKeyable, Parcelable {
     var status: MatchUpStatus = MatchUpStatus.DEFAULT
     var note: String = ""
     var color: Int = TournamentUtil.DEFAULT_DISPLAY_COLOR
+    override val key = "$roundGroupIndex;$roundIndex;$matchUpIndex"
 }

@@ -6,5 +6,5 @@ import com.dgnt.quickTournamentMaker.model.tournament.Round
 import com.dgnt.quickTournamentMaker.service.interfaces.IParticipantService
 
 class ParticipantService : IParticipantService {
-    override fun createRound(participants: List<Participant>): Round = Round(participants.zipWithNext().filterIndexed { index, _ -> index % 2 == 0 }.map { MatchUp(it.first, it.second) })
+    override fun createRound(participants: List<Participant>, roundGroupIndex: Int, roundIndex: Int): Round = Round(roundGroupIndex, roundIndex, participants.zipWithNext().filterIndexed { index, _ -> index % 2 == 0 }.mapIndexed { i, it -> MatchUp(roundGroupIndex, roundIndex, i, it.first, it.second) })
 }
