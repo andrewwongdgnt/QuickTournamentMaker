@@ -37,10 +37,7 @@ class ParticipantEditorDialogFragment : DialogFragment(), DIAware {
 
     private lateinit var listenerEditor: IParticipantEditorDialogFragmentListener
 
-    private lateinit var key: String
 
-    private lateinit var binding: ParticipantEditorFragmentBinding
-    private lateinit var viewModel: ParticipantEditorViewModel
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
@@ -50,14 +47,13 @@ class ParticipantEditorDialogFragment : DialogFragment(), DIAware {
 
     override fun onCreateDialog(savedInstanceState: Bundle?) =
         activity?.let { activity ->
-            binding = ParticipantEditorFragmentBinding.inflate(activity.layoutInflater)
+           val binding = ParticipantEditorFragmentBinding.inflate(activity.layoutInflater)
 
-            viewModel = ViewModelProvider(this, viewModelFactory).get(ParticipantEditorViewModel::class.java)
+            val viewModel = ViewModelProvider(this, viewModelFactory).get(ParticipantEditorViewModel::class.java)
             binding.vm = viewModel
             binding.lifecycleOwner = this
 
             val participant = arguments?.getParcelable<Participant>(KEY_PARTICIPANT)!!
-            key = participant.key
 
             viewModel.setData(participant, resources.getStringArray(R.array.colorOptionsNames).asList().zip(resources.getIntArray(R.array.colorOptions).asList()).map {
                 ColorInfo(it.first, it.second)
@@ -67,7 +63,7 @@ class ParticipantEditorDialogFragment : DialogFragment(), DIAware {
                 .setTitle(getString(R.string.editing, participant.displayName))
                 .setView(binding.root)
                 .setPositiveButton(android.R.string.ok) { _, _ ->
-                    listenerEditor.onEditParticipant(key, viewModel.name.value ?: "", viewModel.note.value ?: "", viewModel.color.value?.hex ?: TournamentUtil.DEFAULT_DISPLAY_COLOR)
+                    listenerEditor.onEditParticipant(participant.key, viewModel.name.value ?: "", viewModel.note.value ?: "", viewModel.color.value?.hex ?: TournamentUtil.DEFAULT_DISPLAY_COLOR)
                 }
                 .setNegativeButton(android.R.string.cancel, null)
                 .create()

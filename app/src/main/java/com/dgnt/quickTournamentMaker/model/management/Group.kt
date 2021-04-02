@@ -6,8 +6,8 @@ import com.dgnt.quickTournamentMaker.model.IKeyable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class Group(var id: String, var name: String, var note: String, var favourite: Boolean) : IKeyable, Comparable<Group>, Parcelable {
-    override val key: String = name
+data class Group(var id: String, var name: String, var note: String, var favourite: Boolean) : IKeyable<String>, Comparable<Group>, Parcelable {
+    override val key = name
     override fun compareTo(other: Group): Int {
         if (favourite && !other.favourite) return -1
         if (!favourite && other.favourite) return 1

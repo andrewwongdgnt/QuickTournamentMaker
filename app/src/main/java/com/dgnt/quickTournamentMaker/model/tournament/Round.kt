@@ -10,10 +10,10 @@ data class Round(
     val roundGroupIndex: Int,
     val roundIndex: Int,
     var matchUps: List<MatchUp>
-) : IKeyable, Parcelable {
+) : IKeyable<Pair<Int,Int>>, Parcelable {
     var title: String = ""
     var note: String = ""
     var color: Int = TournamentUtil.DEFAULT_DISPLAY_COLOR
-    override val key: String = "$roundGroupIndex;$roundIndex"
+    override val key = Pair(roundGroupIndex,roundIndex)
 
 }

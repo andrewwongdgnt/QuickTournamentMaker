@@ -9,11 +9,13 @@ import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.TournamentEditorFragmentBinding
 import com.dgnt.quickTournamentMaker.model.tournament.Participant
+import com.dgnt.quickTournamentMaker.model.tournament.RoundGroup
+import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 import org.kodein.di.instance
 
-class TournamentEditorDialogFragment : DialogFragment(), DIAware, IParticipantEditorDialogFragmentListener {
+class TournamentEditorDialogFragment : DialogFragment(), DIAware {
     override val di by di()
     private val viewModelFactory: TournamentEditorViewModelFactory by instance()
 
@@ -21,20 +23,14 @@ class TournamentEditorDialogFragment : DialogFragment(), DIAware, IParticipantEd
 
         const val TAG = "TournamentEditorDialogFragment"
 
-        private const val KEY_TITLE = "KEY_TITLE"
-        private const val KEY_DESCRIPTION = "KEY_DESCRIPTION"
-        private const val KEY_PARTICIPANTS = "KEY_PARTICIPANTS"
+        private const val KEY_TOURNAMENT = "KEY_TOURNAMENT"
 
-        fun newInstance(title: String, description: String, participants: Array<Participant>) =
+        fun newInstance(tournamentInformation: TournamentInformation) =
             TournamentEditorDialogFragment().apply {
                 arguments = Bundle().apply {
-                    putString(KEY_TITLE, title)
-                    putString(KEY_DESCRIPTION, description)
-                    putParcelableArray(KEY_PARTICIPANTS, participants)
+                    putParcelable(KEY_TOURNAMENT, tournamentInformation)
                 }
-
             }
-
     }
 
     private lateinit var listenerEditor: ITournamentEditorDialogFragmentListener
@@ -42,7 +38,6 @@ class TournamentEditorDialogFragment : DialogFragment(), DIAware, IParticipantEd
     private lateinit var binding: TournamentEditorFragmentBinding
     private lateinit var viewModel: TournamentEditorViewModel
 
-    private lateinit var participants: MutableList<Participant>
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -63,12 +58,12 @@ class TournamentEditorDialogFragment : DialogFragment(), DIAware, IParticipantEd
             binding.vm = viewModel
             binding.lifecycleOwner = this
 
-            viewModel.setData(arguments?.getString(KEY_TITLE)!!, arguments?.getString(KEY_DESCRIPTION)!!)
 
-            participants = arguments?.getParcelableArray(KEY_PARTICIPANTS)?.map { it as Participant }?.toMutableList() ?: mutableListOf()
+            viewModel.setData(arguments?.getParcelable(KEY_TOURNAMENT)!!)
 
-            binding.participantRv.adapter = ParticipantRecyclerViewAdapter(participants) { p: Participant -> ParticipantEditorDialogFragment.newInstance(p).also { it.setTargetFragment(this, 1) }.show(activity.supportFragmentManager, ParticipantEditorDialogFragment.TAG) }
-            updateParticipantList()
+
+
+
             AlertDialog.Builder(activity)
                 .setTitle(R.string.editTournament)
                 .setView(binding.root)
@@ -91,18 +86,4 @@ class TournamentEditorDialogFragment : DialogFragment(), DIAware, IParticipantEd
 
     }
 
-    override fun onEditParticipant(key: String, name: String, note: String, color: Int) {
-        participants.find { it.key == key }?.also {
-            it.displayName = name
-            it.note = note
-            it.color = color
-        }?.apply {
-            updateParticipantList()
-        }
-    }
-
-    private fun updateParticipantList() {
-        participants.sort()
-        binding.participantRv.adapter?.notifyDataSetChanged()
-    }
 }

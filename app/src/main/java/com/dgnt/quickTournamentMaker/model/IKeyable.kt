@@ -1,5 +1,5 @@
 package com.dgnt.quickTournamentMaker.model
 
-interface IKeyable {
-    val key:String;
+interface IKeyable<T> {
+    val key: T;
 }

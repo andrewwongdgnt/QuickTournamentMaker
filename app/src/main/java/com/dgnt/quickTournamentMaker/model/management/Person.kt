@@ -6,8 +6,8 @@ import com.dgnt.quickTournamentMaker.model.IKeyable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class Person(val id: String, var name: String, var note: String) : IKeyable, Comparable<Person>, Parcelable {
-    override val key: String = name
+data class Person(val id: String, var name: String, var note: String) : IKeyable<String>, Comparable<Person>, Parcelable {
+    override val key = name
     override fun compareTo(other: Person): Int = name.compareTo(other.name)
     override fun equals(other: Any?): Boolean {
         if (other is Person) {

@@ -6,7 +6,7 @@
 
         <variable
                 name="vm"
-                type="com.dgnt.quickTournamentMaker.ui.tournament.ParticipantEditorViewModel" />
+                type="com.dgnt.quickTournamentMaker.ui.tournament.MatchUpEditorViewModel" />
 
     </data>
 
@@ -25,17 +25,7 @@
 
 
             <EditText
-                    android:id="@+id/personName_et"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:imeOptions="actionDone"
-                    android:inputType="text"
-                    android:hint="@string/displayName"
-                    android:text="@={vm.name}" />
-
-
-            <EditText
-                    android:id="@+id/participantNote_et"
+                    android:id="@+id/matchUpNote_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -46,6 +36,7 @@
                     android:text="@={vm.note}" />
 
             <TextView
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/standard_gap"

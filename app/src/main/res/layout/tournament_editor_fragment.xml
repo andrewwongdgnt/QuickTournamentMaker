@@ -34,33 +34,7 @@
                         app:vm="@{vm}" />
             </com.dgnt.quickTournamentMaker.ui.layout.TitledLinearLayout>
 
-            <com.dgnt.quickTournamentMaker.ui.layout.TitledLinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingTop="@dimen/standard_gap"
-                    app:titleText="@string/players">
 
-                <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/participant_rv"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-            </com.dgnt.quickTournamentMaker.ui.layout.TitledLinearLayout>
-
-            <com.dgnt.quickTournamentMaker.ui.layout.TitledLinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingTop="@dimen/standard_gap"
-                    app:titleText="@string/rounds"></com.dgnt.quickTournamentMaker.ui.layout.TitledLinearLayout>
-
-            <com.dgnt.quickTournamentMaker.ui.layout.TitledLinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingTop="@dimen/standard_gap"
-                    app:titleText="@string/matchUps"></com.dgnt.quickTournamentMaker.ui.layout.TitledLinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>

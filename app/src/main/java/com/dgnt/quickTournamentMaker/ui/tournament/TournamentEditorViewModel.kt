@@ -4,6 +4,8 @@ import androidx.databinding.Bindable
 import androidx.databinding.Observable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.dgnt.quickTournamentMaker.model.tournament.RoundGroup
+import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
 import com.dgnt.quickTournamentMaker.ui.main.common.TournamentGeneralEditorViewModel
 
 class TournamentEditorViewModel : Observable, ViewModel(), TournamentGeneralEditorViewModel {
@@ -19,9 +21,9 @@ class TournamentEditorViewModel : Observable, ViewModel(), TournamentGeneralEdit
     override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
     }
 
-    fun setData(title: String, description: String) {
-        this.title.value = title
-        this.description.value = description
+    fun setData(tournamentInformation: TournamentInformation) {
+        this.title.value = tournamentInformation.title
+        this.description.value = tournamentInformation.description
 
     }
 }

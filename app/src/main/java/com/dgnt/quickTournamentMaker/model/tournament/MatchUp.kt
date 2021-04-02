@@ -17,9 +17,9 @@ data class MatchUp(
     val matchUpIndex: Int,
     var participant1: Participant,
     var participant2: Participant
-) : IKeyable, Parcelable {
+) : IKeyable<Triple<Int, Int, Int>>, Parcelable {
     var status: MatchUpStatus = MatchUpStatus.DEFAULT
     var note: String = ""
     var color: Int = TournamentUtil.DEFAULT_DISPLAY_COLOR
-    override val key = "$roundGroupIndex;$roundIndex;$matchUpIndex"
+    override val key = Triple(roundGroupIndex, roundIndex, matchUpIndex)
 }

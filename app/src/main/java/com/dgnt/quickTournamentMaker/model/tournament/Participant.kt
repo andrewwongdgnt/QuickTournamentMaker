@@ -15,7 +15,7 @@ enum class ParticipantPosition {
 }
 
 @Parcelize
-data class Participant(var person: Person, val participantType: ParticipantType = ParticipantType.NORMAL, var displayName: String = person.name, var note: String = person.note) : IKeyable, Comparable<Participant>, Parcelable {
+data class Participant(var person: Person, val participantType: ParticipantType = ParticipantType.NORMAL, var displayName: String = person.name, var note: String = person.note) : IKeyable<String>, Comparable<Participant>, Parcelable {
     companion object {
         val NULL_PARTICIPANT =
             Participant(Person("", "", ""), ParticipantType.NULL)
@@ -27,7 +27,7 @@ data class Participant(var person: Person, val participantType: ParticipantType 
     var record: Record = Record()
     var color = TournamentUtil.DEFAULT_DISPLAY_COLOR
 
-    override val key: String = person.name + participantType.name
+    override val key = person.name + participantType.name
     override fun compareTo(other: Participant): Int = displayName.compareTo(other.displayName)
 
     override fun toString(): String {
