@@ -80,8 +80,16 @@ class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentL
                     .setTitle(R.string.participantSelectionHint)
                     .create()
                     .show()
-
-
+            }
+            R.id.action_editAMatchUp -> viewModel.tournament.value?.let {
+                val pair = it.matchUps
+                AlertDialog.Builder(this)
+                    .setAdapter(MatchUpArrayAdapter(this, pair)) { _, i ->
+                        MatchUpEditorDialogFragment.newInstance(pair[i].second, pair[i].second.roundGroupIndex, pair[i].second.roundIndex, pair[i].second.matchUpIndex).show(supportFragmentManager, MatchUpEditorDialogFragment.TAG)
+                    }
+                    .setTitle(R.string.matchUpSelectionHint)
+                    .create()
+                    .show()
             }
         }
         return super.onOptionsItemSelected(item)
@@ -105,7 +113,12 @@ class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentL
     }
 
     override fun onEditMatchUp(key: Triple<Int, Int, Int>, note: String, color: Int) {
-        TODO("Not yet implemented")
+        viewModel.tournament.value?.run {
+            matchUps.find { it.second.key == key }?.let { it.second }?.let {
+                it.note = note
+                it.color = color
+            }
+        }
     }
 
 

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
@@ -50,17 +51,11 @@ class MatchUpEditorDialogFragment : DialogFragment(), DIAware {
 
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.match_up_editor_fragment, container, false)
-    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?) =
         activity?.let { activity ->
             val binding = MatchUpEditorFragmentBinding.inflate(activity.layoutInflater)
-            val viewModel = ViewModelProvider(this).get(MatchUpEditorViewModel::class.java)
+            val viewModel = ViewModelProvider(this, viewModelFactory).get(MatchUpEditorViewModel::class.java)
             binding.vm = viewModel
             binding.lifecycleOwner = this
 
@@ -73,6 +68,7 @@ class MatchUpEditorDialogFragment : DialogFragment(), DIAware {
                 ColorInfo(it.first, it.second)
             })
 
+
             AlertDialog.Builder(activity)
                 .setTitle(getString(R.string.editingThisMatchUp))
                 .setView(binding.root)
@@ -84,5 +80,14 @@ class MatchUpEditorDialogFragment : DialogFragment(), DIAware {
         } ?: run {
             super.onCreateDialog(savedInstanceState)
         }
+
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
+
+    }
 
 }
