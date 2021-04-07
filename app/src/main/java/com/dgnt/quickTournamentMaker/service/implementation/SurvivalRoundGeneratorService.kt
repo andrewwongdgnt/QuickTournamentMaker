@@ -8,7 +8,7 @@ import com.dgnt.quickTournamentMaker.service.interfaces.IParticipantService
 import com.dgnt.quickTournamentMaker.service.interfaces.IRoundGeneratorService
 
 class SurvivalRoundGeneratorService(private val participantService: IParticipantService) : IRoundGeneratorService {
-    override fun build(orderedParticipants: List<Participant>): List<RoundGroup> {
+    override fun build(orderedParticipants: List<Participant>, roundNamer: (Round) -> String): List<RoundGroup> {
 
         val round1 = participantService.createRound(orderedParticipants)
         val totalParticipants = orderedParticipants.size / 2
@@ -18,7 +18,9 @@ class SurvivalRoundGeneratorService(private val participantService: IParticipant
                 0 -> round1
                 else -> Round(0,roundIndex,
                     (1..totalParticipants).map { MatchUp(0,roundIndex,it,Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT) }
-                )
+                ).apply {
+                    title = roundNamer(this)
+                }
             }
         }
 

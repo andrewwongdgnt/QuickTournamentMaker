@@ -8,9 +8,9 @@ import com.dgnt.quickTournamentMaker.service.interfaces.IParticipantService
 import com.dgnt.quickTournamentMaker.service.interfaces.IRoundGeneratorService
 
 class EliminationRoundGeneratorService(private val participantService: IParticipantService) : IRoundGeneratorService {
-    override fun build(orderedParticipants: List<Participant>): List<RoundGroup> {
+    override fun build(orderedParticipants: List<Participant>, roundNamer: (Round) -> String): List<RoundGroup> {
 
-        val round1 = participantService.createRound(orderedParticipants)
+        val round1 = participantService.createRound(orderedParticipants, roundNamer = roundNamer)
 
         val rounds: MutableList<Round> = mutableListOf()
         rounds.add(round1)
@@ -22,13 +22,16 @@ class EliminationRoundGeneratorService(private val participantService: IParticip
         while (matchUpTotal >= 1) {
 
             val round = Round(0, roundIndex, (0 until matchUpTotal.toInt()).map { matchUpIndex -> MatchUp(0, roundIndex, matchUpIndex, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT) })
+                .apply {
+                    title = roundNamer(this)
+                }
             rounds.add(round)
 
             matchUpTotal *= 0.5
             roundIndex++
         }
 
-        return listOf(RoundGroup(0,rounds))
+        return listOf(RoundGroup(0, rounds))
     }
 
 }

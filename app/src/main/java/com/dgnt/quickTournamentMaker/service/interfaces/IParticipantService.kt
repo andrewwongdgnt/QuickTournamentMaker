@@ -13,6 +13,6 @@ interface IParticipantService {
      * @param roundIndex the round index (assume it is 0)
      * @return the round
      */
-    fun createRound(participants: List<Participant>, roundGroupIndex: Int = 0, roundIndex: Int = 0): Round
+    fun createRound(participants: List<Participant>, roundGroupIndex: Int = 0, roundIndex: Int = 0, roundNamer: (Round) -> String = { r -> r.roundIndex.toString() }): Round
 
 }

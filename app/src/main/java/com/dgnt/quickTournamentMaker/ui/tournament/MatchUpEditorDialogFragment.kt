@@ -35,8 +35,8 @@ class MatchUpEditorDialogFragment : DialogFragment(), DIAware {
                 arguments = Bundle().apply {
                     putParcelable(KEY_MATCH_UP, matchUp)
                     putInt(KEY_ROUND_GROUP_INDEX, roundGroupIndex)
-                    putInt(KEY_ROUND_GROUP_INDEX, roundIndex)
-                    putInt(KEY_ROUND_GROUP_INDEX, matchUpIndex)
+                    putInt(KEY_ROUND_INDEX, roundIndex)
+                    putInt(KEY_MATCH_UP_INDEX, matchUpIndex)
                 }
 
             }

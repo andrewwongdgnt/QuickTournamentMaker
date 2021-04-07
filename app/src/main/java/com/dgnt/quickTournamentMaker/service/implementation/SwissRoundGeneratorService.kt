@@ -9,7 +9,7 @@ import com.dgnt.quickTournamentMaker.service.interfaces.IRoundGeneratorService
 import java.util.*
 
 class SwissRoundGeneratorService(private val participantService: IParticipantService) : IRoundGeneratorService {
-    override fun build(orderedParticipants: List<Participant>): List<RoundGroup> {
+    override fun build(orderedParticipants: List<Participant>, roundNamer: (Round) -> String): List<RoundGroup> {
 
         val round1 = participantService.createRound(orderedParticipants)
         val rounds = ArrayList<Round>()
@@ -18,7 +18,9 @@ class SwissRoundGeneratorService(private val participantService: IParticipantSer
             val roundIndex = i-1
             rounds.add(Round(0,roundIndex,(orderedParticipants.indices step 2).map {
                 MatchUp(0,roundIndex,it/2,Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)
-            }))
+            }).apply {
+                title = roundNamer(this)
+            })
         }
         return listOf(RoundGroup(0, rounds))
 
