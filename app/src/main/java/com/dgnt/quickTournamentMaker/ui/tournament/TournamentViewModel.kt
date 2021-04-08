@@ -4,10 +4,10 @@ import androidx.databinding.Bindable
 import androidx.databinding.Observable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.dgnt.quickTournamentMaker.model.tournament.Participant
+import com.dgnt.quickTournamentMaker.model.tournament.MatchUp
+import com.dgnt.quickTournamentMaker.model.tournament.Round
 import com.dgnt.quickTournamentMaker.model.tournament.Tournament
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
-import com.dgnt.quickTournamentMaker.service.implementation.TournamentBuilderService
 import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentBuilderService
 
 class TournamentViewModel(private val tournamentBuilderService: ITournamentBuilderService) : ViewModel(), Observable {
@@ -27,8 +27,8 @@ class TournamentViewModel(private val tournamentBuilderService: ITournamentBuild
     override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
     }
 
-    fun setData(tournamentInformation: TournamentInformation) {
+    fun setData(tournamentInformation: TournamentInformation, defaultRoundTitleFunc:(Round)-> String, defaultMatchUpTitleFunc: (MatchUp) -> String) {
         title.value = tournamentInformation.title
-        tournament.value = tournamentBuilderService.build(tournamentInformation)
+        tournament.value = tournamentBuilderService.build(tournamentInformation, defaultRoundTitleFunc, defaultMatchUpTitleFunc)
     }
 }

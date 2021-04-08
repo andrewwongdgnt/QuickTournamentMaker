@@ -19,6 +19,7 @@ import com.dgnt.quickTournamentMaker.model.management.Group
 import com.dgnt.quickTournamentMaker.model.management.Person
 import com.dgnt.quickTournamentMaker.model.tournament.RankPriorityConfigType
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentType
+import com.dgnt.quickTournamentMaker.service.interfaces.ICreateDefaultTitleService
 import com.dgnt.quickTournamentMaker.ui.layout.NonScrollingLinearLayoutManager
 import com.dgnt.quickTournamentMaker.ui.main.common.DraggableItemTouchHelperCallback
 import com.dgnt.quickTournamentMaker.ui.main.common.RankPriorityRecyclerViewAdapter
@@ -38,6 +39,7 @@ class HomeFragment : Fragment(), DIAware {
 
     override val di by di()
     private val viewModelFactory: HomeViewModelFactory by instance()
+    private val createDefaultTitleService: ICreateDefaultTitleService by instance()
 
     companion object {
         fun newInstance() = HomeFragment()
@@ -213,7 +215,7 @@ class HomeFragment : Fragment(), DIAware {
             binding.tournamentTypeEditor.customSeedRb.id,
             binding.tournamentTypeEditor.compareRankFromPriorityRb.id,
             binding.tournamentTypeEditor.compareRankFromScoreRb.id
-        )
+        ){ p: Int -> createDefaultTitleService.forParticipant(resources, p) }
     }
 
     private fun selectGroup(group: GroupCheckedExpandableGroup, checked: Boolean) {

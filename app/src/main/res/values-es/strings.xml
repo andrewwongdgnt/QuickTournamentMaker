@@ -29,12 +29,10 @@
     <string name="matchUpSelectionHint">Alternativamente, clic largo en emparejamiento</string>
     <string name="participantSelectionHint">Alternativamente, clic largo en jugador</string>
 
-    <string name="participantWithABye">%2$s\n\t%1$s tiene un BYE</string>
-    <string name="participantVsNoOne">%2$s\n\t%1$s esperando oponente</string>
-    <string name="emptyMatchUp">%2$s\n\ttemparejamiento %1$d</string>
-    <string name="participantWithAByeForDifferentRoundGroup">%3$s\n\t%2$s\n\t\t%1$s tiene un BYE</string>
-    <string name="participantVsNoOneForDifferentRoundGroup">%3$s\n\t%2$s\n\t\t%1$s esperando oponente</string>
-    <string name="emptyMatchUpForDifferentRoundGroup">%3$s\n\t%2$s\n\t\ttemparejamiento %1$d</string>
+    <string name="participant1VsParticipant2">%1$s VS %2$s</string>
+    <string name="participantWithABye">%1$s tiene un BYE</string>
+    <string name="participantVsNoOne">%1$s esperando oponente</string>
+    <string name="emptyMatchUp">temparejamiento %1$d</string>
 
     <string name="title_activity_seeding">Siembra personalizada</string>
 

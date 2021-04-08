@@ -18,6 +18,7 @@ data class MatchUp(
     var participant1: Participant,
     var participant2: Participant
 ) : IKeyable<Triple<Int, Int, Int>>, Parcelable {
+    var title: String = ""
     var status: MatchUpStatus = MatchUpStatus.DEFAULT
     var note: String = ""
     var color: Int = TournamentUtil.DEFAULT_DISPLAY_COLOR

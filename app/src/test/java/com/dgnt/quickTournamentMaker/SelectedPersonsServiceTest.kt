@@ -36,7 +36,7 @@ class SelectedPersonsServiceTest {
             Person("", "p", ""),
             Person("", "q", ""),
             Person("", "r", ""),
-            Person("", "s", ""),
+            Person("", "CCrea", ""),
             Person("", "t", ""),
             Person("", "u", ""),
             Person("", "v", ""),

@@ -11,7 +11,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.TournamentActivityBinding
+import com.dgnt.quickTournamentMaker.model.tournament.MatchUp
+import com.dgnt.quickTournamentMaker.model.tournament.Round
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
+import com.dgnt.quickTournamentMaker.service.interfaces.ICreateDefaultTitleService
 import org.kodein.di.DIAware
 import org.kodein.di.android.di
 import org.kodein.di.instance
@@ -20,6 +23,7 @@ import org.kodein.di.instance
 class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentListener, IParticipantEditorDialogFragmentListener, IMatchUpEditorDialogFragmentListener, DIAware {
     override val di by di()
     private val viewModelFactory: TournamentViewModelFactory by instance()
+    private val createDefaultTitleService: ICreateDefaultTitleService by instance()
 
     companion object {
 
@@ -35,18 +39,20 @@ class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentL
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val context = this
         setContentView(R.layout.tournament_activity)
         val tournamentInformation = intent.getParcelableExtra<TournamentInformation>(TOURNAMENT_ACTIVITY_EXTRA)
         supportActionBar?.run {
             setDisplayHomeAsUpEnabled(true)
         }
+        getString(R.string.main_ad_id)
         val tournamentActivity = this
         viewModel = ViewModelProvider(tournamentActivity, viewModelFactory).get(TournamentViewModel::class.java).apply {
             setContentView(TournamentActivityBinding.inflate(layoutInflater).also {
                 it.vm = this
             }.root)
 
-            setData(tournamentInformation)
+            setData(tournamentInformation, { r: Round -> createDefaultTitleService.forRound(resources, r) }, { m: MatchUp -> createDefaultTitleService.forMatchUp(resources, m) })
 
             title.observe(tournamentActivity, Observer {
                 tournamentActivity.title = it
@@ -85,7 +91,9 @@ class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentL
                 val pair = it.matchUps
                 AlertDialog.Builder(this)
                     .setAdapter(MatchUpArrayAdapter(this, pair)) { _, i ->
-                        MatchUpEditorDialogFragment.newInstance(pair[i].second, pair[i].second.roundGroupIndex, pair[i].second.roundIndex, pair[i].second.matchUpIndex).show(supportFragmentManager, MatchUpEditorDialogFragment.TAG)
+                        pair[i].second.let { matchUp ->
+                            MatchUpEditorDialogFragment.newInstance(matchUp, matchUp.roundGroupIndex, matchUp.roundIndex, matchUp.matchUpIndex).show(supportFragmentManager, MatchUpEditorDialogFragment.TAG)
+                        }
                     }
                     .setTitle(R.string.matchUpSelectionHint)
                     .create()

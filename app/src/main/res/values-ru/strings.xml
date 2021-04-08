@@ -28,12 +28,10 @@
     <string name="matchUpSelectionHint">В качестве альтернативы, долгий зажим кнопки соединения</string>
     <string name="participantSelectionHint">В качестве альтернативы, долгий зажим кнопки игрока</string>
 
-    <string name="participantWithABye">%2$s\n\t%1$s имеет BYE</string>
-    <string name="participantVsNoOne">%2$s\n\t%1$s ожидеает соперника</string>
-    <string name="emptyMatchUp">%2$s\n\tСоеденить %1$d</string>
-    <string name="participantWithAByeForDifferentRoundGroup">%3$s\n\t%2$s\n\t\t%1$s имеет BYE</string>
-    <string name="participantVsNoOneForDifferentRoundGroup">%3$s\n\t%2$s\n\t\t%1$s ожидает соперника</string>
-    <string name="emptyMatchUpForDifferentRoundGroup">%3$s\n\t%2$s\n\t\tСоеденить %1$d</string>
+    <string name="participant1VsParticipant2">%1$s VS %2$s</string>
+    <string name="participantWithABye">%1$s имеет BYE</string>
+    <string name="participantVsNoOne">%1$s ожидеает соперника</string>
+    <string name="emptyMatchUp">Соеденить %1$d</string>
 
     <string name="title_activity_seeding">Пользовательский сидинг</string>
 

@@ -134,13 +134,15 @@ class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroup
     override var priorityRankingRadioButtonId = 0
     override var scoreRankingRadioButtonId = 0
 
+    private lateinit var defaultParticipantNameFunc: (Int) -> String
+
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
     }
 
     override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
     }
 
-    fun setData(alternativeTitles: Map<TournamentType, String>, eliminationRadioButtonId: Int, doubleEliminationRadioButtonId: Int, roundRobinRadioButtonId: Int, swissRadioButtonId: Int, survivalRadioButtonId: Int, randomSeedingRadioButtonId: Int, customSeedingRadioButtonId: Int, priorityRankingRadioButtonId: Int, scoreRankingRadioButtonId: Int) {
+    fun setData(alternativeTitles: Map<TournamentType, String>, eliminationRadioButtonId: Int, doubleEliminationRadioButtonId: Int, roundRobinRadioButtonId: Int, swissRadioButtonId: Int, survivalRadioButtonId: Int, randomSeedingRadioButtonId: Int, customSeedingRadioButtonId: Int, priorityRankingRadioButtonId: Int, scoreRankingRadioButtonId: Int, defaultParticipantNameFunc: (Int) -> String) {
         this.alternativeTitles = alternativeTitles
         this.eliminationRadioButtonId = eliminationRadioButtonId
         this.doubleEliminationRadioButtonId = doubleEliminationRadioButtonId
@@ -151,6 +153,7 @@ class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroup
         this.customSeedingRadioButtonId = customSeedingRadioButtonId
         this.priorityRankingRadioButtonId = priorityRankingRadioButtonId
         this.scoreRankingRadioButtonId = scoreRankingRadioButtonId
+        this.defaultParticipantNameFunc = defaultParticipantNameFunc
     }
 
     fun startTournament() {
@@ -174,7 +177,7 @@ class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroup
         }
 
         try {
-            _tournamentInformationEvent.value = Event(tournamentInformationCreatorService.create(title.value ?: "", alternativeTitles, description.value ?: "", selectedPersonsService.resolve(selectedPersons.value, numberOfParticipants.value?.let { it.toIntOrNull() }, quickStart.value ?: false, seedType), tournamentType, seedType, rankConfig))
+            _tournamentInformationEvent.value = Event(tournamentInformationCreatorService.create(title.value ?: "", alternativeTitles, description.value ?: "", selectedPersonsService.resolve(selectedPersons.value, numberOfParticipants.value?.let { it.toIntOrNull() }, quickStart.value ?: false, seedType, defaultParticipantNameFunc), tournamentType, seedType, rankConfig))
         } catch (e: IllegalArgumentException) {
             _failedToStartTournamentMessage.value = Event(true)
         }

@@ -9,9 +9,9 @@ import com.dgnt.quickTournamentMaker.service.interfaces.IRoundGeneratorService
 import java.util.*
 
 class RoundRobinRoundGeneratorService(private val participantService: IParticipantService) : IRoundGeneratorService {
-    override fun build(orderedParticipants: List<Participant>, roundNamer: (Round) -> String): List<RoundGroup> {
+    override fun build(orderedParticipants: List<Participant>, defaultRoundTitleFunc: (Round) -> String, defaultMatchUpTitleFunc: (MatchUp) -> String): List<RoundGroup> {
 
-        val round1 = participantService.createRound(orderedParticipants)
+        val round1 = participantService.createRound(orderedParticipants, defaultRoundTitleFunc = defaultRoundTitleFunc, defaultMatchUpTitleFunc = defaultMatchUpTitleFunc)
         val rounds = ArrayList<Round>()
         rounds.add(round1)
         for (i in 2 until orderedParticipants.size) {
@@ -41,8 +41,9 @@ class RoundRobinRoundGeneratorService(private val participantService: IParticipa
 
 
                 MatchUp(0,roundIndex,matchUpIndex,currentParticipant1, currentParticipant2)
+                    .apply { title = defaultMatchUpTitleFunc(this) }
             }).apply {
-                title = roundNamer(this)
+                title = defaultRoundTitleFunc(this)
             })
         }
         return listOf(RoundGroup(0,rounds))

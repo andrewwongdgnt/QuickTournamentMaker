@@ -14,8 +14,8 @@ interface ISelectedPersonsService {
      * @param numberOfParticipants the number of participants (unrelated to the number of persons selected)
      * @param quickStart whether the tournament is quick start or not
      * @param seedType the type of seeding
-     * @param nameUpdater optional function to update the name of said participant. By default, it will just be itself
+     * @param defaultParticipantNameFunc optional function to update the name of said participant. By default, it will just be itself
      * @return the list of names
      */
-    fun resolve(persons: List<Person>?, numberOfParticipants: Int?, quickStart: Boolean, seedType: SeedType, nameUpdater: (String) -> String = { s-> s }): List<Participant>
+    fun resolve(persons: List<Person>?, numberOfParticipants: Int?, quickStart: Boolean, seedType: SeedType, defaultParticipantNameFunc: (Int) -> String = { p-> p.toString() }): List<Participant>
 }

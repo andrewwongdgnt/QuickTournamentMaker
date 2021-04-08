@@ -134,6 +134,9 @@ class QTMApplication() : Application(), DIAware {
             )
         }
 
+
+        bind<ICreateDefaultTitleService>() with singleton { CreateDefaultTitleService() }
+
     }
 
 

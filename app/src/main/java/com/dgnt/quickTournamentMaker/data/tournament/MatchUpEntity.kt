@@ -11,6 +11,7 @@ data class MatchUpEntity(
     val roundGroupIndex: Int,
     val roundIndex: Int,
     val matchUpIndex: String,
+    val name: String,
     val note: String,
     val color: Int,
     val status: String
