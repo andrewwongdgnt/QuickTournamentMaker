@@ -120,9 +120,11 @@ class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentL
         }
     }
 
-    override fun onEditMatchUp(key: Triple<Int, Int, Int>, note: String, color: Int) {
+    override fun onEditMatchUp(key: Triple<Int, Int, Int>, useTitle:Boolean, title:String, note: String, color: Int) {
         viewModel.tournament.value?.run {
             matchUps.find { it.second.key == key }?.let { it.second }?.let {
+                it.useTitle = useTitle
+                it.title = title
                 it.note = note
                 it.color = color
             }

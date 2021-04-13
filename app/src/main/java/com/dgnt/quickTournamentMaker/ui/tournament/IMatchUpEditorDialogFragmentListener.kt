@@ -11,5 +11,5 @@ interface IMatchUpEditorDialogFragmentListener {
      * @param note the new note
      * @param color the new color
      */
-    fun onEditMatchUp(key:Triple<Int,Int,Int>, note:String,color:Int)
+    fun onEditMatchUp(key:Triple<Int,Int,Int>, useTitle:Boolean,title:String,note:String,color:Int)
 }

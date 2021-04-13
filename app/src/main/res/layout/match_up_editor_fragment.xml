@@ -4,6 +4,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
                 name="vm"
                 type="com.dgnt.quickTournamentMaker.ui.tournament.MatchUpEditorViewModel" />
@@ -23,6 +25,29 @@
                 android:paddingRight="@dimen/layout_horizontal_margin"
                 android:paddingBottom="@dimen/layout_vertical_margin">
 
+            <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/useCustomTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="@={vm.useCustomTitle}"
+                    android:text="@string/useCustomTitle" />
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{vm.defaultTitle}"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:visibility="@{vm.useCustomTitle ? View.GONE : View.VISIBLE}" />
+
+            <EditText
+                    android:id="@+id/matchUpTitle_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/titleHeader"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:text="@={vm.title}"
+                    android:visibility="@{vm.useCustomTitle ? View.VISIBLE : View.GONE}" />
 
             <EditText
                     android:id="@+id/matchUpNote_et"
@@ -30,9 +55,9 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:gravity="top"
+                    android:hint="@string/note"
                     android:inputType="textMultiLine"
                     android:minLines="3"
-                    android:hint="@string/note"
                     android:text="@={vm.note}" />
 
             <TextView
@@ -48,8 +73,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:entries="@{vm.colors}"
-                    app:selectedValue="@{vm.color}"
-                    app:onItemSelected="@{(selectedValue) -> vm.setNewColor(selectedValue)}" />
+                    app:onItemSelected="@{(selectedValue) -> vm.setNewColor(selectedValue)}"
+                    app:selectedValue="@{vm.color}" />
 
         </LinearLayout>
     </ScrollView>

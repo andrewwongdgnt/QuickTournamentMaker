@@ -64,7 +64,7 @@ class MatchUpEditorDialogFragment : DialogFragment(), DIAware {
             val roundIndex = arguments?.getInt(KEY_ROUND_INDEX)!!
             val matchUpIndex = arguments?.getInt(KEY_MATCH_UP_INDEX)!!
 
-            viewModel.setData(matchUp, resources.getStringArray(R.array.colorOptionsNames).asList().zip(resources.getIntArray(R.array.colorOptions).asList()).map {
+            viewModel.setData(resources, matchUp, resources.getStringArray(R.array.colorOptionsNames).asList().zip(resources.getIntArray(R.array.colorOptions).asList()).map {
                 ColorInfo(it.first, it.second)
             })
 
@@ -73,7 +73,7 @@ class MatchUpEditorDialogFragment : DialogFragment(), DIAware {
                 .setTitle(getString(R.string.editingThisMatchUp))
                 .setView(binding.root)
                 .setPositiveButton(android.R.string.ok) { _, _ ->
-                    listenerEditor.onEditMatchUp(Triple(roundGroupIndex, roundIndex, matchUpIndex), viewModel.note.value ?: "", viewModel.color.value?.hex ?: TournamentUtil.DEFAULT_DISPLAY_COLOR)
+                    listenerEditor.onEditMatchUp(Triple(roundGroupIndex, roundIndex, matchUpIndex), viewModel.useCustomTitle.value ?: false,viewModel.title.value ?: "",viewModel.note.value ?: "", viewModel.color.value?.hex ?: TournamentUtil.DEFAULT_DISPLAY_COLOR)
                 }
                 .setNegativeButton(android.R.string.cancel, null)
                 .create()

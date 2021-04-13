@@ -264,4 +264,5 @@
     <string name="noPlayersExist">No players exist. Add some in the management view</string>
     <string name="rounds">Rounds</string>
     <string name="matchUps">Match ups</string>
+    <string name="useCustomTitle">Use custom title</string>
 </resources>
