@@ -8,9 +8,11 @@ import android.widget.ArrayAdapter
 import com.dgnt.quickTournamentMaker.databinding.ArrayItemBinding
 import com.dgnt.quickTournamentMaker.model.tournament.MatchUp
 import com.dgnt.quickTournamentMaker.model.tournament.Round
+import com.dgnt.quickTournamentMaker.service.interfaces.ICreateDefaultTitleService
 
 class MatchUpArrayAdapter(
     context: Context,
+    private val createDefaultTitleService: ICreateDefaultTitleService,
     private val matchUps: List<Pair<Round, MatchUp>>
 ) : ArrayAdapter<Pair<Round, MatchUp>>(context, 0, matchUps) {
 
@@ -18,8 +20,13 @@ class MatchUpArrayAdapter(
     override fun getView(position: Int, convertView: View?, parent: ViewGroup) =
         convertView ?: ArrayItemBinding.inflate(LayoutInflater.from(parent.context), parent, false).run {
             arrayItemTv.apply {
-                //FIXME still wrong. needs the actual player names still
-                text = matchUps[position].second.title
+
+                text = matchUps[position].second.run {
+                    if (useTitle)
+                        title
+                    else
+                        createDefaultTitleService.forMatchUp(context.resources, this)
+                }
                 setTextColor(matchUps[position].second.color)
             }
         }

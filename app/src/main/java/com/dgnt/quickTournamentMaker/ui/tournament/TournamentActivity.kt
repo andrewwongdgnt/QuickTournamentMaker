@@ -90,7 +90,7 @@ class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentL
             R.id.action_editAMatchUp -> viewModel.tournament.value?.let {
                 val pair = it.matchUps
                 AlertDialog.Builder(this)
-                    .setAdapter(MatchUpArrayAdapter(this, pair)) { _, i ->
+                    .setAdapter(MatchUpArrayAdapter(this, createDefaultTitleService, pair)) { _, i ->
                         pair[i].second.let { matchUp ->
                             MatchUpEditorDialogFragment.newInstance(matchUp, matchUp.roundGroupIndex, matchUp.roundIndex, matchUp.matchUpIndex).show(supportFragmentManager, MatchUpEditorDialogFragment.TAG)
                         }
