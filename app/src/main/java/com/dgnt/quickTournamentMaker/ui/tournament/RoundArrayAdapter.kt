@@ -1,6 +1,7 @@
 package com.dgnt.quickTournamentMaker.ui.tournament
 
 import android.content.Context
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ class RoundArrayAdapter(
             arrayItemTv.apply {
 
                 text = rounds[position].title
+                setTypeface(typeface, if (rounds[position].note.isEmpty()) Typeface.NORMAL else Typeface.ITALIC)
                 setTextColor(rounds[position].color)
             }
         }

@@ -1,6 +1,7 @@
 package com.dgnt.quickTournamentMaker.ui.tournament
 
 import android.content.Context
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +28,7 @@ class MatchUpArrayAdapter(
                     else
                         createDefaultTitleService.forMatchUp(context.resources, this)
                 }
+                setTypeface(typeface, if ( matchUps[position].second.note.isEmpty()) Typeface.NORMAL else Typeface.ITALIC)
                 setTextColor(matchUps[position].second.color)
             }
         }

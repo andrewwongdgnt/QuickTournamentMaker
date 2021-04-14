@@ -1,6 +1,7 @@
 package com.dgnt.quickTournamentMaker.ui.tournament
 
 import android.content.Context
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ class ParticipantArrayAdapter(
         convertView ?: ArrayItemBinding.inflate(LayoutInflater.from(parent.context), parent, false).run {
             arrayItemTv.apply {
                 text = participants[position].displayName
+                setTypeface(typeface, if ( participants[position].note.isEmpty()) Typeface.NORMAL else Typeface.ITALIC)
                 setTextColor(participants[position].color)
             }
         }
