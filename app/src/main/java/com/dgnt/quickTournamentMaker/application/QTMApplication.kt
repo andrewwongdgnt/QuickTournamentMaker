@@ -11,10 +11,7 @@ import com.dgnt.quickTournamentMaker.service.implementation.*
 import com.dgnt.quickTournamentMaker.service.interfaces.*
 import com.dgnt.quickTournamentMaker.ui.main.home.HomeViewModelFactory
 import com.dgnt.quickTournamentMaker.ui.main.management.*
-import com.dgnt.quickTournamentMaker.ui.tournament.MatchUpEditorViewModelFactory
-import com.dgnt.quickTournamentMaker.ui.tournament.ParticipantEditorViewModelFactory
-import com.dgnt.quickTournamentMaker.ui.tournament.TournamentEditorViewModelFactory
-import com.dgnt.quickTournamentMaker.ui.tournament.TournamentViewModelFactory
+import com.dgnt.quickTournamentMaker.ui.tournament.*
 import org.kodein.di.*
 import org.kodein.di.android.x.androidXModule
 
@@ -59,6 +56,7 @@ class QTMApplication() : Application(), DIAware {
         bind() from provider { TournamentEditorViewModelFactory() }
         bind() from provider { ParticipantEditorViewModelFactory() }
         bind() from provider { MatchUpEditorViewModelFactory(instance()) }
+        bind() from provider { RoundEditorViewModelFactory() }
 
         //Service
         bind<IRankingConfigService>() with singleton { RankingConfigService() }

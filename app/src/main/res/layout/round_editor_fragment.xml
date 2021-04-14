@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+                name="vm"
+                type="com.dgnt.quickTournamentMaker.ui.tournament.RoundEditorViewModel" />
+
+    </data>
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/layout_horizontal_margin"
+                android:paddingTop="@dimen/layout_vertical_margin"
+                android:paddingRight="@dimen/layout_horizontal_margin"
+                android:paddingBottom="@dimen/layout_vertical_margin">
+
+
+            <EditText
+                    android:id="@+id/matchUpTitle_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/titleHeader"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:text="@={vm.title}"/>
+
+
+            <EditText
+                    android:id="@+id/matchUpNote_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:gravity="top"
+                    android:hint="@string/note"
+                    android:inputType="textMultiLine"
+                    android:minLines="3"
+                    android:text="@={vm.note}" />
+
+            <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/standard_gap"
+                    android:text="@string/displayedColor"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <Spinner
+                    android:id="@+id/group_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:entries="@{vm.colors}"
+                    app:onItemSelected="@{(selectedValue) -> vm.setNewColor(selectedValue)}"
+                    app:selectedValue="@{vm.color}" />
+
+        </LinearLayout>
+    </ScrollView>
+</layout>

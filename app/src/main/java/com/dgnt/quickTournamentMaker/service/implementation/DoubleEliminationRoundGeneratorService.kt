@@ -33,8 +33,12 @@ class DoubleEliminationRoundGeneratorService(private val roundGeneratorService: 
         val finalBracket = RoundGroup(
             2,
             listOf(
-                Round(2, 0, listOf(MatchUp(2, 0, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT).apply { title = defaultMatchUpTitleFunc(this) })),//mandatory round
-                Round(2, 1, listOf(MatchUp(2, 1, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT).apply { title = defaultMatchUpTitleFunc(this) }))//extra round
+                Round(2, 0, listOf(MatchUp(2, 0, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT).apply { title = defaultMatchUpTitleFunc(this) })).apply {
+                    title = defaultRoundTitleFunc(this)
+                },//mandatory round
+                Round(2, 1, listOf(MatchUp(2, 1, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT).apply { title = defaultMatchUpTitleFunc(this) })).apply {
+                    title = defaultRoundTitleFunc(this)
+                }//extra round
             )
         )
 

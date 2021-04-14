@@ -20,7 +20,7 @@ import org.kodein.di.android.di
 import org.kodein.di.instance
 
 
-class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentListener, IParticipantEditorDialogFragmentListener, IMatchUpEditorDialogFragmentListener, DIAware {
+class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentListener, IParticipantEditorDialogFragmentListener, IMatchUpEditorDialogFragmentListener, IRoundEditorDialogFragmentListener, DIAware {
     override val di by di()
     private val viewModelFactory: TournamentViewModelFactory by instance()
     private val createDefaultTitleService: ICreateDefaultTitleService by instance()
@@ -88,14 +88,26 @@ class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentL
                     .show()
             }
             R.id.action_editAMatchUp -> viewModel.tournament.value?.let {
-                val pair = it.matchUps
+                val pairs = it.matchUps
                 AlertDialog.Builder(this)
-                    .setAdapter(MatchUpArrayAdapter(this, createDefaultTitleService, pair)) { _, i ->
-                        pair[i].second.let { matchUp ->
+                    .setAdapter(MatchUpArrayAdapter(this, createDefaultTitleService, pairs)) { _, i ->
+                        pairs[i].second.let { matchUp ->
                             MatchUpEditorDialogFragment.newInstance(matchUp, matchUp.roundGroupIndex, matchUp.roundIndex, matchUp.matchUpIndex).show(supportFragmentManager, MatchUpEditorDialogFragment.TAG)
                         }
                     }
                     .setTitle(R.string.matchUpSelectionHint)
+                    .create()
+                    .show()
+            }
+            R.id.action_editARound -> viewModel.tournament.value?.let {
+                val rounds = it.rounds
+                AlertDialog.Builder(this)
+                    .setAdapter(RoundArrayAdapter(this,  rounds)) { _, i ->
+                        rounds[i].let { round ->
+                            RoundEditorDialogFragment.newInstance(round, round.roundGroupIndex, round.roundIndex).show(supportFragmentManager, RoundEditorDialogFragment.TAG)
+                        }
+                    }
+                    .setTitle(R.string.roundSelectionHint)
                     .create()
                     .show()
             }
@@ -122,8 +134,18 @@ class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentL
 
     override fun onEditMatchUp(key: Triple<Int, Int, Int>, useTitle:Boolean, title:String, note: String, color: Int) {
         viewModel.tournament.value?.run {
-            matchUps.find { it.second.key == key }?.let { it.second }?.let {
+            roundGroups[key.first].rounds[key.second].matchUps[key.third].let {
                 it.useTitle = useTitle
+                it.title = title
+                it.note = note
+                it.color = color
+            }
+        }
+    }
+
+    override fun onEditRound(key: Pair<Int, Int>, title: String, note: String, color: Int) {
+        viewModel.tournament.value?.run {
+            roundGroups[key.first].rounds[key.second].let {
                 it.title = title
                 it.note = note
                 it.color = color
