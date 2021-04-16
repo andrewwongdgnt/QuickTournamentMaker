@@ -1,19 +1,16 @@
 package com.dgnt.quickTournamentMaker.ui.main.management
 
 import android.app.AlertDialog
-import android.app.Dialog
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.GroupDeleteFragmentBinding
 import com.dgnt.quickTournamentMaker.model.management.Group
-
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 import org.kodein.di.instance
@@ -30,7 +27,7 @@ class GroupDeleteDialogFragment : DialogFragment(), DIAware {
         private const val KEY_SELECTED_GROUPS = "KEY_SELECTED_GROUPS"
         private const val KEY_GROUPS = "KEY_GROUPS"
 
-        fun newInstance(selectedGroups: List<Group>, groups: List<Group>): GroupDeleteDialogFragment =
+        fun newInstance(selectedGroups: List<Group>, groups: List<Group>) =
             GroupDeleteDialogFragment().apply {
                 arguments = Bundle().apply {
                     putParcelableArrayList(KEY_SELECTED_GROUPS, ArrayList<Group>(selectedGroups))
@@ -80,10 +77,9 @@ class GroupDeleteDialogFragment : DialogFragment(), DIAware {
                         getButton(AlertDialog.BUTTON_NEUTRAL).isEnabled = visibleGroups.isNotEmpty()
                     }
                 }
-        }?: run{
+        } ?: run {
             super.onCreateDialog(savedInstanceState)
         }
-
 
 
     override fun onStart() {

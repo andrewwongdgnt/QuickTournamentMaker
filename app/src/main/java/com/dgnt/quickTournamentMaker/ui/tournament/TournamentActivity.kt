@@ -16,7 +16,7 @@ import com.dgnt.quickTournamentMaker.model.tournament.Round
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
 import com.dgnt.quickTournamentMaker.service.interfaces.ICreateDefaultTitleService
 import org.kodein.di.DIAware
-import org.kodein.di.android.di
+
 import org.kodein.di.instance
 
 
@@ -88,28 +88,33 @@ class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentL
                     .show()
             }
             R.id.action_editAMatchUp -> viewModel.tournament.value?.let {
-                val pairs = it.matchUps
-                AlertDialog.Builder(this)
-                    .setAdapter(MatchUpArrayAdapter(this, createDefaultTitleService, pairs)) { _, i ->
-                        pairs[i].second.let { matchUp ->
-                            MatchUpEditorDialogFragment.newInstance(matchUp, matchUp.roundGroupIndex, matchUp.roundIndex, matchUp.matchUpIndex).show(supportFragmentManager, MatchUpEditorDialogFragment.TAG)
-                        }
-                    }
-                    .setTitle(R.string.matchUpSelectionHint)
-                    .create()
-                    .show()
+                MatchUpListDialogFragment.newInstance(it.roundGroups).show(supportFragmentManager, MatchUpListDialogFragment.TAG)
+
+//                val pairs = it.matchUps
+//                AlertDialog.Builder(this)
+//                    .setAdapter(MatchUpArrayAdapter(this, createDefaultTitleService, pairs)) { _, i ->
+//                        pairs[i].second.let { matchUp ->
+//                            MatchUpEditorDialogFragment.newInstance(matchUp, matchUp.roundGroupIndex, matchUp.roundIndex, matchUp.matchUpIndex).show(supportFragmentManager, MatchUpEditorDialogFragment.TAG)
+//                        }
+//                    }
+//                    .setTitle(R.string.matchUpSelectionHint)
+//                    .create()
+//                    .show()
             }
             R.id.action_editARound -> viewModel.tournament.value?.let {
-                val rounds = it.rounds
-                AlertDialog.Builder(this)
-                    .setAdapter(RoundArrayAdapter(this,  rounds)) { _, i ->
-                        rounds[i].let { round ->
-                            RoundEditorDialogFragment.newInstance(round, round.roundGroupIndex, round.roundIndex).show(supportFragmentManager, RoundEditorDialogFragment.TAG)
-                        }
-                    }
-                    .setTitle(R.string.roundSelectionHint)
-                    .create()
-                    .show()
+
+               // MatchUpListDialogFragment.newInstance(it.roundGroups,TournamentElement.ROUND).show(supportFragmentManager, MatchUpListDialogFragment.TAG)
+
+//                val rounds = it.rounds
+//                AlertDialog.Builder(this)
+//                    .setAdapter(RoundArrayAdapter(this,  rounds)) { _, i ->
+//                        rounds[i].let { round ->
+//                            RoundEditorDialogFragment.newInstance(round, round.roundGroupIndex, round.roundIndex).show(supportFragmentManager, RoundEditorDialogFragment.TAG)
+//                        }
+//                    }
+//                    .setTitle(R.string.roundSelectionHint)
+//                    .create()
+//                    .show()
             }
         }
         return super.onOptionsItemSelected(item)
