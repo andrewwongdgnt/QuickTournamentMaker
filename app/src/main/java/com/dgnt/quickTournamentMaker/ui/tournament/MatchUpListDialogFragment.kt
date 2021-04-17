@@ -5,15 +5,15 @@ import android.os.Bundle
 import android.view.WindowManager
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.VerticalLinearLayoutBinding
 import com.dgnt.quickTournamentMaker.model.tournament.RoundGroup
 import com.dgnt.quickTournamentMaker.service.interfaces.ICreateDefaultTitleService
 import org.kodein.di.DIAware
-
+import org.kodein.di.android.x.di
 import org.kodein.di.instance
-
 
 class MatchUpListDialogFragment : DialogFragment(), DIAware {
     override val di by di()
@@ -40,8 +40,13 @@ class MatchUpListDialogFragment : DialogFragment(), DIAware {
     override fun onCreateDialog(savedInstanceState: Bundle?) =
         activity?.let { activity ->
 
-
             binding = VerticalLinearLayoutBinding.inflate(activity.layoutInflater)
+            val alert = AlertDialog.Builder(activity)
+                .setTitle(getString(R.string.matchUpSelectionHint))
+                .setView(binding.root)
+                .setNegativeButton(android.R.string.cancel, null)
+                .create()
+
             val roundGroups = arguments?.getParcelableArrayList<RoundGroup>(KEY_MATCH_UPS)!!
             roundGroups.forEach {
                 binding.container.apply {
@@ -54,20 +59,26 @@ class MatchUpListDialogFragment : DialogFragment(), DIAware {
                     }
                     addView(RecyclerView(activity).apply {
                         adapter = RoundExpandableRecyclerViewAdapter(it.rounds.map { RoundExpandableGroup(it, it.matchUps) }, createDefaultTitleService)
+                        { matchUp ->
+                            MatchUpEditorDialogFragment.newInstance(matchUp, matchUp.roundGroupIndex, matchUp.roundIndex, matchUp.matchUpIndex).show(activity.supportFragmentManager, MatchUpEditorDialogFragment.TAG)
+                            alert.dismiss()
+
+                        }.apply {
+                            groups
+                                .filter { !isGroupExpanded(it) }
+                                .forEach { g -> toggleGroup(g) }
+                        }
+                        layoutManager = LinearLayoutManager(activity)
+
                     })
+
                 }
 
 
             }
 
-            AlertDialog.Builder(activity)
-                .setTitle(getString(R.string.matchUpSelectionHint))
-                .setView(binding.root)
-                .setPositiveButton(android.R.string.ok) { _, _ ->
 
-                }
-                .setNegativeButton(android.R.string.cancel, null)
-                .create()
+            alert
 
         } ?: run {
             super.onCreateDialog(savedInstanceState)

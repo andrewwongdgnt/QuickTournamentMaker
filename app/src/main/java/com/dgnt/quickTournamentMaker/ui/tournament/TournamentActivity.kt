@@ -16,6 +16,7 @@ import com.dgnt.quickTournamentMaker.model.tournament.Round
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
 import com.dgnt.quickTournamentMaker.service.interfaces.ICreateDefaultTitleService
 import org.kodein.di.DIAware
+import org.kodein.di.android.di
 
 import org.kodein.di.instance
 
