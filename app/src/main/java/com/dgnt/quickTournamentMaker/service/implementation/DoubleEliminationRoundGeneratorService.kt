@@ -7,9 +7,9 @@ import com.dgnt.quickTournamentMaker.model.tournament.RoundGroup
 import com.dgnt.quickTournamentMaker.service.interfaces.IRoundGeneratorService
 
 class DoubleEliminationRoundGeneratorService(private val roundGeneratorService: IRoundGeneratorService) : IRoundGeneratorService {
-    override fun build(orderedParticipants: List<Participant>, defaultRoundTitleFunc: (Round) -> String, defaultMatchUpTitleFunc: (MatchUp) -> String): List<RoundGroup> {
+    override fun build(orderedParticipants: List<Participant>, defaultRoundGroupTitleFunc: (RoundGroup) -> String, defaultRoundTitleFunc: (Round) -> String, defaultMatchUpTitleFunc: (MatchUp) -> String): List<RoundGroup> {
 
-        val winnersBracket = roundGeneratorService.build(orderedParticipants, defaultRoundTitleFunc, defaultMatchUpTitleFunc)[0]
+        val winnersBracket = roundGeneratorService.build(orderedParticipants, defaultRoundGroupTitleFunc, defaultRoundTitleFunc, defaultMatchUpTitleFunc)[0]
 
         val loserBracket = RoundGroup(1, winnersBracket.rounds
             .map { it.matchUps.size / 2 }
@@ -28,7 +28,7 @@ class DoubleEliminationRoundGeneratorService(private val roundGeneratorService: 
                         }
                 }
             }.flatten()
-        )
+        ).apply { title = defaultRoundGroupTitleFunc(this) }
 
         val finalBracket = RoundGroup(
             2,
@@ -40,7 +40,7 @@ class DoubleEliminationRoundGeneratorService(private val roundGeneratorService: 
                     title = defaultRoundTitleFunc(this)
                 }//extra round
             )
-        )
+        ).apply { title = defaultRoundGroupTitleFunc(this) }
 
         return listOf(winnersBracket, loserBracket, finalBracket)
     }

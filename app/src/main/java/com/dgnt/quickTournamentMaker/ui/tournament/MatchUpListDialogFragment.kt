@@ -1,14 +1,16 @@
 package com.dgnt.quickTournamentMaker.ui.tournament
 
 import android.app.AlertDialog
+import android.content.res.Resources
 import android.os.Bundle
 import android.view.WindowManager
 import android.widget.TextView
+import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dgnt.quickTournamentMaker.R
-import com.dgnt.quickTournamentMaker.databinding.VerticalLinearLayoutBinding
+import com.dgnt.quickTournamentMaker.databinding.NestedScrollViewBinding
 import com.dgnt.quickTournamentMaker.model.tournament.RoundGroup
 import com.dgnt.quickTournamentMaker.service.interfaces.ICreateDefaultTitleService
 import org.kodein.di.DIAware
@@ -35,12 +37,12 @@ class MatchUpListDialogFragment : DialogFragment(), DIAware {
 
     }
 
-    private lateinit var binding: VerticalLinearLayoutBinding
+    private lateinit var binding: NestedScrollViewBinding
 
     override fun onCreateDialog(savedInstanceState: Bundle?) =
         activity?.let { activity ->
 
-            binding = VerticalLinearLayoutBinding.inflate(activity.layoutInflater)
+            binding = NestedScrollViewBinding.inflate(activity.layoutInflater)
             val alert = AlertDialog.Builder(activity)
                 .setTitle(getString(R.string.matchUpSelectionHint))
                 .setView(binding.root)
@@ -51,9 +53,9 @@ class MatchUpListDialogFragment : DialogFragment(), DIAware {
             roundGroups.forEach {
                 binding.container.apply {
                     if (roundGroups.size > 1) {
-
                         addView(TextView(activity).apply {
-                            text = it.roundGroupIndex.toString()
+                            text = it.title
+                            TextViewCompat.setTextAppearance(this, android.R.style.TextAppearance_Large)
                         })
 
                     }
@@ -69,12 +71,11 @@ class MatchUpListDialogFragment : DialogFragment(), DIAware {
                                 .forEach { g -> toggleGroup(g) }
                         }
                         layoutManager = LinearLayoutManager(activity)
-
                     })
-
                 }
-
-
+            }
+            if (roundGroups.size > 1) {
+                binding.container.setPadding(50, 40, 0, 0)
             }
 
 

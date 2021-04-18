@@ -1,9 +1,6 @@
 package com.dgnt.quickTournamentMaker.service.interfaces
 
-import com.dgnt.quickTournamentMaker.model.tournament.MatchUp
-import com.dgnt.quickTournamentMaker.model.tournament.Round
-import com.dgnt.quickTournamentMaker.model.tournament.Tournament
-import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
+import com.dgnt.quickTournamentMaker.model.tournament.*
 
 interface ITournamentBuilderService {
 
@@ -11,9 +8,10 @@ interface ITournamentBuilderService {
      * Builds the tournament
      *
      * @param tournamentInfo the tournament information
+     * @param defaultRoundGroupTitleFunc the function that produces a default title for round groups
      * @param defaultRoundTitleFunc the function that produces a default title for rounds
      * @param defaultMatchUpTitleFunc the function that produces a default title for match ups
      * @return
      */
-    fun build(tournamentInfo: TournamentInformation, defaultRoundTitleFunc: (Round) -> String = { r -> r.roundIndex.toString() }, defaultMatchUpTitleFunc: (MatchUp) -> String = { m -> m.matchUpIndex.toString() }): Tournament
+    fun build(tournamentInfo: TournamentInformation, defaultRoundGroupTitleFunc: (RoundGroup) -> String = { rg -> rg.roundGroupIndex.toString() }, defaultRoundTitleFunc: (Round) -> String = { r -> r.roundIndex.toString() }, defaultMatchUpTitleFunc: (MatchUp) -> String = { m -> m.matchUpIndex.toString() }): Tournament
 }

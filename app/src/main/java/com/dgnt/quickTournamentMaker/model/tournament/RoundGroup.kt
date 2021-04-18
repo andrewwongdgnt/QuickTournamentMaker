@@ -6,5 +6,6 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class RoundGroup(val roundGroupIndex: Int, var rounds: List<Round>) : IKeyable<Int>, Parcelable {
+    var title: String = ""
     override val key = roundGroupIndex
 }

@@ -8,7 +8,7 @@ import com.dgnt.quickTournamentMaker.service.interfaces.IParticipantService
 import com.dgnt.quickTournamentMaker.service.interfaces.IRoundGeneratorService
 
 class EliminationRoundGeneratorService(private val participantService: IParticipantService) : IRoundGeneratorService {
-    override fun build(orderedParticipants: List<Participant>, defaultRoundTitleFunc: (Round) -> String, defaultMatchUpTitleFunc: (MatchUp) -> String): List<RoundGroup> {
+    override fun build(orderedParticipants: List<Participant>, defaultRoundGroupTitleFunc: (RoundGroup) -> String, defaultRoundTitleFunc: (Round) -> String, defaultMatchUpTitleFunc: (MatchUp) -> String): List<RoundGroup> {
 
         val round1 = participantService.createRound(orderedParticipants, defaultRoundTitleFunc = defaultRoundTitleFunc, defaultMatchUpTitleFunc = defaultMatchUpTitleFunc)
 
@@ -35,7 +35,7 @@ class EliminationRoundGeneratorService(private val participantService: IParticip
             roundIndex++
         }
 
-        return listOf(RoundGroup(0, rounds))
+        return listOf(RoundGroup(0, rounds).apply { title = defaultRoundGroupTitleFunc(this) })
     }
 
 }

@@ -8,17 +8,17 @@ import com.dgnt.quickTournamentMaker.service.interfaces.IParticipantService
 import com.dgnt.quickTournamentMaker.service.interfaces.IRoundGeneratorService
 
 class SurvivalRoundGeneratorService(private val participantService: IParticipantService) : IRoundGeneratorService {
-    override fun build(orderedParticipants: List<Participant>, defaultRoundTitleFunc: (Round) -> String, defaultMatchUpTitleFunc: (MatchUp) -> String): List<RoundGroup> {
+    override fun build(orderedParticipants: List<Participant>, defaultRoundGroupTitleFunc: (RoundGroup) -> String, defaultRoundTitleFunc: (Round) -> String, defaultMatchUpTitleFunc: (MatchUp) -> String): List<RoundGroup> {
 
         val round1 = participantService.createRound(orderedParticipants, defaultRoundTitleFunc = defaultRoundTitleFunc, defaultMatchUpTitleFunc = defaultMatchUpTitleFunc)
         val totalParticipants = orderedParticipants.size / 2
-        val rounds = (0 until totalParticipants-1).map {roundIndex ->
+        val rounds = (0 until totalParticipants - 1).map { roundIndex ->
 
             when (roundIndex) {
                 0 -> round1
-                else -> Round(0,roundIndex,
+                else -> Round(0, roundIndex,
                     (1..totalParticipants).map {
-                        MatchUp(0,roundIndex,it,Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)
+                        MatchUp(0, roundIndex, it, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)
                             .apply { title = defaultMatchUpTitleFunc(this) }
                     }
                 ).apply {
@@ -27,6 +27,6 @@ class SurvivalRoundGeneratorService(private val participantService: IParticipant
             }
         }
 
-        return listOf(RoundGroup(0,rounds))
+        return listOf(RoundGroup(0, rounds).apply { title = defaultRoundGroupTitleFunc(this) })
     }
 }
