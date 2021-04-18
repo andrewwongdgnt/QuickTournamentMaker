@@ -1,7 +1,6 @@
 package com.dgnt.quickTournamentMaker.ui.tournament
 
 import android.app.AlertDialog
-import android.content.res.Resources
 import android.os.Bundle
 import android.view.WindowManager
 import android.widget.TextView
@@ -25,12 +24,12 @@ class MatchUpListDialogFragment : DialogFragment(), DIAware {
 
         const val TAG = "MatchUpListDialogFragment"
 
-        private const val KEY_MATCH_UPS = "KEY_MATCH_UPS"
+        private const val KEY_ROUND_GROUPS = "KEY_ROUND_GROUPS"
 
         fun newInstance(roundGroups: List<RoundGroup>) =
             MatchUpListDialogFragment().apply {
                 arguments = Bundle().apply {
-                    putParcelableArrayList(KEY_MATCH_UPS, ArrayList<RoundGroup>(roundGroups))
+                    putParcelableArrayList(KEY_ROUND_GROUPS, ArrayList<RoundGroup>(roundGroups))
                 }
 
             }
@@ -49,7 +48,7 @@ class MatchUpListDialogFragment : DialogFragment(), DIAware {
                 .setNegativeButton(android.R.string.cancel, null)
                 .create()
 
-            val roundGroups = arguments?.getParcelableArrayList<RoundGroup>(KEY_MATCH_UPS)!!
+            val roundGroups = arguments?.getParcelableArrayList<RoundGroup>(KEY_ROUND_GROUPS)!!
             roundGroups.forEach {
                 binding.container.apply {
                     if (roundGroups.size > 1) {

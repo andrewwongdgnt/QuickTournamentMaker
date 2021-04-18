@@ -92,20 +92,10 @@ class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentL
             R.id.action_editAMatchUp -> viewModel.tournament.value?.let {
                 MatchUpListDialogFragment.newInstance(it.roundGroups).show(supportFragmentManager, MatchUpListDialogFragment.TAG)
 
-//                val pairs = it.matchUps
-//                AlertDialog.Builder(this)
-//                    .setAdapter(MatchUpArrayAdapter(this, createDefaultTitleService, pairs)) { _, i ->
-//                        pairs[i].second.let { matchUp ->
-//                            MatchUpEditorDialogFragment.newInstance(matchUp, matchUp.roundGroupIndex, matchUp.roundIndex, matchUp.matchUpIndex).show(supportFragmentManager, MatchUpEditorDialogFragment.TAG)
-//                        }
-//                    }
-//                    .setTitle(R.string.matchUpSelectionHint)
-//                    .create()
-//                    .show()
             }
             R.id.action_editARound -> viewModel.tournament.value?.let {
 
-               // MatchUpListDialogFragment.newInstance(it.roundGroups,TournamentElement.ROUND).show(supportFragmentManager, MatchUpListDialogFragment.TAG)
+                RoundListDialogFragment.newInstance(it.roundGroups).show(supportFragmentManager, RoundListDialogFragment.TAG)
 
 //                val rounds = it.rounds
 //                AlertDialog.Builder(this)
