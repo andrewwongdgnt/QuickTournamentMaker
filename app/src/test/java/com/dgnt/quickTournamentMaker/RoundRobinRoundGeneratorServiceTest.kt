@@ -20,7 +20,9 @@ class RoundRobinRoundGeneratorServiceTest {
     @Before
     fun setUp() {
         val participants = listOf(Data.ANDREW, Data.KYRA, Data.DGNT, Data.KELSEY, Data.FIRE, Data.SUPER, Data.HERO, Data.DEMON)
-        PowerMockito.`when`(mockParticipantService.createRound(participants)).thenReturn(
+        val defaultRoundTitleFunc: (Round) -> String = { r -> r.roundIndex.toString() }
+        val defaultMatchUpTitleFunc: (MatchUp) -> String = { m -> m.matchUpIndex.toString() }
+        PowerMockito.`when`(mockParticipantService.createRound(participants, defaultRoundTitleFunc = defaultRoundTitleFunc, defaultMatchUpTitleFunc = defaultMatchUpTitleFunc)).thenReturn(
             Round(
                 0, 0,
                 listOf(
@@ -31,7 +33,7 @@ class RoundRobinRoundGeneratorServiceTest {
                 )
             )
         );
-        roundGroups = sut.build(participants)
+        roundGroups = sut.build(participants, defaultRoundTitleFunc = defaultRoundTitleFunc, defaultMatchUpTitleFunc = defaultMatchUpTitleFunc)
 
     }
 

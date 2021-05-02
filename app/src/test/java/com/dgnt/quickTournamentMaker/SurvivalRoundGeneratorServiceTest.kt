@@ -21,21 +21,24 @@ class SurvivalRoundGeneratorServiceTest {
     @Before
     fun setUp() {
         val participants = listOf(Data.ANDREW, Participant.NULL_PARTICIPANT, Data.KYRA, Participant.NULL_PARTICIPANT, Data.DGNT, Participant.NULL_PARTICIPANT, Data.KELSEY, Participant.NULL_PARTICIPANT, Data.FIRE, Participant.NULL_PARTICIPANT, Data.SUPER, Participant.NULL_PARTICIPANT, Data.HERO, Participant.NULL_PARTICIPANT, Data.DEMON, Participant.NULL_PARTICIPANT)
-        PowerMockito.`when`(mockParticipantService.createRound(participants)).thenReturn(
-            Round(0,0,
+        val defaultRoundTitleFunc: (Round) -> String = { r -> r.roundIndex.toString() }
+        val defaultMatchUpTitleFunc: (MatchUp) -> String = { m -> m.matchUpIndex.toString() }
+        PowerMockito.`when`(mockParticipantService.createRound(participants, defaultRoundTitleFunc = defaultRoundTitleFunc, defaultMatchUpTitleFunc = defaultMatchUpTitleFunc)).thenReturn(
+            Round(
+                0, 0,
                 listOf(
-                    MatchUp(0,0,0,Data.ANDREW, Participant.NULL_PARTICIPANT),
-                    MatchUp(0,0,1,Data.KYRA, Participant.NULL_PARTICIPANT),
-                    MatchUp(0,0,2,Data.DGNT, Participant.NULL_PARTICIPANT),
-                    MatchUp(0,0,3,Data.KELSEY, Participant.NULL_PARTICIPANT),
-                    MatchUp(0,0,4,Data.FIRE, Participant.NULL_PARTICIPANT),
-                    MatchUp(0,0,5,Data.SUPER, Participant.NULL_PARTICIPANT),
-                    MatchUp(0,0,6,Data.HERO, Participant.NULL_PARTICIPANT),
-                    MatchUp(0,0,7,Data.DEMON, Participant.NULL_PARTICIPANT)
+                    MatchUp(0, 0, 0, Data.ANDREW, Participant.NULL_PARTICIPANT),
+                    MatchUp(0, 0, 1, Data.KYRA, Participant.NULL_PARTICIPANT),
+                    MatchUp(0, 0, 2, Data.DGNT, Participant.NULL_PARTICIPANT),
+                    MatchUp(0, 0, 3, Data.KELSEY, Participant.NULL_PARTICIPANT),
+                    MatchUp(0, 0, 4, Data.FIRE, Participant.NULL_PARTICIPANT),
+                    MatchUp(0, 0, 5, Data.SUPER, Participant.NULL_PARTICIPANT),
+                    MatchUp(0, 0, 6, Data.HERO, Participant.NULL_PARTICIPANT),
+                    MatchUp(0, 0, 7, Data.DEMON, Participant.NULL_PARTICIPANT)
                 )
             )
         );
-        roundGroups = sut.build(participants)
+        roundGroups = sut.build(participants, defaultRoundTitleFunc = defaultRoundTitleFunc, defaultMatchUpTitleFunc = defaultMatchUpTitleFunc)
     }
 
     @Test

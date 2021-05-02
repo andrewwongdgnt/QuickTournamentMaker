@@ -106,23 +106,32 @@ class TournamentBuilderServiceTest {
     @Before
     fun setUp() {
 
-        round1 = Round(0,0,listOf(
-            MatchUp(0,0,0,Data.ANDREW, Data.KYRA),
-            MatchUp(0,0,1,Data.DGNT, Data.KELSEY),
-            MatchUp(0,0,2,Data.FIRE, Data.SUPER),
-            MatchUp(0,0,3,Data.HERO, Data.DEMON)))
-        round2 = Round(0,1,listOf(
-            MatchUp(0,1,0,Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT),
-            MatchUp(0,1,1,Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)))
-        round3 = Round(0,2,listOf(
-            MatchUp(0,2,0,Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)))
-        PowerMockito.`when`(mockEliminationRoundGeneratorService.build(MockitoHelper.anyObject())).thenReturn(listOf(RoundGroup(0,listOf(round1, round2, round3))))
+        round1 = Round(
+            0, 0, listOf(
+                MatchUp(0, 0, 0, Data.ANDREW, Data.KYRA),
+                MatchUp(0, 0, 1, Data.DGNT, Data.KELSEY),
+                MatchUp(0, 0, 2, Data.FIRE, Data.SUPER),
+                MatchUp(0, 0, 3, Data.HERO, Data.DEMON)
+            )
+        )
+        round2 = Round(
+            0, 1, listOf(
+                MatchUp(0, 1, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT),
+                MatchUp(0, 1, 1, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)
+            )
+        )
+        round3 = Round(
+            0, 2, listOf(
+                MatchUp(0, 2, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)
+            )
+        )
+        PowerMockito.`when`(mockEliminationRoundGeneratorService.build(MockitoHelper.anyObject(), MockitoHelper.anyObject(), MockitoHelper.anyObject(), MockitoHelper.anyObject())).thenReturn(listOf(RoundGroup(0, listOf(round1, round2, round3))))
     }
 
     @Test
     fun testEliminationServiceCall() {
         sut.build(eliminationTournamentInformation).also {
-            Mockito.verify(mockEliminationRoundGeneratorService, Mockito.times(1)).build(MockitoHelper.anyObject())
+            Mockito.verify(mockEliminationRoundGeneratorService, Mockito.times(1)).build(MockitoHelper.anyObject(), MockitoHelper.anyObject(), MockitoHelper.anyObject(), MockitoHelper.anyObject())
             Mockito.verify(mockEliminationSeedService, Mockito.times(1)).seed(MockitoHelper.anyObject())
         }
     }
@@ -130,7 +139,7 @@ class TournamentBuilderServiceTest {
     @Test
     fun testDoubleEliminationServiceCall() {
         sut.build(doubleEliminationTournamentInformation).also {
-            Mockito.verify(mockDoubleEliminationRoundGeneratorService, Mockito.times(1)).build(MockitoHelper.anyObject())
+            Mockito.verify(mockDoubleEliminationRoundGeneratorService, Mockito.times(1)).build(MockitoHelper.anyObject(), MockitoHelper.anyObject(), MockitoHelper.anyObject(), MockitoHelper.anyObject())
             Mockito.verify(mockDoubleEliminationSeedService, Mockito.times(1)).seed(MockitoHelper.anyObject())
         }
     }
@@ -138,7 +147,7 @@ class TournamentBuilderServiceTest {
     @Test
     fun testRoundRobinServiceCall() {
         sut.build(roundRobinTournamentInformation).also {
-            Mockito.verify(mockRoundRobinRoundGeneratorService, Mockito.times(1)).build(MockitoHelper.anyObject())
+            Mockito.verify(mockRoundRobinRoundGeneratorService, Mockito.times(1)).build(MockitoHelper.anyObject(), MockitoHelper.anyObject(), MockitoHelper.anyObject(), MockitoHelper.anyObject())
             Mockito.verify(mockRoundRobinSeedService, Mockito.times(1)).seed(MockitoHelper.anyObject())
         }
     }
@@ -146,7 +155,7 @@ class TournamentBuilderServiceTest {
     @Test
     fun testSwissServiceCall() {
         sut.build(swissTournamentInformation).also {
-            Mockito.verify(mockSwissRoundGeneratorService, Mockito.times(1)).build(MockitoHelper.anyObject())
+            Mockito.verify(mockSwissRoundGeneratorService, Mockito.times(1)).build(MockitoHelper.anyObject(), MockitoHelper.anyObject(), MockitoHelper.anyObject(), MockitoHelper.anyObject())
             Mockito.verify(mockSwissSeedService, Mockito.times(1)).seed(MockitoHelper.anyObject())
         }
     }
@@ -154,7 +163,7 @@ class TournamentBuilderServiceTest {
     @Test
     fun testSurvivalServiceCall() {
         sut.build(survivalTournamentInformation).also {
-            Mockito.verify(mockSurvivalRoundGeneratorService, Mockito.times(1)).build(MockitoHelper.anyObject())
+            Mockito.verify(mockSurvivalRoundGeneratorService, Mockito.times(1)).build(MockitoHelper.anyObject(), MockitoHelper.anyObject(), MockitoHelper.anyObject(), MockitoHelper.anyObject())
             Mockito.verify(mockSurvivalSeedService, Mockito.times(1)).seed(MockitoHelper.anyObject())
         }
     }
