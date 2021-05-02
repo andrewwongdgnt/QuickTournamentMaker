@@ -112,9 +112,13 @@ class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroup
             }
         }
 
-    private val _tournamentInformationEvent = MutableLiveData<Event<TournamentInformation>>()
-    val tournamentInformationEvent: LiveData<Event<TournamentInformation>>
-        get() = _tournamentInformationEvent
+    private val _randomSeedTournamentEvent = MutableLiveData<Event<TournamentInformation>>()
+    val randomSeedTournamentEvent: LiveData<Event<TournamentInformation>>
+        get() = _randomSeedTournamentEvent
+
+    private val _customSeedTournamentEvent = MutableLiveData<Event<TournamentInformation>>()
+    val customSeedTournamentEvent: LiveData<Event<TournamentInformation>>
+        get() = _customSeedTournamentEvent
 
     private val _failedToStartTournamentMessage = MutableLiveData<Event<Boolean>>()
     val failedToStartTournamentMessage: LiveData<Event<Boolean>>
@@ -177,7 +181,12 @@ class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroup
         }
 
         try {
-            _tournamentInformationEvent.value = Event(tournamentInformationCreatorService.create(title.value ?: "", alternativeTitles, description.value ?: "", selectedPersonsService.resolve(selectedPersons.value, numberOfParticipants.value?.let { it.toIntOrNull() }, quickStart.value ?: false, seedType, defaultParticipantNameFunc), tournamentType, seedType, rankConfig))
+            Event(tournamentInformationCreatorService.create(title.value ?: "", alternativeTitles, description.value ?: "", selectedPersonsService.resolve(selectedPersons.value, numberOfParticipants.value?.let { it.toIntOrNull() }, quickStart.value ?: false, seedType, defaultParticipantNameFunc), tournamentType, seedType, rankConfig)).also {
+                if (seedType == SeedType.RANDOM)
+                    _randomSeedTournamentEvent.value = it
+                if (seedType == SeedType.CUSTOM)
+                    _customSeedTournamentEvent.value = it
+            }
         } catch (e: IllegalArgumentException) {
             _failedToStartTournamentMessage.value = Event(true)
         }

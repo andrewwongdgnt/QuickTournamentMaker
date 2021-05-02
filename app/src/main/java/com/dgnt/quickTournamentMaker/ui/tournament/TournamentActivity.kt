@@ -97,16 +97,6 @@ class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentL
 
                 RoundListDialogFragment.newInstance(it.roundGroups).show(supportFragmentManager, RoundListDialogFragment.TAG)
 
-//                val rounds = it.rounds
-//                AlertDialog.Builder(this)
-//                    .setAdapter(RoundArrayAdapter(this,  rounds)) { _, i ->
-//                        rounds[i].let { round ->
-//                            RoundEditorDialogFragment.newInstance(round, round.roundGroupIndex, round.roundIndex).show(supportFragmentManager, RoundEditorDialogFragment.TAG)
-//                        }
-//                    }
-//                    .setTitle(R.string.roundSelectionHint)
-//                    .create()
-//                    .show()
             }
         }
         return super.onOptionsItemSelected(item)

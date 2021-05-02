@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -20,9 +19,11 @@ import com.dgnt.quickTournamentMaker.model.management.Person
 import com.dgnt.quickTournamentMaker.model.tournament.RankPriorityConfigType
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentType
 import com.dgnt.quickTournamentMaker.service.interfaces.ICreateDefaultTitleService
+import com.dgnt.quickTournamentMaker.ui.customSeed.CustomSeedDialogFragment
 import com.dgnt.quickTournamentMaker.ui.layout.NonScrollingLinearLayoutManager
 import com.dgnt.quickTournamentMaker.ui.main.common.DraggableItemTouchHelperCallback
 import com.dgnt.quickTournamentMaker.ui.main.common.RankPriorityRecyclerViewAdapter
+import com.dgnt.quickTournamentMaker.ui.tournament.RoundListDialogFragment
 import com.dgnt.quickTournamentMaker.ui.tournament.TournamentActivity
 import com.dgnt.quickTournamentMaker.util.update
 import com.thoughtbot.expandablecheckrecyclerview.models.CheckedExpandableGroup
@@ -173,12 +174,22 @@ class HomeFragment : Fragment(), DIAware {
 
             })
 
-            viewModel.tournamentInformationEvent.observe(viewLifecycleOwner, Observer {
+            viewModel.randomSeedTournamentEvent.observe(viewLifecycleOwner, Observer {
                 it.getContentIfNotHandled()?.let {
 
-                    Log.d("DGNTTAG", "tournamentInfo: ${it}")
+                    Log.d("DGNTTAG", "start tournament with random seed: $it")
 
                     startActivity(TournamentActivity.createIntent(this, it))
+
+                }
+            })
+
+            viewModel.customSeedTournamentEvent.observe(viewLifecycleOwner, Observer {
+                it.getContentIfNotHandled()?.let {
+
+                    Log.d("DGNTTAG", "start tournament with custom seed: $it")
+
+                    CustomSeedDialogFragment.newInstance(it).show(activity?.supportFragmentManager!!, CustomSeedDialogFragment.TAG)
 
                 }
             })
