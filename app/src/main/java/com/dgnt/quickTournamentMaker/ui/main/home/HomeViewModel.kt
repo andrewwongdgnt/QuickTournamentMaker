@@ -13,13 +13,14 @@ import com.dgnt.quickTournamentMaker.data.management.PersonEntity
 import com.dgnt.quickTournamentMaker.model.management.Person
 import com.dgnt.quickTournamentMaker.model.tournament.*
 import com.dgnt.quickTournamentMaker.service.interfaces.IPreferenceService
+import com.dgnt.quickTournamentMaker.service.interfaces.ISeedService
 import com.dgnt.quickTournamentMaker.service.interfaces.ISelectedPersonsService
 import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentInformationCreatorService
 import com.dgnt.quickTournamentMaker.ui.main.common.TournamentGeneralEditorViewModel
 import com.dgnt.quickTournamentMaker.ui.main.common.TournamentTypeEditorViewModel
 import com.dgnt.quickTournamentMaker.util.Event
 
-class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroupRepository, override val preferenceService: IPreferenceService, override val tournamentInformationCreatorService: ITournamentInformationCreatorService, private val selectedPersonsService: ISelectedPersonsService) : ViewModel(), Observable, TournamentGeneralEditorViewModel, TournamentTypeEditorViewModel {
+class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroupRepository, override val preferenceService: IPreferenceService, override val tournamentInformationCreatorService: ITournamentInformationCreatorService, private val selectedPersonsService: ISelectedPersonsService, private val seedServices: Map<TournamentType, ISeedService>) : ViewModel(), Observable, TournamentGeneralEditorViewModel, TournamentTypeEditorViewModel {
 
     private val persons = personRepository.getAll()
     private val groups = groupRepository.getAll()
@@ -112,12 +113,12 @@ class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroup
             }
         }
 
-    private val _randomSeedTournamentEvent = MutableLiveData<Event<TournamentInformation>>()
-    val randomSeedTournamentEvent: LiveData<Event<TournamentInformation>>
+    private val _randomSeedTournamentEvent = MutableLiveData<Event<Pair<TournamentInformation, List<Participant>>>>()
+    val randomSeedTournamentEvent: LiveData<Event<Pair<TournamentInformation, List<Participant>>>>
         get() = _randomSeedTournamentEvent
 
-    private val _customSeedTournamentEvent = MutableLiveData<Event<TournamentInformation>>()
-    val customSeedTournamentEvent: LiveData<Event<TournamentInformation>>
+    private val _customSeedTournamentEvent = MutableLiveData<Event<Pair<TournamentInformation, List<Participant>>>>()
+    val customSeedTournamentEvent: LiveData<Event<Pair<TournamentInformation, List<Participant>>>>
         get() = _customSeedTournamentEvent
 
     private val _failedToStartTournamentMessage = MutableLiveData<Event<Boolean>>()
@@ -181,12 +182,16 @@ class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroup
         }
 
         try {
-            Event(tournamentInformationCreatorService.create(title.value ?: "", alternativeTitles, description.value ?: "", selectedPersonsService.resolve(selectedPersons.value, numberOfParticipants.value?.let { it.toIntOrNull() }, quickStart.value ?: false, seedType, defaultParticipantNameFunc), tournamentType, seedType, rankConfig)).also {
+            val tournamentInformation = tournamentInformationCreatorService.create(title.value ?: "", alternativeTitles, description.value ?: "", selectedPersonsService.resolve(selectedPersons.value, numberOfParticipants.value?.let { it.toIntOrNull() }, quickStart.value ?: false, seedType, defaultParticipantNameFunc), tournamentType, seedType, rankConfig)
+            val orderedParticipants = seedServices.getValue(tournamentInformation.tournamentType).seed(tournamentInformation.participants)
+            Event(Pair(tournamentInformation, orderedParticipants)).also {
                 if (seedType == SeedType.RANDOM)
                     _randomSeedTournamentEvent.value = it
-                if (seedType == SeedType.CUSTOM)
+                else if (seedType == SeedType.CUSTOM)
                     _customSeedTournamentEvent.value = it
             }
+
+
         } catch (e: IllegalArgumentException) {
             _failedToStartTournamentMessage.value = Event(true)
         }

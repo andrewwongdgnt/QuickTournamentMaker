@@ -179,7 +179,7 @@ class HomeFragment : Fragment(), DIAware {
 
                     Log.d("DGNTTAG", "start tournament with random seed: $it")
 
-                    startActivity(TournamentActivity.createIntent(this, it))
+                    startActivity(TournamentActivity.createIntent(this, it.first,it.second))
 
                 }
             })
@@ -189,7 +189,7 @@ class HomeFragment : Fragment(), DIAware {
 
                     Log.d("DGNTTAG", "start tournament with custom seed: $it")
 
-                    CustomSeedDialogFragment.newInstance(it).show(activity?.supportFragmentManager!!, CustomSeedDialogFragment.TAG)
+                    CustomSeedDialogFragment.newInstance(it.first, it.second).show(activity?.supportFragmentManager!!, CustomSeedDialogFragment.TAG)
 
                 }
             })

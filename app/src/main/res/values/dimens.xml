@@ -10,7 +10,7 @@
     <!-- so the last item of list view doesn't get blocked by fab-->
     <dimen name="space_for_fab">72dp</dimen>
 
-    <dimen name="participant_padding_horizontal">6dp</dimen>
+    <dimen name="participant_padding">6dp</dimen>
     <dimen name="participant_corner_radius">6dp</dimen>
     <dimen name="participant_default_stroke_width">1dp</dimen>
     <dimen name="participant_win_stroke_width">3dp</dimen>

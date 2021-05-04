@@ -10,7 +10,7 @@ interface IRoundGeneratorService {
     /**
      * build tournament brackets
      *
-     * @param orderedParticipants participants in the order they were defined
+     * @param orderedParticipants participants after they have been seeded
      * @param defaultRoundGroupTitleFunc the function that produces a default title for round groups
      * @param defaultRoundTitleFunc the function that produces a default title for rounds
      * @param defaultMatchUpTitleFunc the function that produces a default title for match ups

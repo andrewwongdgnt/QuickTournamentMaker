@@ -11,10 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.TournamentActivityBinding
-import com.dgnt.quickTournamentMaker.model.tournament.MatchUp
-import com.dgnt.quickTournamentMaker.model.tournament.Round
-import com.dgnt.quickTournamentMaker.model.tournament.RoundGroup
-import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
+import com.dgnt.quickTournamentMaker.model.tournament.*
 import com.dgnt.quickTournamentMaker.service.interfaces.ICreateDefaultTitleService
 import org.kodein.di.DIAware
 import org.kodein.di.android.di
@@ -29,11 +26,13 @@ class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentL
 
     companion object {
 
-        private const val TOURNAMENT_ACTIVITY_EXTRA = "com.dgnt.quickTournamentMaker.TOURNAMENT_ACTIVITY_EXTRA"
+        private const val TOURNAMENT_ACTIVITY_INFO = "com.dgnt.quickTournamentMaker.TOURNAMENT_ACTIVITY_INFO"
+        private const val TOURNAMENT_ACTIVITY_PARTICIPANTS = "com.dgnt.quickTournamentMaker.TOURNAMENT_ACTIVITY_PARTICIPANTS"
 
-        fun createIntent(context: Context, tournamentInformation: TournamentInformation): Intent =
+        fun createIntent(context: Context, tournamentInformation: TournamentInformation, orderedParticipants: List<Participant>): Intent =
             Intent(context, TournamentActivity::class.java).apply {
-                putExtra(TOURNAMENT_ACTIVITY_EXTRA, tournamentInformation)
+                putExtra(TOURNAMENT_ACTIVITY_INFO, tournamentInformation)
+                putParcelableArrayListExtra(TOURNAMENT_ACTIVITY_PARTICIPANTS, ArrayList(orderedParticipants))
             }
     }
 
@@ -41,9 +40,9 @@ class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentL
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val context = this
         setContentView(R.layout.tournament_activity)
-        val tournamentInformation = intent.getParcelableExtra<TournamentInformation>(TOURNAMENT_ACTIVITY_EXTRA)
+        val tournamentInformation = intent.getParcelableExtra<TournamentInformation>(TOURNAMENT_ACTIVITY_INFO)
+        val orderedParticipants = intent.getParcelableArrayListExtra<Participant>(TOURNAMENT_ACTIVITY_PARTICIPANTS)
         supportActionBar?.run {
             setDisplayHomeAsUpEnabled(true)
         }
@@ -54,7 +53,7 @@ class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentL
                 it.vm = this
             }.root)
 
-            setData(tournamentInformation, { rg: RoundGroup -> createDefaultTitleService.forRoundGroup(resources, tournamentInformation.tournamentType, rg) }, { r: Round -> createDefaultTitleService.forRound(resources, r) }, { m: MatchUp -> createDefaultTitleService.forMatchUp(resources, m) })
+            setData(tournamentInformation, orderedParticipants, { rg: RoundGroup -> createDefaultTitleService.forRoundGroup(resources, tournamentInformation.tournamentType, rg) }, { r: Round -> createDefaultTitleService.forRound(resources, r) }, { m: MatchUp -> createDefaultTitleService.forMatchUp(resources, m) })
 
             title.observe(tournamentActivity, Observer {
                 tournamentActivity.title = it
@@ -119,7 +118,7 @@ class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentL
         }
     }
 
-    override fun onEditMatchUp(key: Triple<Int, Int, Int>, useTitle:Boolean, title:String, note: String, color: Int) {
+    override fun onEditMatchUp(key: Triple<Int, Int, Int>, useTitle: Boolean, title: String, note: String, color: Int) {
         viewModel.tournament.value?.run {
             roundGroups[key.first].rounds[key.second].matchUps[key.third].let {
                 it.useTitle = useTitle

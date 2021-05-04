@@ -47,7 +47,17 @@ class QTMApplication() : Application(), DIAware {
         bind<ITournamentRepository>() with singleton { TournamentRepository(instance()) }
 
         //ViewModelFactory
-        bind() from provider { HomeViewModelFactory(instance(), instance(), instance(), instance(), instance()) }
+        bind() from provider {
+            HomeViewModelFactory(
+                instance(), instance(), instance(), instance(), instance(), mapOf(
+                    TournamentType.ELIMINATION to instance(POWER_OF_2_TAG),
+                    TournamentType.DOUBLE_ELIMINATION to instance(POWER_OF_2_TAG),
+                    TournamentType.ROUND_ROBIN to instance(EVEN_NUMBER_TAG),
+                    TournamentType.SWISS to instance(EVEN_NUMBER_TAG),
+                    TournamentType.SURVIVAL to instance(BYE_POPULATE_TAG),
+                )
+            )
+        }
         bind() from provider { ManagementViewModelFactory(instance(), instance()) }
         bind() from provider { GroupDeleteViewModelFactory(instance(), instance()) }
         bind() from provider { GroupEditorViewModelFactory(instance(), instance()) }
@@ -99,35 +109,30 @@ class QTMApplication() : Application(), DIAware {
                         roundGeneratorService = instance(TournamentType.ELIMINATION),
                         roundUpdateService = instance(TournamentType.ELIMINATION),
                         rankingService = instance(TournamentType.ELIMINATION),
-                        seedService = instance(POWER_OF_2_TAG),
                         matchUpStatusTransformService = instance(ONE_WINNER_TAG)
                     ),
                     TournamentType.DOUBLE_ELIMINATION to TournamentTypeServices(
                         roundGeneratorService = instance(TournamentType.DOUBLE_ELIMINATION),
                         roundUpdateService = instance(TournamentType.DOUBLE_ELIMINATION),
                         rankingService = instance(TournamentType.DOUBLE_ELIMINATION),
-                        seedService = instance(POWER_OF_2_TAG),
                         matchUpStatusTransformService = instance(ONE_WINNER_TAG)
                     ),
                     TournamentType.ROUND_ROBIN to TournamentTypeServices(
                         roundGeneratorService = instance(TournamentType.ROUND_ROBIN),
                         roundUpdateService = instance(TournamentType.ROUND_ROBIN),
                         rankingService = instance(RECORD_TAG),
-                        seedService = instance(EVEN_NUMBER_TAG),
                         matchUpStatusTransformService = instance(TIE_TAG)
                     ),
                     TournamentType.SWISS to TournamentTypeServices(
                         roundGeneratorService = instance(TournamentType.SWISS),
                         roundUpdateService = instance(TournamentType.SWISS),
                         rankingService = instance(RECORD_TAG),
-                        seedService = instance(EVEN_NUMBER_TAG),
                         matchUpStatusTransformService = instance(TIE_TAG)
                     ),
                     TournamentType.SURVIVAL to TournamentTypeServices(
                         roundGeneratorService = instance(TournamentType.SURVIVAL),
                         roundUpdateService = instance(TournamentType.SURVIVAL),
                         rankingService = instance(TournamentType.SURVIVAL),
-                        seedService = instance(BYE_POPULATE_TAG),
                         matchUpStatusTransformService = instance(ONE_WINNER_TAG)
                     )
                 )
