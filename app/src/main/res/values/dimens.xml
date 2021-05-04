@@ -24,6 +24,8 @@
     <dimen name="more_info_gap">10dp</dimen>
     <dimen name="more_info_left_padding">15dp</dimen>
 
+    <dimen name="custom_seed_element_padding">16dp</dimen>
+
     <dimen name="layout_vertical_margin">8dp</dimen>
     <dimen name="layout_horizontal_margin">8dp</dimen>
 

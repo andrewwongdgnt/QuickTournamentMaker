@@ -1,29 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+
         <variable
                 name="vm"
                 type="com.dgnt.quickTournamentMaker.ui.customSeed.CustomSeedViewModel" />
 
     </data>
 
-    <ScrollView
+    <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <LinearLayout
-                android:id="@+id/container"
-                android:layout_width="match_parent"
+        <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:paddingLeft="@dimen/layout_horizontal_margin"
                 android:paddingTop="@dimen/layout_vertical_margin"
                 android:paddingRight="@dimen/layout_horizontal_margin"
-                android:paddingBottom="@dimen/layout_vertical_margin">
+                android:text="@string/seedHelpMsg"/>
+        <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <LinearLayout
+                    android:id="@+id/container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/layout_horizontal_margin"
+                    android:paddingTop="@dimen/layout_vertical_margin"
+                    android:paddingRight="@dimen/layout_horizontal_margin"
+                    android:paddingBottom="@dimen/layout_vertical_margin">
 
 
-        </LinearLayout>
-    </ScrollView>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
 </layout>
