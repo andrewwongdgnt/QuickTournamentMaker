@@ -139,9 +139,9 @@ class QTMApplication() : Application(), DIAware {
             )
         }
 
-
         bind<ICreateDefaultTitleService>() with singleton { CreateDefaultTitleService() }
 
+        bind<ICustomSeedManagementService>() with singleton {CustomSeedManagementService(instance())}
     }
 
 

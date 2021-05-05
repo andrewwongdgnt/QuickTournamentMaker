@@ -32,7 +32,7 @@ class EliminationRoundGeneratorServiceTest {
                     MatchUp(0, 0, 3, Data.HERO, Data.DEMON)
                 )
             )
-        );
+        )
         roundGroups = sut.build(participants, defaultRoundTitleFunc = defaultRoundTitleFunc, defaultMatchUpTitleFunc = defaultMatchUpTitleFunc)
     }
 
