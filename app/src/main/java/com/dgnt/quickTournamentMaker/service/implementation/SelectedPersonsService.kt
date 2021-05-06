@@ -10,7 +10,7 @@ class SelectedPersonsService : ISelectedPersonsService {
     override fun resolve(persons: List<Person>?, numberOfParticipants: Int?, quickStart: Boolean, seedType: SeedType, defaultParticipantNameFunc: (Int) -> String): List<Participant> =
         //TODO this 3 magic number
         when {
-            persons != null && persons.size >= 3 && !quickStart -> persons
+            persons != null && persons.size >= 3 && !quickStart -> persons.sorted()
             numberOfParticipants != null && numberOfParticipants >= 3 && quickStart -> (1..numberOfParticipants).map { Person("", defaultParticipantNameFunc(it), "") }
             else -> throw IllegalArgumentException("Bad parameters, cannot create")
         }.shuffledIf(seedType == SeedType.RANDOM).map { Participant(it) }.toList()

@@ -45,7 +45,7 @@ class SelectedPersonsServiceTest {
             Person("", "y", ""),
             Person("", "z", "")
         )
-        fullParticipants = persons.map{ Participant(it) }
+        fullParticipants = persons.map{ Participant(it) }.sorted()
         quickParticipants = (1..numberOfParticipants).map { Participant(Person("",it.toString(),"")) }
 
     }

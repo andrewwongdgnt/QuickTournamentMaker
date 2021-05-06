@@ -12,6 +12,7 @@ import com.dgnt.quickTournamentMaker.databinding.SimpleMatchUpLayoutBinding
 import com.dgnt.quickTournamentMaker.model.tournament.Participant
 import com.dgnt.quickTournamentMaker.model.tournament.ParticipantType
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
+import com.dgnt.quickTournamentMaker.service.interfaces.MatchUpInformation
 import com.dgnt.quickTournamentMaker.ui.tournament.TournamentActivity
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
@@ -50,15 +51,24 @@ class CustomSeedDialogFragment : DialogFragment(), DIAware {
 
             viewModel.setData(orderedParticipants)
             viewModel.matchUps.observe(activity, {
-                val matchUps = it
                 val map = mutableMapOf<Int, SimpleMatchUpLayoutBinding>()
-                val myFunc: (Pair<Int, Boolean?>) -> Unit = { pair ->
-                    map[pair.first]?.player1?.background = ContextCompat.getDrawable(activity, R.drawable.p1_default)
-                    map[pair.first]?.player2?.background = ContextCompat.getDrawable(activity, R.drawable.p2_default)
-                    if (pair.second == true)
-                        map[pair.first]?.player1?.background = ContextCompat.getDrawable(activity, R.drawable.p1_win)
-                    else if (pair.second == false)
-                        map[pair.first]?.player2?.background = ContextCompat.getDrawable(activity, R.drawable.p2_win)
+                val myFunc: (Pair<MatchUpInformation, MatchUpInformation>) -> Unit = { pair ->
+                    listOf(pair.first, pair.second).forEach { mui ->
+
+                        map[mui.matchUp.matchUpIndex]?.player1?.apply {
+                            background = ContextCompat.getDrawable(activity, R.drawable.p1_default)
+                            text = getName(mui.matchUp.participant1)
+                        }
+
+                        map[mui.matchUp.matchUpIndex]?.player2?.apply {
+                            background = ContextCompat.getDrawable(activity, R.drawable.p2_default)
+                            text = getName(mui.matchUp.participant2)
+                        }
+                        if (mui.isParticipant1Highlighted == true)
+                            map[mui.matchUp.matchUpIndex]?.player1?.background = ContextCompat.getDrawable(activity, R.drawable.p1_win)
+                        else if (mui.isParticipant1Highlighted == false)
+                            map[mui.matchUp.matchUpIndex]?.player2?.background = ContextCompat.getDrawable(activity, R.drawable.p2_win)
+                    }
                 }
                 it.forEach {
                     SimpleMatchUpLayoutBinding.inflate(activity.layoutInflater).apply {
@@ -82,13 +92,13 @@ class CustomSeedDialogFragment : DialogFragment(), DIAware {
                 }
             })
 
-
-
             AlertDialog.Builder(activity)
                 .setTitle(getString(R.string.customSeed))
                 .setView(binding.root)
                 .setPositiveButton(android.R.string.ok) { _, _ ->
-                    startActivity(TournamentActivity.createIntent(activity, tournamentInformation, orderedParticipants))
+                    viewModel.matchUps.value?.apply {
+                        startActivity(TournamentActivity.createIntent(activity, tournamentInformation, flatMap { listOf(it.participant1, it.participant2) }))
+                    }
                 }
                 .setNegativeButton(android.R.string.cancel, null)
                 .create()
