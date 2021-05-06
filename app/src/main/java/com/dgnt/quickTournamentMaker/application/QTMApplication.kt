@@ -68,7 +68,7 @@ class QTMApplication() : Application(), DIAware {
         bind() from provider { ParticipantEditorViewModelFactory() }
         bind() from provider { MatchUpEditorViewModelFactory(instance()) }
         bind() from provider { RoundEditorViewModelFactory() }
-        bind() from provider { CustomSeedViewModelFactory() }
+        bind() from provider { CustomSeedViewModelFactory(instance()) }
 
         //Service
         bind<IRankingConfigService>() with singleton { RankingConfigService() }
