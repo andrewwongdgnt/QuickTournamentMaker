@@ -40,7 +40,6 @@ class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentL
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.tournament_activity)
         val tournamentInformation = intent.getParcelableExtra<TournamentInformation>(TOURNAMENT_ACTIVITY_INFO)
         val orderedParticipants = intent.getParcelableArrayListExtra<Participant>(TOURNAMENT_ACTIVITY_PARTICIPANTS)
         supportActionBar?.run {
@@ -51,6 +50,7 @@ class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentL
         viewModel = ViewModelProvider(tournamentActivity, viewModelFactory).get(TournamentViewModel::class.java).apply {
             setContentView(TournamentActivityBinding.inflate(layoutInflater).also {
                 it.vm = this
+                it.tournamentViewRoot.setSomething(it.container)
             }.root)
 
             setData(tournamentInformation, orderedParticipants, { rg: RoundGroup -> createDefaultTitleService.forRoundGroup(resources, tournamentInformation.tournamentType, rg) }, { r: Round -> createDefaultTitleService.forRound(resources, r) }, { m: MatchUp -> createDefaultTitleService.forMatchUp(resources, m) })
