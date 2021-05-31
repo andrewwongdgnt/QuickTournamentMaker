@@ -50,7 +50,8 @@ class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentL
         viewModel = ViewModelProvider(tournamentActivity, viewModelFactory).get(TournamentViewModel::class.java).apply {
             setContentView(TournamentActivityBinding.inflate(layoutInflater).also {
                 it.vm = this
-                it.tournamentViewRoot.setSomething(it.container)
+                it.tournamentViewRoot.setShouldVisuallyScaleContents(true)
+                it.tournamentViewRoot.setMaximumScale(5f)
             }.root)
 
             setData(tournamentInformation, orderedParticipants, { rg: RoundGroup -> createDefaultTitleService.forRoundGroup(resources, tournamentInformation.tournamentType, rg) }, { r: Round -> createDefaultTitleService.forRound(resources, r) }, { m: MatchUp -> createDefaultTitleService.forMatchUp(resources, m) })
