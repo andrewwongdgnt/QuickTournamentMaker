@@ -13,6 +13,7 @@ import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.TournamentActivityBinding
 import com.dgnt.quickTournamentMaker.model.tournament.*
 import com.dgnt.quickTournamentMaker.service.interfaces.ICreateDefaultTitleService
+import com.moagrius.widget.ScalingScrollView
 import org.kodein.di.DIAware
 import org.kodein.di.android.di
 
@@ -48,20 +49,29 @@ class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentL
         getString(R.string.main_ad_id)
         val tournamentActivity = this
         viewModel = ViewModelProvider(tournamentActivity, viewModelFactory).get(TournamentViewModel::class.java).apply {
-            setContentView(TournamentActivityBinding.inflate(layoutInflater).also {
+
+            val binding = TournamentActivityBinding.inflate(layoutInflater).also {
                 it.vm = this
-                it.tournamentViewRoot.setShouldVisuallyScaleContents(true)
-                it.tournamentViewRoot.setMaximumScale(5f)
-            }.root)
+                it.tournamentViewRoot.apply {
+                    setShouldVisuallyScaleContents(true)
+                    setMinimumScaleMode(ScalingScrollView.MinimumScaleMode.CONTAIN)
+                }
+            }
+
+            setContentView(binding.root)
 
             setData(tournamentInformation, orderedParticipants, { rg: RoundGroup -> createDefaultTitleService.forRoundGroup(resources, tournamentInformation.tournamentType, rg) }, { r: Round -> createDefaultTitleService.forRound(resources, r) }, { m: MatchUp -> createDefaultTitleService.forMatchUp(resources, m) })
 
             title.observe(tournamentActivity, Observer {
                 tournamentActivity.title = it
             })
+            tournament.observe(tournamentActivity, Observer {
+                binding.container.drawTournament(it.roundGroups)
+            })
         }
 
     }
+
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
