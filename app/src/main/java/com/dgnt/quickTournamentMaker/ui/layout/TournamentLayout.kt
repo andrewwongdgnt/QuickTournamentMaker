@@ -24,6 +24,7 @@ class TournamentLayout : LinearLayout {
         setWillNotDraw(false)
     }
 
+    private val map = mutableMapOf<Triple<Int, Int, Int>, SimpleMatchUpLayoutBinding>()
 
     private val roundWidth = context.resources.getDimension(R.dimen.round_width).toInt()
     private val roundMargin = context.resources.getDimension(R.dimen.round_margin).toInt()
@@ -35,7 +36,7 @@ class TournamentLayout : LinearLayout {
             else -> context.getString(R.string.byeDefaultName)
         }
 
-    fun drawTournament(roundGroup: List<RoundGroup>, clickListener: (MatchUp, View,View, ParticipantPosition) -> Unit) {
+    fun draw(roundGroup: List<RoundGroup>, clickListener: (MatchUp, View, View, ParticipantPosition) -> Unit) {
         roundGroup.forEach { rg ->
             addView(LinearLayout(context).also { rgll ->
                 rgll.orientation = HORIZONTAL
@@ -57,7 +58,7 @@ class TournamentLayout : LinearLayout {
                                         clickListener(mu, mul.player1, this, ParticipantPosition.P2)
                                     }
                                 }
-
+                                map[mu.key] = mul
                             }.root)
 
                         }
@@ -66,6 +67,15 @@ class TournamentLayout : LinearLayout {
             })
         }
 
+    }
+
+    fun update(matchUps: List<MatchUp>){
+        matchUps.forEach {
+            map[it.key]?.apply {
+                player1.text = getName(it.participant1)
+                player2.text = getName(it.participant2)
+            }
+        }
     }
 
 

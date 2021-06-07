@@ -66,27 +66,27 @@ class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentL
                 tournamentActivity.title = it
             })
             tournament.observe(tournamentActivity, Observer {
-                binding.container.drawTournament(it.roundGroups) { m, v1,v2, p ->
-                    select(m, p)
-                    when(m.status){
+                binding.container.draw(it.roundGroups) { m, v1, v2, p ->
+                    updateTournament(m, p)
+                    when (m.status) {
                         MatchUpStatus.P1_WINNER -> {
-                            v1.background= ContextCompat.getDrawable(tournamentActivity, R.drawable.p1_win)
-                            v2.background= ContextCompat.getDrawable(tournamentActivity, R.drawable.p2_default)
+                            v1.background = ContextCompat.getDrawable(tournamentActivity, R.drawable.p1_win)
+                            v2.background = ContextCompat.getDrawable(tournamentActivity, R.drawable.p2_default)
                         }
                         MatchUpStatus.P2_WINNER -> {
-                            v1.background= ContextCompat.getDrawable(tournamentActivity, R.drawable.p1_default)
-                            v2.background= ContextCompat.getDrawable(tournamentActivity, R.drawable.p2_win)
+                            v1.background = ContextCompat.getDrawable(tournamentActivity, R.drawable.p1_default)
+                            v2.background = ContextCompat.getDrawable(tournamentActivity, R.drawable.p2_win)
                         }
                         MatchUpStatus.TIE -> {
-                            v1.background= ContextCompat.getDrawable(tournamentActivity, R.drawable.p1_win)
-                            v2.background= ContextCompat.getDrawable(tournamentActivity, R.drawable.p2_win)
+                            v1.background = ContextCompat.getDrawable(tournamentActivity, R.drawable.p1_win)
+                            v2.background = ContextCompat.getDrawable(tournamentActivity, R.drawable.p2_win)
                         }
-                        else ->{
-                            v1.background= ContextCompat.getDrawable(tournamentActivity, R.drawable.p1_default)
-                            v2.background= ContextCompat.getDrawable(tournamentActivity, R.drawable.p2_default)
-
+                        else -> {
+                            v1.background = ContextCompat.getDrawable(tournamentActivity, R.drawable.p1_default)
+                            v2.background = ContextCompat.getDrawable(tournamentActivity, R.drawable.p2_default)
                         }
                     }
+                    binding.container.update(it.matchUps)
                 }
             })
         }
