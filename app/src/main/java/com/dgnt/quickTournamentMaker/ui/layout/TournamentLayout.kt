@@ -6,12 +6,11 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.LinearLayout
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.SimpleMatchUpLayoutBinding
-import com.dgnt.quickTournamentMaker.model.tournament.Participant
-import com.dgnt.quickTournamentMaker.model.tournament.ParticipantType
-import com.dgnt.quickTournamentMaker.model.tournament.RoundGroup
+import com.dgnt.quickTournamentMaker.model.tournament.*
 
 class TournamentLayout : LinearLayout {
 
@@ -36,7 +35,7 @@ class TournamentLayout : LinearLayout {
             else -> context.getString(R.string.byeDefaultName)
         }
 
-    fun drawTournament(roundGroup: List<RoundGroup>) {
+    fun drawTournament(roundGroup: List<RoundGroup>, clickListener: (MatchUp, View,View, ParticipantPosition) -> Unit) {
         roundGroup.forEach { rg ->
             addView(LinearLayout(context).also { rgll ->
                 rgll.orientation = HORIZONTAL
@@ -48,13 +47,14 @@ class TournamentLayout : LinearLayout {
                             rll.addView(SimpleMatchUpLayoutBinding.inflate(LayoutInflater.from(context)).also { mul ->
                                 mul.player1.apply {
                                     text = getName(mu.participant1)
-                                    setOnClickListener { _ ->
-
+                                    setOnClickListener {
+                                        clickListener(mu, this, mul.player2, ParticipantPosition.P1)
                                     }
                                 }
                                 mul.player2.apply {
                                     text = getName(mu.participant2)
-                                    setOnClickListener { _ ->
+                                    setOnClickListener {
+                                        clickListener(mu, mul.player1, this, ParticipantPosition.P2)
                                     }
                                 }
 

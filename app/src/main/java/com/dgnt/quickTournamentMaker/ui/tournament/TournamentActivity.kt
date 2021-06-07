@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
@@ -16,7 +17,6 @@ import com.dgnt.quickTournamentMaker.service.interfaces.ICreateDefaultTitleServi
 import com.moagrius.widget.ScalingScrollView
 import org.kodein.di.DIAware
 import org.kodein.di.android.di
-
 import org.kodein.di.instance
 
 
@@ -66,7 +66,28 @@ class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentL
                 tournamentActivity.title = it
             })
             tournament.observe(tournamentActivity, Observer {
-                binding.container.drawTournament(it.roundGroups)
+                binding.container.drawTournament(it.roundGroups) { m, v1,v2, p ->
+                    select(m, p)
+                    when(m.status){
+                        MatchUpStatus.P1_WINNER -> {
+                            v1.background= ContextCompat.getDrawable(tournamentActivity, R.drawable.p1_win)
+                            v2.background= ContextCompat.getDrawable(tournamentActivity, R.drawable.p2_default)
+                        }
+                        MatchUpStatus.P2_WINNER -> {
+                            v1.background= ContextCompat.getDrawable(tournamentActivity, R.drawable.p1_default)
+                            v2.background= ContextCompat.getDrawable(tournamentActivity, R.drawable.p2_win)
+                        }
+                        MatchUpStatus.TIE -> {
+                            v1.background= ContextCompat.getDrawable(tournamentActivity, R.drawable.p1_win)
+                            v2.background= ContextCompat.getDrawable(tournamentActivity, R.drawable.p2_win)
+                        }
+                        else ->{
+                            v1.background= ContextCompat.getDrawable(tournamentActivity, R.drawable.p1_default)
+                            v2.background= ContextCompat.getDrawable(tournamentActivity, R.drawable.p2_default)
+
+                        }
+                    }
+                }
             })
         }
 
@@ -152,3 +173,4 @@ class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentL
 
 
 }
+
