@@ -6,8 +6,8 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.SimpleMatchUpLayoutBinding
 import com.dgnt.quickTournamentMaker.model.tournament.*
@@ -36,8 +36,8 @@ class TournamentLayout : LinearLayout {
             else -> context.getString(R.string.byeDefaultName)
         }
 
-    fun draw(roundGroup: List<RoundGroup>, clickListener: (MatchUp, View, View, ParticipantPosition) -> Unit) {
-        roundGroup.forEach { rg ->
+    fun draw(tournament: Tournament, clickListener: (MatchUp, ParticipantPosition) -> Unit) {
+        tournament.roundGroups.forEach { rg ->
             addView(LinearLayout(context).also { rgll ->
                 rgll.orientation = HORIZONTAL
                 rg.rounds.forEach { r ->
@@ -48,16 +48,25 @@ class TournamentLayout : LinearLayout {
                             rll.addView(SimpleMatchUpLayoutBinding.inflate(LayoutInflater.from(context)).also { mul ->
                                 mul.player1.apply {
                                     text = getName(mu.participant1)
-                                    setOnClickListener {
-                                        clickListener(mu, this, mul.player2, ParticipantPosition.P1)
+                                    if (!mu.containsBye) {
+                                        setOnClickListener {
+                                            clickListener(mu, ParticipantPosition.P1)
+                                            updateViews(mu, mul)
+                                            updateMatchUps(tournament.matchUps)
+                                        }
                                     }
                                 }
                                 mul.player2.apply {
                                     text = getName(mu.participant2)
-                                    setOnClickListener {
-                                        clickListener(mu, mul.player1, this, ParticipantPosition.P2)
+                                    if (!mu.containsBye) {
+                                        setOnClickListener {
+                                            clickListener(mu, ParticipantPosition.P2)
+                                            updateViews(mu, mul)
+                                            updateMatchUps(tournament.matchUps)
+                                        }
                                     }
                                 }
+                                updateViews(mu, mul)
                                 map[mu.key] = mul
                             }.root)
 
@@ -66,10 +75,34 @@ class TournamentLayout : LinearLayout {
                 }
             })
         }
-
+        updateMatchUps(tournament.matchUps)
     }
 
-    fun update(matchUps: List<MatchUp>){
+    private fun updateViews(matchUp: MatchUp, matchUpLayout: SimpleMatchUpLayoutBinding) {
+        when (matchUp.status) {
+            MatchUpStatus.P1_WINNER -> {
+                matchUpLayout.player1.background = ContextCompat.getDrawable(context, R.drawable.p1_win)
+                matchUpLayout.player2.background = ContextCompat.getDrawable(context, R.drawable.p2_default)
+            }
+            MatchUpStatus.P2_WINNER -> {
+                matchUpLayout.player1.background = ContextCompat.getDrawable(context, R.drawable.p1_default)
+                matchUpLayout.player2.background = ContextCompat.getDrawable(context, R.drawable.p2_win)
+            }
+            MatchUpStatus.TIE -> {
+                matchUpLayout.player1.background = ContextCompat.getDrawable(context, R.drawable.p1_win)
+                matchUpLayout.player2.background = ContextCompat.getDrawable(context, R.drawable.p2_win)
+            }
+            else -> {
+                matchUpLayout.player1.background = ContextCompat.getDrawable(context, R.drawable.p1_default)
+                matchUpLayout.player2.background = ContextCompat.getDrawable(context, R.drawable.p2_default)
+            }
+        }
+    }
+
+
+    private fun updateMatchUps(matchUps: List<MatchUp>) {
+
+
         matchUps.forEach {
             map[it.key]?.apply {
                 player1.text = getName(it.participant1)
