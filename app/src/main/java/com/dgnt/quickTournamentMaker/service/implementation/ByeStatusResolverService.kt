@@ -9,7 +9,7 @@ class ByeStatusResolverService : IByeStatusResolverService {
 
     override fun resolve(roundGroups: List<RoundGroup>, vararg roundGroupRoundPair: Pair<Int, Int>) {
         roundGroupRoundPair.forEach {
-            roundGroups[it.first].rounds[it.second].matchUps.filter { m -> m.participant1 == Participant.BYE_PARTICIPANT || m.participant2 == Participant.BYE_PARTICIPANT }.forEach { m ->
+            roundGroups.getOrNull(it.first)?.rounds?.getOrNull(it.second)?.matchUps?.filter { m -> m.participant1 == Participant.BYE_PARTICIPANT || m.participant2 == Participant.BYE_PARTICIPANT }?.forEach { m ->
                 m.status = if (m.participant1 == Participant.BYE_PARTICIPANT) MatchUpStatus.P2_WINNER else MatchUpStatus.P1_WINNER
             }
         }

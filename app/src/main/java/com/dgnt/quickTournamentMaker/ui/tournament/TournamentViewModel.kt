@@ -30,9 +30,14 @@ class TournamentViewModel(private val tournamentBuilderService: ITournamentBuild
         title.value = tournamentInformation.title
 
         val tournament = tournamentBuilderService.build(tournamentInformation, orderedParticipants, defaultRoundGroupTitleFunc, defaultRoundTitleFunc, defaultMatchUpTitleFunc)
-        byeStatusResolverService.resolve(tournament.roundGroups, Pair(0, 0))
-        (tournament.roundGroups[0].rounds[0].matchUps.indices).forEach {
-            tournament.roundUpdateService.update(tournament.roundGroups, 0, 0, it, tournament.tournamentInformation.rankConfig)
+
+        //TODO put this logic in a service
+
+        listOf(Pair(0, 0), Pair(1, 0), Pair(1, 1)).forEach { pair ->
+            byeStatusResolverService.resolve(tournament.roundGroups, pair)
+            (tournament.roundGroups.getOrNull(pair.first)?.rounds?.getOrNull(pair.second)?.matchUps?.indices)?.forEach {
+                tournament.roundUpdateService.update(tournament.roundGroups, pair.first, pair.second, it, tournament.tournamentInformation.rankConfig)
+            }
         }
 
         this.tournament.value = tournament
