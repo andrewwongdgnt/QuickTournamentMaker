@@ -31,7 +31,7 @@ class TournamentViewModel(private val tournamentBuilderService: ITournamentBuild
 
         val tournament = tournamentBuilderService.build(tournamentInformation, orderedParticipants, defaultRoundGroupTitleFunc, defaultRoundTitleFunc, defaultMatchUpTitleFunc)
 
-        //TODO put this logic in a service
+        //TODO put this logic in a service, which should also take into account the tournament type
 
         listOf(Pair(0, 0), Pair(1, 0), Pair(1, 1)).forEach { pair ->
             byeStatusResolverService.resolve(tournament.roundGroups, pair)
