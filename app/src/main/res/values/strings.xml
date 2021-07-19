@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">Quick Tournament Maker</string>
 
-    <string name="title_activity_home">Home</string>
+    <string name="title_activity_home">Create</string>
     <string name="quickStart">Quick start</string>
     <string name="randomSeed">Random seeding</string>
     <string name="tournamentTitle">Tournament title</string>

@@ -1,5 +1,5 @@
 <resources>
-    <string name="title_activity_home">Home_ru</string>
+    <string name="title_activity_home">Create_ru</string>
     <string name="quickStart">Быстрый старт</string>
     <string name="randomSeed">Случайныё сидинг</string>
     <string name="tournamentTitle">Название турнира</string>
