@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
+import android.view.Gravity.CENTER
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
@@ -43,9 +44,11 @@ class TournamentLayout : LinearLayout {
                 rg.rounds.forEach { r ->
                     rgll.addView(LinearLayout(context).also { rll ->
                         rll.orientation = VERTICAL
-                        rll.layoutParams = LayoutParams(roundWidth, LayoutParams.WRAP_CONTENT).also { it.setMargins(roundMargin, roundMargin, roundMargin, roundMargin) }
+                        rll.gravity = CENTER
+                        rll.layoutParams = LayoutParams(roundWidth, LayoutParams.MATCH_PARENT).also { it.setMargins(roundMargin, roundMargin, roundMargin, roundMargin) }
                         r.matchUps.forEach { mu ->
                             rll.addView(SimpleMatchUpLayoutBinding.inflate(LayoutInflater.from(context)).also { mul ->
+                                mul.layout.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, 0, 1f)
                                 mul.player1.apply {
                                     text = getName(mu.participant1)
                                     if (!mu.containsBye) {

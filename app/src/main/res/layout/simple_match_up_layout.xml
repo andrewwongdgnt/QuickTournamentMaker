@@ -3,11 +3,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
+            android:id="@+id/layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/custom_seed_element_padding"
-            android:paddingBottom="@dimen/custom_seed_element_padding"
-            android:orientation="vertical">
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/match_up_padding"
+            android:paddingBottom="@dimen/match_up_padding">
 
         <TextView
                 android:id="@+id/player1"
@@ -17,9 +19,9 @@
                 android:ellipsize="end"
                 android:lines="2"
                 android:maxLines="2"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:padding="@dimen/participant_padding"
-                android:text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."/>
+                android:text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
 
         <TextView
@@ -30,8 +32,8 @@
                 android:ellipsize="end"
                 android:lines="2"
                 android:maxLines="2"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:padding="@dimen/participant_padding"
-                android:text="test"/>
+                android:text="test"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
 </layout>
