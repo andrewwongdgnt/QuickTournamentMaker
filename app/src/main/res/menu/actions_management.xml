@@ -2,13 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:compat="http://schemas.android.com/apk/res-auto">
     <item
-            android:id="@+id/action_editGroupMode"
-            android:icon="@drawable/ic_save"
+            android:id="@+id/action_editPersonMode"
+            android:icon="@drawable/ic_person_select"
             android:title="@string/edit"
             compat:showAsAction="ifRoom" />
     <item
-            android:id="@+id/action_editPersonMode"
-            android:icon="@drawable/ic_save_warning"
+            android:id="@+id/action_editGroupMode"
+            android:icon="@drawable/ic_group_select"
             android:title="@string/edit"
             compat:showAsAction="ifRoom" />
 
