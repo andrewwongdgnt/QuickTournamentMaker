@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
+import android.util.Log
 import android.view.Gravity.CENTER
 import android.view.LayoutInflater
 import android.widget.LinearLayout
@@ -12,6 +13,7 @@ import androidx.core.content.ContextCompat
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.SimpleMatchUpLayoutBinding
 import com.dgnt.quickTournamentMaker.model.tournament.*
+
 
 class TournamentLayout : LinearLayout {
 
@@ -25,10 +27,12 @@ class TournamentLayout : LinearLayout {
         setWillNotDraw(false)
     }
 
-    private val map = mutableMapOf<Triple<Int, Int, Int>, SimpleMatchUpLayoutBinding>()
+    private val matchUpViewMap = mutableMapOf<Triple<Int, Int, Int>, SimpleMatchUpLayoutBinding>()
 
     private val roundWidth = context.resources.getDimension(R.dimen.round_width).toInt()
     private val roundMargin = context.resources.getDimension(R.dimen.round_margin).toInt()
+
+    private var tournament: Tournament? = null
 
     private fun getName(participant: Participant) =
         when (participant.participantType) {
@@ -37,7 +41,15 @@ class TournamentLayout : LinearLayout {
             else -> context.getString(R.string.byeDefaultName)
         }
 
+    private val actionBarSize by lazy {
+        val styledAttributes = context.theme.obtainStyledAttributes(intArrayOf(android.R.attr.actionBarSize))
+        val mActionBarSize = styledAttributes.getDimension(0, 0f).toInt()
+        styledAttributes.recycle()
+        mActionBarSize
+    }
+
     fun draw(tournament: Tournament, clickListener: (MatchUp, ParticipantPosition) -> Unit) {
+        this.tournament = tournament
         tournament.roundGroups.forEach { rg ->
             addView(LinearLayout(context).also { rgll ->
                 rgll.orientation = HORIZONTAL
@@ -70,15 +82,15 @@ class TournamentLayout : LinearLayout {
                                     }
                                 }
                                 updateViews(mu, mul)
-                                map[mu.key] = mul
+                                matchUpViewMap[mu.key] = mul
                             }.root)
-
                         }
                     })
                 }
             })
         }
         updateMatchUps(tournament.matchUps)
+        invalidate()
     }
 
     private fun updateViews(matchUp: MatchUp, matchUpLayout: SimpleMatchUpLayoutBinding) {
@@ -107,7 +119,7 @@ class TournamentLayout : LinearLayout {
 
 
         matchUps.forEach {
-            map[it.key]?.apply {
+            matchUpViewMap[it.key]?.apply {
                 player1.text = getName(it.participant1)
                 player2.text = getName(it.participant2)
             }
@@ -130,7 +142,24 @@ class TournamentLayout : LinearLayout {
 
         canvas.apply {
             save()
+
+            matchUpViewMap.map {
+
+                matchUpViewMap[Triple(0, it.key.second + 1, it.key.third / 2)]?.let { next ->
+                    val current = it.value
+                    val currentCoordinates = intArrayOf(0, 0)
+                    current.point.getLocationOnScreen(currentCoordinates)
+
+                    val nextCoordinates = intArrayOf(0, 0)
+                    next.point.getLocationOnScreen(nextCoordinates)
+
+                    drawLine(currentCoordinates[0].toFloat(), currentCoordinates[1].toFloat() - actionBarSize, nextCoordinates[0].toFloat(), nextCoordinates[1].toFloat() - actionBarSize, shadowPaint)
+                }
+            }
+
             restore()
         }
     }
+
+
 }

@@ -23,7 +23,10 @@
                 android:text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
-
+        <View
+                android:id="@+id/point"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"/>
         <TextView
                 android:id="@+id/player2"
                 android:layout_width="match_parent"
