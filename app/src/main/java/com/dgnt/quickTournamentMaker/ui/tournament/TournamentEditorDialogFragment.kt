@@ -23,12 +23,14 @@ class TournamentEditorDialogFragment : DialogFragment(), DIAware {
 
         const val TAG = "TournamentEditorDialogFragment"
 
-        private const val KEY_TOURNAMENT = "KEY_TOURNAMENT"
+        private const val KEY_TITLE = "KEY_TITLE"
+        private const val KEY_DESCRIPTION = "KEY_DESCRIPTION"
 
-        fun newInstance(tournamentInformation: TournamentInformation) =
+        fun newInstance(title:String, description: String) =
             TournamentEditorDialogFragment().apply {
                 arguments = Bundle().apply {
-                    putParcelable(KEY_TOURNAMENT, tournamentInformation)
+                    putString(KEY_TITLE, title)
+                    putString(KEY_DESCRIPTION, description)
                 }
             }
     }
@@ -59,7 +61,7 @@ class TournamentEditorDialogFragment : DialogFragment(), DIAware {
             binding.lifecycleOwner = this
 
 
-            viewModel.setData(arguments?.getParcelable(KEY_TOURNAMENT)!!)
+            viewModel.setData(arguments?.getString(KEY_TITLE) ?: "", arguments?.getString(KEY_DESCRIPTION) ?: "")
 
 
 

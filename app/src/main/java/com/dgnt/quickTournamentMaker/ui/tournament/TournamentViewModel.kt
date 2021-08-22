@@ -28,6 +28,7 @@ class TournamentViewModel(private val tournamentBuilderService: ITournamentBuild
 
     fun setData(tournamentInformation: TournamentInformation, orderedParticipants: List<Participant>, defaultRoundGroupTitleFunc: (RoundGroup) -> String, defaultRoundTitleFunc: (Round) -> String, defaultMatchUpTitleFunc: (MatchUp) -> String) {
         title.value = tournamentInformation.title
+        description.value = tournamentInformation.description
 
         val tournament = tournamentBuilderService.build(tournamentInformation, orderedParticipants, defaultRoundGroupTitleFunc, defaultRoundTitleFunc, defaultMatchUpTitleFunc)
 

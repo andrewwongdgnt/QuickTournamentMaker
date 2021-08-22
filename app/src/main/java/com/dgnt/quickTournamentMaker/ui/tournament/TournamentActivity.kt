@@ -51,6 +51,7 @@ class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentL
 
             val binding = TournamentActivityBinding.inflate(layoutInflater).also {
                 it.vm = this
+                it.lifecycleOwner = tournamentActivity
                 it.tournamentViewRoot.apply {
                     setShouldVisuallyScaleContents(true)
                     setMinimumScaleMode(ScalingScrollView.MinimumScaleMode.CONTAIN)
@@ -88,7 +89,7 @@ class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentL
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_editTournament -> viewModel.tournament.value?.run {
-                TournamentEditorDialogFragment.newInstance(tournamentInformation).show(supportFragmentManager, TournamentEditorDialogFragment.TAG)
+                TournamentEditorDialogFragment.newInstance(viewModel.title.value ?: "", viewModel.description.value ?: "").show(supportFragmentManager, TournamentEditorDialogFragment.TAG)
             }
             R.id.action_editAParticipant -> viewModel.tournament.value?.let {
                 val participants = it.tournamentInformation.participants.sorted()
@@ -113,10 +114,10 @@ class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentL
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onEditTournament(newTitle: String, newDescription: String) {
+    override fun onEditTournament(title: String, description: String) {
         viewModel.run {
-            title.value = newTitle
-            description.value = newDescription
+            this.title.value = title
+            this.description.value = description
         }
     }
 

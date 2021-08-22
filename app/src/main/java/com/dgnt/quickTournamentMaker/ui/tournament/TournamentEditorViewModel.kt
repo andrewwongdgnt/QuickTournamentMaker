@@ -21,9 +21,9 @@ class TournamentEditorViewModel : Observable, ViewModel(), TournamentGeneralEdit
     override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
     }
 
-    fun setData(tournamentInformation: TournamentInformation) {
-        this.title.value = tournamentInformation.title
-        this.description.value = tournamentInformation.description
+    fun setData(title:String, description:String) {
+        this.title.value = title
+        this.description.value = description
 
     }
 }

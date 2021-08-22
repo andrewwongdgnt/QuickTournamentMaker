@@ -55,7 +55,7 @@ class HomeFragment : Fragment(), DIAware {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = HomeFragmentBinding.inflate(inflater)
         return binding.root;
     }
