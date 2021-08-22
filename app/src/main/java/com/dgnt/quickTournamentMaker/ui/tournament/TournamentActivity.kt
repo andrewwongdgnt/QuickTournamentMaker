@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -24,6 +25,9 @@ class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentL
     private val viewModelFactory: TournamentViewModelFactory by instance()
     private val createDefaultTitleService: ICreateDefaultTitleService by instance()
 
+    private var extraLayout: View? = null
+    fun extraLayoutHeight() = extraLayout?.height
+
     companion object {
 
         private const val TOURNAMENT_ACTIVITY_INFO = "com.dgnt.quickTournamentMaker.TOURNAMENT_ACTIVITY_INFO"
@@ -40,6 +44,7 @@ class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentL
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         val tournamentInformation = intent.getParcelableExtra<TournamentInformation>(TOURNAMENT_ACTIVITY_INFO)
         val orderedParticipants = intent.getParcelableArrayListExtra<Participant>(TOURNAMENT_ACTIVITY_PARTICIPANTS)
         supportActionBar?.run {
@@ -56,6 +61,7 @@ class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentL
                     setShouldVisuallyScaleContents(true)
                     setMinimumScaleMode(ScalingScrollView.MinimumScaleMode.CONTAIN)
                 }
+                extraLayout = it.extraLayout
             }
 
             setContentView(binding.root)

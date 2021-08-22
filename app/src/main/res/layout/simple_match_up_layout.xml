@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
             android:id="@+id/layout"
@@ -8,8 +9,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
-            android:paddingTop="@dimen/match_up_padding"
-            android:paddingBottom="@dimen/match_up_padding">
+            android:paddingVertical="@dimen/match_up_padding">
 
         <TextView
                 android:id="@+id/player1"
@@ -20,7 +20,7 @@
                 android:lines="2"
                 android:maxLines="2"
                 android:padding="@dimen/participant_padding"
-                android:text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+                tools:text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <View
@@ -36,7 +36,7 @@
                 android:lines="2"
                 android:maxLines="2"
                 android:padding="@dimen/participant_padding"
-                android:text="test"
+                tools:text="test"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
 </layout>

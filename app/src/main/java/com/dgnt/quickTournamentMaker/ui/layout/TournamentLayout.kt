@@ -5,7 +5,6 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
-import android.util.Log
 import android.view.Gravity.CENTER
 import android.view.LayoutInflater
 import android.widget.LinearLayout
@@ -13,6 +12,7 @@ import androidx.core.content.ContextCompat
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.SimpleMatchUpLayoutBinding
 import com.dgnt.quickTournamentMaker.model.tournament.*
+import com.dgnt.quickTournamentMaker.ui.tournament.TournamentActivity
 
 
 class TournamentLayout : LinearLayout {
@@ -41,12 +41,23 @@ class TournamentLayout : LinearLayout {
             else -> context.getString(R.string.byeDefaultName)
         }
 
-    private val actionBarSize by lazy {
+    private val staticExtraHeight by lazy {
+        // action bar
         val styledAttributes = context.theme.obtainStyledAttributes(intArrayOf(android.R.attr.actionBarSize))
-        val mActionBarSize = styledAttributes.getDimension(0, 0f).toInt()
+        val actionBarSize = styledAttributes.getDimension(0, 0f).toInt()
         styledAttributes.recycle()
-        mActionBarSize
+
+        //title bar
+        var titleBarSize = 0
+        val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
+        if (resourceId > 0) {
+            titleBarSize = resources.getDimensionPixelSize(resourceId)
+        }
+
+        actionBarSize + titleBarSize
     }
+    private fun dynamicExtraHeight() = (context as? TournamentActivity)?.extraLayoutHeight() ?: 0
+    private fun extraHeight() = dynamicExtraHeight() + staticExtraHeight
 
     fun draw(tournament: Tournament, clickListener: (MatchUp, ParticipantPosition) -> Unit) {
         this.tournament = tournament
@@ -143,17 +154,42 @@ class TournamentLayout : LinearLayout {
         canvas.apply {
             save()
 
-            matchUpViewMap.map {
+            val nextMatchUpKey: ((Triple<Int, Int, Int>) -> Triple<Int, Int, Int>)? = when (tournament?.tournamentInformation?.tournamentType) {
+                TournamentType.ELIMINATION -> {
+                    { current -> Triple(0, current.second + 1, current.third / 2) }
+                }
+                TournamentType.DOUBLE_ELIMINATION -> {
+                    { current ->
+                        when (current.first) {
+                            0 -> Triple(current.first, current.second + 1, current.third / 2)
+                            1 -> {
 
-                matchUpViewMap[Triple(0, it.key.second + 1, it.key.third / 2)]?.let { next ->
-                    val current = it.value
-                    val currentCoordinates = intArrayOf(0, 0)
-                    current.point.getLocationOnScreen(currentCoordinates)
+                                Triple(current.first, current.second + 1, if (current.second % 2 == 0) current.third else current.third / 2)
+                            }
+                            else -> {
 
-                    val nextCoordinates = intArrayOf(0, 0)
-                    next.point.getLocationOnScreen(nextCoordinates)
+                                Triple(current.first, current.second + 1, current.third)
+                            }
+                        }
 
-                    drawLine(currentCoordinates[0].toFloat(), currentCoordinates[1].toFloat() - actionBarSize, nextCoordinates[0].toFloat(), nextCoordinates[1].toFloat() - actionBarSize, shadowPaint)
+
+                    }
+                }
+                else -> null
+            }
+
+            nextMatchUpKey?.let { func ->
+                matchUpViewMap.map {
+                    matchUpViewMap[func(it.key)]?.let { next ->
+                        val current = it.value
+                        val currentCoordinates = intArrayOf(0, 0)
+                        current.point.getLocationOnScreen(currentCoordinates)
+
+                        val nextCoordinates = intArrayOf(0, 0)
+                        next.point.getLocationOnScreen(nextCoordinates)
+
+                        drawLine((currentCoordinates[0] + current.point.width).toFloat(), currentCoordinates[1].toFloat() - extraHeight(), nextCoordinates[0].toFloat(), nextCoordinates[1].toFloat() - extraHeight(), shadowPaint)
+                    }
                 }
             }
 

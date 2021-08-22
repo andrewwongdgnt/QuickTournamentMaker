@@ -16,13 +16,23 @@
             android:orientation="vertical"
             tools:context=".ui.tournament.TournamentActivity">
 
-        <TextView
-                android:layout_width="wrap_content"
+        <LinearLayout
+                android:id="@+id/extra_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLines="3"
-                android:minLines="1"
-                android:text="@={vm.description}"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
+                android:paddingHorizontal="@dimen/match_up_padding"
+                android:paddingTop="@dimen/match_up_padding"
+                android:orientation="vertical">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="3"
+                    android:minLines="1"
+                    tools:text="Description"
+                    android:text="@={vm.description}"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+        </LinearLayout>
 
         <com.moagrius.widget.ScalingScrollView
                 android:id="@+id/tournamentView_root"
