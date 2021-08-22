@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.Path
 import android.util.AttributeSet
 import android.view.Gravity.CENTER
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import com.dgnt.quickTournamentMaker.databinding.SimpleMatchUpLayoutBinding
 import com.dgnt.quickTournamentMaker.model.tournament.*
 import com.dgnt.quickTournamentMaker.ui.tournament.TournamentActivity
 
+private const val CURVATURE = 15
 
 class TournamentLayout : LinearLayout {
 
@@ -56,6 +58,7 @@ class TournamentLayout : LinearLayout {
 
         actionBarSize + titleBarSize
     }
+
     private fun dynamicExtraHeight() = (context as? TournamentActivity)?.extraLayoutHeight() ?: 0
     private fun extraHeight() = dynamicExtraHeight() + staticExtraHeight
 
@@ -188,13 +191,30 @@ class TournamentLayout : LinearLayout {
                         val nextCoordinates = intArrayOf(0, 0)
                         next.point.getLocationOnScreen(nextCoordinates)
 
-                        drawLine((currentCoordinates[0] + current.point.width).toFloat(), currentCoordinates[1].toFloat() - extraHeight(), nextCoordinates[0].toFloat(), nextCoordinates[1].toFloat() - extraHeight(), shadowPaint)
+                        drawCurve(canvas, (currentCoordinates[0] + current.point.width).toFloat(), currentCoordinates[1].toFloat() - extraHeight(), nextCoordinates[0].toFloat(), nextCoordinates[1].toFloat() - extraHeight())
                     }
                 }
             }
 
             restore()
         }
+    }
+
+    private fun drawCurve(canvas: Canvas, startX: Float, startY: Float, endX: Float, endY: Float) {
+
+        val midPointX = (startX + endX) / 2
+        val cornerRadius = CURVATURE
+
+        canvas.drawLine(startX, startY, (midPointX - cornerRadius), startY, shadowPaint)
+
+        val mPath = Path()
+        mPath.moveTo((midPointX - cornerRadius), startY)
+        mPath.quadTo(midPointX, startY, midPointX, (startY + cornerRadius * endY.compareTo(startY)))
+
+        canvas.drawLine(midPointX, (startY + cornerRadius * endY.compareTo(startY)), midPointX, endY, shadowPaint)
+        canvas.drawLine(midPointX, endY, endX, endY, shadowPaint)
+
+        canvas.drawPath(mPath, shadowPaint)
     }
 
 
