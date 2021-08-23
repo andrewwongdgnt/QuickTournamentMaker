@@ -4,6 +4,9 @@
 
     <data>
 
+        <import type="android.text.TextUtils" />
+
+        <import type="android.view.View" />
 
         <variable
                 name="vm"
@@ -20,18 +23,19 @@
                 android:id="@+id/extra_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:paddingHorizontal="@dimen/match_up_padding"
-                android:paddingTop="@dimen/match_up_padding"
-                android:orientation="vertical">
+                android:paddingTop="@dimen/match_up_padding">
 
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="3"
                     android:minLines="1"
-                    tools:text="Description"
                     android:text="@={vm.description}"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:visibility="@{TextUtils.isEmpty(vm.description) ? View.GONE : View.VISIBLE}"
+                    tools:text="Description" />
         </LinearLayout>
 
         <com.moagrius.widget.ScalingScrollView
