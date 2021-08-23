@@ -43,19 +43,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-            <LinearLayout
+
+            <com.dgnt.quickTournamentMaker.ui.layout.TournamentLayout
+                    android:id="@+id/container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                <com.dgnt.quickTournamentMaker.ui.layout.TournamentLayout
-                        android:id="@+id/container"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
+            </com.dgnt.quickTournamentMaker.ui.layout.TournamentLayout>
 
-                </com.dgnt.quickTournamentMaker.ui.layout.TournamentLayout>
-            </LinearLayout>
         </com.moagrius.widget.ScalingScrollView>
 
     </LinearLayout>
