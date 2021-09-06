@@ -143,6 +143,7 @@ class QTMApplication() : Application(), DIAware {
 
         bind<ICustomSeedManagementService>() with singleton { CustomSeedManagementService(instance()) }
         bind<IByeStatusResolverService>() with singleton { ByeStatusResolverService() }
+        bind<ITournamentInitiatorService>() with singleton { TournamentInitiatorService(instance()) }
     }
 
 

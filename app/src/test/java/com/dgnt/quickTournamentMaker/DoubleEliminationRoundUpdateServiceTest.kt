@@ -14,7 +14,6 @@ import org.powermock.core.classloader.annotations.PrepareForTest
 import org.powermock.modules.junit4.PowerMockRunner
 
 @RunWith(PowerMockRunner::class)
-@PrepareForTest(Log::class, EliminationRoundUpdateService::class)
 class DoubleEliminationRoundUpdateServiceTest {
     private val mockRoundUpdateService = PowerMockito.mock(IRoundUpdateService::class.java)
 

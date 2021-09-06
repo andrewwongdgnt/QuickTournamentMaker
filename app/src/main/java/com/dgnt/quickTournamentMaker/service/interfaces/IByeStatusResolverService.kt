@@ -10,5 +10,5 @@ interface IByeStatusResolverService {
      * @param roundGroups the entire tournament basically
      * @param roundGroupRoundPair the list of round group and round pairs. First is roundGroupIndex, second is roundIndex
      */
-    fun resolve(roundGroups: List<RoundGroup>, vararg roundGroupRoundPair: Pair<Int, Int>)
+    fun resolve(roundGroups: List<RoundGroup>, roundGroupRoundPair: Pair<Int, Int>)
 }

@@ -5,10 +5,10 @@ import androidx.databinding.Observable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dgnt.quickTournamentMaker.model.tournament.*
-import com.dgnt.quickTournamentMaker.service.interfaces.IByeStatusResolverService
 import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentBuilderService
+import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentInitiatorService
 
-class TournamentViewModel(private val tournamentBuilderService: ITournamentBuilderService, private val byeStatusResolverService: IByeStatusResolverService) : ViewModel(), Observable {
+class TournamentViewModel(private val tournamentBuilderService: ITournamentBuilderService, private val tournamentInitiatorService: ITournamentInitiatorService) : ViewModel(), Observable {
 
 
     @Bindable
@@ -30,18 +30,10 @@ class TournamentViewModel(private val tournamentBuilderService: ITournamentBuild
         title.value = tournamentInformation.title
         description.value = tournamentInformation.description
 
-        val tournament = tournamentBuilderService.build(tournamentInformation, orderedParticipants, defaultRoundGroupTitleFunc, defaultRoundTitleFunc, defaultMatchUpTitleFunc)
-
-        //TODO put this logic in a service, which should also take into account the tournament type
-
-        listOf(Pair(0, 0), Pair(1, 0), Pair(1, 1)).forEach { pair ->
-            byeStatusResolverService.resolve(tournament.roundGroups, pair)
-            (tournament.roundGroups.getOrNull(pair.first)?.rounds?.getOrNull(pair.second)?.matchUps?.indices)?.forEach {
-                tournament.roundUpdateService.update(tournament.roundGroups, pair.first, pair.second, it, tournament.tournamentInformation.rankConfig)
-            }
+        tournamentBuilderService.build(tournamentInformation, orderedParticipants, defaultRoundGroupTitleFunc, defaultRoundTitleFunc, defaultMatchUpTitleFunc).let {
+            tournamentInitiatorService.initiate(it)
+            this.tournament.value = it
         }
-
-        this.tournament.value = tournament
 
     }
 

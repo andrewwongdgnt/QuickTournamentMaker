@@ -69,37 +69,14 @@ class ByeStatusResolverServiceTest {
         Assert.assertEquals(MatchUpStatus.P2_WINNER, roundGroups[0].rounds[1].matchUps[1].status)
     }
 
-    @Test
-    fun testBothRounds() {
-        Assert.assertEquals(MatchUpStatus.DEFAULT, roundGroups[0].rounds[0].matchUps[2].status)
-        Assert.assertEquals(MatchUpStatus.DEFAULT, roundGroups[0].rounds[0].matchUps[3].status)
-        Assert.assertEquals(MatchUpStatus.DEFAULT, roundGroups[0].rounds[1].matchUps[0].status)
-        Assert.assertEquals(MatchUpStatus.DEFAULT, roundGroups[0].rounds[1].matchUps[1].status)
-        sut.resolve(roundGroups, Pair(0, 0), Pair(0, 1))
-        Assert.assertEquals(MatchUpStatus.P1_WINNER, roundGroups[0].rounds[0].matchUps[2].status)
-        Assert.assertEquals(MatchUpStatus.P1_WINNER, roundGroups[0].rounds[0].matchUps[3].status)
-        Assert.assertEquals(MatchUpStatus.P1_WINNER, roundGroups[0].rounds[1].matchUps[0].status)
-        Assert.assertEquals(MatchUpStatus.P2_WINNER, roundGroups[0].rounds[1].matchUps[1].status)
-    }
+
 
     @Test
-    fun testBothRoundGroups() {
-        Assert.assertEquals(MatchUpStatus.DEFAULT, roundGroups[0].rounds[0].matchUps[2].status)
-        Assert.assertEquals(MatchUpStatus.DEFAULT, roundGroups[0].rounds[0].matchUps[3].status)
-        Assert.assertEquals(MatchUpStatus.DEFAULT, roundGroups[0].rounds[1].matchUps[0].status)
-        Assert.assertEquals(MatchUpStatus.DEFAULT, roundGroups[0].rounds[1].matchUps[1].status)
+    fun testSecondRoundGroup() {
         Assert.assertEquals(MatchUpStatus.DEFAULT, roundGroups[1].rounds[0].matchUps[2].status)
         Assert.assertEquals(MatchUpStatus.DEFAULT, roundGroups[1].rounds[0].matchUps[3].status)
-        Assert.assertEquals(MatchUpStatus.DEFAULT, roundGroups[1].rounds[1].matchUps[0].status)
-        Assert.assertEquals(MatchUpStatus.DEFAULT, roundGroups[1].rounds[1].matchUps[1].status)
-        sut.resolve(roundGroups, Pair(0, 0), Pair(0, 1), Pair(1, 0), Pair(1, 1))
-        Assert.assertEquals(MatchUpStatus.P1_WINNER, roundGroups[0].rounds[0].matchUps[2].status)
-        Assert.assertEquals(MatchUpStatus.P1_WINNER, roundGroups[0].rounds[0].matchUps[3].status)
-        Assert.assertEquals(MatchUpStatus.P1_WINNER, roundGroups[0].rounds[1].matchUps[0].status)
-        Assert.assertEquals(MatchUpStatus.P2_WINNER, roundGroups[0].rounds[1].matchUps[1].status)
+        sut.resolve(roundGroups, Pair(1, 0))
         Assert.assertEquals(MatchUpStatus.P1_WINNER, roundGroups[1].rounds[0].matchUps[2].status)
         Assert.assertEquals(MatchUpStatus.P1_WINNER, roundGroups[1].rounds[0].matchUps[3].status)
-        Assert.assertEquals(MatchUpStatus.P1_WINNER, roundGroups[1].rounds[1].matchUps[0].status)
-        Assert.assertEquals(MatchUpStatus.P2_WINNER, roundGroups[1].rounds[1].matchUps[1].status)
     }
 }

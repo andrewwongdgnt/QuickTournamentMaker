@@ -35,14 +35,14 @@ class PreferenceService(private val sharedPreferences: SharedPreferences, privat
             TournamentType.ROUND_ROBIN -> editor.putBoolean(PREF_ROUND_ROBIN_RANKING_CONFIG_KEY, value)
             else -> throw IllegalArgumentException("Tournament Type not supported $tournamentType")
         }
-        editor.commit()
+        editor.apply()
     }
 
     override fun getRankPriority(tournamentType: TournamentType): RankPriorityConfig =
         rankingConfigService.buildRankingFromPriority(
             when (tournamentType) {
-                TournamentType.SWISS -> sharedPreferences.getString(PREF_SWISS_RANK_PRIORITY_KEY, RankPriorityConfig.DEFAULT_INPUT)
-                TournamentType.ROUND_ROBIN -> sharedPreferences.getString(PREF_ROUND_ROBIN_RANK_PRIORITY_KEY, RankPriorityConfig.DEFAULT_INPUT)
+                TournamentType.SWISS -> sharedPreferences.getString(PREF_SWISS_RANK_PRIORITY_KEY, RankPriorityConfig.DEFAULT_INPUT) ?: RankPriorityConfig.DEFAULT_INPUT
+                TournamentType.ROUND_ROBIN -> sharedPreferences.getString(PREF_ROUND_ROBIN_RANK_PRIORITY_KEY, RankPriorityConfig.DEFAULT_INPUT) ?: RankPriorityConfig.DEFAULT_INPUT
                 else -> throw IllegalArgumentException("Tournament Type not supported $tournamentType")
             }
         )
@@ -57,15 +57,15 @@ class PreferenceService(private val sharedPreferences: SharedPreferences, privat
                 else -> throw IllegalArgumentException("Tournament Type not supported $tournamentType")
             }, rankingConfigService.getRankingFromPriorityAsString(rankPriorityConfig)
         )
-        editor.commit()
+        editor.apply()
 
     }
 
     override fun getRankScore(tournamentType: TournamentType): RankScoreConfig =
         rankingConfigService.buildRankingFromScore(
             when (tournamentType) {
-                TournamentType.SWISS -> sharedPreferences.getString(PREF_SWISS_RANK_SCORE_KEY, RankScoreConfig.DEFAULT_INPUT)
-                TournamentType.ROUND_ROBIN -> sharedPreferences.getString(PREF_ROUND_ROBIN_RANK_SCORE_KEY, RankScoreConfig.DEFAULT_INPUT)
+                TournamentType.SWISS -> sharedPreferences.getString(PREF_SWISS_RANK_SCORE_KEY, RankScoreConfig.DEFAULT_INPUT) ?: RankScoreConfig.DEFAULT_INPUT
+                TournamentType.ROUND_ROBIN -> sharedPreferences.getString(PREF_ROUND_ROBIN_RANK_SCORE_KEY, RankScoreConfig.DEFAULT_INPUT) ?: RankScoreConfig.DEFAULT_INPUT
                 else -> throw IllegalArgumentException("Tournament Type not supported $tournamentType")
             }
         )
@@ -80,6 +80,6 @@ class PreferenceService(private val sharedPreferences: SharedPreferences, privat
                 else -> throw IllegalArgumentException("Tournament Type not supported $tournamentType")
             }, rankingConfigService.getRankingFromScoreAsString(rankScoreConfig)
         )
-        editor.commit()
+        editor.apply()
     }
 }

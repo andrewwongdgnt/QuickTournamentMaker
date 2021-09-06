@@ -1,17 +1,20 @@
 package com.dgnt.quickTournamentMaker
 
-import com.dgnt.quickTournamentMaker.model.tournament.*
+import com.dgnt.quickTournamentMaker.model.tournament.RankPriorityConfig
+import com.dgnt.quickTournamentMaker.model.tournament.SeedType
+import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
+import com.dgnt.quickTournamentMaker.model.tournament.TournamentType
 import com.dgnt.quickTournamentMaker.service.data.TournamentTypeServices
 import com.dgnt.quickTournamentMaker.service.implementation.TournamentBuilderService
-import com.dgnt.quickTournamentMaker.service.interfaces.*
+import com.dgnt.quickTournamentMaker.service.interfaces.IMatchUpStatusTransformService
+import com.dgnt.quickTournamentMaker.service.interfaces.IRankingService
+import com.dgnt.quickTournamentMaker.service.interfaces.IRoundGeneratorService
+import com.dgnt.quickTournamentMaker.service.interfaces.IRoundUpdateService
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.mockito.Mockito
 import org.powermock.api.mockito.PowerMockito
-import org.powermock.core.classloader.annotations.PrepareForTest
-import org.powermock.modules.junit4.PowerMockRunner
 import java.util.*
 
 class TournamentBuilderServiceTest {
