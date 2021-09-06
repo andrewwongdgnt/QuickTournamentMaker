@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+            android:id="@+id/layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingVertical="@dimen/match_up_padding">
+
+        <TextView
+                android:id="@+id/player"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/p_general_default"
+                android:ellipsize="end"
+                android:lines="2"
+                android:maxLines="2"
+                android:padding="@dimen/participant_padding"
+                tools:text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    </LinearLayout>
+</layout>

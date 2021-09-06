@@ -69,5 +69,17 @@ class SurvivalRoundUpdateServiceTest {
         Assert.assertEquals(Participant.NULL_PARTICIPANT, roundGroups[0].rounds[1].matchUps[3].participant1)
     }
 
+    @Test
+    fun testP1Win_firstAndSecondRound() {
+        roundGroups[0].rounds[0].matchUps[0].status = MatchUpStatus.P1_WINNER
+        sut.update(roundGroups, 0, 0, 0)
+        roundGroups[0].rounds[1].matchUps[0].status = MatchUpStatus.P1_WINNER
+        sut.update(roundGroups, 0, 1, 0)
+        Assert.assertEquals(Data.ANDREW, roundGroups[0].rounds[2].matchUps[0].participant1)
+        Assert.assertEquals(Participant.NULL_PARTICIPANT, roundGroups[0].rounds[2].matchUps[1].participant1)
+        Assert.assertEquals(Participant.NULL_PARTICIPANT, roundGroups[0].rounds[2].matchUps[2].participant1)
+        Assert.assertEquals(Participant.NULL_PARTICIPANT, roundGroups[0].rounds[2].matchUps[3].participant1)
+    }
+
 
 }

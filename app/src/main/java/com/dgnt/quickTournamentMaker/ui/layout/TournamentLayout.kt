@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.DoubleEliminationConfigurationBinding
 import com.dgnt.quickTournamentMaker.databinding.SimpleMatchUpLayoutBinding
+import com.dgnt.quickTournamentMaker.databinding.SingleMatchUpLayoutBinding
 import com.dgnt.quickTournamentMaker.model.tournament.*
 import com.dgnt.quickTournamentMaker.ui.tournament.TournamentActivity
 
@@ -31,6 +32,7 @@ class TournamentLayout : LinearLayout {
     }
 
     private val matchUpViewMap = mutableMapOf<Triple<Int, Int, Int>, SimpleMatchUpLayoutBinding>()
+    private val singleMatchUpViewMap = mutableMapOf<Triple<Int, Int, Int>, SingleMatchUpLayoutBinding>()
 
     private val roundWidth = context.resources.getDimension(R.dimen.round_width).toInt()
     private val roundMargin = context.resources.getDimension(R.dimen.round_margin).toInt()
@@ -75,31 +77,48 @@ class TournamentLayout : LinearLayout {
                         rll.gravity = CENTER
                         rll.layoutParams = LayoutParams(roundWidth, LayoutParams.MATCH_PARENT).also { it.setMargins(roundMargin, roundMargin, roundMargin, roundMargin) }
                         r.matchUps.forEach { mu ->
-                            rll.addView(SimpleMatchUpLayoutBinding.inflate(LayoutInflater.from(context)).also { mul ->
-                                mul.layout.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, 0, 1f)
-                                mul.player1.apply {
-                                    text = getName(mu.participant1)
-                                    if (!mu.containsBye) {
+                            val view = if (tournament.tournamentInformation.tournamentType == TournamentType.SURVIVAL) {
+                                SingleMatchUpLayoutBinding.inflate(LayoutInflater.from(context)).also { mul ->
+                                    mul.layout.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, 0, 1f)
+                                    mul.player.apply {
+                                        text = getName(mu.participant1)
                                         setOnClickListener {
                                             clickListener(mu, ParticipantPosition.P1)
                                             updateViews(mu, mul)
-                                            updateMatchUps(tournament.matchUps)
+                                            updateSingleMatchUps(tournament.matchUps)
                                         }
                                     }
-                                }
-                                mul.player2.apply {
-                                    text = getName(mu.participant2)
-                                    if (!mu.containsBye) {
-                                        setOnClickListener {
-                                            clickListener(mu, ParticipantPosition.P2)
-                                            updateViews(mu, mul)
-                                            updateMatchUps(tournament.matchUps)
+                                    updateViews(mu, mul)
+                                    singleMatchUpViewMap[mu.key] = mul
+                                }.root
+                            } else {
+                                SimpleMatchUpLayoutBinding.inflate(LayoutInflater.from(context)).also { mul ->
+                                    mul.layout.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, 0, 1f)
+                                    mul.player1.apply {
+                                        text = getName(mu.participant1)
+                                        if (!mu.containsBye) {
+                                            setOnClickListener {
+                                                clickListener(mu, ParticipantPosition.P1)
+                                                updateViews(mu, mul)
+                                                updateMatchUps(tournament.matchUps)
+                                            }
                                         }
                                     }
-                                }
-                                updateViews(mu, mul)
-                                matchUpViewMap[mu.key] = mul
-                            }.root)
+                                    mul.player2.apply {
+                                        text = getName(mu.participant2)
+                                        if (!mu.containsBye) {
+                                            setOnClickListener {
+                                                clickListener(mu, ParticipantPosition.P2)
+                                                updateViews(mu, mul)
+                                                updateMatchUps(tournament.matchUps)
+                                            }
+                                        }
+                                    }
+                                    updateViews(mu, mul)
+                                    matchUpViewMap[mu.key] = mul
+                                }.root
+                            }
+                            rll.addView(view)
                         }
                     })
                 }
@@ -124,7 +143,11 @@ class TournamentLayout : LinearLayout {
             }
         }
 
-        updateMatchUps(tournament.matchUps)
+        if (tournament.tournamentInformation.tournamentType == TournamentType.SURVIVAL){
+            updateSingleMatchUps(tournament.matchUps)
+        } else {
+            updateMatchUps(tournament.matchUps)
+        }
         invalidate()
     }
 
@@ -149,14 +172,30 @@ class TournamentLayout : LinearLayout {
         }
     }
 
+    private fun updateViews(matchUp: MatchUp, matchUpLayout: SingleMatchUpLayoutBinding) {
+        when (matchUp.status) {
+            MatchUpStatus.P1_WINNER -> {
+                matchUpLayout.player.background = ContextCompat.getDrawable(context, R.drawable.p_general_win)
+            }
+            else -> {
+                matchUpLayout.player.background = ContextCompat.getDrawable(context, R.drawable.p_general_default)
+            }
+        }
+    }
 
     private fun updateMatchUps(matchUps: List<MatchUp>) {
-
-
         matchUps.forEach {
             matchUpViewMap[it.key]?.apply {
                 player1.text = getName(it.participant1)
                 player2.text = getName(it.participant2)
+            }
+        }
+    }
+
+    private fun updateSingleMatchUps(matchUps: List<MatchUp>) {
+        matchUps.forEach {
+            singleMatchUpViewMap[it.key]?.apply {
+                player.text = getName(it.participant1)
             }
         }
     }

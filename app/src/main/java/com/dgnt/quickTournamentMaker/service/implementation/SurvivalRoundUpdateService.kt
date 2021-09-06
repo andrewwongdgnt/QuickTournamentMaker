@@ -11,8 +11,8 @@ class SurvivalRoundUpdateService : IRoundUpdateService {
 
         val roundGroup = roundGroups[roundGroupIndex]
 
-        var currentRoundIndex = roundIndex;
-        var continueLoop = true;
+        var currentRoundIndex = roundIndex
+        var continueLoop = true
         while (continueLoop && currentRoundIndex < roundGroups[roundGroupIndex].rounds.lastIndex) {
 
             val currentRound = roundGroup.rounds[currentRoundIndex]

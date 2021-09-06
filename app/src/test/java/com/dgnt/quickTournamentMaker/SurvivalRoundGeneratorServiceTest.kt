@@ -59,5 +59,14 @@ class SurvivalRoundGeneratorServiceTest {
 
     }
 
+    @Test
+    fun testMatchUps() {
+        val rounds = roundGroups[0].rounds
+        for (i in 0..6)
+            for (j in 0..7)
+            Assert.assertEquals(Triple(0,i,j), rounds[i].matchUps[j].key)
+
+    }
+
 
 }

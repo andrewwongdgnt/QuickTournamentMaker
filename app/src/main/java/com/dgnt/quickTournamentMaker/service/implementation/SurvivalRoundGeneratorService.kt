@@ -17,7 +17,7 @@ class SurvivalRoundGeneratorService(private val participantService: IParticipant
             when (roundIndex) {
                 0 -> round1
                 else -> Round(0, roundIndex,
-                    (1..totalParticipants).map {
+                    (0 until totalParticipants).map {
                         MatchUp(0, roundIndex, it, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)
                             .apply { title = defaultMatchUpTitleFunc(this) }
                     }

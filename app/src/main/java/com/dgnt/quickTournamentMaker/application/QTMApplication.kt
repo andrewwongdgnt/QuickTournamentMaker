@@ -23,7 +23,7 @@ class QTMApplication() : Application(), DIAware {
         private const val RECORD_TAG = "RECORD_TAG"
         private const val POWER_OF_2_TAG = "POWER_OF_2_TAG"
         private const val EVEN_NUMBER_TAG = "EVEN_NUMBER_TAG"
-        private const val BYE_POPULATE_TAG = "BYE_POPULATE_TAG"
+        private const val NULL_POPULATE_TAG = "NULL_POPULATE_TAG"
         private const val ONE_WINNER_TAG = "ONE_WINNER_TAG"
         private const val TIE_TAG = "TIE_TAG"
     }
@@ -54,7 +54,7 @@ class QTMApplication() : Application(), DIAware {
                     TournamentType.DOUBLE_ELIMINATION to instance(POWER_OF_2_TAG),
                     TournamentType.ROUND_ROBIN to instance(EVEN_NUMBER_TAG),
                     TournamentType.SWISS to instance(EVEN_NUMBER_TAG),
-                    TournamentType.SURVIVAL to instance(BYE_POPULATE_TAG),
+                    TournamentType.SURVIVAL to instance(NULL_POPULATE_TAG),
                 )
             )
         }
@@ -97,7 +97,7 @@ class QTMApplication() : Application(), DIAware {
 
         bind<ISeedService>(POWER_OF_2_TAG) with singleton { PowerOf2SeedService() }
         bind<ISeedService>(EVEN_NUMBER_TAG) with singleton { EvenNumberSeedService() }
-        bind<ISeedService>(BYE_POPULATE_TAG) with singleton { ByePopulateSeedService() }
+        bind<ISeedService>(NULL_POPULATE_TAG) with singleton { NullPopulateSeedService() }
 
         bind<IMatchUpStatusTransformService>(ONE_WINNER_TAG) with singleton { OneWinnerMatchUpStatusTransformService() }
         bind<IMatchUpStatusTransformService>(TIE_TAG) with singleton { TieMatchUpStatusTransformService() }
