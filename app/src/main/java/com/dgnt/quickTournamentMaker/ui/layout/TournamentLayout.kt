@@ -96,7 +96,7 @@ class TournamentLayout : LinearLayout {
                                     mul.layout.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, 0, 1f)
                                     mul.player1.apply {
                                         text = getName(mu.participant1)
-                                        if (!mu.containsBye) {
+                                        if (!mu.containsBye()) {
                                             setOnClickListener {
                                                 clickListener(mu, ParticipantPosition.P1)
                                                 updateViews(mu, mul)
@@ -106,7 +106,7 @@ class TournamentLayout : LinearLayout {
                                     }
                                     mul.player2.apply {
                                         text = getName(mu.participant2)
-                                        if (!mu.containsBye) {
+                                        if (!mu.containsBye()) {
                                             setOnClickListener {
                                                 clickListener(mu, ParticipantPosition.P2)
                                                 updateViews(mu, mul)
@@ -143,7 +143,7 @@ class TournamentLayout : LinearLayout {
             }
         }
 
-        if (tournament.tournamentInformation.tournamentType == TournamentType.SURVIVAL){
+        if (tournament.tournamentInformation.tournamentType == TournamentType.SURVIVAL) {
             updateSingleMatchUps(tournament.matchUps)
         } else {
             updateMatchUps(tournament.matchUps)
@@ -199,7 +199,6 @@ class TournamentLayout : LinearLayout {
             }
         }
     }
-
 
     private val shadowPaint = Paint().apply {
         isAntiAlias = true

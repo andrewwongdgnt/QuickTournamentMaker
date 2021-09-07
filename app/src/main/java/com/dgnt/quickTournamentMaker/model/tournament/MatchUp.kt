@@ -24,5 +24,5 @@ data class MatchUp(
     var note: String = ""
     var color: Int = TournamentUtil.DEFAULT_DISPLAY_COLOR
     override val key = Triple(roundGroupIndex, roundIndex, matchUpIndex)
-    val containsBye = participant1.participantType == ParticipantType.BYE || participant2.participantType == ParticipantType.BYE
+    fun containsBye() = participant1.participantType == ParticipantType.BYE || participant2.participantType == ParticipantType.BYE
 }
