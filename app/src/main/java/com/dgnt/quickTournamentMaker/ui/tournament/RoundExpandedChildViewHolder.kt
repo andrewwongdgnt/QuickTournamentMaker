@@ -14,6 +14,7 @@ class RoundExpandedChildViewHolder(private val binding: ChildListItemBinding, pr
                     this + (if (round.note.isEmpty()) "" else "*")
                 }
             setTextColor(round.color)
+            setTypeface(typeface, if (round.updatedTitle()) Typeface.BOLD else Typeface.NORMAL)
             itemView.setOnClickListener {
                 clickListener(round)
             }

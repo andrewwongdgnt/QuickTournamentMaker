@@ -1,10 +1,7 @@
 package com.dgnt.quickTournamentMaker.service.interfaces
 
 import android.content.res.Resources
-import com.dgnt.quickTournamentMaker.model.tournament.MatchUp
-import com.dgnt.quickTournamentMaker.model.tournament.Round
-import com.dgnt.quickTournamentMaker.model.tournament.RoundGroup
-import com.dgnt.quickTournamentMaker.model.tournament.TournamentType
+import com.dgnt.quickTournamentMaker.model.tournament.*
 
 interface ICreateDefaultTitleService {
 
@@ -13,28 +10,30 @@ interface ICreateDefaultTitleService {
      *
      * @param resources the android context
      * @param tournamentType the tournament type
-     * @param roundGroup the round group
+     * @param roundGroupIndex the round group index
      * @return the title of the round group
      */
-    fun forRoundGroup(resources: Resources, tournamentType: TournamentType, roundGroup: RoundGroup): String
+    fun forRoundGroup(resources: Resources, tournamentType: TournamentType, roundGroupIndex: Int): String
 
     /**
      * create default round title
      *
      * @param resources the android context
-     * @param round the round
+     * @param roundIndex the round index in a given round group
      * @return the title of the round
      */
-    fun forRound(resources: Resources, round: Round): String
+    fun forRound(resources: Resources, roundIndex: Int): String
 
     /**
-     * create default round title
+     * create default match up title
      *
      * @param resources the android context
-     * @param matchUp the match up
+     * @param matchUpIndex the match up index in a given round
+     * @param participant1 the first participant
+     * @param participant2 the second participant
      * @return the title of the round
      */
-    fun forMatchUp(resources: Resources, matchUp: MatchUp): String
+    fun forMatchUp(resources: Resources, matchUpIndex: Int, participant1: Participant, participant2: Participant): String
 
     /**
      * naming the participant during quick start

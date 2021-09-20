@@ -1,8 +1,6 @@
 package com.dgnt.quickTournamentMaker.service.interfaces
 
-import com.dgnt.quickTournamentMaker.model.tournament.MatchUp
 import com.dgnt.quickTournamentMaker.model.tournament.Participant
-import com.dgnt.quickTournamentMaker.model.tournament.Round
 import com.dgnt.quickTournamentMaker.model.tournament.RoundGroup
 
 interface IRoundGeneratorService {
@@ -16,6 +14,6 @@ interface IRoundGeneratorService {
      * @param defaultMatchUpTitleFunc the function that produces a default title for match ups
      * @return List of round groups
      */
-    fun build(orderedParticipants: List<Participant>, defaultRoundGroupTitleFunc: (RoundGroup) -> String = { rg -> rg.roundGroupIndex.toString() }, defaultRoundTitleFunc: (Round) -> String = { r -> r.roundIndex.toString() }, defaultMatchUpTitleFunc: (MatchUp) -> String = { m -> m.matchUpIndex.toString() }): List<RoundGroup>
+    fun build(orderedParticipants: List<Participant>, defaultRoundGroupTitleFunc: (Int) -> String = { rgIndex -> rgIndex.toString() }, defaultRoundTitleFunc: (Int) -> String = { rIndex -> rIndex.toString() }, defaultMatchUpTitleFunc: (Int, Participant, Participant) -> String = { mIndex, p1, p2 -> "$mIndex, $p1, $p2" }): List<RoundGroup>
 
 }

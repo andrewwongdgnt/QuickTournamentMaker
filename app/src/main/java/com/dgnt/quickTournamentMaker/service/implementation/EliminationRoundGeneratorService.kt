@@ -7,8 +7,15 @@ import com.dgnt.quickTournamentMaker.model.tournament.RoundGroup
 import com.dgnt.quickTournamentMaker.service.interfaces.IParticipantService
 import com.dgnt.quickTournamentMaker.service.interfaces.IRoundGeneratorService
 
-class EliminationRoundGeneratorService(private val participantService: IParticipantService) : IRoundGeneratorService {
-    override fun build(orderedParticipants: List<Participant>, defaultRoundGroupTitleFunc: (RoundGroup) -> String, defaultRoundTitleFunc: (Round) -> String, defaultMatchUpTitleFunc: (MatchUp) -> String): List<RoundGroup> {
+class EliminationRoundGeneratorService(
+    private val participantService: IParticipantService
+) : IRoundGeneratorService {
+    override fun build(
+        orderedParticipants: List<Participant>,
+        defaultRoundGroupTitleFunc: (Int) -> String,
+        defaultRoundTitleFunc: (Int) -> String,
+        defaultMatchUpTitleFunc: (Int, Participant, Participant) -> String
+    ): List<RoundGroup> {
 
         val round1 = participantService.createRound(orderedParticipants, defaultRoundTitleFunc = defaultRoundTitleFunc, defaultMatchUpTitleFunc = defaultMatchUpTitleFunc)
 
@@ -21,21 +28,30 @@ class EliminationRoundGeneratorService(private val participantService: IParticip
         var roundIndex = 1;
         while (matchUpTotal >= 1) {
 
-            val round = Round(0, roundIndex, (0 until matchUpTotal.toInt())
-                .map { matchUpIndex ->
-                    MatchUp(0, roundIndex, matchUpIndex, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)
-                        .apply { title = defaultMatchUpTitleFunc(this) }
-                })
-                .apply {
-                    title = defaultRoundTitleFunc(this)
-                }
+            val round = Round(
+                0,
+                roundIndex,
+                (0 until matchUpTotal.toInt())
+                    .map { matchUpIndex ->
+                        MatchUp(
+                            0,
+                            roundIndex,
+                            matchUpIndex,
+                            Participant.NULL_PARTICIPANT,
+                            Participant.NULL_PARTICIPANT,
+                            defaultMatchUpTitleFunc(matchUpIndex, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)
+                        )
+                    },
+                defaultRoundTitleFunc(roundIndex)
+            )
+
             rounds.add(round)
 
             matchUpTotal *= 0.5
             roundIndex++
         }
 
-        return listOf(RoundGroup(0, rounds).apply { title = defaultRoundGroupTitleFunc(this) })
+        return listOf(RoundGroup(0, rounds, defaultRoundGroupTitleFunc(0)))
     }
 
 }

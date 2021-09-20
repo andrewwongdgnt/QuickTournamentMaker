@@ -14,11 +14,11 @@ class MatchUpExpandedChildViewHolder(private val binding: ChildListItemBinding, 
                 if (useTitle)
                     title
                 else
-                    createDefaultTitleService.forMatchUp(context.resources, this)
+                    createDefaultTitleService.forMatchUp(context.resources, matchUpIndex, participant1, participant2)
             }.run {
                 this + (if (matchUp.note.isEmpty()) "" else "*")
             }
-            setTypeface(typeface, if (matchUp.useTitle) Typeface.ITALIC else Typeface.NORMAL)
+            setTypeface(typeface, if (matchUp.useTitle) Typeface.BOLD else Typeface.NORMAL)
             setTextColor(matchUp.color)
             itemView.setOnClickListener {
                 clickListener(matchUp)

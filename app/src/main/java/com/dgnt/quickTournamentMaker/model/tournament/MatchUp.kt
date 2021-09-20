@@ -16,13 +16,13 @@ data class MatchUp(
     val roundIndex: Int,
     val matchUpIndex: Int,
     var participant1: Participant,
-    var participant2: Participant
-) : IKeyable<Triple<Int, Int, Int>>, Parcelable {
-    var useTitle: Boolean = false
-    var title: String = ""
-    var status: MatchUpStatus = MatchUpStatus.DEFAULT
-    var note: String = ""
+    var participant2: Participant,
+    var title: String,
+    var useTitle: Boolean = false,
+    var status: MatchUpStatus = MatchUpStatus.DEFAULT,
+    var note: String = "",
     var color: Int = TournamentUtil.DEFAULT_DISPLAY_COLOR
+) : IKeyable<Triple<Int, Int, Int>>, Parcelable {
     override val key = Triple(roundGroupIndex, roundIndex, matchUpIndex)
     fun containsBye() = participant1.participantType == ParticipantType.BYE || participant2.participantType == ParticipantType.BYE
 }

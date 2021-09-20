@@ -16,37 +16,41 @@ class SurvivalRoundUpdateServiceTest {
 
         val round1 = Round(
             0, 0, listOf(
-                MatchUp(0, 0, 0, Data.ANDREW, Participant.NULL_PARTICIPANT),
-                MatchUp(0, 0, 1, Data.KYRA, Participant.NULL_PARTICIPANT),
-                MatchUp(0, 0, 2, Data.DGNT, Participant.NULL_PARTICIPANT),
-                MatchUp(0, 0, 3, Data.KELSEY, Participant.NULL_PARTICIPANT)
-            )
+                MatchUp(0, 0, 0, Data.ANDREW, Participant.NULL_PARTICIPANT, ""),
+                MatchUp(0, 0, 1, Data.KYRA, Participant.NULL_PARTICIPANT, ""),
+                MatchUp(0, 0, 2, Data.DGNT, Participant.NULL_PARTICIPANT, ""),
+                MatchUp(0, 0, 3, Data.KELSEY, Participant.NULL_PARTICIPANT, "")
+            ),
+            ""
         )
         val round2 = Round(
             0, 1, listOf(
-                MatchUp(0, 1, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT),
-                MatchUp(0, 1, 1, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT),
-                MatchUp(0, 1, 2, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT),
-                MatchUp(0, 1, 3, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)
-            )
+                MatchUp(0, 1, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT, ""),
+                MatchUp(0, 1, 1, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT, ""),
+                MatchUp(0, 1, 2, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT, ""),
+                MatchUp(0, 1, 3, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT, "")
+            ),
+            ""
         )
         val round3 = Round(
             0, 2, listOf(
-                MatchUp(0, 2, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT),
-                MatchUp(0, 2, 1, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT),
-                MatchUp(0, 2, 2, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT),
-                MatchUp(0, 2, 3, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)
-            )
+                MatchUp(0, 2, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT, ""),
+                MatchUp(0, 2, 1, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT, ""),
+                MatchUp(0, 2, 2, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT, ""),
+                MatchUp(0, 2, 3, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT, "")
+            ),
+            ""
         )
         val round4 = Round(
             0, 3, listOf(
-                MatchUp(0, 3, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT),
-                MatchUp(0, 3, 1, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT),
-                MatchUp(0, 3, 2, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT),
-                MatchUp(0, 3, 3, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)
-            )
+                MatchUp(0, 3, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT, ""),
+                MatchUp(0, 3, 1, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT, ""),
+                MatchUp(0, 3, 2, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT, ""),
+                MatchUp(0, 3, 3, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT, "")
+            ),
+            ""
         )
-        roundGroups = listOf(RoundGroup(0, listOf(round1, round2, round3, round4)))
+        roundGroups = listOf(RoundGroup(0, listOf(round1, round2, round3, round4), ""))
     }
 
     @Test

@@ -27,24 +27,28 @@ class EliminationRankingHelperServiceTest {
                 listOf(
                     Round(
                         0, 0, listOf(
-                            MatchUp(0, 0, 0, Data.ANDREW, Data.KYRA),
-                            MatchUp(0, 0, 1, Data.DGNT, Data.KELSEY),
-                            MatchUp(0, 0, 2, Data.FIRE, Data.SUPER),
-                            MatchUp(0, 0, 3, Data.HERO, Data.DEMON)
-                        )
+                            MatchUp(0, 0, 0, Data.ANDREW, Data.KYRA, ""),
+                            MatchUp(0, 0, 1, Data.DGNT, Data.KELSEY, ""),
+                            MatchUp(0, 0, 2, Data.FIRE, Data.SUPER, ""),
+                            MatchUp(0, 0, 3, Data.HERO, Data.DEMON, "")
+                        ),
+                        ""
                     ),
                     Round(
                         0, 1, listOf(
-                            MatchUp(0, 1, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT),
-                            MatchUp(0, 1, 1, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)
-                        )
+                            MatchUp(0, 1, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT, ""),
+                            MatchUp(0, 1, 1, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT, "")
+                        ),
+                        ""
                     ),
                     Round(
                         0, 2, listOf(
-                            MatchUp(0, 2, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)
-                        )
+                            MatchUp(0, 2, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT, "")
+                        ),
+                        ""
                     )
-                )
+                ),
+                ""
             )
         ).first().rounds
         val initialStateRank = sut.calculate(initialState, initialState.dropLast(1), initialState.takeLast(1))
@@ -57,21 +61,25 @@ class EliminationRankingHelperServiceTest {
                 listOf(
                     Round(
                         0, 0, listOf(
-                            MatchUp(0, 0, 0, Data.ANDREW, Data.KYRA).also { it.status = MatchUpStatus.P1_WINNER },
-                            MatchUp(0, 0, 1, Data.DGNT, Data.KELSEY).also { it.status = MatchUpStatus.P1_WINNER },
-                            MatchUp(0, 0, 2, Data.FIRE, Data.SUPER).also { it.status = MatchUpStatus.P1_WINNER },
-                            MatchUp(0, 0, 3, Data.HERO, Data.DEMON).also { it.status = MatchUpStatus.P1_WINNER })
+                            MatchUp(0, 0, 0, Data.ANDREW, Data.KYRA, "").also { it.status = MatchUpStatus.P1_WINNER },
+                            MatchUp(0, 0, 1, Data.DGNT, Data.KELSEY, "").also { it.status = MatchUpStatus.P1_WINNER },
+                            MatchUp(0, 0, 2, Data.FIRE, Data.SUPER, "").also { it.status = MatchUpStatus.P1_WINNER },
+                            MatchUp(0, 0, 3, Data.HERO, Data.DEMON, "").also { it.status = MatchUpStatus.P1_WINNER }),
+                        ""
                     ),
                     Round(
                         0, 1, listOf(
-                            MatchUp(0, 1, 0, Data.ANDREW, Data.DGNT).also { it.status = MatchUpStatus.P1_WINNER },
-                            MatchUp(0, 1, 1, Data.FIRE, Data.HERO).also { it.status = MatchUpStatus.P1_WINNER })
+                            MatchUp(0, 1, 0, Data.ANDREW, Data.DGNT, "").also { it.status = MatchUpStatus.P1_WINNER },
+                            MatchUp(0, 1, 1, Data.FIRE, Data.HERO, "").also { it.status = MatchUpStatus.P1_WINNER }),
+                        ""
                     ),
                     Round(
                         0, 2, listOf(
-                            MatchUp(0, 2, 0, Data.ANDREW, Data.FIRE).also { it.status = MatchUpStatus.P1_WINNER })
+                            MatchUp(0, 2, 0, Data.ANDREW, Data.FIRE, "").also { it.status = MatchUpStatus.P1_WINNER }),
+                        ""
                     )
-                )
+                ),
+                ""
             )
         ).first().rounds
         val finalStateRank = sut.calculate(finalState, finalState.dropLast(1), finalState.takeLast(1))
@@ -84,24 +92,28 @@ class EliminationRankingHelperServiceTest {
                 listOf(
                     Round(
                         0, 0, listOf(
-                            MatchUp(0, 0, 0, Data.ANDREW, Data.KYRA).also { it.status = MatchUpStatus.P1_WINNER },
-                            MatchUp(0, 0, 1, Data.DGNT, Data.KELSEY).also { it.status = MatchUpStatus.P2_WINNER },
-                            MatchUp(0, 0, 2, Data.FIRE, Data.SUPER),
-                            MatchUp(0, 0, 3, Data.HERO, Data.DEMON)
-                        )
+                            MatchUp(0, 0, 0, Data.ANDREW, Data.KYRA, "").also { it.status = MatchUpStatus.P1_WINNER },
+                            MatchUp(0, 0, 1, Data.DGNT, Data.KELSEY, "").also { it.status = MatchUpStatus.P2_WINNER },
+                            MatchUp(0, 0, 2, Data.FIRE, Data.SUPER, ""),
+                            MatchUp(0, 0, 3, Data.HERO, Data.DEMON, "")
+                        ),
+                        ""
                     ),
                     Round(
                         0, 1, listOf(
-                            MatchUp(0, 1, 0, Data.ANDREW, Data.KELSEY).also { it.status = MatchUpStatus.P2_WINNER },
-                            MatchUp(0, 1, 1, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)
-                        )
+                            MatchUp(0, 1, 0, Data.ANDREW, Data.KELSEY, "").also { it.status = MatchUpStatus.P2_WINNER },
+                            MatchUp(0, 1, 1, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT, "")
+                        ),
+                        ""
                     ),
                     Round(
                         0, 2, listOf(
-                            MatchUp(0, 2, 0, Data.KELSEY, Participant.NULL_PARTICIPANT)
-                        )
+                            MatchUp(0, 2, 0, Data.KELSEY, Participant.NULL_PARTICIPANT, "")
+                        ),
+                        ""
                     )
-                )
+                ),
+                ""
             )
         ).first().rounds
         val betweenStateRank = sut.calculate(betweenState, betweenState.dropLast(1), betweenState.takeLast(1))
@@ -114,22 +126,26 @@ class EliminationRankingHelperServiceTest {
                 listOf(
                     Round(
                         0, 0, listOf(
-                            MatchUp(0, 0, 0, Data.ANDREW, Data.KYRA).also { it.status = MatchUpStatus.P1_WINNER },
-                            MatchUp(0, 0, 1, Data.DGNT, Data.KELSEY).also { it.status = MatchUpStatus.P2_WINNER },
-                            MatchUp(0, 0, 2, Data.FIRE, Data.SUPER).also { it.status = MatchUpStatus.P1_WINNER },
-                            MatchUp(0, 0, 3, Data.HERO, Data.DEMON)
-                        )
+                            MatchUp(0, 0, 0, Data.ANDREW, Data.KYRA, "").also { it.status = MatchUpStatus.P1_WINNER },
+                            MatchUp(0, 0, 1, Data.DGNT, Data.KELSEY, "").also { it.status = MatchUpStatus.P2_WINNER },
+                            MatchUp(0, 0, 2, Data.FIRE, Data.SUPER, "").also { it.status = MatchUpStatus.P1_WINNER },
+                            MatchUp(0, 0, 3, Data.HERO, Data.DEMON, "")
+                        ),
+                        ""
                     ),
                     Round(
                         0, 1, listOf(
-                            MatchUp(0, 1, 0, Data.ANDREW, Data.KELSEY).also { it.status = MatchUpStatus.P2_WINNER },
-                            MatchUp(0, 1, 1, Data.FIRE, Participant.NULL_PARTICIPANT).also { it.status = MatchUpStatus.P2_WINNER })
+                            MatchUp(0, 1, 0, Data.ANDREW, Data.KELSEY, "").also { it.status = MatchUpStatus.P2_WINNER },
+                            MatchUp(0, 1, 1, Data.FIRE, Participant.NULL_PARTICIPANT, "").also { it.status = MatchUpStatus.P2_WINNER }),
+                        ""
                     ),
                     Round(
                         0, 2, listOf(
-                            MatchUp(0, 2, 0, Data.KELSEY, Participant.NULL_PARTICIPANT).also { it.status = MatchUpStatus.P1_WINNER })
+                            MatchUp(0, 2, 0, Data.KELSEY, Participant.NULL_PARTICIPANT, "").also { it.status = MatchUpStatus.P1_WINNER }),
+                        ""
                     )
-                )
+                ),
+                ""
             )
         ).first().rounds
         val edgeStateRank = sut.calculate(edgeState, edgeState.dropLast(1), edgeState.takeLast(1))

@@ -12,7 +12,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.TournamentActivityBinding
-import com.dgnt.quickTournamentMaker.model.tournament.*
+import com.dgnt.quickTournamentMaker.model.tournament.Participant
+import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
 import com.dgnt.quickTournamentMaker.service.interfaces.ICreateDefaultTitleService
 import com.moagrius.widget.ScalingScrollView
 import org.kodein.di.DIAware
@@ -66,7 +67,13 @@ class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentL
 
             setContentView(binding.root)
 
-            setData(tournamentInformation, orderedParticipants, { rg: RoundGroup -> createDefaultTitleService.forRoundGroup(resources, tournamentInformation.tournamentType, rg) }, { r: Round -> createDefaultTitleService.forRound(resources, r) }, { m: MatchUp -> createDefaultTitleService.forMatchUp(resources, m) })
+            setData(
+                tournamentInformation,
+                orderedParticipants,
+                { rgIndex: Int -> createDefaultTitleService.forRoundGroup(resources, tournamentInformation.tournamentType, rgIndex) },
+                { rIndex: Int -> createDefaultTitleService.forRound(resources, rIndex) },
+                { mIndex: Int, participant1: Participant, participant2: Participant -> createDefaultTitleService.forMatchUp(resources, mIndex, participant1, participant2) }
+            )
 
             title.observe(tournamentActivity, Observer {
                 tournamentActivity.title = it

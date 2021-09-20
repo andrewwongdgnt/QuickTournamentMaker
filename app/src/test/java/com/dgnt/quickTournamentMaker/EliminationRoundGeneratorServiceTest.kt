@@ -1,6 +1,7 @@
 package com.dgnt.quickTournamentMaker
 
 import com.dgnt.quickTournamentMaker.model.tournament.MatchUp
+import com.dgnt.quickTournamentMaker.model.tournament.Participant
 import com.dgnt.quickTournamentMaker.model.tournament.Round
 import com.dgnt.quickTournamentMaker.model.tournament.RoundGroup
 import com.dgnt.quickTournamentMaker.service.implementation.EliminationRoundGeneratorService
@@ -20,17 +21,19 @@ class EliminationRoundGeneratorServiceTest {
     @Before
     fun setUp() {
         val participants = listOf(Data.ANDREW, Data.KYRA, Data.DGNT, Data.KELSEY, Data.FIRE, Data.SUPER, Data.HERO, Data.DEMON)
-        val defaultRoundTitleFunc: (Round) -> String = { r -> r.roundIndex.toString() }
-        val defaultMatchUpTitleFunc: (MatchUp) -> String = { m -> m.matchUpIndex.toString() }
+        val defaultRoundTitleFunc: (Int) -> String = { rIndex -> rIndex.toString() }
+        val defaultMatchUpTitleFunc: (Int, Participant, Participant) -> String = {  mIndex, p1, p2 -> "$mIndex, $p1, $p2" }
         PowerMockito.`when`(mockParticipantService.createRound(participants, defaultRoundTitleFunc = defaultRoundTitleFunc, defaultMatchUpTitleFunc = defaultMatchUpTitleFunc)).thenReturn(
             Round(
-                0, 0,
+                0,
+                0,
                 listOf(
-                    MatchUp(0, 0, 0, Data.ANDREW, Data.KYRA),
-                    MatchUp(0, 0, 1, Data.DGNT, Data.KELSEY),
-                    MatchUp(0, 0, 2, Data.FIRE, Data.SUPER),
-                    MatchUp(0, 0, 3, Data.HERO, Data.DEMON)
+                    MatchUp(0, 0, 0, Data.ANDREW, Data.KYRA, ""),
+                    MatchUp(0, 0, 1, Data.DGNT, Data.KELSEY, ""),
+                    MatchUp(0, 0, 2, Data.FIRE, Data.SUPER, ""),
+                    MatchUp(0, 0, 3, Data.HERO, Data.DEMON, "")
                 )
+                , ""
             )
         )
         roundGroups = sut.build(participants, defaultRoundTitleFunc = defaultRoundTitleFunc, defaultMatchUpTitleFunc = defaultMatchUpTitleFunc)

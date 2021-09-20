@@ -9,11 +9,13 @@ import kotlinx.android.parcel.Parcelize
 data class Round(
     val roundGroupIndex: Int,
     val roundIndex: Int,
-    var matchUps: List<MatchUp>
-) : IKeyable<Pair<Int,Int>>, Parcelable {
-    var title: String = ""
-    var note: String = ""
+    val matchUps: List<MatchUp>,
+    val originalTitle: String,
+    var title: String = originalTitle,
+    var note: String = "",
     var color: Int = TournamentUtil.DEFAULT_DISPLAY_COLOR
+) : IKeyable<Pair<Int,Int>>, Parcelable {
+    fun updatedTitle() = title != originalTitle
     override val key = Pair(roundGroupIndex,roundIndex)
 
 }

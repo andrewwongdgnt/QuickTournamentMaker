@@ -21,21 +21,22 @@ class SurvivalRoundGeneratorServiceTest {
     @Before
     fun setUp() {
         val participants = listOf(Data.ANDREW, Participant.NULL_PARTICIPANT, Data.KYRA, Participant.NULL_PARTICIPANT, Data.DGNT, Participant.NULL_PARTICIPANT, Data.KELSEY, Participant.NULL_PARTICIPANT, Data.FIRE, Participant.NULL_PARTICIPANT, Data.SUPER, Participant.NULL_PARTICIPANT, Data.HERO, Participant.NULL_PARTICIPANT, Data.DEMON, Participant.NULL_PARTICIPANT)
-        val defaultRoundTitleFunc: (Round) -> String = { r -> r.roundIndex.toString() }
-        val defaultMatchUpTitleFunc: (MatchUp) -> String = { m -> m.matchUpIndex.toString() }
+        val defaultRoundTitleFunc: (Int) -> String = { rIndex -> rIndex.toString() }
+        val defaultMatchUpTitleFunc: (Int, Participant, Participant) -> String = { mIndex, p1, p2 -> "$mIndex, $p1, $p2" }
         PowerMockito.`when`(mockParticipantService.createRound(participants, defaultRoundTitleFunc = defaultRoundTitleFunc, defaultMatchUpTitleFunc = defaultMatchUpTitleFunc)).thenReturn(
             Round(
                 0, 0,
                 listOf(
-                    MatchUp(0, 0, 0, Data.ANDREW, Participant.NULL_PARTICIPANT),
-                    MatchUp(0, 0, 1, Data.KYRA, Participant.NULL_PARTICIPANT),
-                    MatchUp(0, 0, 2, Data.DGNT, Participant.NULL_PARTICIPANT),
-                    MatchUp(0, 0, 3, Data.KELSEY, Participant.NULL_PARTICIPANT),
-                    MatchUp(0, 0, 4, Data.FIRE, Participant.NULL_PARTICIPANT),
-                    MatchUp(0, 0, 5, Data.SUPER, Participant.NULL_PARTICIPANT),
-                    MatchUp(0, 0, 6, Data.HERO, Participant.NULL_PARTICIPANT),
-                    MatchUp(0, 0, 7, Data.DEMON, Participant.NULL_PARTICIPANT)
-                )
+                    MatchUp(0, 0, 0, Data.ANDREW, Participant.NULL_PARTICIPANT, ""),
+                    MatchUp(0, 0, 1, Data.KYRA, Participant.NULL_PARTICIPANT, ""),
+                    MatchUp(0, 0, 2, Data.DGNT, Participant.NULL_PARTICIPANT, ""),
+                    MatchUp(0, 0, 3, Data.KELSEY, Participant.NULL_PARTICIPANT, ""),
+                    MatchUp(0, 0, 4, Data.FIRE, Participant.NULL_PARTICIPANT, ""),
+                    MatchUp(0, 0, 5, Data.SUPER, Participant.NULL_PARTICIPANT, ""),
+                    MatchUp(0, 0, 6, Data.HERO, Participant.NULL_PARTICIPANT, ""),
+                    MatchUp(0, 0, 7, Data.DEMON, Participant.NULL_PARTICIPANT, "")
+                ),
+                ""
             )
         );
         roundGroups = sut.build(participants, defaultRoundTitleFunc = defaultRoundTitleFunc, defaultMatchUpTitleFunc = defaultMatchUpTitleFunc)
@@ -64,7 +65,7 @@ class SurvivalRoundGeneratorServiceTest {
         val rounds = roundGroups[0].rounds
         for (i in 0..6)
             for (j in 0..7)
-            Assert.assertEquals(Triple(0,i,j), rounds[i].matchUps[j].key)
+                Assert.assertEquals(Triple(0, i, j), rounds[i].matchUps[j].key)
 
     }
 

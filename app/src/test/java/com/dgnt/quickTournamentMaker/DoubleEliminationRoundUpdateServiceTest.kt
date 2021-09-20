@@ -25,62 +25,71 @@ class DoubleEliminationRoundUpdateServiceTest {
 
         val round1WB = Round(
             0, 0, listOf(
-                MatchUp(0, 0, 0, Data.ANDREW, Data.KYRA),
-                MatchUp(0, 0, 1, Data.DGNT, Data.KELSEY),
-                MatchUp(0, 0, 2, Data.FIRE, Data.SUPER),
-                MatchUp(0, 0, 3, Data.HERO, Data.DEMON)
-            )
+                MatchUp(0, 0, 0, Data.ANDREW, Data.KYRA, ""),
+                MatchUp(0, 0, 1, Data.DGNT, Data.KELSEY, ""),
+                MatchUp(0, 0, 2, Data.FIRE, Data.SUPER, ""),
+                MatchUp(0, 0, 3, Data.HERO, Data.DEMON, "")
+            ),
+            ""
         )
         val round2WB = Round(
             0, 1, listOf(
-                MatchUp(0, 1, 0, Data.KYRA, Data.KELSEY),
-                MatchUp(0, 1, 1, Data.FIRE, Data.DEMON)
-            )
+                MatchUp(0, 1, 0, Data.KYRA, Data.KELSEY, ""),
+                MatchUp(0, 1, 1, Data.FIRE, Data.DEMON, "")
+            ),
+            ""
         )
         val round3WB = Round(
             0, 2, listOf(
-                MatchUp(0, 2, 0, Data.KELSEY, Data.FIRE)
-            )
+                MatchUp(0, 2, 0, Data.KELSEY, Data.FIRE, "")
+            ),
+            ""
         )
 
         val round1LB = Round(
             1, 0, listOf(
-                MatchUp(1, 0, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT),
-                MatchUp(1, 0, 1, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)
-            )
+                MatchUp(1, 0, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT, ""),
+                MatchUp(1, 0, 1, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT, "")
+            ),
+            ""
         )
         val round2LB = Round(
             1, 1, listOf(
-                MatchUp(1, 1, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT),
-                MatchUp(1, 1, 1, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)
-            )
+                MatchUp(1, 1, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT, ""),
+                MatchUp(1, 1, 1, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT, "")
+            ),
+            ""
         )
         val round3LB = Round(
             1, 2, listOf(
-                MatchUp(1, 2, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)
-            )
+                MatchUp(1, 2, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT, "")
+            ),
+            ""
         )
         val round4LB = Round(
             1, 3, listOf(
-                MatchUp(1, 3, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)
-            )
+                MatchUp(1, 3, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT, "")
+            ),
+            ""
         )
 
         val round1FB = Round(
             2, 0, listOf(
-                MatchUp(2, 0, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)
-            )
+                MatchUp(2, 0, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT, "")
+            ),
+            ""
         )
         val round2FB = Round(
             2, 1, listOf(
-                MatchUp(2, 1, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)
-            )
+                MatchUp(2, 1, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT, "")
+            ),
+            ""
         )
 
         roundGroupsNoByes = listOf(
-            RoundGroup(0, listOf(round1WB, round2WB, round3WB)),
-            RoundGroup(1, listOf(round1LB, round2LB, round3LB, round4LB)),
-            RoundGroup(2, listOf(round1FB, round2FB))
+            RoundGroup(0, listOf(round1WB, round2WB, round3WB), ""),
+            RoundGroup(1, listOf(round1LB, round2LB, round3LB, round4LB), ""),
+            RoundGroup(2, listOf(round1FB, round2FB), "")
         )
 
     }

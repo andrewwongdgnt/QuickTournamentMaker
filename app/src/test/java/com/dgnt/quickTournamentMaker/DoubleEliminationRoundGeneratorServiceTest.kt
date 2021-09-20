@@ -1,19 +1,16 @@
 package com.dgnt.quickTournamentMaker
 
-import android.util.Log
 import com.dgnt.quickTournamentMaker.model.tournament.MatchUp
 import com.dgnt.quickTournamentMaker.model.tournament.Participant
 import com.dgnt.quickTournamentMaker.model.tournament.Round
 import com.dgnt.quickTournamentMaker.model.tournament.RoundGroup
 import com.dgnt.quickTournamentMaker.service.implementation.DoubleEliminationRoundGeneratorService
-import com.dgnt.quickTournamentMaker.service.implementation.EliminationRoundGeneratorService
 import com.dgnt.quickTournamentMaker.service.interfaces.IRoundGeneratorService
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.powermock.api.mockito.PowerMockito
-import org.powermock.core.classloader.annotations.PrepareForTest
 import org.powermock.modules.junit4.PowerMockRunner
 
 @RunWith(PowerMockRunner::class)
@@ -30,24 +27,27 @@ class DoubleEliminationRoundGeneratorServiceTest {
 
         val round1 = Round(
             0, 0, listOf(
-                MatchUp(0, 0, 0, Data.ANDREW, Data.KYRA),
-                MatchUp(0, 0, 1, Data.DGNT, Data.KELSEY),
-                MatchUp(0, 0, 2, Data.FIRE, Data.SUPER),
-                MatchUp(0, 0, 3, Data.HERO, Data.DEMON)
-            )
+                MatchUp(0, 0, 0, Data.ANDREW, Data.KYRA, ""),
+                MatchUp(0, 0, 1, Data.DGNT, Data.KELSEY, ""),
+                MatchUp(0, 0, 2, Data.FIRE, Data.SUPER, ""),
+                MatchUp(0, 0, 3, Data.HERO, Data.DEMON, "")
+            ),
+            ""
         )
         val round2 = Round(
             0, 1, listOf(
-                MatchUp(0, 1, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT),
-                MatchUp(0, 1, 1, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)
-            )
+                MatchUp(0, 1, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT, ""),
+                MatchUp(0, 1, 1, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT, "")
+            ),
+            ""
         )
         val round3 = Round(
             0, 2, listOf(
-                MatchUp(0, 2, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)
-            )
+                MatchUp(0, 2, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT, "")
+            ),
+            ""
         )
-        PowerMockito.`when`(mockRoundGeneratorService.build(participants)).thenReturn(listOf(RoundGroup(0, listOf(round1, round2, round3))))
+        PowerMockito.`when`(mockRoundGeneratorService.build(participants)).thenReturn(listOf(RoundGroup(0, listOf(round1, round2, round3), "")))
 
         roundGroups = sut.build(participants)
 

@@ -14,5 +14,5 @@ interface ITournamentBuilderService {
      * @param defaultMatchUpTitleFunc the function that produces a default title for match ups
      * @return
      */
-    fun build(tournamentInfo: TournamentInformation, orderedParticipants: List<Participant>, defaultRoundGroupTitleFunc: (RoundGroup) -> String = { rg -> rg.roundGroupIndex.toString() }, defaultRoundTitleFunc: (Round) -> String = { r -> r.roundIndex.toString() }, defaultMatchUpTitleFunc: (MatchUp) -> String = { m -> m.matchUpIndex.toString() }): Tournament
+    fun build(tournamentInfo: TournamentInformation, orderedParticipants: List<Participant>, defaultRoundGroupTitleFunc: (Int) -> String = { rgIndex -> rgIndex.toString() }, defaultRoundTitleFunc: (Int) -> String = { rIndex -> rIndex.toString() }, defaultMatchUpTitleFunc: (Int, Participant, Participant) -> String = { mIndex,p1,p2 -> "$mIndex, $p1, $p2" }): Tournament
 }

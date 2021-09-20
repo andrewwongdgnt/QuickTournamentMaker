@@ -1,9 +1,7 @@
 package com.dgnt.quickTournamentMaker
 
 import android.content.res.Resources
-import com.dgnt.quickTournamentMaker.model.tournament.MatchUp
 import com.dgnt.quickTournamentMaker.model.tournament.Participant
-import com.dgnt.quickTournamentMaker.model.tournament.Round
 import com.dgnt.quickTournamentMaker.service.implementation.CreateDefaultTitleService
 import org.junit.Assert
 import org.junit.Before
@@ -42,17 +40,17 @@ class CreateDefaultTitleServiceTest {
 
     @Test
     fun testForRound() {
-        Assert.assertEquals(round1, sut.forRound(resources, Round(0, 0, listOf())))
+        Assert.assertEquals(round1, sut.forRound(resources, 0))
     }
 
     @Test
     fun testForMatchUp() {
-        Assert.assertEquals(p1vsp2, sut.forMatchUp(resources, MatchUp(0, 0, 0, Data.ANDREW, Data.KELSEY)))
-        Assert.assertEquals(p1WithABye, sut.forMatchUp(resources, MatchUp(0, 0, 0, Data.ANDREW, Participant.BYE_PARTICIPANT)))
-        Assert.assertEquals(p2WithABye, sut.forMatchUp(resources, MatchUp(0, 0, 0, Data.KELSEY, Participant.BYE_PARTICIPANT)))
-        Assert.assertEquals(emptyMatch, sut.forMatchUp(resources, MatchUp(0, 0, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT)))
-        Assert.assertEquals(p1Waiting, sut.forMatchUp(resources, MatchUp(0, 0, 0, Data.ANDREW, Participant.NULL_PARTICIPANT)))
-        Assert.assertEquals(p2Waiting, sut.forMatchUp(resources, MatchUp(0, 0, 0, Data.KELSEY, Participant.NULL_PARTICIPANT)))
+        Assert.assertEquals(p1vsp2, sut.forMatchUp(resources, 0, Data.ANDREW, Data.KELSEY))
+        Assert.assertEquals(p1WithABye, sut.forMatchUp(resources, 0, Data.ANDREW, Participant.BYE_PARTICIPANT))
+        Assert.assertEquals(p2WithABye, sut.forMatchUp(resources, 0, Data.KELSEY, Participant.BYE_PARTICIPANT))
+        Assert.assertEquals(emptyMatch, sut.forMatchUp(resources, 0, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT))
+        Assert.assertEquals(p1Waiting, sut.forMatchUp(resources, 0, Data.ANDREW, Participant.NULL_PARTICIPANT))
+        Assert.assertEquals(p2Waiting, sut.forMatchUp(resources, 0, Data.KELSEY, Participant.NULL_PARTICIPANT))
     }
 
     @Test

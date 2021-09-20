@@ -28,13 +28,14 @@ class SurvivalRankingServiceTest {
                     Round(
                         0, 0,
                         listOf(
-                            MatchUp(0, 0, 0, Data.ANDREW, Participant.NULL_PARTICIPANT),
-                            MatchUp(0, 0, 1, Data.KYRA, Participant.NULL_PARTICIPANT),
-                            MatchUp(0, 0, 2, Data.DGNT, Participant.NULL_PARTICIPANT),
-                            MatchUp(0, 0, 3, Data.KELSEY, Participant.NULL_PARTICIPANT)
-                        )
+                            MatchUp(0, 0, 0, Data.ANDREW, Participant.NULL_PARTICIPANT, ""),
+                            MatchUp(0, 0, 1, Data.KYRA, Participant.NULL_PARTICIPANT, ""),
+                            MatchUp(0, 0, 2, Data.DGNT, Participant.NULL_PARTICIPANT, ""),
+                            MatchUp(0, 0, 3, Data.KELSEY, Participant.NULL_PARTICIPANT, "")
+                        ),
+                        ""
                     )
-                )
+                ), ""
             )
         )
         val initialStateRank = sut.calculate(initialState)
@@ -47,21 +48,25 @@ class SurvivalRankingServiceTest {
                 listOf(
                     Round(
                         0, 0, listOf(
-                            MatchUp(0, 0, 0, Data.ANDREW, Participant.NULL_PARTICIPANT),
-                            MatchUp(0, 0, 1, Data.KYRA, Participant.NULL_PARTICIPANT)
-                        )
+                            MatchUp(0, 0, 0, Data.ANDREW, Participant.NULL_PARTICIPANT, ""),
+                            MatchUp(0, 0, 1, Data.KYRA, Participant.NULL_PARTICIPANT, "")
+                        ),
+                        ""
                     ),
                     Round(
                         0, 1, listOf(
-                            MatchUp(0, 1, 0, Data.DGNT, Participant.NULL_PARTICIPANT)
-                        )
+                            MatchUp(0, 1, 0, Data.DGNT, Participant.NULL_PARTICIPANT, "")
+                        ),
+                        ""
                     ),
                     Round(
                         0, 2, listOf(
-                            MatchUp(0, 2, 0, Data.KELSEY, Participant.NULL_PARTICIPANT)
-                        )
+                            MatchUp(0, 2, 0, Data.KELSEY, Participant.NULL_PARTICIPANT, "")
+                        ),
+                        ""
                     )
-                )
+                ),
+                ""
             )
         )
         val normalStateRank = sut.calculate(normalState)

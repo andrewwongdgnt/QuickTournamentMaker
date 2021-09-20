@@ -36,7 +36,7 @@ class MatchUpEditorViewModel(private val createDefaultTitleService: ICreateDefau
 
     fun setData(resources: Resources, matchUp: MatchUp, colors: List<ColorInfo>) {
         useCustomTitle.value = matchUp.useTitle
-        this.defaultTitle.value = createDefaultTitleService.forMatchUp(resources, matchUp)
+        this.defaultTitle.value = createDefaultTitleService.forMatchUp(resources, matchUp.matchUpIndex, matchUp.participant1, matchUp.participant2)
         this.title.value = matchUp.title
         this.note.value = matchUp.note
         this.color.value = colors.find { it.hex == matchUp.color }

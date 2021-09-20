@@ -18,7 +18,7 @@ class RecordUpdateServiceTest {
     @Before
     fun setUp() {
 
-        matchUp = MatchUp(0, 0, 0, Data.ANDREW, Data.KYRA).apply {
+        matchUp = MatchUp(0, 0, 0, Data.ANDREW, Data.KYRA, "").apply {
             participant1.record = Record(1, 1, 1)
             participant2.record = Record(2, 2, 2)
         }

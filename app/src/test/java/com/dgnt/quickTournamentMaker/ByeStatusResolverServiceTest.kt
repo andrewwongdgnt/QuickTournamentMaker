@@ -16,35 +16,39 @@ class ByeStatusResolverServiceTest {
 
         val round1 = Round(
             0, 0, listOf(
-                MatchUp(0, 0, 0, Data.ANDREW, Data.KYRA),
-                MatchUp(0, 0, 1, Data.DGNT, Data.KELSEY),
-                MatchUp(0, 0, 1, Data.FIRE, Participant.BYE_PARTICIPANT),
-                MatchUp(0, 0, 2, Data.HERO, Participant.BYE_PARTICIPANT)
-            )
+                MatchUp(0, 0, 0, Data.ANDREW, Data.KYRA, ""),
+                MatchUp(0, 0, 1, Data.DGNT, Data.KELSEY, ""),
+                MatchUp(0, 0, 1, Data.FIRE, Participant.BYE_PARTICIPANT, ""),
+                MatchUp(0, 0, 2, Data.HERO, Participant.BYE_PARTICIPANT, "")
+            ),
+            ""
         )
         val round2 = Round(
             0, 1,
             listOf(
-                MatchUp(0, 1, 0, Participant.NULL_PARTICIPANT, Participant.BYE_PARTICIPANT),
-                MatchUp(0, 1, 0, Participant.BYE_PARTICIPANT, Participant.NULL_PARTICIPANT)
-            )
+                MatchUp(0, 1, 0, Participant.NULL_PARTICIPANT, Participant.BYE_PARTICIPANT, ""),
+                MatchUp(0, 1, 0, Participant.BYE_PARTICIPANT, Participant.NULL_PARTICIPANT, "")
+            ),
+            ""
         )
 
         val round1_2 = Round(
             1, 0, listOf(
-                MatchUp(1, 0, 0, Data.ANDREW, Data.KYRA),
-                MatchUp(1, 0, 1, Data.DGNT, Data.KELSEY),
-                MatchUp(1, 0, 2, Data.FIRE, Participant.BYE_PARTICIPANT),
-                MatchUp(1, 0, 3, Data.HERO, Participant.BYE_PARTICIPANT)
-            )
+                MatchUp(1, 0, 0, Data.ANDREW, Data.KYRA, ""),
+                MatchUp(1, 0, 1, Data.DGNT, Data.KELSEY, ""),
+                MatchUp(1, 0, 2, Data.FIRE, Participant.BYE_PARTICIPANT, ""),
+                MatchUp(1, 0, 3, Data.HERO, Participant.BYE_PARTICIPANT, "")
+            ),
+            ""
         )
         val round2_2 = Round(
             1, 1, listOf(
-                MatchUp(1, 1, 0, Participant.NULL_PARTICIPANT, Participant.BYE_PARTICIPANT),
-                MatchUp(1, 1, 1, Participant.BYE_PARTICIPANT, Participant.NULL_PARTICIPANT)
-            )
+                MatchUp(1, 1, 0, Participant.NULL_PARTICIPANT, Participant.BYE_PARTICIPANT, ""),
+                MatchUp(1, 1, 1, Participant.BYE_PARTICIPANT, Participant.NULL_PARTICIPANT, "")
+            ),
+            ""
         )
-        roundGroups = listOf(RoundGroup(0, listOf(round1, round2)), RoundGroup(1, listOf(round1_2, round2_2)))
+        roundGroups = listOf(RoundGroup(0, listOf(round1, round2), ""), RoundGroup(1, listOf(round1_2, round2_2), ""))
     }
 
     @Test

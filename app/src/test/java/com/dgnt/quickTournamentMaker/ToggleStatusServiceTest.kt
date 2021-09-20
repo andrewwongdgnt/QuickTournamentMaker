@@ -25,14 +25,14 @@ class ToggleStatusServiceTest {
 
     @Test
     fun testByes() {
-        val matchUp = MatchUp(0,0,0,Participant.BYE_PARTICIPANT, Participant.BYE_PARTICIPANT)
+        val matchUp = MatchUp(0,0,0,Participant.BYE_PARTICIPANT, Participant.BYE_PARTICIPANT, "")
         Assert.assertFalse(sut.toggle(matchUp, ParticipantPosition.P1))
         Mockito.verify(mockMatchUpStatusTransformService, Mockito.never()).transform(MockitoHelper.anyObject(),MockitoHelper.anyObject())
     }
 
     @Test
     fun testStatusChange() {
-        val matchUp = MatchUp(0,0,0,Data.ANDREW, Data.KYRA)
+        val matchUp = MatchUp(0,0,0,Data.ANDREW, Data.KYRA, "")
         matchUp.status = MatchUpStatus.P2_WINNER
         PowerMockito.`when`(mockMatchUpStatusTransformService.transform(matchUp.status,ParticipantPosition.P1)).thenReturn(MatchUpStatus.P1_WINNER)
         Assert.assertTrue(sut.toggle(matchUp, ParticipantPosition.P1))
