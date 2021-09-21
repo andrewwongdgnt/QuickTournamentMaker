@@ -5,7 +5,15 @@ import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentInformationCr
 import java.util.*
 
 class TournamentInformationCreatorService : ITournamentInformationCreatorService {
-    override fun create(titleCandidate: String, alternativeTitles: Map<TournamentType, String>, description: String, participants: List<Participant>, tournamentType: TournamentType, seedType: SeedType, rankConfig: IRankConfig): TournamentInformation {
+    override fun create(
+        titleCandidate: String,
+        alternativeTitles: Map<TournamentType, String>,
+        description: String,
+        participants: List<Participant>,
+        tournamentType: TournamentType,
+        seedType: SeedType,
+        rankConfig: IRankConfig
+    ): TournamentInformation {
         val title = if (titleCandidate.isNotBlank())
             titleCandidate
         else

@@ -5,10 +5,15 @@ import androidx.databinding.Observable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dgnt.quickTournamentMaker.model.tournament.*
+import com.dgnt.quickTournamentMaker.service.interfaces.IParticipantService
 import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentBuilderService
 import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentInitiatorService
 
-class TournamentViewModel(private val tournamentBuilderService: ITournamentBuilderService, private val tournamentInitiatorService: ITournamentInitiatorService) : ViewModel(), Observable {
+class TournamentViewModel(
+    private val tournamentBuilderService: ITournamentBuilderService,
+    private val tournamentInitiatorService: ITournamentInitiatorService,
+    private val participantService: IParticipantService,
+) : ViewModel(), Observable {
 
 
     @Bindable
@@ -30,7 +35,13 @@ class TournamentViewModel(private val tournamentBuilderService: ITournamentBuild
         title.value = tournamentInformation.title
         description.value = tournamentInformation.description
 
-        tournamentBuilderService.build(tournamentInformation, orderedParticipants, defaultRoundGroupTitleFunc, defaultRoundTitleFunc, defaultMatchUpTitleFunc).let {
+        tournamentBuilderService.build(
+            tournamentInformation,
+            participantService.cloneList(tournamentInformation.participants, orderedParticipants),
+            defaultRoundGroupTitleFunc,
+            defaultRoundTitleFunc,
+            defaultMatchUpTitleFunc
+        ).let {
             tournamentInitiatorService.initiate(it)
             this.tournament.value = it
         }

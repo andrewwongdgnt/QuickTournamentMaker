@@ -48,6 +48,7 @@ class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentL
 
         val tournamentInformation = intent.getParcelableExtra<TournamentInformation>(TOURNAMENT_ACTIVITY_INFO)!!
         val orderedParticipants = intent.getParcelableArrayListExtra<Participant>(TOURNAMENT_ACTIVITY_PARTICIPANTS)!!
+
         supportActionBar?.run {
             setDisplayHomeAsUpEnabled(true)
         }
@@ -141,6 +142,7 @@ class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentL
                 it.note = note
                 it.color = color
             }
+            viewModel.tournament.value = this
         }
     }
 

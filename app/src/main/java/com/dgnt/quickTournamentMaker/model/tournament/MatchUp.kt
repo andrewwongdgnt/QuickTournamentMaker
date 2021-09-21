@@ -3,7 +3,7 @@ package com.dgnt.quickTournamentMaker.model.tournament
 import android.os.Parcelable
 import com.dgnt.quickTournamentMaker.model.IKeyable
 import com.dgnt.quickTournamentMaker.util.TournamentUtil
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 
 enum class MatchUpStatus {

@@ -3,7 +3,7 @@ package com.dgnt.quickTournamentMaker.model.management
 import android.os.Parcelable
 import com.dgnt.quickTournamentMaker.data.management.GroupEntity
 import com.dgnt.quickTournamentMaker.model.IKeyable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Group(var id: String, var name: String, var note: String, var favourite: Boolean) : IKeyable<String>, Comparable<Group>, Parcelable {

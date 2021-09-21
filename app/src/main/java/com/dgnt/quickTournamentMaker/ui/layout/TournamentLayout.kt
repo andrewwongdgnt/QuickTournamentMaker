@@ -65,8 +65,13 @@ class TournamentLayout : LinearLayout {
     private fun dynamicExtraHeight() = (context as? TournamentActivity)?.extraLayoutHeight() ?: 0
     private fun extraHeight() = dynamicExtraHeight() + staticExtraHeight
 
-    fun draw(tournament: Tournament, clickListener: (MatchUp, ParticipantPosition) -> Unit) {
+    fun draw(
+        tournament: Tournament,
+        clickListener: (MatchUp, ParticipantPosition) -> Unit
+    ) {
         this.tournament = tournament
+
+        removeAllViews()
 
         val roundGroupLayouts = tournament.roundGroups.map { rg ->
             LinearLayout(context).also { rgll ->
@@ -82,6 +87,7 @@ class TournamentLayout : LinearLayout {
                                     mul.layout.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, 0, 1f)
                                     mul.player.apply {
                                         text = getName(mu.participant1)
+                                        setTextColor(mu.participant1.color)
                                         setOnClickListener {
                                             clickListener(mu, ParticipantPosition.P1)
                                             updateViews(mu, mul)
@@ -96,6 +102,7 @@ class TournamentLayout : LinearLayout {
                                     mul.layout.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, 0, 1f)
                                     mul.player1.apply {
                                         text = getName(mu.participant1)
+                                        setTextColor(mu.participant1.color)
                                         if (!mu.containsBye()) {
                                             setOnClickListener {
                                                 clickListener(mu, ParticipantPosition.P1)
@@ -106,6 +113,7 @@ class TournamentLayout : LinearLayout {
                                     }
                                     mul.player2.apply {
                                         text = getName(mu.participant2)
+                                        setTextColor(mu.participant2.color)
                                         if (!mu.containsBye()) {
                                             setOnClickListener {
                                                 clickListener(mu, ParticipantPosition.P2)

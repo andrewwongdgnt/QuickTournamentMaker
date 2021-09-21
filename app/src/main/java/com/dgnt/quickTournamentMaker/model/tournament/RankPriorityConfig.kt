@@ -1,7 +1,7 @@
 package com.dgnt.quickTournamentMaker.model.tournament
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 enum class RankPriorityConfigType(val shorthand: String) {
     WIN("w"), LOSS("l"), TIE("t");

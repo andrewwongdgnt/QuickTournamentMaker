@@ -1,7 +1,7 @@
 package com.dgnt.quickTournamentMaker.model.tournament
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class RankScoreConfig(val win: Float, val loss: Float, val tie: Float) : Parcelable, IRankConfig {

@@ -2,7 +2,7 @@ package com.dgnt.quickTournamentMaker.model.tournament
 
 import android.os.Parcelable
 import com.dgnt.quickTournamentMaker.model.IKeyable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class RoundGroup(
