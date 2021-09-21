@@ -56,7 +56,7 @@
     <string name="editingThisRound">Editing round</string>
 
     <string name="displayName">Display name</string>
-    <string name="editPlayDisplayNameHint">Originally %1$s</string>
+    <string name="editPlayerDisplayNameHint">Originally %1$s</string>
     <string name="note">Note</string>
     <string name="displayedColor">Display color</string>
     <string name="editing">Editing %1$s</string>

@@ -11,8 +11,8 @@ import org.powermock.api.mockito.PowerMockito
 class CreateDefaultTitleServiceTest {
 
     private val round1 = "Round 1"
-    private val participant1 = Data.ANDREW.displayName
-    private val participant2 = Data.KELSEY.displayName
+    private val participant1 = Data.ANDREW.name
+    private val participant2 = Data.KELSEY.name
     private val p1vsp2 = "p1 vs p2"
     private val p1WithABye = "p1 with a bye"
     private val p2WithABye = "p1 with a bye"

@@ -19,10 +19,8 @@ class RoundArrayAdapter(
         convertView ?: ArrayItemBinding.inflate(LayoutInflater.from(parent.context), parent, false).run {
             arrayItemTv.apply {
                 val round = rounds[position]
-                text = round.title.run {
-                    this + (if (round.note.isEmpty()) "" else "*")
-                }
-                setTypeface(typeface, if (round.updatedTitle()) Typeface.BOLD else Typeface.NORMAL)
+                text = round.getDisplayTitle()
+                setTypeface(typeface, if (round.isUpdatedTitle()) Typeface.BOLD else Typeface.NORMAL)
 
                 setTextColor(round.color)
             }

@@ -41,7 +41,7 @@ class TournamentLayout : LinearLayout {
 
     private fun getName(participant: Participant) =
         when (participant.participantType) {
-            ParticipantType.NORMAL -> participant.displayName
+            ParticipantType.NORMAL -> participant.getDisplayName()
             ParticipantType.NULL -> ""
             else -> context.getString(R.string.byeDefaultName)
         }

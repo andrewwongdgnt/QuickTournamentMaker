@@ -27,7 +27,7 @@ class ParticipantEditorViewModel : Observable, ViewModel() {
     }
 
     fun setData(participant: Participant, colors: List<ColorInfo>) {
-        this.name.value = participant.displayName
+        this.name.value = participant.name
         this.note.value = participant.note
         this.color.value = colors.find { it.hex == participant.color }
         this.colors.value = colors

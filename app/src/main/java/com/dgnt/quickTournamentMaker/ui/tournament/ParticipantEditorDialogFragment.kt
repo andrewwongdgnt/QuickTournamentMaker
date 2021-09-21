@@ -60,7 +60,7 @@ class ParticipantEditorDialogFragment : DialogFragment(), DIAware {
             })
 
             AlertDialog.Builder(activity)
-                .setTitle(getString(R.string.editing, participant.displayName))
+                .setTitle(getString(R.string.editing, participant.name))
                 .setView(binding.root)
                 .setPositiveButton(android.R.string.ok) { _, _ ->
                     listenerEditor.onEditParticipant(participant.key, viewModel.name.value ?: "", viewModel.note.value ?: "", viewModel.color.value?.hex ?: TournamentUtil.DEFAULT_DISPLAY_COLOR)

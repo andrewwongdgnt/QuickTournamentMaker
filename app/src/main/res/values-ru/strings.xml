@@ -52,7 +52,7 @@
     <string name="editingThisRound">Изменение раунда</string>
 
     <string name="displayName">Отобразить имя</string>
-    <string name="editPlayDisplayNameHint">Первоначально %1$s</string>
+    <string name="editPlayerDisplayNameHint">Первоначально %1$s</string>
     <string name="note">Заметка</string>
     <string name="displayedColor">Цвет дисплея</string>
     <string name="editing">Редактирование %1$s</string>

@@ -106,7 +106,7 @@ class CustomSeedDialogFragment : DialogFragment(), DIAware {
             super.onCreateDialog(savedInstanceState)
         }
 
-    private fun getName(participant: Participant) = if (participant.participantType == ParticipantType.NORMAL) participant.displayName else getString(R.string.byeDefaultName)
+    private fun getName(participant: Participant) = if (participant.participantType == ParticipantType.NORMAL) participant.name else getString(R.string.byeDefaultName)
 
     override fun onStart() {
         super.onStart()

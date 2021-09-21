@@ -14,8 +14,9 @@ data class Round(
     var title: String = originalTitle,
     var note: String = "",
     var color: Int = TournamentUtil.DEFAULT_DISPLAY_COLOR
-) : IKeyable<Pair<Int,Int>>, Parcelable {
-    fun updatedTitle() = title != originalTitle
-    override val key = Pair(roundGroupIndex,roundIndex)
+) : IKeyable<Pair<Int, Int>>, Parcelable {
+    fun isUpdatedTitle() = title != originalTitle
+    fun getDisplayTitle() = (if (note.isEmpty()) "" else "*") + title
+    override val key = Pair(roundGroupIndex, roundIndex)
 
 }

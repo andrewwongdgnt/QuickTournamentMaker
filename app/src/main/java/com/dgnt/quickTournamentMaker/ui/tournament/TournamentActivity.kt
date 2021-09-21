@@ -138,7 +138,7 @@ class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentL
     override fun onEditParticipant(key: String, name: String, note: String, color: Int) {
         viewModel.tournament.value?.run {
             tournamentInformation.participants.find { it.key == key }?.let {
-                it.displayName = name
+                it.name = name
                 it.note = note
                 it.color = color
             }

@@ -18,7 +18,7 @@ enum class ParticipantPosition {
 data class Participant(
     val person: Person,
     val participantType: ParticipantType = ParticipantType.NORMAL,
-    var displayName: String = person.name,
+    var name: String = person.name,
     var note: String = person.note,
     var record: Record = Record(),
     var color: Int = TournamentUtil.DEFAULT_DISPLAY_COLOR
@@ -31,13 +31,14 @@ data class Participant(
             Participant(Person("", "", ""), ParticipantType.BYE)
     }
 
-    fun updatedTitle() = displayName != person.name
+    fun isUpdatedTitle() = name != person.name
+    fun getDisplayName() = (if (note.isEmpty()) "" else "*") + name
 
     override val key = person.name + participantType.name
-    override fun compareTo(other: Participant): Int = displayName.compareTo(other.displayName)
+    override fun compareTo(other: Participant): Int = name.compareTo(other.name)
 
     override fun toString(): String {
-        return displayName
+        return name
     }
 }
 

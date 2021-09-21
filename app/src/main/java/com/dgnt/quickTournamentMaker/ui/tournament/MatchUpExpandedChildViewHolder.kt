@@ -12,11 +12,9 @@ class MatchUpExpandedChildViewHolder(private val binding: ChildListItemBinding, 
         binding.childListItemTv.run {
             text = matchUp.run {
                 if (useTitle)
-                    title
+                    getDisplayTitle()
                 else
-                    createDefaultTitleService.forMatchUp(context.resources, matchUpIndex, participant1, participant2)
-            }.run {
-                this + (if (matchUp.note.isEmpty()) "" else "*")
+                    (if (matchUp.note.isEmpty()) "" else "*") + createDefaultTitleService.forMatchUp(context.resources, matchUpIndex, participant1, participant2)
             }
             setTypeface(typeface, if (matchUp.useTitle) Typeface.BOLD else Typeface.NORMAL)
             setTextColor(matchUp.color)

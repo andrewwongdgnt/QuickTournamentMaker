@@ -26,17 +26,17 @@ class CreateDefaultTitleService : ICreateDefaultTitleService {
 
     override fun forMatchUp(resources: Resources, matchUpIndex: Int, participant1: Participant, participant2: Participant) = resources.run {
         if (participant1.participantType == ParticipantType.BYE) {
-            getString(R.string.participantWithABye, participant2.displayName)
+            getString(R.string.participantWithABye, participant2.name)
         } else if (participant2.participantType == ParticipantType.BYE) {
-            getString(R.string.participantWithABye, participant1.displayName)
+            getString(R.string.participantWithABye, participant1.name)
         } else if (participant1.participantType == ParticipantType.NULL && participant2.participantType == ParticipantType.NULL) {
             getString(R.string.emptyMatchUp, matchUpIndex + 1)
         } else if (participant1.participantType == ParticipantType.NULL) {
-            getString(R.string.participantVsNoOne, participant2.displayName)
+            getString(R.string.participantVsNoOne, participant2.name)
         } else if (participant2.participantType == ParticipantType.NULL) {
-            getString(R.string.participantVsNoOne, participant1.displayName)
+            getString(R.string.participantVsNoOne, participant1.name)
         } else {
-            getString(R.string.participant1VsParticipant2, participant1.displayName, participant2.displayName)
+            getString(R.string.participant1VsParticipant2, participant1.name, participant2.name)
         }
     }
 

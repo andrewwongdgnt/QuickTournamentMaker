@@ -53,7 +53,7 @@
     <string name="editingThisRound">Modifier le rond</string>
 
     <string name="displayName">Nom d\'affichage</string>
-    <string name="editPlayDisplayNameHint">À l\'origine %1$s</string>
+    <string name="editPlayerDisplayNameHint">À l\'origine %1$s</string>
     <string name="note">Remarque</string>
     <string name="displayedColor">Couleur d\'affichage</string>
     <string name="editing">Modifier %1$s</string>

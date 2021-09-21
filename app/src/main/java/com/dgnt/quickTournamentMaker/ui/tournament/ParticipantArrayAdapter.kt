@@ -19,11 +19,8 @@ class ParticipantArrayAdapter(
         convertView ?: ArrayItemBinding.inflate(LayoutInflater.from(parent.context), parent, false).run {
             arrayItemTv.apply {
                 val participant = participants[position]
-                text = participant.displayName
-                    .run {
-                        this + (if (participant.note.isEmpty()) "" else "*")
-                    }
-                setTypeface(typeface, if (participant.updatedTitle()) Typeface.BOLD else Typeface.NORMAL)
+                text = participant.getDisplayName()
+                setTypeface(typeface, if (participant.isUpdatedTitle()) Typeface.BOLD else Typeface.NORMAL)
 
                 setTextColor(participant.color)
             }
