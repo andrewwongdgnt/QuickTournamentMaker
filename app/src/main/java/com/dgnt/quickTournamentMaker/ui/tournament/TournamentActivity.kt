@@ -120,9 +120,7 @@ class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentL
 
             }
             R.id.action_editARound -> viewModel.tournament.value?.let {
-
                 RoundListDialogFragment.newInstance(it.roundGroups).show(supportFragmentManager, RoundListDialogFragment.TAG)
-
             }
         }
         return super.onOptionsItemSelected(item)
