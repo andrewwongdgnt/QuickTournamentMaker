@@ -42,10 +42,10 @@ class RoundListDialogFragment : DialogFragment(), DIAware {
                 .setTitle(getString(R.string.roundSelectionHint))
                 .setNegativeButton(android.R.string.cancel, null)
                 .apply {
-                    if (roundGroups.size>1)
+                    if (roundGroups.size > 1)
                         setView(binding.root)
                     else
-                        setAdapter(RoundArrayAdapter(activity,  roundGroups[0].rounds)) { _, i ->
+                        setAdapter(RoundArrayAdapter(activity, roundGroups[0].rounds)) { _, i ->
                             roundGroups[0].rounds[i].let { round ->
                                 RoundEditorDialogFragment.newInstance(round, round.roundGroupIndex, round.roundIndex).show(activity.supportFragmentManager, RoundEditorDialogFragment.TAG)
                             }

@@ -51,7 +51,7 @@ class TournamentViewModel(
     fun updateTournament(matchUp: MatchUp, participantPosition: ParticipantPosition) {
         tournament.value?.let {
             matchUp.status = it.matchUpStatusTransformService.transform(matchUp.status, participantPosition)
-            it.roundUpdateService.update(it.roundGroups, matchUp.roundGroupIndex, matchUp.roundIndex, matchUp.matchUpIndex, it.tournamentInformation.rankConfig)
+            it.updateRound(matchUp.roundGroupIndex, matchUp.roundIndex, matchUp.matchUpIndex)
         }
     }
 }

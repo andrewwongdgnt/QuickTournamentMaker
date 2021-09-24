@@ -8,7 +8,7 @@ class TournamentBuilderService(private val services: Map<TournamentType, Tournam
     override fun build(tournamentInfo: TournamentInformation, orderedParticipants: List<Participant>, defaultRoundGroupTitleFunc: (Int) -> String, defaultRoundTitleFunc: (Int) -> String, defaultMatchUpTitleFunc: (Int, Participant, Participant) -> String) =
         services.getValue(tournamentInfo.tournamentType).run {
             val roundGroups = roundGeneratorService.build(orderedParticipants, defaultRoundGroupTitleFunc, defaultRoundTitleFunc, defaultMatchUpTitleFunc)
-            Tournament(tournamentInfo, roundGroups, roundUpdateService, rankingService, matchUpStatusTransformService)
+            Tournament(tournamentInfo, roundGroups, matchUpStatusTransformService, roundUpdateService, rankingService)
         }
 
 }

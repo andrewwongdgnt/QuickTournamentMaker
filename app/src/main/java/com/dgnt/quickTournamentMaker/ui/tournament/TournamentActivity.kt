@@ -101,28 +101,26 @@ class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentL
 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_editTournament -> viewModel.tournament.value?.run {
-                TournamentEditorDialogFragment.newInstance(viewModel.title.value ?: "", viewModel.description.value ?: "").show(supportFragmentManager, TournamentEditorDialogFragment.TAG)
-            }
-            R.id.action_editAParticipant -> viewModel.tournament.value?.let {
-                val participants = it.tournamentInformation.participants.sorted()
-                AlertDialog.Builder(this)
-                    .setAdapter(ParticipantArrayAdapter(this, participants)) { _, i ->
-                        ParticipantEditorDialogFragment.newInstance(participants[i]).show(supportFragmentManager, ParticipantEditorDialogFragment.TAG)
-                    }
-                    .setTitle(R.string.participantSelectionHint)
-                    .create()
-                    .show()
-            }
-            R.id.action_editAMatchUp -> viewModel.tournament.value?.let {
-                MatchUpListDialogFragment.newInstance(it.roundGroups).show(supportFragmentManager, MatchUpListDialogFragment.TAG)
+        viewModel.tournament.value?.apply {
+            when (item.itemId) {
+                R.id.action_currentRanking -> { RankDialogFragment.newInstance(getRanking()).show(supportFragmentManager, RankDialogFragment.TAG) }
+                R.id.action_editTournament -> TournamentEditorDialogFragment.newInstance(viewModel.title.value ?: "", viewModel.description.value ?: "").show(supportFragmentManager, TournamentEditorDialogFragment.TAG)
+                R.id.action_editAParticipant -> {
+                    val participants = tournamentInformation.participants.sorted()
+                    AlertDialog.Builder(this@TournamentActivity)
+                        .setAdapter(ParticipantArrayAdapter(this@TournamentActivity, participants)) { _, i ->
+                            ParticipantEditorDialogFragment.newInstance(participants[i]).show(supportFragmentManager, ParticipantEditorDialogFragment.TAG)
+                        }
+                        .setTitle(R.string.participantSelectionHint)
+                        .create()
+                        .show()
+                }
+                R.id.action_editAMatchUp -> MatchUpListDialogFragment.newInstance(roundGroups).show(supportFragmentManager, MatchUpListDialogFragment.TAG)
+                R.id.action_editARound -> RoundListDialogFragment.newInstance(roundGroups).show(supportFragmentManager, RoundListDialogFragment.TAG)
 
             }
-            R.id.action_editARound -> viewModel.tournament.value?.let {
-                RoundListDialogFragment.newInstance(it.roundGroups).show(supportFragmentManager, RoundListDialogFragment.TAG)
-            }
         }
+
         return super.onOptionsItemSelected(item)
     }
 

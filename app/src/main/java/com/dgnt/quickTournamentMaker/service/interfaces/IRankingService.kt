@@ -2,7 +2,7 @@ package com.dgnt.quickTournamentMaker.service.interfaces
 
 import com.dgnt.quickTournamentMaker.model.tournament.*
 
-interface IRankingService {
+interface  IRankingService {
     /**
      * calculate the rank of each participant. Both in known rankings and unknown
      *

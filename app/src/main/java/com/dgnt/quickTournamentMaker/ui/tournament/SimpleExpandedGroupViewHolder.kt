@@ -7,12 +7,12 @@ import com.dgnt.quickTournamentMaker.model.tournament.RoundGroup
 import com.dgnt.quickTournamentMaker.ui.main.common.ExpandedGroupViewHolder
 
 
-class RoundGroupExpandedGroupViewHolder(private val binding: GroupItemBinding) : ExpandedGroupViewHolder(binding) {
+class SimpleExpandedGroupViewHolder(private val binding: GroupItemBinding) : ExpandedGroupViewHolder(binding) {
 
-    fun bind(roundGroup: RoundGroup) =
+    fun bind(title: String) =
         binding.run {
             sectionHeaderTv.run {
-                text = roundGroup.title
+                text = title
             }
             sectionHeaderCtv.run {
                 visibility = View.GONE

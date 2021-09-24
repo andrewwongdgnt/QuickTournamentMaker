@@ -14,7 +14,7 @@ class TournamentInitiatorService(private val byeStatusResolverService: IByeStatu
         }.forEach { pair ->
             byeStatusResolverService.resolve(tournament.roundGroups, pair)
             (tournament.roundGroups.getOrNull(pair.first)?.rounds?.getOrNull(pair.second)?.matchUps?.indices)?.forEach {
-                tournament.roundUpdateService.update(tournament.roundGroups, pair.first, pair.second, it, tournament.tournamentInformation.rankConfig)
+                tournament.updateRound(pair.first, pair.second, it)
             }
         }
     }

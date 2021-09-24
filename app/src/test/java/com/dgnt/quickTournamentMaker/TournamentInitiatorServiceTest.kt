@@ -70,9 +70,9 @@ class TournamentInitiatorServiceTest {
         tournament = Tournament(
             TournamentInformation("title", "description", listOf(), tournamentType, SeedType.CUSTOM, RankPriorityConfig.DEFAULT, Calendar.getInstance().time),
             roundGroups,
+            mockMatchUpStatusTransformService,
             mockRoundUpdateService,
-            mockRankingService,
-            mockMatchUpStatusTransformService
+            mockRankingService
         )
     }
 
