@@ -53,7 +53,7 @@ class RankDialogFragment : DialogFragment(), DIAware {
 
                 addView(RecyclerView(activity).apply {
                     val rankList = listOf(
-                        Pair(getString(R.string.knownRanking), rank.known.mapIndexed { i, v -> v.map { "${i + 1}) ${it.name}" }.toList().sorted() }.flatten()),
+                        Pair(getString(R.string.knownRanking), rank.known.mapIndexed { i, v -> v.map { "${rank.known.size - i}) ${it.name}" }.toList().sortedDescending() }.flatten().reversed()),
                         Pair(getString(R.string.unknownRanking), rank.unknown.map { it.name }.toList().sorted()),
                     )
                     adapter = SimpleExpandableRecyclerViewAdapter(rankList.map { SimpleExpandableGroup(it.first, it.second.map { SimpleParcelable(it) }) })
