@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.text.TextUtils" />
+        <import type="android.view.View" />
         <variable
                 name="vm"
                 type="com.dgnt.quickTournamentMaker.ui.tournament.MoreInfoViewModel" />
