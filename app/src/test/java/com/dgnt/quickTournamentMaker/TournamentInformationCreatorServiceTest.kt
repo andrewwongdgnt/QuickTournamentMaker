@@ -12,7 +12,6 @@ class TournamentInformationCreatorServiceTest {
 
     private val title = "title"
     private val description = "description"
-    private val participants = listOf(Data.ANDREW, Data.KELSEY)
     private val rankConfig = RankScoreConfig(1f, 1f, 1f)
 
     private val eliminationTitle = "my elimination"
@@ -24,15 +23,13 @@ class TournamentInformationCreatorServiceTest {
     fun setUp() {
 
 
-
     }
 
     @Test
     fun testNormalCreation() {
-        val tournamentInfo = sut.create(title, alternativeTitles, description, participants, TournamentType.ELIMINATION, SeedType.RANDOM, rankConfig)
+        val tournamentInfo = sut.create(title, alternativeTitles, description, TournamentType.ELIMINATION, SeedType.RANDOM, rankConfig)
         Assert.assertEquals(title, tournamentInfo.title)
         Assert.assertEquals(description, tournamentInfo.description)
-        Assert.assertEquals(participants, tournamentInfo.participants)
         Assert.assertEquals(TournamentType.ELIMINATION, tournamentInfo.tournamentType)
         Assert.assertEquals(SeedType.RANDOM, tournamentInfo.seedType)
         Assert.assertEquals(rankConfig, tournamentInfo.rankConfig)
@@ -40,10 +37,9 @@ class TournamentInformationCreatorServiceTest {
 
     @Test
     fun testEmptyTitle() {
-        val tournamentInfo = sut.create("", alternativeTitles, description, participants, TournamentType.ELIMINATION, SeedType.RANDOM, rankConfig)
+        val tournamentInfo = sut.create("", alternativeTitles, description, TournamentType.ELIMINATION, SeedType.RANDOM, rankConfig)
         Assert.assertEquals(eliminationTitle, tournamentInfo.title)
         Assert.assertEquals(description, tournamentInfo.description)
-        Assert.assertEquals(participants, tournamentInfo.participants)
         Assert.assertEquals(TournamentType.ELIMINATION, tournamentInfo.tournamentType)
         Assert.assertEquals(SeedType.RANDOM, tournamentInfo.seedType)
         Assert.assertEquals(rankConfig, tournamentInfo.rankConfig)
@@ -51,10 +47,9 @@ class TournamentInformationCreatorServiceTest {
 
     @Test
     fun testBlankTitle() {
-        val tournamentInfo = sut.create(" ", alternativeTitles, description, participants, TournamentType.ELIMINATION, SeedType.RANDOM, rankConfig)
+        val tournamentInfo = sut.create(" ", alternativeTitles, description, TournamentType.ELIMINATION, SeedType.RANDOM, rankConfig)
         Assert.assertEquals(eliminationTitle, tournamentInfo.title)
         Assert.assertEquals(description, tournamentInfo.description)
-        Assert.assertEquals(participants, tournamentInfo.participants)
         Assert.assertEquals(TournamentType.ELIMINATION, tournamentInfo.tournamentType)
         Assert.assertEquals(SeedType.RANDOM, tournamentInfo.seedType)
         Assert.assertEquals(rankConfig, tournamentInfo.rankConfig)

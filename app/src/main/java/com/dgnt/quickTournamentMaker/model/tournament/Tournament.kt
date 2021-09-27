@@ -20,11 +20,11 @@ data class Tournament(
     val rankingService: IRankingService
 ) {
 
-    val matchUps = roundGroups.flatMap {
-        it.rounds.flatMap { it.matchUps.map { it } }
-    }
-
     val rounds = roundGroups.flatMap { it.rounds }
+
+    val matchUps = rounds.flatMap { it.matchUps }
+
+    val participants = matchUps.flatMap { listOf(it.participant1, it.participant2) }.filter { it.participantType == ParticipantType.NORMAL }.sorted()
 
     fun updateRound(roundGroupIndex: Int, roundIndex: Int, matchUpIndex: Int) = roundUpdateService.update(roundGroups, roundGroupIndex, roundIndex, matchUpIndex, tournamentInformation.rankConfig)
 

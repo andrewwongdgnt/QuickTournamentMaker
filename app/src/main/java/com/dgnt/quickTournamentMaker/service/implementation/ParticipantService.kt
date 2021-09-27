@@ -2,7 +2,6 @@ package com.dgnt.quickTournamentMaker.service.implementation
 
 import com.dgnt.quickTournamentMaker.model.tournament.MatchUp
 import com.dgnt.quickTournamentMaker.model.tournament.Participant
-import com.dgnt.quickTournamentMaker.model.tournament.ParticipantType
 import com.dgnt.quickTournamentMaker.model.tournament.Round
 import com.dgnt.quickTournamentMaker.service.interfaces.IParticipantService
 
@@ -32,21 +31,4 @@ class ParticipantService : IParticipantService {
                 },
             defaultRoundTitleFunc(roundIndex)
         )
-
-    override fun cloneList(
-        original: List<Participant>,
-        reference: List<Participant>
-    ): List<Participant> {
-        val map = original.map { it.key to it }.toMap()
-
-        return reference.map {
-            map[it.key] ?: run {
-                when (it.participantType){
-                    ParticipantType.BYE -> Participant.BYE_PARTICIPANT
-                    ParticipantType.NULL -> Participant.NULL_PARTICIPANT
-                    else -> it
-                }
-            }
-        }
-    }
 }

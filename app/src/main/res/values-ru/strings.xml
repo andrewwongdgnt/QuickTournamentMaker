@@ -74,7 +74,6 @@
     <string name="duplicateMsg">%1$s уже существует</string>
     <string name="defaultGroupName">Группа по умолчанию</string>
     <string name="edit">Редактировать</string>
-    <string name="tournamentInfo">Турнира информации</string>
     <string name="delete">Удалить</string>
     <string name="deletePlayerMsg">Вы уверены, что хотите удалить %1$d игрока(ов)? Это действие не может быть отменено.</string>
     <string name="deletingPlayers">Удаление %1$d игрока(ов)</string>

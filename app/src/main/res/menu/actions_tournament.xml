@@ -15,10 +15,6 @@
         android:title="@string/currentRanking"
         compat:showAsAction="never" />
     <item
-        android:id="@+id/action_tournamentInfo"
-        android:title="@string/tournamentInfo"
-        compat:showAsAction="never" />
-    <item
         android:id="@+id/action_exportTournamentAsImage"
         android:title="@string/exportTournamentAsImage"
         compat:showAsAction="never" />
@@ -27,8 +23,8 @@
         android:title="@string/exportTournamentAsFile"
         compat:showAsAction="never" />
     <item
-        android:id="@+id/action_editTournament"
-        android:title="@string/editTournament"
+        android:id="@+id/action_moreInfo"
+        android:title="@string/moreInfo"
         compat:showAsAction="never" />
     <item
         android:id="@+id/action_rebuildTournament"

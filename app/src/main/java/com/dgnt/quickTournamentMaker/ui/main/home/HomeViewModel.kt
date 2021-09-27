@@ -182,8 +182,18 @@ class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroup
         }
 
         try {
-            val tournamentInformation = tournamentInformationCreatorService.create(title.value ?: "", alternativeTitles, description.value ?: "", selectedPersonsService.resolve(selectedPersons.value, numberOfParticipants.value?.toIntOrNull(), quickStart.value ?: false, seedType, defaultParticipantNameFunc), tournamentType, seedType, rankConfig)
-            val orderedParticipants = seedServices.getValue(tournamentInformation.tournamentType).seed(tournamentInformation.participants)
+            val tournamentInformation = tournamentInformationCreatorService.create(
+                title.value ?: "",
+                alternativeTitles,
+                description.value ?: "",
+                tournamentType,
+                seedType,
+                rankConfig
+            )
+
+            val orderedParticipants = seedServices
+                .getValue(tournamentInformation.tournamentType)
+                .seed(selectedPersonsService.resolve(selectedPersons.value, numberOfParticipants.value?.toIntOrNull(), quickStart.value ?: false, seedType, defaultParticipantNameFunc))
             Event(Pair(tournamentInformation, orderedParticipants)).also {
                 if (seedType == SeedType.RANDOM)
                     _randomSeedTournamentEvent.value = it

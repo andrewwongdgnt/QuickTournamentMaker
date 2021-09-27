@@ -9,7 +9,6 @@ class TournamentInformationCreatorService : ITournamentInformationCreatorService
         titleCandidate: String,
         alternativeTitles: Map<TournamentType, String>,
         description: String,
-        participants: List<Participant>,
         tournamentType: TournamentType,
         seedType: SeedType,
         rankConfig: IRankConfig
@@ -19,7 +18,7 @@ class TournamentInformationCreatorService : ITournamentInformationCreatorService
         else
             alternativeTitles.getValue(tournamentType)
 
-        return TournamentInformation(title, description, participants, tournamentType, seedType, rankConfig, Calendar.getInstance().time)
+        return TournamentInformation(title, description, tournamentType, seedType, rankConfig, Calendar.getInstance().time)
     }
 
 

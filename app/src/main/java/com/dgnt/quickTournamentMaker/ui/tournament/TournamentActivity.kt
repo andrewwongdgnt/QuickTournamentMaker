@@ -99,14 +99,13 @@ class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentL
         return super.onCreateOptionsMenu(menu)
     }
 
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         viewModel.tournament.value?.apply {
             when (item.itemId) {
                 R.id.action_currentRanking -> { RankDialogFragment.newInstance(getRanking()).show(supportFragmentManager, RankDialogFragment.TAG) }
-                R.id.action_editTournament -> TournamentEditorDialogFragment.newInstance(viewModel.title.value ?: "", viewModel.description.value ?: "").show(supportFragmentManager, TournamentEditorDialogFragment.TAG)
+                R.id.action_moreInfo -> TournamentEditorDialogFragment.newInstance(viewModel.title.value ?: "", viewModel.description.value ?: "").show(supportFragmentManager, TournamentEditorDialogFragment.TAG)
                 R.id.action_editAParticipant -> {
-                    val participants = tournamentInformation.participants.sorted()
+                    val participants = participants
                     AlertDialog.Builder(this@TournamentActivity)
                         .setAdapter(ParticipantArrayAdapter(this@TournamentActivity, participants)) { _, i ->
                             ParticipantEditorDialogFragment.newInstance(participants[i]).show(supportFragmentManager, ParticipantEditorDialogFragment.TAG)
@@ -133,7 +132,7 @@ class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentL
 
     override fun onEditParticipant(key: String, name: String, note: String, color: Int) {
         viewModel.tournament.value?.run {
-            tournamentInformation.participants.find { it.key == key }?.let {
+            participants.find { it.key == key }?.let {
                 it.name = name
                 it.note = note
                 it.color = color

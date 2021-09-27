@@ -45,7 +45,8 @@
     <string name="currentRanking">Current ranking</string>
     <string name="saveAsTournament">Save as</string>
     <string name="exportTournamentAsImage">Export as image</string>
-    <string name="editTournament">Edit tournament</string>
+    <string name="editTournament">Edit tournament</string> <!-- to be removed and replaced by below -->
+    <string name="moreInfo">More Info</string>
     <string name="rebuildTournament">Rebuild tournament</string>
     <string name="editARound">Edit a round</string>
     <string name="editAMatchUp">Edit a match up</string>
@@ -78,7 +79,6 @@
     <string name="duplicateMsg">%1$s already exists</string>
     <string name="defaultGroupName">Default group</string>
     <string name="edit">Edit</string>
-    <string name="tournamentInfo">Tournament info</string>
     <string name="delete">Delete</string>
     <string name="deletePlayerMsg">Are you sure you want to delete %1$d player(s)? This action cannot be undone.</string>
     <string name="deletingPlayers">Deleting %1$d player(s)</string>

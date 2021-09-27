@@ -37,7 +37,7 @@ class TournamentViewModel(
 
         tournamentBuilderService.build(
             tournamentInformation,
-            participantService.cloneList(tournamentInformation.participants, orderedParticipants),
+            orderedParticipants,
             defaultRoundGroupTitleFunc,
             defaultRoundTitleFunc,
             defaultMatchUpTitleFunc

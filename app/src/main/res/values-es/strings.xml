@@ -75,7 +75,6 @@
     <string name="duplicateMsg">%1$s ya existe</string>
     <string name="defaultGroupName">Grupo por defecto</string>
     <string name="edit">Editar</string>
-    <string name="tournamentInfo">Torneo información</string>
     <string name="delete">Eliminar</string>
     <string name="deletePlayerMsg">¿Está seguro de que quiere eliminar jugador(es) %1$d? Esta acción no se puede deshacer.</string>
     <string name="deletingPlayers">Eliminando jugador(es) %1$d</string>
