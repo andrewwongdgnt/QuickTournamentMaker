@@ -43,4 +43,6 @@
     <dimen name="scoreEditTextWidth">50dp</dimen>
     <dimen name="scoreTextWidth">50dp</dimen>
     <dimen name="priorityRankTextVerticalPadding">5dp</dimen>
+
+    <dimen name="titledLinearLayoutPadding">5dp</dimen>
 </resources>

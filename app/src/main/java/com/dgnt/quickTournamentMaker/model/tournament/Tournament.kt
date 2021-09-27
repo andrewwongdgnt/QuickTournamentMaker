@@ -1,15 +1,22 @@
 package com.dgnt.quickTournamentMaker.model.tournament
 
+import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.service.interfaces.IMatchUpStatusTransformService
 import com.dgnt.quickTournamentMaker.service.interfaces.IRankingService
 import com.dgnt.quickTournamentMaker.service.interfaces.IRoundUpdateService
 
-enum class TournamentType {
-    ELIMINATION, DOUBLE_ELIMINATION, ROUND_ROBIN, SWISS, SURVIVAL
+enum class TournamentType(val resource: Int) {
+    ELIMINATION(R.string.elimination),
+    DOUBLE_ELIMINATION(R.string.doubleElimination),
+    ROUND_ROBIN(R.string.roundRobin),
+    SWISS(R.string.swiss),
+    SURVIVAL(R.string.survival)
 }
 
-enum class SeedType {
-    RANDOM, CUSTOM, SAME
+enum class SeedType(val resource: Int) {
+    RANDOM(R.string.randomSeed),
+    CUSTOM(R.string.customSeed),
+    SAME(R.string.sameSeed)
 }
 
 data class Tournament(
