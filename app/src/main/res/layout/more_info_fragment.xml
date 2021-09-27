@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+                name="vm"
+                type="com.dgnt.quickTournamentMaker.ui.tournament.MoreInfoViewModel" />
+
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/layout_horizontal_margin"
+                android:paddingTop="@dimen/layout_vertical_margin"
+                android:paddingRight="@dimen/layout_horizontal_margin"
+                android:paddingBottom="@dimen/layout_vertical_margin">
+            <com.dgnt.quickTournamentMaker.ui.layout.TitledLinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:titleText="@string/general">
+                <include layout="@layout/component_tournament_general_editor"
+                        app:vm="@{vm}" />
+
+                <TextView
+                        android:id="@+id/typeInfo_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="Type: Elimination"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                <TextView
+                        android:layout_marginTop="@dimen/standard_gap"
+                        android:id="@+id/seedTypeInfo_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="Seed type: Random"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                <TextView
+                        android:layout_marginTop="@dimen/standard_gap"
+                        android:id="@+id/createdDateInfo_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="Created on: March 27, 1989"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                <TextView
+                        android:layout_marginVertical="@dimen/standard_gap"
+                        android:id="@+id/lastModifiedDateInfo_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="Last modified: -"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+            </com.dgnt.quickTournamentMaker.ui.layout.TitledLinearLayout>
+
+            <com.dgnt.quickTournamentMaker.ui.layout.TitledLinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:titleText="@string/matchMaking">
+                <TextView
+                        android:layout_marginTop="@dimen/standard_gap"
+                        android:id="@+id/roundInfo_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="8 rounds"
+                        android:text="@={vm.roundInfo}"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                <TextView
+                        android:layout_marginTop="@dimen/standard_gap"
+                        android:id="@+id/matchUpInfo_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="16 matches"
+                        android:text="@={vm.matchUpInfo}"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                <TextView
+                        android:layout_marginTop="@dimen/standard_gap"
+                        android:id="@+id/matchUpSubInfo_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="5 with byes"
+                        android:visibility="@{TextUtils.isEmpty(vm.matchUpSubInfo) ? View.GONE : View.VISIBLE}"
+                        android:text="@={vm.matchUpSubInfo}"
+                        android:paddingStart="@dimen/more_info_left_padding"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                <TextView
+                        android:layout_marginVertical="@dimen/standard_gap"
+                        android:id="@+id/playerInfo_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="32 players"
+                        android:text="@={vm.participantInfo}"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+            </com.dgnt.quickTournamentMaker.ui.layout.TitledLinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

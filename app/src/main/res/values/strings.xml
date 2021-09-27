@@ -151,11 +151,10 @@
     <string name="noResultsMsg">No results found</string>
 
     <string name="titleHeader">Title</string>
-    <string name="descriptionHeader">Description</string>
-    <string name="typeHeader">Type</string>
-    <string name="playersHeader">Players</string>
-    <string name="createdDateLabelHeader">Created on</string>
-    <string name="lastModifiedDateLabelHeader">Last modified</string>
+    <string name="typeInfo">Type: %1$s</string>
+    <string name="seedTypeInfo">Seed type: %1$s</string>
+    <string name="createdDateInfo">Created on: %1$s</string>
+    <string name="lastModifiedDateInfo">Last modified: %1$s</string>
 
     <string name="showOnly">Show only</string>
     <string name="createdBetween">Created between</string>
@@ -218,7 +217,7 @@
                                 \n%5$s: %6$d
     </string>
 
-    <string name="na" translatable="false">N/A</string>
+    <string name="na" translatable="false">-</string>
     <string name="exportTournamentAsFile">Export as file</string>
     <string name="startTournamentFromFile">Start tournament from file</string>
 
@@ -265,4 +264,9 @@
     <string name="rounds">Rounds</string>
     <string name="matchUps">Match ups</string>
     <string name="useCustomTitle">Use custom title</string>
+    <string name="matchMaking">Match making</string>
+    <string name="roundInfo">%1$d rounds</string>
+    <string name="matchUpInfo">%1$d matches</string>
+    <string name="matchUpSubInfo">%1$d with byes</string>
+    <string name="playerInfo">%1$d players</string>
 </resources>

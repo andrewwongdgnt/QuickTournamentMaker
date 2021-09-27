@@ -24,7 +24,9 @@ data class Tournament(
 
     val matchUps = rounds.flatMap { it.matchUps }
 
-    val participants = matchUps.flatMap { listOf(it.participant1, it.participant2) }.filter { it.participantType == ParticipantType.NORMAL }.sorted()
+    fun getMatchUpsWithSingleByes() = matchUps.filter { it.containsBye(true) }
+
+    val participants = roundGroups[0].rounds[0].matchUps.flatMap { listOf(it.participant1, it.participant2) }.filter { it.participantType == ParticipantType.NORMAL }.sorted()
 
     fun updateRound(roundGroupIndex: Int, roundIndex: Int, matchUpIndex: Int) = roundUpdateService.update(roundGroups, roundGroupIndex, roundIndex, matchUpIndex, tournamentInformation.rankConfig)
 

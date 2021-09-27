@@ -11,8 +11,7 @@ import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentInitiatorServ
 
 class TournamentViewModel(
     private val tournamentBuilderService: ITournamentBuilderService,
-    private val tournamentInitiatorService: ITournamentInitiatorService,
-    private val participantService: IParticipantService,
+    private val tournamentInitiatorService: ITournamentInitiatorService
 ) : ViewModel(), Observable {
 
 

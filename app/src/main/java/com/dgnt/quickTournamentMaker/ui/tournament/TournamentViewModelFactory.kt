@@ -8,15 +8,13 @@ import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentInitiatorServ
 
 class TournamentViewModelFactory(
     private val tournamentBuilderService: ITournamentBuilderService,
-    private val tournamentInitiatorService: ITournamentInitiatorService,
-    private val participantService: IParticipantService,
+    private val tournamentInitiatorService: ITournamentInitiatorService
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(TournamentViewModel::class.java)) {
             return TournamentViewModel(
                 tournamentBuilderService,
-                tournamentInitiatorService,
-                participantService
+                tournamentInitiatorService
             ) as T
         }
         throw IllegalArgumentException("Unknown View Model class")

@@ -146,11 +146,9 @@
     <string name="noResultsMsg">Результатов не найдено</string>
 
     <string name="titleHeader">Заглавие</string>
-    <string name="descriptionHeader">Описание</string>
-    <string name="typeHeader">Тип</string>
-    <string name="playersHeader">Игроки</string>
-    <string name="createdDateLabelHeader">Создано</string>
-    <string name="lastModifiedDateLabelHeader">Последнее изменение</string>
+    <string name="typeInfo">Тип: %1$s</string>
+    <string name="createdDateInfo">Создано: %1$s</string>
+    <string name="lastModifiedDateInfo">Последнее изменение: %1$s</string>
 
     <string name="showOnly">Только показать</string>
     <string name="createdBetween">Создано между</string>

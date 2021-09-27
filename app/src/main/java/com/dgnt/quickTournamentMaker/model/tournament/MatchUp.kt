@@ -24,6 +24,9 @@ data class MatchUp(
     var color: Int = TournamentUtil.DEFAULT_DISPLAY_COLOR
 ) : IKeyable<Triple<Int, Int, Int>>, Parcelable {
     override val key = Triple(roundGroupIndex, roundIndex, matchUpIndex)
-    fun containsBye() = participant1.participantType == ParticipantType.BYE || participant2.participantType == ParticipantType.BYE
+    fun containsBye(singuluar: Boolean = false) =
+        (participant1.participantType == ParticipantType.BYE || participant2.participantType == ParticipantType.BYE)
+                && (!singuluar || !(participant1.participantType == ParticipantType.BYE && participant2.participantType == ParticipantType.BYE))
+
     fun getDisplayTitle() = (if (note.isEmpty()) "" else "*") + title
 }

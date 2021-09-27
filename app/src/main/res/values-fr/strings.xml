@@ -147,11 +147,9 @@
     <string name="noResultsMsg">Aucun résultat trouvé</string>
 
     <string name="titleHeader">Titre</string>
-    <string name="descriptionHeader">Description</string>
-    <string name="typeHeader">Type</string>
-    <string name="playersHeader">Joueurs</string>
-    <string name="createdDateLabelHeader">Créé le</string>
-    <string name="lastModifiedDateLabelHeader">Dernière modification</string>
+    <string name="typeInfo">Type: %1$s</string>
+    <string name="createdDateInfo">Créé le: %1$s</string>
+    <string name="lastModifiedDateInfo">Dernière modification: %1$s</string>
 
     <string name="showOnly">Montrer seulement</string>
     <string name="createdBetween">Créé entre</string>

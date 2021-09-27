@@ -8,7 +8,6 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.TournamentActivityBinding
@@ -21,7 +20,7 @@ import org.kodein.di.android.di
 import org.kodein.di.instance
 
 
-class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentListener, IParticipantEditorDialogFragmentListener, IMatchUpEditorDialogFragmentListener, IRoundEditorDialogFragmentListener, DIAware {
+class TournamentActivity : AppCompatActivity(), IMoreInfoDialogFragmentListener, IParticipantEditorDialogFragmentListener, IMatchUpEditorDialogFragmentListener, IRoundEditorDialogFragmentListener, DIAware {
     override val di by di()
     private val viewModelFactory: TournamentViewModelFactory by instance()
     private val createDefaultTitleService: ICreateDefaultTitleService by instance()
@@ -76,10 +75,15 @@ class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentL
                 { mIndex: Int, participant1: Participant, participant2: Participant -> createDefaultTitleService.forMatchUp(resources, mIndex, participant1, participant2) }
             )
 
-            title.observe(tournamentActivity, Observer {
+            title.observe(tournamentActivity, {
                 tournamentActivity.title = it
+                tournamentInformation.title = it
             })
-            tournament.observe(tournamentActivity, Observer {
+            description.observe(tournamentActivity, {
+                tournamentInformation.description = it
+            })
+
+            tournament.observe(tournamentActivity, {
                 binding.container.draw(it) { m, p ->
                     updateTournament(m, p)
                 }
@@ -102,8 +106,14 @@ class TournamentActivity : AppCompatActivity(), ITournamentEditorDialogFragmentL
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         viewModel.tournament.value?.apply {
             when (item.itemId) {
-                R.id.action_currentRanking -> { RankDialogFragment.newInstance(getRanking()).show(supportFragmentManager, RankDialogFragment.TAG) }
-                R.id.action_moreInfo -> TournamentEditorDialogFragment.newInstance(viewModel.title.value ?: "", viewModel.description.value ?: "").show(supportFragmentManager, TournamentEditorDialogFragment.TAG)
+                R.id.action_currentRanking -> RankDialogFragment.newInstance(getRanking()).show(supportFragmentManager, RankDialogFragment.TAG)
+                R.id.action_moreInfo -> MoreInfoDialogFragment.newInstance(
+                    tournamentInformation,
+                    rounds.size,
+                    matchUps.size,
+                    getMatchUpsWithSingleByes().size,
+                    participants.size
+                ).show(supportFragmentManager, MoreInfoDialogFragment.TAG)
                 R.id.action_editAParticipant -> {
                     val participants = participants
                     AlertDialog.Builder(this@TournamentActivity)
