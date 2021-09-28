@@ -73,6 +73,8 @@ class MoreInfoDialogFragment : DialogFragment(), DIAware {
                 arguments?.getParcelable(KEY_TOURNAMENT_INFO)!!,
                 { type -> getString(R.string.typeInfo, getString(type.resource)) },
                 { seedType -> getString(R.string.seedTypeInfo, getString(seedType.resource)) },
+                { date -> getString(R.string.createdDateInfo, date) },
+                { date -> getString(R.string.lastModifiedDateInfo, date) },
                 getString(R.string.roundInfo, arguments?.getInt(KEY_ROUNDS_SIZE)!!),
                 getString(R.string.matchUpInfo, arguments?.getInt(KEY_MATCH_UPS_SIZE)!!),
                 arguments?.getInt(KEY_MATCH_UPS_BYE_SIZE)!!.let {

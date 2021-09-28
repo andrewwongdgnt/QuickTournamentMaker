@@ -8,6 +8,8 @@ import com.dgnt.quickTournamentMaker.model.tournament.SeedType
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentType
 import com.dgnt.quickTournamentMaker.ui.main.common.TournamentGeneralEditorViewModel
+import org.joda.time.format.DateTimeFormat
+
 
 class MoreInfoViewModel : Observable, ViewModel(), TournamentGeneralEditorViewModel {
     @Bindable
@@ -21,6 +23,12 @@ class MoreInfoViewModel : Observable, ViewModel(), TournamentGeneralEditorViewMo
 
     @Bindable
     val seedTypeInfo = MutableLiveData<String>()
+
+    @Bindable
+    val createdDateInfo = MutableLiveData<String>()
+
+    @Bindable
+    val lastModifiedDateInfo = MutableLiveData<String>()
 
     @Bindable
     val roundInfo = MutableLiveData<String>()
@@ -42,8 +50,10 @@ class MoreInfoViewModel : Observable, ViewModel(), TournamentGeneralEditorViewMo
 
     fun setData(
         tournamentInformation: TournamentInformation,
-        getTypeString: (TournamentType) -> String,
-        getSeedTypeString: (SeedType) -> String,
+        getTypeInfoString: (TournamentType) -> String,
+        getSeedTypeInfoString: (SeedType) -> String,
+        getCreatedDateInfoString: (String) -> String,
+        getLastModifiedDateInfoString: (String) -> String,
         roundInfo: String,
         matchUpInfo: String,
         matchUpSubInfo: String,
@@ -51,8 +61,15 @@ class MoreInfoViewModel : Observable, ViewModel(), TournamentGeneralEditorViewMo
     ) {
         title.value = tournamentInformation.title
         description.value = tournamentInformation.description
-        type.value = getTypeString(tournamentInformation.tournamentType)
-        seedType.value = getSeedTypeString(tournamentInformation.seedType)
+        typeInfo.value = getTypeInfoString(tournamentInformation.tournamentType)
+        seedTypeInfo.value = getSeedTypeInfoString(tournamentInformation.seedType)
+
+        DateTimeFormat.mediumDateTime().apply {
+            createdDateInfo.value = getCreatedDateInfoString(print(tournamentInformation.creationDate))
+            lastModifiedDateInfo.value = getLastModifiedDateInfoString(tournamentInformation.lastModifiedDate?.let {
+                print(it)
+            } ?: "-")
+        }
 
         this.roundInfo.value = roundInfo
         this.matchUpInfo.value = matchUpInfo

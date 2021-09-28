@@ -2,7 +2,8 @@ package com.dgnt.quickTournamentMaker.service.implementation
 
 import com.dgnt.quickTournamentMaker.model.tournament.*
 import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentInformationCreatorService
-import java.util.*
+import org.joda.time.LocalDateTime
+
 
 class TournamentInformationCreatorService : ITournamentInformationCreatorService {
     override fun create(
@@ -18,7 +19,7 @@ class TournamentInformationCreatorService : ITournamentInformationCreatorService
         else
             alternativeTitles.getValue(tournamentType)
 
-        return TournamentInformation(title, description, tournamentType, seedType, rankConfig, Calendar.getInstance().time)
+        return TournamentInformation(title, description, tournamentType, seedType, rankConfig, LocalDateTime.now())
     }
 
 
