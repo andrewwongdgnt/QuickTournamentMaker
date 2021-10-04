@@ -23,7 +23,6 @@ import com.dgnt.quickTournamentMaker.ui.customSeed.CustomSeedDialogFragment
 import com.dgnt.quickTournamentMaker.ui.layout.NonScrollingLinearLayoutManager
 import com.dgnt.quickTournamentMaker.ui.main.common.DraggableItemTouchHelperCallback
 import com.dgnt.quickTournamentMaker.ui.main.common.RankPriorityRecyclerViewAdapter
-import com.dgnt.quickTournamentMaker.ui.tournament.RoundListDialogFragment
 import com.dgnt.quickTournamentMaker.ui.tournament.TournamentActivity
 import com.dgnt.quickTournamentMaker.util.update
 import com.thoughtbot.expandablecheckrecyclerview.models.CheckedExpandableGroup
@@ -111,20 +110,20 @@ class HomeFragment : Fragment(), DIAware {
                 }
             })
 
-            viewModel.priorityConfig.observe(viewLifecycleOwner, Observer {
+            viewModel.priorityConfig.observe(viewLifecycleOwner, {
                 priorityList.update(it.toList())
                 rankPriorityRecyclerViewAdapter.notifyDataSetChanged()
             })
 
             binding.tournamentTypeEditor.priorityRv.adapter = rankPriorityRecyclerViewAdapter
 
-            viewModel.scoreConfigLiveData.observe(viewLifecycleOwner, Observer {
+            viewModel.scoreConfigLiveData.observe(viewLifecycleOwner, {
                 viewModel.handleScoreConfigChange(it.first, it.second, it.third)
             })
 
             binding.personToParticipateRv.layoutManager = NonScrollingLinearLayoutManager(this)
 
-            viewModel.personAndGroupLiveData.observe(viewLifecycleOwner, Observer { (persons, groupEntities) ->
+            viewModel.personAndGroupLiveData.observe(viewLifecycleOwner, { (persons, groupEntities) ->
 
                 val groups = groupEntities.map { Group.fromEntity(it) }.sorted()
                 personToGroupNameMap = persons.map { it.name to it.groupName }.toMap()
@@ -154,7 +153,7 @@ class HomeFragment : Fragment(), DIAware {
 
             })
 
-            viewModel.expandAll.observe(viewLifecycleOwner, Observer {
+            viewModel.expandAll.observe(viewLifecycleOwner, {
 
                 val adapter = binding.personToParticipateRv.adapter as GroupCheckedExpandableRecyclerViewAdapter
                 adapter.groups.forEach { g ->
@@ -165,7 +164,7 @@ class HomeFragment : Fragment(), DIAware {
 
             })
 
-            viewModel.selectAll.observe(viewLifecycleOwner, Observer {
+            viewModel.selectAll.observe(viewLifecycleOwner, {
 
                 val adapter = binding.personToParticipateRv.adapter as GroupCheckedExpandableRecyclerViewAdapter
                 adapter.groups.forEach { g ->
@@ -174,7 +173,7 @@ class HomeFragment : Fragment(), DIAware {
 
             })
 
-            viewModel.randomSeedTournamentEvent.observe(viewLifecycleOwner, Observer {
+            viewModel.randomSeedTournamentEvent.observe(viewLifecycleOwner, {
                 it.getContentIfNotHandled()?.let {
 
                     Log.d("DGNTTAG", "start tournament with random seed: $it")
@@ -184,7 +183,7 @@ class HomeFragment : Fragment(), DIAware {
                 }
             })
 
-            viewModel.customSeedTournamentEvent.observe(viewLifecycleOwner, Observer {
+            viewModel.customSeedTournamentEvent.observe(viewLifecycleOwner, {
                 it.getContentIfNotHandled()?.let {
 
                     Log.d("DGNTTAG", "start tournament with custom seed: $it")
@@ -194,7 +193,7 @@ class HomeFragment : Fragment(), DIAware {
                 }
             })
 
-            viewModel.failedToStartTournamentMessage.observe(viewLifecycleOwner, Observer {
+            viewModel.failedToStartTournamentMessage.observe(viewLifecycleOwner, {
                 it.getContentIfNotHandled()?.let {
                     Toast.makeText(context, R.string.lessThan3Msg, Toast.LENGTH_LONG).show()
 

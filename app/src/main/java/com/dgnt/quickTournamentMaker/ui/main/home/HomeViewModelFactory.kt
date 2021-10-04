@@ -10,7 +10,14 @@ import com.dgnt.quickTournamentMaker.service.interfaces.ISeedService
 import com.dgnt.quickTournamentMaker.service.interfaces.ISelectedPersonsService
 import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentInformationCreatorService
 
-class HomeViewModelFactory(private val personRepository: IPersonRepository, private val groupRepository: IGroupRepository, private val preferenceService: IPreferenceService, private val tournamentInformationCreatorService: ITournamentInformationCreatorService, private val selectedPersonsService: ISelectedPersonsService, private val seedServices: Map<TournamentType, ISeedService>) : ViewModelProvider.Factory {
+class HomeViewModelFactory(
+    private val personRepository: IPersonRepository,
+    private val groupRepository: IGroupRepository,
+    private val preferenceService: IPreferenceService,
+    private val tournamentInformationCreatorService: ITournamentInformationCreatorService,
+    private val selectedPersonsService: ISelectedPersonsService,
+    private val seedServices: Map<TournamentType, ISeedService>
+) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
             return HomeViewModel(personRepository, groupRepository, preferenceService, tournamentInformationCreatorService, selectedPersonsService, seedServices) as T

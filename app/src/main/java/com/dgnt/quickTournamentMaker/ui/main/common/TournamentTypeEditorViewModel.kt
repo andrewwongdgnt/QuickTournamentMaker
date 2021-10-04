@@ -27,7 +27,6 @@ interface TournamentTypeEditorViewModel {
     val tieValue: MutableLiveData<Int>
     val priorityConfig: MutableLiveData<Triple<RankPriorityConfigType, RankPriorityConfigType, RankPriorityConfigType>>
 
-    var alternativeTitles: Map<TournamentType, String>
     var eliminationRadioButtonId: Int
     var doubleEliminationRadioButtonId: Int
     var roundRobinRadioButtonId: Int

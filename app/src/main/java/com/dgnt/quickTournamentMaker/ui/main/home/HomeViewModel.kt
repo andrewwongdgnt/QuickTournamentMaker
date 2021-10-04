@@ -20,7 +20,14 @@ import com.dgnt.quickTournamentMaker.ui.main.common.TournamentGeneralEditorViewM
 import com.dgnt.quickTournamentMaker.ui.main.common.TournamentTypeEditorViewModel
 import com.dgnt.quickTournamentMaker.util.Event
 
-class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroupRepository, override val preferenceService: IPreferenceService, override val tournamentInformationCreatorService: ITournamentInformationCreatorService, private val selectedPersonsService: ISelectedPersonsService, private val seedServices: Map<TournamentType, ISeedService>) : ViewModel(), Observable, TournamentGeneralEditorViewModel, TournamentTypeEditorViewModel {
+class HomeViewModel(
+    personRepository: IPersonRepository,
+    groupRepository: IGroupRepository,
+    override val preferenceService: IPreferenceService,
+    override val tournamentInformationCreatorService: ITournamentInformationCreatorService,
+    private val selectedPersonsService: ISelectedPersonsService,
+    private val seedServices: Map<TournamentType, ISeedService>
+) : ViewModel(), Observable, TournamentGeneralEditorViewModel, TournamentTypeEditorViewModel {
 
     private val persons = personRepository.getAll()
     private val groups = groupRepository.getAll()
@@ -87,7 +94,7 @@ class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroup
     val scoreConfigLiveData: LiveData<Triple<Int, Int, Int>> = scoreConfigLiveDataCreator()
 
     @Bindable
-    val quickStart = MutableLiveData<Boolean>(true)
+    val quickStart = MutableLiveData(true)
 
     @Bindable
     val numberOfParticipants = MutableLiveData<String>()
@@ -125,7 +132,7 @@ class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroup
     val failedToStartTournamentMessage: LiveData<Event<Boolean>>
         get() = _failedToStartTournamentMessage
 
-    override lateinit var alternativeTitles: Map<TournamentType, String>
+    lateinit var alternativeTitles: Map<TournamentType, String>
     override var eliminationRadioButtonId = 0
     override var doubleEliminationRadioButtonId = 0
     override var roundRobinRadioButtonId = 0
@@ -147,7 +154,19 @@ class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroup
     override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
     }
 
-    fun setData(alternativeTitles: Map<TournamentType, String>, eliminationRadioButtonId: Int, doubleEliminationRadioButtonId: Int, roundRobinRadioButtonId: Int, swissRadioButtonId: Int, survivalRadioButtonId: Int, randomSeedingRadioButtonId: Int, customSeedingRadioButtonId: Int, priorityRankingRadioButtonId: Int, scoreRankingRadioButtonId: Int, defaultParticipantNameFunc: (Int) -> String) {
+    fun setData(
+        alternativeTitles: Map<TournamentType, String>,
+        eliminationRadioButtonId: Int,
+        doubleEliminationRadioButtonId: Int,
+        roundRobinRadioButtonId: Int,
+        swissRadioButtonId: Int,
+        survivalRadioButtonId: Int,
+        randomSeedingRadioButtonId: Int,
+        customSeedingRadioButtonId: Int,
+        priorityRankingRadioButtonId: Int,
+        scoreRankingRadioButtonId: Int,
+        defaultParticipantNameFunc: (Int) -> String
+    ) {
         this.alternativeTitles = alternativeTitles
         this.eliminationRadioButtonId = eliminationRadioButtonId
         this.doubleEliminationRadioButtonId = doubleEliminationRadioButtonId
@@ -178,7 +197,7 @@ class HomeViewModel(personRepository: IPersonRepository, groupRepository: IGroup
 
         val rankConfig = when (rankConfig.value) {
             priorityRankingRadioButtonId -> priorityConfig.value?.let { RankPriorityConfig(it.first, it.second, it.third) } ?: RankPriorityConfig.DEFAULT
-            else -> RankScoreConfig(winValue.value?.let { it.toFloat() } ?: 0f, lossValue.value?.let { it.toFloat() } ?: 0f, tieValue.value?.let { it.toFloat() } ?: 0f)
+            else -> RankScoreConfig(winValue.value?.toFloat() ?: 0f, lossValue.value?.toFloat() ?: 0f, tieValue.value?.toFloat() ?: 0f)
         }
 
         try {

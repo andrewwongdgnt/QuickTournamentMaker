@@ -3,7 +3,7 @@ package com.dgnt.quickTournamentMaker.ui.tournament
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
-class MoreInfoViewModelFactory() : ViewModelProvider.Factory {
+class MoreInfoViewModelFactory : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MoreInfoViewModel::class.java)) {
             return MoreInfoViewModel() as T

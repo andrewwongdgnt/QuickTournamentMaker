@@ -114,6 +114,7 @@ class TournamentActivity : AppCompatActivity(), IMoreInfoDialogFragmentListener,
                     getMatchUpsWithSingleByes().size,
                     participants.size
                 ).show(supportFragmentManager, MoreInfoDialogFragment.TAG)
+                R.id.action_rebuildTournament -> RebuildTournamentDialogFragment.newInstance(tournamentInformation, participants).show(supportFragmentManager, RebuildTournamentDialogFragment.TAG)
                 R.id.action_editAParticipant -> {
                     val participants = participants
                     AlertDialog.Builder(this@TournamentActivity)

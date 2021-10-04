@@ -46,9 +46,6 @@ class MoreInfoDialogFragment : DialogFragment(), DIAware {
 
     private lateinit var listenerEditor: IMoreInfoDialogFragmentListener
 
-    private lateinit var binding: MoreInfoFragmentBinding
-    private lateinit var viewModel: MoreInfoViewModel
-
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -63,9 +60,9 @@ class MoreInfoDialogFragment : DialogFragment(), DIAware {
         activity?.let { activity ->
 
 
-            binding = MoreInfoFragmentBinding.inflate(activity.layoutInflater)
+            val binding = MoreInfoFragmentBinding.inflate(activity.layoutInflater)
 
-            viewModel = ViewModelProvider(this, viewModelFactory).get(MoreInfoViewModel::class.java)
+            val viewModel = ViewModelProvider(this, viewModelFactory).get(MoreInfoViewModel::class.java)
             binding.vm = viewModel
             binding.lifecycleOwner = this
 
