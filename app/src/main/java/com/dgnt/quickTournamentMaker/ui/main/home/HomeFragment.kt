@@ -56,14 +56,11 @@ class HomeFragment : Fragment(), DIAware {
         savedInstanceState: Bundle?
     ): View {
         binding = HomeFragmentBinding.inflate(inflater)
-        return binding.root;
+        return binding.root
     }
 
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-                
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val fragment = this
         context?.apply {
             viewModel = ViewModelProvider(fragment, viewModelFactory).get(HomeViewModel::class.java)
@@ -78,7 +75,7 @@ class HomeFragment : Fragment(), DIAware {
             viewModel.tournamentType.value = binding.tournamentTypeEditor.eliminationRb.id
             viewModel.seedType.value = binding.tournamentTypeEditor.randomSeedRb.id
             binding.tournamentTypeEditor.sameSeedRb.visibility = View.GONE
-            viewModel.tournamentType.observe(viewLifecycleOwner, Observer {
+            viewModel.tournamentType.observe(viewLifecycleOwner, {
                 viewModel.showRankConfig.value = when (it) {
                     binding.tournamentTypeEditor.eliminationRb.id, binding.tournamentTypeEditor.doubleEliminationRb.id, binding.tournamentTypeEditor.survivalRb.id -> false
                     else -> true
