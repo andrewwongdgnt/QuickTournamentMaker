@@ -3,6 +3,7 @@ package com.dgnt.quickTournamentMaker.ui.tournament
 import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
@@ -60,6 +61,24 @@ class RebuildTournamentDialogFragment : DialogFragment(), DIAware {
                 arguments?.getParcelable(KEY_TOURNAMENT_INFO)!!,
                 arguments?.getParcelableArrayList(KEY_ORDERED_PARTICIPANTS)!!
             )
+
+            viewModel.tournamentType.value = binding.tournamentTypeEditor.eliminationRb.id
+            viewModel.seedType.value = binding.tournamentTypeEditor.randomSeedRb.id
+            binding.tournamentTypeEditor.sameSeedRb.visibility = View.GONE
+            viewModel.tournamentType.observe(activity, {
+
+                viewModel.showRankConfig.value = when (it) {
+                    binding.tournamentTypeEditor.eliminationRb.id, binding.tournamentTypeEditor.doubleEliminationRb.id, binding.tournamentTypeEditor.survivalRb.id -> false
+                    else -> true
+                }
+                viewModel.showSeedType.value = when (it) {
+                    binding.tournamentTypeEditor.survivalRb.id -> false
+                    else -> true
+                }
+
+                viewModel.handleTournamentTypeChange(it)
+                viewModel.handleRankConfigHelpMsgChange(it, getString(R.string.rankConfigurationHelpMsg, getString(R.string.rankConfigurationForRoundRobinHelpMsg)), getString(R.string.rankConfigurationHelpMsg, getString(R.string.rankConfigurationForSwissHelpMsg)))
+            })
 
             viewModel.tournamentEvent.observe(activity, {
                 it.getContentIfNotHandled()?.let {
