@@ -3,14 +3,15 @@ package com.dgnt.quickTournamentMaker.ui.tournament
 import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
+import com.dgnt.quickTournamentMaker.databinding.ComponentTournamentTypeEditorBinding
 import com.dgnt.quickTournamentMaker.databinding.RebuildTournamentFragmentBinding
 import com.dgnt.quickTournamentMaker.model.tournament.Participant
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
+import com.dgnt.quickTournamentMaker.util.TournamentUtil
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 import org.kodein.di.instance
@@ -47,58 +48,16 @@ class RebuildTournamentDialogFragment : DialogFragment(), DIAware {
             binding.vm = viewModel
             binding.lifecycleOwner = this
 
-            viewModel.setData(
-                binding.tournamentTypeEditor.eliminationRb.id,
-                binding.tournamentTypeEditor.doubleEliminationRb.id,
-                binding.tournamentTypeEditor.roundRobinRb.id,
-                binding.tournamentTypeEditor.swissRb.id,
-                binding.tournamentTypeEditor.survivalRb.id,
+            setVMData(viewModel, binding.tournamentTypeEditor)
 
-                binding.tournamentTypeEditor.randomSeedRb.id,
-                binding.tournamentTypeEditor.customSeedRb.id,
-                binding.tournamentTypeEditor.compareRankFromPriorityRb.id,
-                binding.tournamentTypeEditor.compareRankFromScoreRb.id,
-                arguments?.getParcelable(KEY_TOURNAMENT_INFO)!!,
-                arguments?.getParcelableArrayList(KEY_ORDERED_PARTICIPANTS)!!
+            TournamentUtil.setUpTournamentTypeUI(
+                viewModel,
+                binding.tournamentTypeEditor,
+                activity,
+                activity,
+                activity.supportFragmentManager,
+                true
             )
-
-            viewModel.tournamentType.value = binding.tournamentTypeEditor.eliminationRb.id
-            viewModel.seedType.value = binding.tournamentTypeEditor.randomSeedRb.id
-            binding.tournamentTypeEditor.sameSeedRb.visibility = View.GONE
-            viewModel.tournamentType.observe(activity, {
-
-                viewModel.showRankConfig.value = when (it) {
-                    binding.tournamentTypeEditor.eliminationRb.id, binding.tournamentTypeEditor.doubleEliminationRb.id, binding.tournamentTypeEditor.survivalRb.id -> false
-                    else -> true
-                }
-                viewModel.showSeedType.value = when (it) {
-                    binding.tournamentTypeEditor.survivalRb.id -> false
-                    else -> true
-                }
-
-                viewModel.handleTournamentTypeChange(it)
-                viewModel.handleRankConfigHelpMsgChange(it, getString(R.string.rankConfigurationHelpMsg, getString(R.string.rankConfigurationForRoundRobinHelpMsg)), getString(R.string.rankConfigurationHelpMsg, getString(R.string.rankConfigurationForSwissHelpMsg)))
-            })
-
-            viewModel.tournamentEvent.observe(activity, {
-                it.getContentIfNotHandled()?.let {
-
-                    Log.d("DGNTTAG", "start tournament with random seed: $it")
-
-//                    startActivity(TournamentActivity.createIntent(this, it.first,it.second))
-
-                }
-            })
-
-            viewModel.customSeedTournamentEvent.observe(activity, {
-                it.getContentIfNotHandled()?.let {
-
-                    Log.d("DGNTTAG", "start tournament with custom seed: $it")
-
-//                    CustomSeedDialogFragment.newInstance(it.first, it.second).show(activity?.supportFragmentManager!!, CustomSeedDialogFragment.TAG)
-
-                }
-            })
 
             AlertDialog.Builder(activity)
                 .setTitle(R.string.rebuildTournament)
@@ -112,6 +71,23 @@ class RebuildTournamentDialogFragment : DialogFragment(), DIAware {
         } ?: run {
             super.onCreateDialog(savedInstanceState)
         }
+
+    private fun setVMData(viewModel: RebuildTournamentViewModel, tournamentTypeEditor: ComponentTournamentTypeEditorBinding) {
+        viewModel.setData(
+            tournamentTypeEditor.eliminationRb.id,
+            tournamentTypeEditor.doubleEliminationRb.id,
+            tournamentTypeEditor.roundRobinRb.id,
+            tournamentTypeEditor.swissRb.id,
+            tournamentTypeEditor.survivalRb.id,
+
+            tournamentTypeEditor.randomSeedRb.id,
+            tournamentTypeEditor.customSeedRb.id,
+            tournamentTypeEditor.compareRankFromPriorityRb.id,
+            tournamentTypeEditor.compareRankFromScoreRb.id,
+            arguments?.getParcelable(KEY_TOURNAMENT_INFO)!!,
+            arguments?.getParcelableArrayList(KEY_ORDERED_PARTICIPANTS)!!
+        )
+    }
 
     override fun onStart() {
         super.onStart()

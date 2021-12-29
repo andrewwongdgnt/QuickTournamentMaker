@@ -17,7 +17,7 @@ import com.dgnt.quickTournamentMaker.service.interfaces.ISeedService
 import com.dgnt.quickTournamentMaker.service.interfaces.ISelectedPersonsService
 import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentInformationCreatorService
 import com.dgnt.quickTournamentMaker.ui.main.common.TournamentGeneralEditorViewModel
-import com.dgnt.quickTournamentMaker.ui.main.common.TournamentTypeEditorViewModel
+import com.dgnt.quickTournamentMaker.ui.main.common.TournamentBuilderViewModel
 import com.dgnt.quickTournamentMaker.util.Event
 
 class HomeViewModel(
@@ -27,7 +27,7 @@ class HomeViewModel(
     override val tournamentInformationCreatorService: ITournamentInformationCreatorService,
     private val selectedPersonsService: ISelectedPersonsService,
     private val seedServices: Map<TournamentType, ISeedService>
-) : ViewModel(), Observable, TournamentGeneralEditorViewModel, TournamentTypeEditorViewModel {
+) : ViewModel(), Observable, TournamentGeneralEditorViewModel, TournamentBuilderViewModel {
 
     private val persons = personRepository.getAll()
     private val groups = groupRepository.getAll()
@@ -91,7 +91,8 @@ class HomeViewModel(
     @Bindable
     override val priorityConfig = MutableLiveData<Triple<RankPriorityConfigType, RankPriorityConfigType, RankPriorityConfigType>>()
 
-    val scoreConfigLiveData: LiveData<Triple<Int, Int, Int>> = scoreConfigLiveDataCreator()
+    @Bindable
+    override val scoreConfigLiveData: LiveData<Triple<Int, Int, Int>> = scoreConfigLiveDataCreator()
 
     @Bindable
     val quickStart = MutableLiveData(true)
@@ -120,17 +121,12 @@ class HomeViewModel(
             }
         }
 
-    private val _randomSeedTournamentEvent = MutableLiveData<Event<Pair<TournamentInformation, List<Participant>>>>()
-    val randomSeedTournamentEvent: LiveData<Event<Pair<TournamentInformation, List<Participant>>>>
-        get() = _randomSeedTournamentEvent
+    override val tournamentEvent = MutableLiveData<Event<Pair<TournamentInformation, List<Participant>>>>()
 
-    private val _customSeedTournamentEvent = MutableLiveData<Event<Pair<TournamentInformation, List<Participant>>>>()
-    val customSeedTournamentEvent: LiveData<Event<Pair<TournamentInformation, List<Participant>>>>
-        get() = _customSeedTournamentEvent
+    override val customSeedTournamentEvent = MutableLiveData<Event<Pair<TournamentInformation, List<Participant>>>>()
 
-    private val _failedToStartTournamentMessage = MutableLiveData<Event<Boolean>>()
-    val failedToStartTournamentMessage: LiveData<Event<Boolean>>
-        get() = _failedToStartTournamentMessage
+    override val failedToStartTournamentMessage = MutableLiveData<Event<Boolean>>()
+
 
     lateinit var alternativeTitles: Map<TournamentType, String>
     override var eliminationRadioButtonId = 0
@@ -215,14 +211,14 @@ class HomeViewModel(
                 .seed(selectedPersonsService.resolve(selectedPersons.value, numberOfParticipants.value?.toIntOrNull(), quickStart.value ?: false, seedType, defaultParticipantNameFunc))
             Event(Pair(tournamentInformation, orderedParticipants)).also {
                 if (seedType == SeedType.RANDOM)
-                    _randomSeedTournamentEvent.value = it
+                    tournamentEvent.value = it
                 else if (seedType == SeedType.CUSTOM)
-                    _customSeedTournamentEvent.value = it
+                    customSeedTournamentEvent.value = it
             }
 
 
         } catch (e: IllegalArgumentException) {
-            _failedToStartTournamentMessage.value = Event(true)
+            failedToStartTournamentMessage.value = Event(true)
         }
 
 

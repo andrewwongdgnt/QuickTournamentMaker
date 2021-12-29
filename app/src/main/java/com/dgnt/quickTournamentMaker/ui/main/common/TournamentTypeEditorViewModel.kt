@@ -1,5 +1,6 @@
 package com.dgnt.quickTournamentMaker.ui.main.common
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.dgnt.quickTournamentMaker.model.tournament.RankPriorityConfig
@@ -26,6 +27,7 @@ interface TournamentTypeEditorViewModel {
     val lossValue: MutableLiveData<Int>
     val tieValue: MutableLiveData<Int>
     val priorityConfig: MutableLiveData<Triple<RankPriorityConfigType, RankPriorityConfigType, RankPriorityConfigType>>
+    val scoreConfigLiveData: LiveData<Triple<Int, Int, Int>>
 
     var eliminationRadioButtonId: Int
     var doubleEliminationRadioButtonId: Int

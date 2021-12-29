@@ -8,13 +8,13 @@ import androidx.lifecycle.ViewModel
 import com.dgnt.quickTournamentMaker.model.tournament.*
 import com.dgnt.quickTournamentMaker.service.interfaces.IPreferenceService
 import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentInformationCreatorService
-import com.dgnt.quickTournamentMaker.ui.main.common.TournamentTypeEditorViewModel
+import com.dgnt.quickTournamentMaker.ui.main.common.TournamentBuilderViewModel
 import com.dgnt.quickTournamentMaker.util.Event
 
 class RebuildTournamentViewModel(
     override val preferenceService: IPreferenceService,
     override val tournamentInformationCreatorService: ITournamentInformationCreatorService
-) : ViewModel(), Observable, TournamentTypeEditorViewModel {
+) : ViewModel(), Observable, TournamentBuilderViewModel {
 
 
     @Bindable
@@ -53,16 +53,14 @@ class RebuildTournamentViewModel(
     @Bindable
     override val priorityConfig = MutableLiveData<Triple<RankPriorityConfigType, RankPriorityConfigType, RankPriorityConfigType>>()
 
-    val scoreConfigLiveData: LiveData<Triple<Int, Int, Int>> = scoreConfigLiveDataCreator()
+    @Bindable
+    override val scoreConfigLiveData: LiveData<Triple<Int, Int, Int>> = scoreConfigLiveDataCreator()
 
-    private val _tournamentEvent = MutableLiveData<Event<Pair<TournamentInformation, List<Participant>>>>()
-    val tournamentEvent: LiveData<Event<Pair<TournamentInformation, List<Participant>>>>
-        get() = _tournamentEvent
+    override val tournamentEvent = MutableLiveData<Event<Pair<TournamentInformation, List<Participant>>>>()
 
-    private val _customSeedTournamentEvent = MutableLiveData<Event<Pair<TournamentInformation, List<Participant>>>>()
-    val customSeedTournamentEvent: LiveData<Event<Pair<TournamentInformation, List<Participant>>>>
-        get() = _customSeedTournamentEvent
+    override val customSeedTournamentEvent = MutableLiveData<Event<Pair<TournamentInformation, List<Participant>>>>()
 
+    override val failedToStartTournamentMessage = MutableLiveData<Event<Boolean>>()
 
     override var eliminationRadioButtonId = 0
     override var doubleEliminationRadioButtonId = 0
@@ -151,9 +149,9 @@ class RebuildTournamentViewModel(
 
         Event(Pair(tournamentInformation, newParticipants)).also {
             if (seedType == SeedType.CUSTOM)
-                _customSeedTournamentEvent.value = it
+                customSeedTournamentEvent.value = it
             else
-                _tournamentEvent.value = it
+                tournamentEvent.value = it
         }
 
 

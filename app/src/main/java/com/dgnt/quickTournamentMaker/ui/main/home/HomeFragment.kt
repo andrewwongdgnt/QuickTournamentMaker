@@ -1,30 +1,20 @@
 package com.dgnt.quickTournamentMaker.ui.main.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.HomeFragmentBinding
 import com.dgnt.quickTournamentMaker.model.management.Group
 import com.dgnt.quickTournamentMaker.model.management.Person
-import com.dgnt.quickTournamentMaker.model.tournament.RankPriorityConfigType
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentType
 import com.dgnt.quickTournamentMaker.service.interfaces.ICreateDefaultTitleService
-import com.dgnt.quickTournamentMaker.ui.customSeed.CustomSeedDialogFragment
 import com.dgnt.quickTournamentMaker.ui.layout.NonScrollingLinearLayoutManager
-import com.dgnt.quickTournamentMaker.ui.main.common.DraggableItemTouchHelperCallback
-import com.dgnt.quickTournamentMaker.ui.main.common.RankPriorityRecyclerViewAdapter
-import com.dgnt.quickTournamentMaker.ui.tournament.TournamentActivity
-import com.dgnt.quickTournamentMaker.util.update
+import com.dgnt.quickTournamentMaker.util.TournamentUtil
 import com.thoughtbot.expandablecheckrecyclerview.models.CheckedExpandableGroup
 import com.thoughtbot.expandablerecyclerview.listeners.GroupExpandCollapseListener
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup
@@ -70,53 +60,16 @@ class HomeFragment : Fragment(), DIAware {
 
             setVMData(viewModel)
 
+            TournamentUtil.setUpTournamentTypeUI(
+                viewModel,
+                binding.tournamentTypeEditor,
+                viewLifecycleOwner,
+                this,
+                requireActivity().supportFragmentManager,
+                false
+            )
+
             viewModel.numberOfPersonsSelected.value = getString(R.string.numberOfPlayersSelected, 0)
-
-            viewModel.tournamentType.value = binding.tournamentTypeEditor.eliminationRb.id
-            viewModel.seedType.value = binding.tournamentTypeEditor.randomSeedRb.id
-            binding.tournamentTypeEditor.sameSeedRb.visibility = View.GONE
-            viewModel.tournamentType.observe(viewLifecycleOwner, {
-                viewModel.showRankConfig.value = when (it) {
-                    binding.tournamentTypeEditor.eliminationRb.id, binding.tournamentTypeEditor.doubleEliminationRb.id, binding.tournamentTypeEditor.survivalRb.id -> false
-                    else -> true
-                }
-                viewModel.showSeedType.value = when (it) {
-                    binding.tournamentTypeEditor.survivalRb.id -> false
-                    else -> true
-                }
-
-                viewModel.handleTournamentTypeChange(it)
-                viewModel.handleRankConfigHelpMsgChange(it, getString(R.string.rankConfigurationHelpMsg, getString(R.string.rankConfigurationForRoundRobinHelpMsg)), getString(R.string.rankConfigurationHelpMsg, getString(R.string.rankConfigurationForSwissHelpMsg)))
-
-            })
-            viewModel.rankConfig.observe(viewLifecycleOwner, Observer {
-                viewModel.showPriorityContent.value = it == binding.tournamentTypeEditor.compareRankFromPriorityRb.id
-
-                viewModel.showScoringContent.value = it == binding.tournamentTypeEditor.compareRankFromScoreRb.id
-
-                viewModel.handleRankConfigChange(it == binding.tournamentTypeEditor.compareRankFromPriorityRb.id)
-            })
-
-            val priorityList = mutableListOf<RankPriorityConfigType>()
-            val rankPriorityRecyclerViewAdapter = RankPriorityRecyclerViewAdapter(this, priorityList)
-            ItemTouchHelper(DraggableItemTouchHelperCallback(rankPriorityRecyclerViewAdapter)).attachToRecyclerView(binding.tournamentTypeEditor.priorityRv)
-
-            rankPriorityRecyclerViewAdapter.registerAdapterDataObserver(object : AdapterDataObserver() {
-                override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
-                    viewModel.handlePriorityConfigChange(priorityList)
-                }
-            })
-
-            viewModel.priorityConfig.observe(viewLifecycleOwner, {
-                priorityList.update(it.toList())
-                rankPriorityRecyclerViewAdapter.notifyDataSetChanged()
-            })
-
-            binding.tournamentTypeEditor.priorityRv.adapter = rankPriorityRecyclerViewAdapter
-
-            viewModel.scoreConfigLiveData.observe(viewLifecycleOwner, {
-                viewModel.handleScoreConfigChange(it.first, it.second, it.third)
-            })
 
             binding.personToParticipateRv.layoutManager = NonScrollingLinearLayoutManager(this)
 
@@ -169,33 +122,6 @@ class HomeFragment : Fragment(), DIAware {
                 }
 
             })
-
-            viewModel.randomSeedTournamentEvent.observe(viewLifecycleOwner, {
-                it.getContentIfNotHandled()?.let {
-
-                    Log.d("DGNTTAG", "start tournament with random seed: $it")
-
-                    startActivity(TournamentActivity.createIntent(this, it.first,it.second))
-
-                }
-            })
-
-            viewModel.customSeedTournamentEvent.observe(viewLifecycleOwner, {
-                it.getContentIfNotHandled()?.let {
-
-                    Log.d("DGNTTAG", "start tournament with custom seed: $it")
-
-                    CustomSeedDialogFragment.newInstance(it.first, it.second).show(activity?.supportFragmentManager!!, CustomSeedDialogFragment.TAG)
-
-                }
-            })
-
-            viewModel.failedToStartTournamentMessage.observe(viewLifecycleOwner, {
-                it.getContentIfNotHandled()?.let {
-                    Toast.makeText(context, R.string.lessThan3Msg, Toast.LENGTH_LONG).show()
-
-                }
-            })
         }
 
 
@@ -222,7 +148,7 @@ class HomeFragment : Fragment(), DIAware {
             binding.tournamentTypeEditor.customSeedRb.id,
             binding.tournamentTypeEditor.compareRankFromPriorityRb.id,
             binding.tournamentTypeEditor.compareRankFromScoreRb.id
-        ){ p: Int -> createDefaultTitleService.forParticipant(resources, p) }
+        ) { p: Int -> createDefaultTitleService.forParticipant(resources, p) }
     }
 
     private fun selectGroup(group: GroupCheckedExpandableGroup, checked: Boolean) {
