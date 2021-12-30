@@ -65,8 +65,14 @@ class HomeFragment : Fragment(), DIAware {
                 binding.tournamentTypeEditor,
                 viewLifecycleOwner,
                 this,
-                requireActivity().supportFragmentManager,
                 false
+            )
+
+            TournamentUtil.setUpTournamentEvents(
+                viewModel,
+                viewLifecycleOwner,
+                this,
+                requireActivity().supportFragmentManager
             )
 
             viewModel.numberOfPersonsSelected.value = getString(R.string.numberOfPlayersSelected, 0)

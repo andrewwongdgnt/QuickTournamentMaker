@@ -14,7 +14,8 @@ import com.dgnt.quickTournamentMaker.model.tournament.RankPriorityConfigType
 import com.dgnt.quickTournamentMaker.ui.customSeed.CustomSeedDialogFragment
 import com.dgnt.quickTournamentMaker.ui.main.common.DraggableItemTouchHelperCallback
 import com.dgnt.quickTournamentMaker.ui.main.common.RankPriorityRecyclerViewAdapter
-import com.dgnt.quickTournamentMaker.ui.main.common.TournamentBuilderViewModel
+import com.dgnt.quickTournamentMaker.ui.main.common.TournamentEventHolder
+import com.dgnt.quickTournamentMaker.ui.main.common.TournamentTypeEditorViewModel
 import com.dgnt.quickTournamentMaker.ui.tournament.TournamentActivity
 
 
@@ -72,11 +73,10 @@ class TournamentUtil {
         const val DEFAULT_DISPLAY_COLOR = -0x1000000
 
         fun setUpTournamentTypeUI(
-            viewModel: TournamentBuilderViewModel,
+            viewModel: TournamentTypeEditorViewModel,
             tournamentTypeEditor: ComponentTournamentTypeEditorBinding,
             lifeCycleOwner: LifecycleOwner,
             context: Context,
-            fragmentManager: FragmentManager,
             sameSeedAllowed: Boolean
         ) {
 
@@ -127,8 +127,17 @@ class TournamentUtil {
                 viewModel.handleScoreConfigChange(it.first, it.second, it.third)
             })
 
+        }
 
-            viewModel.tournamentEvent.observe(lifeCycleOwner, {
+        fun setUpTournamentEvents(
+            tournamentEventHolder: TournamentEventHolder,
+            lifeCycleOwner: LifecycleOwner,
+            context: Context,
+            fragmentManager: FragmentManager,
+        ) {
+
+
+            tournamentEventHolder.tournamentEvent.observe(lifeCycleOwner, {
                 it.getContentIfNotHandled()?.let {
 
                     Log.d("DGNTTAG", "start tournament with random seed: $it")
@@ -138,7 +147,7 @@ class TournamentUtil {
                 }
             })
 
-            viewModel.customSeedTournamentEvent.observe(lifeCycleOwner, {
+            tournamentEventHolder.customSeedTournamentEvent.observe(lifeCycleOwner, {
                 it.getContentIfNotHandled()?.let {
 
                     Log.d("DGNTTAG", "start tournament with custom seed: $it")
@@ -148,7 +157,7 @@ class TournamentUtil {
                 }
             })
 
-            viewModel.failedToStartTournamentMessage.observe(lifeCycleOwner, {
+            tournamentEventHolder.failedToStartTournamentMessage.observe(lifeCycleOwner, {
                 it.getContentIfNotHandled()?.let {
                     Toast.makeText(context, R.string.lessThan3Msg, Toast.LENGTH_LONG).show()
 

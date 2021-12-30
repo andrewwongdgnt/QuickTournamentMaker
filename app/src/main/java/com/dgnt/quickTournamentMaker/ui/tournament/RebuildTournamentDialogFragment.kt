@@ -55,8 +55,14 @@ class RebuildTournamentDialogFragment : DialogFragment(), DIAware {
                 binding.tournamentTypeEditor,
                 activity,
                 activity,
-                activity.supportFragmentManager,
                 true
+            )
+
+            TournamentUtil.setUpTournamentEvents(
+                viewModel,
+                activity,
+                activity,
+                requireActivity().supportFragmentManager
             )
 
             AlertDialog.Builder(activity)

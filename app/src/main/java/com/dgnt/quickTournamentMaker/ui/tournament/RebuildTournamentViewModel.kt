@@ -8,13 +8,14 @@ import androidx.lifecycle.ViewModel
 import com.dgnt.quickTournamentMaker.model.tournament.*
 import com.dgnt.quickTournamentMaker.service.interfaces.IPreferenceService
 import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentInformationCreatorService
-import com.dgnt.quickTournamentMaker.ui.main.common.TournamentBuilderViewModel
+import com.dgnt.quickTournamentMaker.ui.main.common.TournamentEventHolder
+import com.dgnt.quickTournamentMaker.ui.main.common.TournamentTypeEditorViewModel
 import com.dgnt.quickTournamentMaker.util.Event
 
 class RebuildTournamentViewModel(
     override val preferenceService: IPreferenceService,
     override val tournamentInformationCreatorService: ITournamentInformationCreatorService
-) : ViewModel(), Observable, TournamentBuilderViewModel {
+) : ViewModel(), Observable, TournamentTypeEditorViewModel, TournamentEventHolder {
 
 
     @Bindable

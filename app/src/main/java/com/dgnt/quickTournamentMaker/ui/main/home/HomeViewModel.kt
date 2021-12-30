@@ -17,7 +17,8 @@ import com.dgnt.quickTournamentMaker.service.interfaces.ISeedService
 import com.dgnt.quickTournamentMaker.service.interfaces.ISelectedPersonsService
 import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentInformationCreatorService
 import com.dgnt.quickTournamentMaker.ui.main.common.TournamentGeneralEditorViewModel
-import com.dgnt.quickTournamentMaker.ui.main.common.TournamentBuilderViewModel
+import com.dgnt.quickTournamentMaker.ui.main.common.TournamentEventHolder
+import com.dgnt.quickTournamentMaker.ui.main.common.TournamentTypeEditorViewModel
 import com.dgnt.quickTournamentMaker.util.Event
 
 class HomeViewModel(
@@ -27,7 +28,7 @@ class HomeViewModel(
     override val tournamentInformationCreatorService: ITournamentInformationCreatorService,
     private val selectedPersonsService: ISelectedPersonsService,
     private val seedServices: Map<TournamentType, ISeedService>
-) : ViewModel(), Observable, TournamentGeneralEditorViewModel, TournamentBuilderViewModel {
+) : ViewModel(), Observable, TournamentGeneralEditorViewModel, TournamentTypeEditorViewModel, TournamentEventHolder {
 
     private val persons = personRepository.getAll()
     private val groups = groupRepository.getAll()
