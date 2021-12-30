@@ -16,9 +16,7 @@ class ManagementViewModel(private val personRepository: IPersonRepository, group
     @Bindable
     val expandAll = MutableLiveData<Boolean>()
 
-    private val _messageEvent = MutableLiveData<Event<String>>()
-    val messageEvent: LiveData<Event<String>>
-        get() = _messageEvent
+    val messageEvent = MutableLiveData<Event<String>>()
 
     private val persons = personRepository.getAll()
     private val groups = groupRepository.getAll()
@@ -43,7 +41,7 @@ class ManagementViewModel(private val personRepository: IPersonRepository, group
 
     fun delete(persons: List<PersonEntity>, successMsg: String) = viewModelScope.launch {
         personRepository.delete(persons)
-        _messageEvent.value = Event(successMsg)
+        messageEvent.value = Event(successMsg)
     }
 
     fun expandAll() {

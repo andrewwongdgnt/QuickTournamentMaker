@@ -18,9 +18,7 @@ class PersonEditorViewModel(private val personRepository: IPersonRepository, pri
     //First = dismiss or not the dialog
     //Second = resulting message
     //Third = reset fields or not
-    private val _resultEvent = MutableLiveData<Event<Triple<Boolean, String, Boolean>>>()
-    val resultEvent: LiveData<Event<Triple<Boolean, String, Boolean>>>
-        get() = _resultEvent
+    val resultEvent = MutableLiveData<Event<Triple<Boolean, String, Boolean>>>()
 
 
     @Bindable
@@ -68,8 +66,8 @@ class PersonEditorViewModel(private val personRepository: IPersonRepository, pri
 
         val personResult = personRepository.insert(person)
         when {
-            personResult.isEmpty() || personResult[0] == -1L -> _resultEvent.value = Event(Triple(false, failMsg, false))
-            else -> _resultEvent.value = Event(Triple(!forceOpen, successMsg, forceErase))
+            personResult.isEmpty() || personResult[0] == -1L -> resultEvent.value = Event(Triple(false, failMsg, false))
+            else -> resultEvent.value = Event(Triple(!forceOpen, successMsg, forceErase))
         }
 
 
@@ -80,8 +78,8 @@ class PersonEditorViewModel(private val personRepository: IPersonRepository, pri
 
     private fun edit(person: PersonEntity, successMsg: String, failMsg: String) = viewModelScope.launch {
         when (personRepository.update(person)) {
-            0 -> _resultEvent.value = Event(Triple(false, failMsg, false))
-            else -> _resultEvent.value = Event(Triple(true, successMsg, true))
+            0 -> resultEvent.value = Event(Triple(false, failMsg, false))
+            else -> resultEvent.value = Event(Triple(true, successMsg, true))
         }
     }
 

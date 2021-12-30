@@ -17,9 +17,7 @@ class GroupEditorViewModel(private val personRepository: IPersonRepository, priv
     //First = dismiss or not the dialog
     //Second = resulting message
     //Third = reset fields or not
-    private val _resultEvent = MutableLiveData<Event<Triple<Boolean, String, Boolean>>>()
-    val resultEvent: LiveData<Event<Triple<Boolean, String, Boolean>>>
-        get() = _resultEvent
+    val resultEvent = MutableLiveData<Event<Triple<Boolean, String, Boolean>>>()
 
     @Bindable
     val name = MutableLiveData<String>()
@@ -49,8 +47,8 @@ class GroupEditorViewModel(private val personRepository: IPersonRepository, priv
     private fun insert(group: GroupEntity, successMsg: String, failMsg: String, forceOpen: Boolean, forceErase: Boolean) = viewModelScope.launch {
         val groupResult = groupRepository.insert(group)
         when {
-            groupResult.isEmpty() || groupResult[0] == -1L -> _resultEvent.value = Event(Triple(false, failMsg, false))
-            else -> _resultEvent.value = Event(Triple(!forceOpen, successMsg, forceErase))
+            groupResult.isEmpty() || groupResult[0] == -1L -> resultEvent.value = Event(Triple(false, failMsg, false))
+            else -> resultEvent.value = Event(Triple(!forceOpen, successMsg, forceErase))
         }
     }
 
@@ -60,9 +58,9 @@ class GroupEditorViewModel(private val personRepository: IPersonRepository, priv
 
     private fun edit(group: GroupEntity, oldGroupName: String, successMsg: String, failMsg: String) = viewModelScope.launch {
         when (groupRepository.update(group)) {
-            0 -> _resultEvent.value = Event(Triple(false, failMsg, false))
+            0 -> resultEvent.value = Event(Triple(false, failMsg, false))
             else -> {
-                _resultEvent.value = Event(Triple(true, successMsg, true))
+                resultEvent.value = Event(Triple(true, successMsg, true))
                 personRepository.updateGroup(listOf(oldGroupName), group.name)
             }
         }

@@ -13,15 +13,13 @@ import kotlinx.coroutines.launch
 
 class MovePersonsViewModel(private val personRepository: IPersonRepository) : ViewModel(), Observable {
 
-    private val _messageEvent = MutableLiveData<Event<String>>()
-    val messageEvent: LiveData<Event<String>>
-        get() = _messageEvent
+    val messageEvent= MutableLiveData<Event<String>>()
 
     fun move(persons: List<PersonEntity>, successMsg: String, failMsg: String) = viewModelScope.launch {
         val results = personRepository.update(persons)
         when {
-            persons.size > results -> _messageEvent.value = Event(failMsg)
-            else -> _messageEvent.value = Event(successMsg)
+            persons.size > results -> messageEvent.value = Event(failMsg)
+            else -> messageEvent.value = Event(successMsg)
         }
     }
 

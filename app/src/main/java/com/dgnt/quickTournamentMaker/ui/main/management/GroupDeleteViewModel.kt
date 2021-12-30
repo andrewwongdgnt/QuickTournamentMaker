@@ -13,11 +13,7 @@ import kotlinx.coroutines.launch
 
 class GroupDeleteViewModel(private val personRepository: IPersonRepository, private val groupRepository: IGroupRepository) : ViewModel(), Observable {
 
-
-    private val _messageEvent = MutableLiveData<Event<String>>()
-    val messageEvent: LiveData<Event<String>>
-        get() = _messageEvent
-
+    val messageEvent = MutableLiveData<Event<String>>()
 
     @Bindable
     val groupName = MutableLiveData<String>()
@@ -50,13 +46,13 @@ class GroupDeleteViewModel(private val personRepository: IPersonRepository, priv
     fun deleteThenMove(selectedGroups: List<GroupEntity>,successMsg: String) = viewModelScope.launch {
         groupRepository.delete(selectedGroups)
         personRepository.updateGroup(selectedGroups.map { it.name }, newGroupName.value!!)
-        _messageEvent.value = Event(successMsg)
+        messageEvent.value = Event(successMsg)
     }
 
     fun deleteWithPersons(selectedGroups: List<GroupEntity>, successMsg: String) = viewModelScope.launch {
         groupRepository.delete(selectedGroups)
         personRepository.deleteViaGroup(selectedGroups.map { it.name })
-        _messageEvent.value = Event(successMsg)
+        messageEvent.value = Event(successMsg)
     }
 
 }
