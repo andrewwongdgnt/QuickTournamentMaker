@@ -10,6 +10,7 @@ import com.dgnt.quickTournamentMaker.service.interfaces.IMatchUpStatusTransformS
 import com.dgnt.quickTournamentMaker.service.interfaces.IRankingService
 import com.dgnt.quickTournamentMaker.service.interfaces.IRoundGeneratorService
 import com.dgnt.quickTournamentMaker.service.interfaces.IRoundUpdateService
+import org.joda.time.LocalDateTime
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -79,15 +80,15 @@ class TournamentBuilderServiceTest {
         )
     )
 
-    private val eliminationTournamentInformation = TournamentInformation("title", "description", listOf(Data.ANDREW, Data.DEMON, Data.DGNT), TournamentType.ELIMINATION, SeedType.CUSTOM, RankPriorityConfig.DEFAULT, Calendar.getInstance().time)
+    private val eliminationTournamentInformation = TournamentInformation("title", "description", TournamentType.ELIMINATION, SeedType.CUSTOM, RankPriorityConfig.DEFAULT, LocalDateTime.now())
 
-    private val doubleEliminationTournamentInformation = TournamentInformation("title", "description", listOf(Data.ANDREW, Data.DEMON, Data.DGNT), TournamentType.DOUBLE_ELIMINATION, SeedType.CUSTOM, RankPriorityConfig.DEFAULT, Calendar.getInstance().time)
+    private val doubleEliminationTournamentInformation = TournamentInformation("title", "description", TournamentType.DOUBLE_ELIMINATION, SeedType.CUSTOM, RankPriorityConfig.DEFAULT, LocalDateTime.now())
 
-    private val roundRobinTournamentInformation = TournamentInformation("title", "description", listOf(Data.ANDREW, Data.DEMON, Data.DGNT), TournamentType.ROUND_ROBIN, SeedType.CUSTOM, RankPriorityConfig.DEFAULT, Calendar.getInstance().time)
+    private val roundRobinTournamentInformation = TournamentInformation("title", "description", TournamentType.ROUND_ROBIN, SeedType.CUSTOM, RankPriorityConfig.DEFAULT, LocalDateTime.now())
 
-    private val swissTournamentInformation = TournamentInformation("title", "description", listOf(Data.ANDREW, Data.DEMON, Data.DGNT), TournamentType.SWISS, SeedType.CUSTOM, RankPriorityConfig.DEFAULT, Calendar.getInstance().time)
+    private val swissTournamentInformation = TournamentInformation("title", "description", TournamentType.SWISS, SeedType.CUSTOM, RankPriorityConfig.DEFAULT, LocalDateTime.now())
 
-    private val survivalTournamentInformation = TournamentInformation("title", "description", listOf(Data.ANDREW, Data.DEMON, Data.DGNT), TournamentType.SURVIVAL, SeedType.CUSTOM, RankPriorityConfig.DEFAULT, Calendar.getInstance().time)
+    private val survivalTournamentInformation = TournamentInformation("title", "description", TournamentType.SURVIVAL, SeedType.CUSTOM, RankPriorityConfig.DEFAULT, LocalDateTime.now())
 
     @Before
     fun setUp() {

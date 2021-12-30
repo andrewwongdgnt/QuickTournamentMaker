@@ -6,6 +6,7 @@ import com.dgnt.quickTournamentMaker.service.interfaces.IByeStatusResolverServic
 import com.dgnt.quickTournamentMaker.service.interfaces.IMatchUpStatusTransformService
 import com.dgnt.quickTournamentMaker.service.interfaces.IRankingService
 import com.dgnt.quickTournamentMaker.service.interfaces.IRoundUpdateService
+import org.joda.time.LocalDateTime
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -68,7 +69,7 @@ class TournamentInitiatorServiceTest {
 
     private fun setUpTournament(tournamentType: TournamentType) {
         tournament = Tournament(
-            TournamentInformation("title", "description", listOf(), tournamentType, SeedType.CUSTOM, RankPriorityConfig.DEFAULT, Calendar.getInstance().time),
+            TournamentInformation("title", "description", tournamentType, SeedType.CUSTOM, RankPriorityConfig.DEFAULT, LocalDateTime.now()),
             roundGroups,
             mockMatchUpStatusTransformService,
             mockRoundUpdateService,
