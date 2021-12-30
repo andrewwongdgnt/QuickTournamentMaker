@@ -118,18 +118,22 @@ class RebuildTournamentViewModel(
             roundRobinRadioButtonId -> TournamentType.ROUND_ROBIN
             swissRadioButtonId -> TournamentType.SWISS
             else -> TournamentType.SURVIVAL
-
         }
-        val seedType = when (seedType.value) {
+
+        val seedTypeId = seedType.value
+
+        val seedTypeToPersist = when (seedTypeId) {
             randomSeedingRadioButtonId -> SeedType.RANDOM
             customSeedingRadioButtonId -> SeedType.CUSTOM
             else -> oldTournamentInformation.seedType
         }
 
-        val newParticipants = when (seedType) {
-            SeedType.RANDOM -> oldParticipants.shuffled()
+        val newParticipants = when (seedTypeId) {
+            randomSeedingRadioButtonId -> oldParticipants.shuffled()
             else -> oldParticipants
         }
+
+        val isCustomSeedTournamentEvent = seedTypeId == customSeedingRadioButtonId
 
         val rankConfig = when (rankConfig.value) {
             priorityRankingRadioButtonId -> priorityConfig.value?.let { RankPriorityConfig(it.first, it.second, it.third) } ?: RankPriorityConfig.DEFAULT
@@ -140,7 +144,7 @@ class RebuildTournamentViewModel(
             oldTournamentInformation.title,
             oldTournamentInformation.description,
             tournamentType,
-            seedType,
+            seedTypeToPersist,
             rankConfig,
             oldTournamentInformation.creationDate,
             oldTournamentInformation.lastModifiedDate
@@ -148,7 +152,7 @@ class RebuildTournamentViewModel(
 
 
         Event(Pair(tournamentInformation, newParticipants)).also {
-            if (seedType == SeedType.CUSTOM)
+            if (isCustomSeedTournamentEvent)
                 customSeedTournamentEvent.value = it
             else
                 tournamentEvent.value = it

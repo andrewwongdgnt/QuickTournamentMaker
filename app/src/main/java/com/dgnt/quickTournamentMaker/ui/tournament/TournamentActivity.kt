@@ -112,14 +112,14 @@ class TournamentActivity : AppCompatActivity(), IMoreInfoDialogFragmentListener,
                     rounds.size,
                     matchUps.size,
                     getMatchUpsWithSingleByes().size,
-                    participants.size
+                    orderedParticipants.size
                 ).show(supportFragmentManager, MoreInfoDialogFragment.TAG)
-                R.id.action_rebuildTournament -> RebuildTournamentDialogFragment.newInstance(tournamentInformation, participants).show(supportFragmentManager, RebuildTournamentDialogFragment.TAG)
+                R.id.action_rebuildTournament -> RebuildTournamentDialogFragment.newInstance(tournamentInformation, orderedParticipants).show(supportFragmentManager, RebuildTournamentDialogFragment.TAG)
                 R.id.action_editAParticipant -> {
-                    val participants = participants
+                    val sortedParticipants = orderedParticipants.sorted()
                     AlertDialog.Builder(this@TournamentActivity)
-                        .setAdapter(ParticipantArrayAdapter(this@TournamentActivity, participants)) { _, i ->
-                            ParticipantEditorDialogFragment.newInstance(participants[i]).show(supportFragmentManager, ParticipantEditorDialogFragment.TAG)
+                        .setAdapter(ParticipantArrayAdapter(this@TournamentActivity, sortedParticipants)) { _, i ->
+                            ParticipantEditorDialogFragment.newInstance(sortedParticipants[i]).show(supportFragmentManager, ParticipantEditorDialogFragment.TAG)
                         }
                         .setTitle(R.string.participantSelectionHint)
                         .create()
@@ -143,7 +143,7 @@ class TournamentActivity : AppCompatActivity(), IMoreInfoDialogFragmentListener,
 
     override fun onEditParticipant(key: String, name: String, note: String, color: Int) {
         viewModel.tournament.value?.run {
-            participants.find { it.key == key }?.let {
+            orderedParticipants.find { it.key == key }?.let {
                 it.name = name
                 it.note = note
                 it.color = color
