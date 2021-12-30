@@ -22,13 +22,18 @@ class CustomSeedDialogFragment : DialogFragment(), DIAware {
     override val di by di()
     private val viewModelFactory: CustomSeedViewModelFactory by instance()
 
+    private var onNewTournamentCallback = {}
+
     companion object {
         const val TAG = "CustomSeedDialogFragment"
 
         private const val KEY_TOURNAMENT_INFO = "KEY_TOURNAMENT_INFO"
         private const val KEY_ORDERED_PARTICIPANTS = "KEY_ORDERED_PARTICIPANTS"
 
-        fun newInstance(tournamentInformation: TournamentInformation, orderedParticipants: List<Participant>) =
+        fun newInstance(
+            tournamentInformation: TournamentInformation,
+            orderedParticipants: List<Participant>
+        ) =
             CustomSeedDialogFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable(KEY_TOURNAMENT_INFO, tournamentInformation)
@@ -98,6 +103,7 @@ class CustomSeedDialogFragment : DialogFragment(), DIAware {
                 .setPositiveButton(android.R.string.ok) { _, _ ->
                     viewModel.matchUps.value?.apply {
                         startActivity(TournamentActivity.createIntent(activity, tournamentInformation, flatMap { listOf(it.participant1, it.participant2) }))
+                        onNewTournamentCallback.invoke()
                     }
                 }
                 .setNegativeButton(android.R.string.cancel, null)
@@ -114,7 +120,10 @@ class CustomSeedDialogFragment : DialogFragment(), DIAware {
             WindowManager.LayoutParams.MATCH_PARENT,
             WindowManager.LayoutParams.WRAP_CONTENT
         )
+    }
 
+    fun setOnNewTournamentCallback(onNewTournamentCallback: () -> Unit) {
+        this.onNewTournamentCallback = onNewTournamentCallback
     }
 
 }

@@ -63,7 +63,9 @@ class RebuildTournamentDialogFragment : DialogFragment(), DIAware {
                 activity,
                 activity,
                 requireActivity().supportFragmentManager
-            )
+            ) {
+                activity.finish()
+            }
 
             AlertDialog.Builder(activity)
                 .setTitle(R.string.rebuildTournament)

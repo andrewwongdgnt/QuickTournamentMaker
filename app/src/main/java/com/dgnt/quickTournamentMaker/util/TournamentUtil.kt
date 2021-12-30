@@ -134,6 +134,7 @@ class TournamentUtil {
             lifeCycleOwner: LifecycleOwner,
             context: Context,
             fragmentManager: FragmentManager,
+            onNewTournamentCallback: () -> Unit = {}
         ) {
 
 
@@ -143,7 +144,7 @@ class TournamentUtil {
                     Log.d("DGNTTAG", "start tournament with random seed: $it")
 
                     context.startActivity(TournamentActivity.createIntent(context, it.first, it.second))
-
+                    onNewTournamentCallback.invoke()
                 }
             })
 
@@ -152,7 +153,9 @@ class TournamentUtil {
 
                     Log.d("DGNTTAG", "start tournament with custom seed: $it")
 
-                    CustomSeedDialogFragment.newInstance(it.first, it.second).show(fragmentManager, CustomSeedDialogFragment.TAG)
+                    CustomSeedDialogFragment.newInstance(it.first, it.second).also{ frag ->
+                        frag.setOnNewTournamentCallback(onNewTournamentCallback)
+                    }.show(fragmentManager, CustomSeedDialogFragment.TAG)
 
                 }
             })
