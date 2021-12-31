@@ -9,7 +9,8 @@ class RebuildTournamentViewModelFactory(
     private val preferenceService: IPreferenceService,
     private val tournamentInformationCreatorService: ITournamentInformationCreatorService,
 ) : ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(RebuildTournamentViewModel::class.java)) {
             return RebuildTournamentViewModel(preferenceService, tournamentInformationCreatorService) as T
         }

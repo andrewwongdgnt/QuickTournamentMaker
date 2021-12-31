@@ -18,7 +18,8 @@ class HomeViewModelFactory(
     private val selectedPersonsService: ISelectedPersonsService,
     private val seedServices: Map<TournamentType, ISeedService>
 ) : ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
             return HomeViewModel(personRepository, groupRepository, preferenceService, tournamentInformationCreatorService, selectedPersonsService, seedServices) as T
         }

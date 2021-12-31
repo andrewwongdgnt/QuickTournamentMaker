@@ -9,6 +9,8 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.androidbuffer.kotlinfilepicker.KotConstants
+import com.androidbuffer.kotlinfilepicker.KotRequest
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.TournamentActivityBinding
 import com.dgnt.quickTournamentMaker.model.tournament.Participant
@@ -104,6 +106,8 @@ class TournamentActivity : AppCompatActivity(), IMoreInfoDialogFragmentListener,
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+
         viewModel.tournament.value?.apply {
             when (item.itemId) {
                 R.id.action_currentRanking -> RankDialogFragment.newInstance(getRanking()).show(supportFragmentManager, RankDialogFragment.TAG)
@@ -127,7 +131,13 @@ class TournamentActivity : AppCompatActivity(), IMoreInfoDialogFragmentListener,
                 }
                 R.id.action_editAMatchUp -> MatchUpListDialogFragment.newInstance(roundGroups).show(supportFragmentManager, MatchUpListDialogFragment.TAG)
                 R.id.action_editARound -> RoundListDialogFragment.newInstance(roundGroups).show(supportFragmentManager, RoundListDialogFragment.TAG)
+                R.id.action_exportTournamentAsFile -> {
 
+                    KotRequest.File(this@TournamentActivity, 1)
+                        .isMultiple(false)
+                        .setMimeType(KotConstants.FILE_TYPE_FILE_ALL)
+                        .pick()
+                }
             }
         }
 
