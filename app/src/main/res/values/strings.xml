@@ -269,4 +269,6 @@
     <string name="matchUpInfo">%1$d matches</string>
     <string name="matchUpSubInfo">%1$d with byes</string>
     <string name="playerInfo">%1$d players</string>
+
+    <string name="chooseFolder">Choose folder</string>
 </resources>

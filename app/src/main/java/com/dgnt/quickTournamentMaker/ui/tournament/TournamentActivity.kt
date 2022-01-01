@@ -1,22 +1,25 @@
 package com.dgnt.quickTournamentMaker.ui.tournament
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.androidbuffer.kotlinfilepicker.KotConstants
-import com.androidbuffer.kotlinfilepicker.KotRequest
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.TournamentActivityBinding
 import com.dgnt.quickTournamentMaker.model.tournament.Participant
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
 import com.dgnt.quickTournamentMaker.service.interfaces.ICreateDefaultTitleService
 import com.moagrius.widget.ScalingScrollView
+import com.obsez.android.lib.filechooser.ChooserDialog
 import org.kodein.di.DIAware
 import org.kodein.di.android.di
 import org.kodein.di.instance
@@ -29,6 +32,8 @@ class TournamentActivity : AppCompatActivity(), IMoreInfoDialogFragmentListener,
 
     private var extraLayout: View? = null
     fun extraLayoutHeight() = extraLayout?.height
+
+    private lateinit var resultLauncher: ActivityResultLauncher<Intent>
 
     companion object {
 
@@ -92,6 +97,15 @@ class TournamentActivity : AppCompatActivity(), IMoreInfoDialogFragmentListener,
             })
         }
 
+        resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                // There are no request codes
+                val data: Intent? = result.data
+
+                //  doSomeOperations()
+            }
+        }
+
     }
 
 
@@ -132,17 +146,22 @@ class TournamentActivity : AppCompatActivity(), IMoreInfoDialogFragmentListener,
                 R.id.action_editAMatchUp -> MatchUpListDialogFragment.newInstance(roundGroups).show(supportFragmentManager, MatchUpListDialogFragment.TAG)
                 R.id.action_editARound -> RoundListDialogFragment.newInstance(roundGroups).show(supportFragmentManager, RoundListDialogFragment.TAG)
                 R.id.action_exportTournamentAsFile -> {
-
-                    KotRequest.File(this@TournamentActivity, 1)
-                        .isMultiple(false)
-                        .setMimeType(KotConstants.FILE_TYPE_FILE_ALL)
-                        .pick()
+                    ChooserDialog(this@TournamentActivity)
+                        .withFilter(true, false)
+                        .withStartFile(null)
+                        .withResources(R.string.chooseFolder, android.R.string.ok, android.R.string.cancel)
+                        .withChosenListener { path, pathFile ->
+                            Toast.makeText(this@TournamentActivity, "FOLDER: $path", Toast.LENGTH_SHORT).show()
+                        }
+                        .build()
+                        .show()
                 }
             }
         }
 
         return super.onOptionsItemSelected(item)
     }
+
 
     override fun onEditTournament(title: String, description: String) {
         viewModel.run {
