@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -18,8 +17,13 @@ import com.dgnt.quickTournamentMaker.databinding.TournamentActivityBinding
 import com.dgnt.quickTournamentMaker.model.tournament.Participant
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
 import com.dgnt.quickTournamentMaker.service.interfaces.ICreateDefaultTitleService
+import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentDataTransformerService
+import com.dgnt.quickTournamentMaker.util.TournamentUtil.Companion.jsonMapper
 import com.moagrius.widget.ScalingScrollView
 import com.obsez.android.lib.filechooser.ChooserDialog
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.kodein.di.DIAware
 import org.kodein.di.android.di
 import org.kodein.di.instance
@@ -29,6 +33,7 @@ class TournamentActivity : AppCompatActivity(), IMoreInfoDialogFragmentListener,
     override val di by di()
     private val viewModelFactory: TournamentViewModelFactory by instance()
     private val createDefaultTitleService: ICreateDefaultTitleService by instance()
+    private val tournamentDataTransformerService: ITournamentDataTransformerService by instance()
 
     private var extraLayout: View? = null
     fun extraLayoutHeight() = extraLayout?.height
@@ -119,6 +124,8 @@ class TournamentActivity : AppCompatActivity(), IMoreInfoDialogFragmentListener,
         return super.onCreateOptionsMenu(menu)
     }
 
+
+    @ExperimentalSerializationApi
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
 
@@ -151,7 +158,14 @@ class TournamentActivity : AppCompatActivity(), IMoreInfoDialogFragmentListener,
                         .withStartFile(null)
                         .withResources(R.string.chooseFolder, android.R.string.ok, android.R.string.cancel)
                         .withChosenListener { path, pathFile ->
-                            Toast.makeText(this@TournamentActivity, "FOLDER: $path", Toast.LENGTH_SHORT).show()
+                            viewModel.tournament.value?.run {
+                                val d = tournamentDataTransformerService.transform(this)
+
+                                val str = jsonMapper.encodeToString(d)
+
+                                val g = 0
+                            }
+
                         }
                         .build()
                         .show()

@@ -62,8 +62,8 @@ class RankingConfigServiceTest {
 
     @Test
     fun testGetRankingFromPriorityAsString() {
-        Assert.assertEquals("w;l;t", sut.getRankingFromPriorityAsString(RankPriorityConfig(RankPriorityConfigType.WIN, RankPriorityConfigType.LOSS, RankPriorityConfigType.TIE)))
-        Assert.assertEquals("l;t;w", sut.getRankingFromPriorityAsString(RankPriorityConfig(RankPriorityConfigType.LOSS, RankPriorityConfigType.TIE, RankPriorityConfigType.WIN)))
+        Assert.assertEquals("w;l;t", sut.toString(RankPriorityConfig(RankPriorityConfigType.WIN, RankPriorityConfigType.LOSS, RankPriorityConfigType.TIE)))
+        Assert.assertEquals("l;t;w", sut.toString(RankPriorityConfig(RankPriorityConfigType.LOSS, RankPriorityConfigType.TIE, RankPriorityConfigType.WIN)))
     }
 
     @Test
@@ -108,9 +108,9 @@ class RankingConfigServiceTest {
 
     @Test
     fun testGetRankingFromScoreAsString() {
-        Assert.assertEquals("2.0;0.0;1.0", sut.getRankingFromScoreAsString(RankScoreConfig(2f, 0f, 1f)))
-        Assert.assertEquals("2.5;0.5;1.0", sut.getRankingFromScoreAsString(RankScoreConfig(2.5f, 0.5f, 1f)))
-        Assert.assertEquals("-22.0;10.0;14.0", sut.getRankingFromScoreAsString(RankScoreConfig(-22f, 10f, 14f)))
+        Assert.assertEquals("2.0;0.0;1.0", sut.toString(RankScoreConfig(2f, 0f, 1f)))
+        Assert.assertEquals("2.5;0.5;1.0", sut.toString(RankScoreConfig(2.5f, 0.5f, 1f)))
+        Assert.assertEquals("-22.0;10.0;14.0", sut.toString(RankScoreConfig(-22f, 10f, 14f)))
     }
 
 }

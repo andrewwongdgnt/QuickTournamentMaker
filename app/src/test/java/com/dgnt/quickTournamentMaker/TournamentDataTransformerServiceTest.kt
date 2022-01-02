@@ -1,26 +1,23 @@
 package com.dgnt.quickTournamentMaker
 
 import com.dgnt.quickTournamentMaker.model.tournament.*
-import com.dgnt.quickTournamentMaker.service.implementation.DefaultTournamentDataTransformerService
-import com.dgnt.quickTournamentMaker.service.interfaces.IByeStatusResolverService
-import com.dgnt.quickTournamentMaker.service.interfaces.IMatchUpStatusTransformService
-import com.dgnt.quickTournamentMaker.service.interfaces.IRankingService
-import com.dgnt.quickTournamentMaker.service.interfaces.IRoundUpdateService
+import com.dgnt.quickTournamentMaker.service.implementation.TournamentDataTransformerService
+import com.dgnt.quickTournamentMaker.service.interfaces.*
 import org.joda.time.LocalDateTime
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.powermock.api.mockito.PowerMockito
 
-class DefaultTournamentDataTransformerServiceTest {
+class TournamentDataTransformerServiceTest {
 
-    private val mockByeStatusResolverService = PowerMockito.mock(IByeStatusResolverService::class.java)
+    private val mockRankingConfigService = PowerMockito.mock(IRankingConfigService::class.java)
     private val mockRoundUpdateService = PowerMockito.mock(IRoundUpdateService::class.java)
     private val mockRankingService = PowerMockito.mock(IRankingService::class.java)
     private val mockMatchUpStatusTransformService = PowerMockito.mock(IMatchUpStatusTransformService::class.java)
-    private val sut = DefaultTournamentDataTransformerService()
+    private val sut = TournamentDataTransformerService(mockRankingConfigService)
 
-    private lateinit var roundGroups: List<RoundGroup>
+    private lateinit var simpleTournament: Tournament
 
     @Before
     fun setUp() {
@@ -58,23 +55,21 @@ class DefaultTournamentDataTransformerServiceTest {
             ),
             ""
         )
-        roundGroups = listOf(RoundGroup(0, listOf(round1, round2), ""), RoundGroup(1, listOf(round1_2, round2_2), ""))
-
-    }
-
-    private fun setUpTournament(tournamentType: TournamentType) =
-        Tournament(
-            TournamentInformation("title", "description", tournamentType, SeedType.CUSTOM, RankPriorityConfig.DEFAULT, LocalDateTime.now()),
+        val roundGroups = listOf(RoundGroup(0, listOf(round1, round2), ""), RoundGroup(1, listOf(round1_2, round2_2), ""))
+        simpleTournament = Tournament(
+            TournamentInformation("title", "description", TournamentType.ELIMINATION, SeedType.CUSTOM, RankPriorityConfig.DEFAULT, LocalDateTime.now()),
             roundGroups,
             mockMatchUpStatusTransformService,
             mockRoundUpdateService,
             mockRankingService
         )
+    }
+
 
 
     @Test
     fun testTransform() {
-        val tournamentData = sut.transform(setUpTournament(TournamentType.ELIMINATION))
+        val tournamentData = sut.transform(simpleTournament)
         Assert.assertEquals("title", tournamentData.title)
     }
 

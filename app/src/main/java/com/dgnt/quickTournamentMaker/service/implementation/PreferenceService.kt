@@ -55,7 +55,7 @@ class PreferenceService(private val sharedPreferences: SharedPreferences, privat
                 TournamentType.SWISS -> PREF_SWISS_RANK_PRIORITY_KEY
                 TournamentType.ROUND_ROBIN -> PREF_ROUND_ROBIN_RANK_PRIORITY_KEY
                 else -> throw IllegalArgumentException("Tournament Type not supported $tournamentType")
-            }, rankingConfigService.getRankingFromPriorityAsString(rankPriorityConfig)
+            }, rankingConfigService.toString(rankPriorityConfig)
         )
         editor.apply()
 
@@ -78,7 +78,7 @@ class PreferenceService(private val sharedPreferences: SharedPreferences, privat
                 TournamentType.SWISS -> PREF_SWISS_RANK_SCORE_KEY
                 TournamentType.ROUND_ROBIN -> PREF_ROUND_ROBIN_RANK_SCORE_KEY
                 else -> throw IllegalArgumentException("Tournament Type not supported $tournamentType")
-            }, rankingConfigService.getRankingFromScoreAsString(rankScoreConfig)
+            }, rankingConfigService.toString(rankScoreConfig)
         )
         editor.apply()
     }

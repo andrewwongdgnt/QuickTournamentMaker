@@ -17,11 +17,15 @@ import com.dgnt.quickTournamentMaker.ui.main.common.RankPriorityRecyclerViewAdap
 import com.dgnt.quickTournamentMaker.ui.main.common.TournamentEventHolder
 import com.dgnt.quickTournamentMaker.ui.main.common.TournamentTypeEditorViewModel
 import com.dgnt.quickTournamentMaker.ui.tournament.TournamentActivity
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.json.Json
 
 
 class TournamentUtil {
     companion object {
 
+        @ExperimentalSerializationApi
+        val jsonMapper = Json { explicitNulls = false }
 //        fun basicSeedCheck(orderedParticipantList: List<Participant?>): Boolean = orderedParticipantList.size >= 4 && orderedParticipantList.size % 2 == 0
 //
 //        fun dpToPixels(context: Context, sizeInDp: Int): Int {
