@@ -117,6 +117,14 @@ class TournamentDataTransformerServiceTest {
         Assert.assertNull(tournamentData.rankingConfig)
         Assert.assertEquals(SeedType.CUSTOM, tournamentData.seedType)
         Assert.assertEquals(CREATION_TIME, tournamentData.creationDate)
+        Assert.assertNull(tournamentData.lastModifiedDate)
+        Assert.assertEquals(6, tournamentData.participants.size)
+        tournamentData.participants[0].let { participantData ->
+            Assert.assertEquals(ANDREW_PERSON.name, participantData.name)
+            Assert.assertEquals(PARTICIPANT_TITLE, participantData.displayName)
+            Assert.assertEquals(PARTICIPANT_NOTE, participantData.note)
+            Assert.assertEquals(PARTICIPANT_COLOR, participantData.color)
+        }
     }
 
 
