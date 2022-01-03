@@ -3,6 +3,7 @@ package com.dgnt.quickTournamentMaker.ui.tournament
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -20,12 +21,14 @@ import com.dgnt.quickTournamentMaker.service.interfaces.ICreateDefaultTitleServi
 import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentDataTransformerService
 import com.dgnt.quickTournamentMaker.util.TournamentUtil.Companion.jsonMapper
 import com.moagrius.widget.ScalingScrollView
-import com.obsez.android.lib.filechooser.ChooserDialog
+import kotlinx.coroutines.*
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.encodeToString
 import org.kodein.di.DIAware
 import org.kodein.di.android.di
 import org.kodein.di.instance
+import java.io.*
+import java.nio.charset.Charset
 
 
 class TournamentActivity : AppCompatActivity(), IMoreInfoDialogFragmentListener, IParticipantEditorDialogFragmentListener, IMatchUpEditorDialogFragmentListener, IRoundEditorDialogFragmentListener, DIAware {
@@ -53,6 +56,7 @@ class TournamentActivity : AppCompatActivity(), IMoreInfoDialogFragmentListener,
 
     private lateinit var viewModel: TournamentViewModel
 
+    @ExperimentalSerializationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -103,14 +107,31 @@ class TournamentActivity : AppCompatActivity(), IMoreInfoDialogFragmentListener,
 
         resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                // There are no request codes
-                val data: Intent? = result.data
 
-                //  doSomeOperations()
+                result.data?.data?.let {
+                    viewModel.tournament.value?.run {
+
+                        val tournamentData = tournamentDataTransformerService.transform(this)
+                        val content = jsonMapper.encodeToString(tournamentData)
+                        CoroutineScope(Dispatchers.Main).launch { write(this@TournamentActivity, it, content) }
+                    }
+                }
             }
         }
 
     }
+
+    private suspend fun write(context: Context, source: Uri, text: String) = withContext(Dispatchers.IO)
+    {
+        context.contentResolver.openOutputStream(source)?.use { stream -> stream.writeText(text) }
+            ?: throw IllegalStateException("could not open $source")
+    }
+
+
+    private fun OutputStream.writeText(
+        text: String,
+        charset: Charset = Charsets.UTF_8
+    ): Unit = write(text.toByteArray(charset))
 
 
     override fun onSupportNavigateUp(): Boolean {
@@ -124,7 +145,6 @@ class TournamentActivity : AppCompatActivity(), IMoreInfoDialogFragmentListener,
     }
 
 
-    @ExperimentalSerializationApi
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
 
@@ -152,28 +172,17 @@ class TournamentActivity : AppCompatActivity(), IMoreInfoDialogFragmentListener,
                 R.id.action_editAMatchUp -> MatchUpListDialogFragment.newInstance(roundGroups).show(supportFragmentManager, MatchUpListDialogFragment.TAG)
                 R.id.action_editARound -> RoundListDialogFragment.newInstance(roundGroups).show(supportFragmentManager, RoundListDialogFragment.TAG)
                 R.id.action_exportTournamentAsFile -> {
-                    ChooserDialog(this@TournamentActivity)
-                        .withFilter(true, false)
-                        .withStartFile(null)
-                        .withResources(R.string.chooseFolder, android.R.string.ok, android.R.string.cancel)
-                        .withChosenListener { path, pathFile ->
-                            viewModel.tournament.value?.run {
-                                val tournamentData = tournamentDataTransformerService.transform(this)
-
-                                val str = jsonMapper.encodeToString(tournamentData)
-
-                            }
-
-                        }
-                        .build()
-                        .show()
+                    val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
+                        .setType("application/qtm")
+                        .addCategory(Intent.CATEGORY_OPENABLE)
+                    intent.putExtra(Intent.EXTRA_TITLE, "${tournamentInformation.title}.qtm")
+                    resultLauncher.launch(intent)
                 }
             }
         }
 
         return super.onOptionsItemSelected(item)
     }
-
 
     override fun onEditTournament(title: String, description: String) {
         viewModel.run {
@@ -213,7 +222,6 @@ class TournamentActivity : AppCompatActivity(), IMoreInfoDialogFragmentListener,
             }
         }
     }
-
 
 }
 

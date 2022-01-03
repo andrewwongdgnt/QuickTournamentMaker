@@ -6,4 +6,12 @@ import org.joda.time.LocalDateTime
 
 
 @Parcelize
-data class TournamentInformation(var title: String, var description: String, val tournamentType: TournamentType, val seedType: SeedType, val rankConfig: IRankConfig, val creationDate: LocalDateTime, var lastModifiedDate: LocalDateTime? = null) : Parcelable
+data class TournamentInformation(
+    var title: String,
+    var description: String,
+    val tournamentType: TournamentType,
+    val seedType: SeedType,
+    val rankConfig: IRankConfig,
+    val creationDate: LocalDateTime,
+    var lastModifiedDate: LocalDateTime? = null
+) : Parcelable
