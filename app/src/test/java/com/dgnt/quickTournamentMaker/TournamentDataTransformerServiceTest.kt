@@ -37,7 +37,7 @@ class TournamentDataTransformerServiceTest {
     private val mockMatchUpStatusTransformService = PowerMockito.mock(IMatchUpStatusTransformService::class.java)
     private val sut = TournamentDataTransformerService(mockRankingConfigService)
 
-    private val CREATION_TIME = 555444L
+    private val CREATION_TIME = LocalDateTime(666555444)
 
     private lateinit var tournament1: Tournament
 
@@ -99,7 +99,7 @@ class TournamentDataTransformerServiceTest {
         )
         val roundGroups = listOf(RoundGroup(0, listOf(round1, round2), ""), RoundGroup(1, listOf(round1_2, round2_2), ""))
         tournament1 = Tournament(
-            TournamentInformation(TOURNAMENT_TITLE, TOURNAMENT_DESCRIPTION, TournamentType.ELIMINATION, SeedType.CUSTOM, RankPriorityConfig.DEFAULT, LocalDateTime(CREATION_TIME)),
+            TournamentInformation(TOURNAMENT_TITLE, TOURNAMENT_DESCRIPTION, TournamentType.ELIMINATION, SeedType.CUSTOM, RankPriorityConfig.DEFAULT, CREATION_TIME),
             roundGroups,
             mockMatchUpStatusTransformService,
             mockRoundUpdateService,

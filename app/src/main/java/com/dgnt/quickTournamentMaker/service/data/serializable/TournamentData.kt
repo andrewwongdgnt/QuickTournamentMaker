@@ -3,6 +3,7 @@ package com.dgnt.quickTournamentMaker.service.data.serializable
 import com.dgnt.quickTournamentMaker.model.tournament.SeedType
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentType
 import kotlinx.serialization.Serializable
+import org.joda.time.LocalDateTime
 
 @Serializable
 data class TournamentData(
@@ -12,8 +13,10 @@ data class TournamentData(
     val type: TournamentType,
     val rankingConfig: String?,
     val seedType: SeedType,
-    val creationDate: Long,
-    val lastModifiedDate: Long?,
+    @Serializable(LocalDateTimeSerializer::class)
+    val creationDate: LocalDateTime,
+    @Serializable(LocalDateTimeSerializer::class)
+    val lastModifiedDate: LocalDateTime?,
     val participants: List<ParticipantData>,
     val rounds: List<RoundData>,
     val matchUps: List<MatchUpData>,

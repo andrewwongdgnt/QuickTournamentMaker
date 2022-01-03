@@ -23,7 +23,6 @@ import com.moagrius.widget.ScalingScrollView
 import com.obsez.android.lib.filechooser.ChooserDialog
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import org.kodein.di.DIAware
 import org.kodein.di.android.di
 import org.kodein.di.instance
@@ -159,11 +158,10 @@ class TournamentActivity : AppCompatActivity(), IMoreInfoDialogFragmentListener,
                         .withResources(R.string.chooseFolder, android.R.string.ok, android.R.string.cancel)
                         .withChosenListener { path, pathFile ->
                             viewModel.tournament.value?.run {
-                                val d = tournamentDataTransformerService.transform(this)
+                                val tournamentData = tournamentDataTransformerService.transform(this)
 
-                                val str = jsonMapper.encodeToString(d)
+                                val str = jsonMapper.encodeToString(tournamentData)
 
-                                val g = 0
                             }
 
                         }

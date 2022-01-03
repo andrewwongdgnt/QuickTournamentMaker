@@ -24,8 +24,8 @@ class TournamentDataTransformerService(
                     else -> null
                 },
                 tournamentInformation.seedType,
-                tournamentInformation.creationDate.toDateTime().millis,
-                tournamentInformation.lastModifiedDate?.toDateTime()?.millis,
+                tournamentInformation.creationDate,
+                tournamentInformation.lastModifiedDate,
                 orderedParticipants.map {
                     ParticipantData(
                         it.person.name,
