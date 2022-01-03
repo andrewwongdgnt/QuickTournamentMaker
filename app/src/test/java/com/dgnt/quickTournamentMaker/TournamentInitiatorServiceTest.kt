@@ -33,8 +33,8 @@ class TournamentInitiatorServiceTest {
             0, 0, listOf(
                 MatchUp(0, 0, 0, Data.ANDREW, Data.KYRA, ""),
                 MatchUp(0, 0, 1, Data.DGNT, Data.KELSEY, ""),
-                MatchUp(0, 0, 1, Data.FIRE, Participant.BYE_PARTICIPANT, ""),
-                MatchUp(0, 0, 2, Data.HERO, Participant.BYE_PARTICIPANT, "")
+                MatchUp(0, 0, 2, Data.FIRE, Participant.BYE_PARTICIPANT, ""),
+                MatchUp(0, 0, 3, Data.HERO, Participant.BYE_PARTICIPANT, "")
             ),
             ""
         )

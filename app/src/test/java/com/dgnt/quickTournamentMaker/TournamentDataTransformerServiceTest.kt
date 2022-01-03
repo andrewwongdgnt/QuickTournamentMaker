@@ -16,6 +16,7 @@ import org.joda.time.LocalDateTime
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
+import org.mockito.Mockito
 import org.powermock.api.mockito.PowerMockito
 
 class TournamentDataTransformerServiceTest {
@@ -44,7 +45,7 @@ class TournamentDataTransformerServiceTest {
 
     private val CREATION_TIME = LocalDateTime(666555444)
 
-    private lateinit var tournament1: Tournament
+    private lateinit var roundGroups: List<RoundGroup>
 
     @Before
     fun setUp() {
@@ -69,8 +70,8 @@ class TournamentDataTransformerServiceTest {
                     MATCH_UP_COLOR
                 ),
                 MatchUp(0, 0, 1, Data.DGNT, Data.KELSEY, "", status = MatchUpStatus.P2_WINNER),
-                MatchUp(0, 0, 1, Data.FIRE, Participant.BYE_PARTICIPANT, ""),
-                MatchUp(0, 0, 2, Data.HERO, Participant.BYE_PARTICIPANT, "")
+                MatchUp(0, 0, 2, Data.FIRE, Participant.BYE_PARTICIPANT, ""),
+                MatchUp(0, 0, 3, Data.HERO, Participant.BYE_PARTICIPANT, "")
             ),
             ROUND_ORIGINAL_TITLE,
             ROUND_TITLE,
@@ -102,20 +103,23 @@ class TournamentDataTransformerServiceTest {
             ),
             ""
         )
-        val roundGroups = listOf(RoundGroup(0, listOf(round1, round2), ""), RoundGroup(1, listOf(round1_2, round2_2), ""))
-        tournament1 = Tournament(
-            TournamentInformation(TOURNAMENT_TITLE, TOURNAMENT_DESCRIPTION, TournamentType.ELIMINATION, SeedType.CUSTOM, RankPriorityConfig.DEFAULT, CREATION_TIME),
+        roundGroups = listOf(RoundGroup(0, listOf(round1, round2), ""), RoundGroup(1, listOf(round1_2, round2_2), ""))
+
+    }
+
+    private fun setUpTournament(tournamentType: TournamentType) =
+        Tournament(
+            TournamentInformation(TOURNAMENT_TITLE, TOURNAMENT_DESCRIPTION, tournamentType, SeedType.CUSTOM, RankPriorityConfig.DEFAULT, CREATION_TIME),
             roundGroups,
             mockMatchUpStatusTransformService,
             mockRoundUpdateService,
             mockRankingService
         )
-    }
 
 
     @Test
     fun testTransform() {
-        val tournamentData = sut.transform(tournament1)
+        val tournamentData = sut.transform(setUpTournament(TournamentType.ELIMINATION))
         Assert.assertEquals(TOURNAMENT_TITLE, tournamentData.title)
         Assert.assertEquals(TOURNAMENT_DESCRIPTION, tournamentData.description)
         Assert.assertEquals(TournamentType.ELIMINATION, tournamentData.type)
@@ -123,6 +127,7 @@ class TournamentDataTransformerServiceTest {
         Assert.assertEquals(SeedType.CUSTOM, tournamentData.seedType)
         Assert.assertEquals(CREATION_TIME, tournamentData.creationDate)
         Assert.assertNull(tournamentData.lastModifiedDate)
+
         Assert.assertEquals(8, tournamentData.participants.size)
         tournamentData.participants[0].let { participantData ->
             Assert.assertEquals(ANDREW_PERSON.name, participantData.name)
@@ -137,7 +142,41 @@ class TournamentDataTransformerServiceTest {
         Assert.assertEquals(ParticipantType.BYE, tournamentData.participants[5].type)
         Assert.assertEquals(HERO_PERSON.name, tournamentData.participants[6].name)
         Assert.assertEquals(ParticipantType.BYE, tournamentData.participants[7].type)
+
+        Assert.assertEquals(12, tournamentData.matchUps.size)
+        tournamentData.matchUps[0].let { matchUpData ->
+            Assert.assertEquals(0, matchUpData.roundGroupIndex)
+            Assert.assertEquals(0, matchUpData.roundIndex)
+            Assert.assertEquals(0, matchUpData.matchUpIndex)
+            Assert.assertEquals(MATCH_UP_TITLE, matchUpData.title)
+            Assert.assertTrue(matchUpData.useTitle)
+            Assert.assertEquals(MatchUpStatus.P1_WINNER, matchUpData.status)
+            Assert.assertEquals(MATCH_UP_NOTE, matchUpData.note)
+            Assert.assertEquals(MATCH_UP_COLOR, matchUpData.color)
+        }
+
+        Assert.assertEquals(4, tournamentData.rounds.size)
+        tournamentData.rounds[0].let { roundData ->
+            Assert.assertEquals(0, roundData.roundGroupIndex)
+            Assert.assertEquals(0, roundData.roundIndex)
+            Assert.assertEquals(ROUND_ORIGINAL_TITLE, roundData.originalName)
+            Assert.assertEquals(ROUND_TITLE, roundData.name)
+            Assert.assertEquals(ROUND_NOTE, roundData.note)
+            Assert.assertEquals(ROUND_COLOR, roundData.color)
+        }
     }
 
+    @Test
+    fun testRankConfigUsage() {
 
+        sut.transform(setUpTournament(TournamentType.ELIMINATION))
+        sut.transform(setUpTournament(TournamentType.DOUBLE_ELIMINATION))
+        sut.transform(setUpTournament(TournamentType.SURVIVAL))
+        Mockito.verify(mockRankingConfigService, Mockito.times(0)).toString(RankPriorityConfig.DEFAULT)
+        sut.transform(setUpTournament(TournamentType.ROUND_ROBIN))
+        Mockito.verify(mockRankingConfigService, Mockito.times(1)).toString(RankPriorityConfig.DEFAULT)
+        sut.transform(setUpTournament(TournamentType.SWISS))
+        Mockito.verify(mockRankingConfigService, Mockito.times(2)).toString(RankPriorityConfig.DEFAULT)
+
+    }
 }
