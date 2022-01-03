@@ -33,7 +33,9 @@ data class Tournament(
 
     fun getMatchUpsWithSingleByes() = matchUps.filter { it.containsBye(true) }
 
-    val orderedParticipants = roundGroups.getOrNull(0)?.rounds?.getOrNull(0)?.matchUps?.flatMap { listOf(it.participant1, it.participant2) }?.filter { it.participantType == ParticipantType.NORMAL } ?: listOf()
+    val orderedParticipants = roundGroups.getOrNull(0)?.rounds?.getOrNull(0)?.matchUps?.flatMap { listOf(it.participant1, it.participant2) } ?: listOf()
+
+    val sortedNormalParticipants = orderedParticipants.filter { it.participantType == ParticipantType.NORMAL }.sorted()
 
     fun updateRound(roundGroupIndex: Int, roundIndex: Int, matchUpIndex: Int) = roundUpdateService.update(roundGroups, roundGroupIndex, roundIndex, matchUpIndex, tournamentInformation.rankConfig)
 

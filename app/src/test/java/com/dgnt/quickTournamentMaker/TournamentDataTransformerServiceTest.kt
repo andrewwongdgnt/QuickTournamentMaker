@@ -1,6 +1,11 @@
 package com.dgnt.quickTournamentMaker
 
 import com.dgnt.quickTournamentMaker.Data.Companion.ANDREW_PERSON
+import com.dgnt.quickTournamentMaker.Data.Companion.DGNT_PERSON
+import com.dgnt.quickTournamentMaker.Data.Companion.FIRE_PERSON
+import com.dgnt.quickTournamentMaker.Data.Companion.HERO_PERSON
+import com.dgnt.quickTournamentMaker.Data.Companion.KELSEY_PERSON
+import com.dgnt.quickTournamentMaker.Data.Companion.KYRA_PERSON
 import com.dgnt.quickTournamentMaker.model.tournament.*
 import com.dgnt.quickTournamentMaker.service.implementation.TournamentDataTransformerService
 import com.dgnt.quickTournamentMaker.service.interfaces.IMatchUpStatusTransformService
@@ -118,13 +123,20 @@ class TournamentDataTransformerServiceTest {
         Assert.assertEquals(SeedType.CUSTOM, tournamentData.seedType)
         Assert.assertEquals(CREATION_TIME, tournamentData.creationDate)
         Assert.assertNull(tournamentData.lastModifiedDate)
-        Assert.assertEquals(6, tournamentData.participants.size)
+        Assert.assertEquals(8, tournamentData.participants.size)
         tournamentData.participants[0].let { participantData ->
             Assert.assertEquals(ANDREW_PERSON.name, participantData.name)
             Assert.assertEquals(PARTICIPANT_TITLE, participantData.displayName)
             Assert.assertEquals(PARTICIPANT_NOTE, participantData.note)
             Assert.assertEquals(PARTICIPANT_COLOR, participantData.color)
         }
+        Assert.assertEquals(KYRA_PERSON.name, tournamentData.participants[1].name)
+        Assert.assertEquals(DGNT_PERSON.name, tournamentData.participants[2].name)
+        Assert.assertEquals(KELSEY_PERSON.name, tournamentData.participants[3].name)
+        Assert.assertEquals(FIRE_PERSON.name, tournamentData.participants[4].name)
+        Assert.assertEquals(ParticipantType.BYE, tournamentData.participants[5].type)
+        Assert.assertEquals(HERO_PERSON.name, tournamentData.participants[6].name)
+        Assert.assertEquals(ParticipantType.BYE, tournamentData.participants[7].type)
     }
 
 

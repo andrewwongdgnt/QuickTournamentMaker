@@ -136,11 +136,11 @@ class TournamentActivity : AppCompatActivity(), IMoreInfoDialogFragmentListener,
                     rounds.size,
                     matchUps.size,
                     getMatchUpsWithSingleByes().size,
-                    orderedParticipants.size
+                    sortedNormalParticipants.size
                 ).show(supportFragmentManager, MoreInfoDialogFragment.TAG)
                 R.id.action_rebuildTournament -> RebuildTournamentDialogFragment.newInstance(tournamentInformation, orderedParticipants).show(supportFragmentManager, RebuildTournamentDialogFragment.TAG)
                 R.id.action_editAParticipant -> {
-                    val sortedParticipants = orderedParticipants.sorted()
+                    val sortedParticipants = sortedNormalParticipants
                     AlertDialog.Builder(this@TournamentActivity)
                         .setAdapter(ParticipantArrayAdapter(this@TournamentActivity, sortedParticipants)) { _, i ->
                             ParticipantEditorDialogFragment.newInstance(sortedParticipants[i]).show(supportFragmentManager, ParticipantEditorDialogFragment.TAG)
@@ -184,7 +184,7 @@ class TournamentActivity : AppCompatActivity(), IMoreInfoDialogFragmentListener,
 
     override fun onEditParticipant(key: String, name: String, note: String, color: Int) {
         viewModel.tournament.value?.run {
-            orderedParticipants.find { it.key == key }?.let {
+            sortedNormalParticipants.find { it.key == key }?.let {
                 it.name = name
                 it.note = note
                 it.color = color
