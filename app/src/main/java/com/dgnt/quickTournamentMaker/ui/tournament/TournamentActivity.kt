@@ -19,7 +19,9 @@ import com.dgnt.quickTournamentMaker.model.tournament.Participant
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
 import com.dgnt.quickTournamentMaker.service.interfaces.ICreateDefaultTitleService
 import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentDataTransformerService
+import com.dgnt.quickTournamentMaker.util.AlertUtil
 import com.dgnt.quickTournamentMaker.util.TournamentUtil.Companion.jsonMapper
+import com.dgnt.quickTournamentMaker.util.writeText
 import com.moagrius.widget.ScalingScrollView
 import kotlinx.coroutines.*
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -28,7 +30,7 @@ import org.kodein.di.DIAware
 import org.kodein.di.android.di
 import org.kodein.di.instance
 import java.io.*
-import java.nio.charset.Charset
+import java.lang.IllegalArgumentException
 
 
 class TournamentActivity : AppCompatActivity(), IMoreInfoDialogFragmentListener, IParticipantEditorDialogFragmentListener, IMatchUpEditorDialogFragmentListener, IRoundEditorDialogFragmentListener, DIAware {
@@ -123,16 +125,16 @@ class TournamentActivity : AppCompatActivity(), IMoreInfoDialogFragmentListener,
 
     private suspend fun write(context: Context, source: Uri, text: String) = withContext(Dispatchers.IO)
     {
-        context.contentResolver.openOutputStream(source)?.use { stream -> stream.writeText(text) }
-            ?: throw IllegalStateException("could not open $source")
+        try {
+            context.contentResolver.openOutputStream(source)?.use { stream ->
+                stream.writeText(text)
+            }
+        } catch (e: Exception) {
+            this@TournamentActivity.runOnUiThread {
+                AlertUtil.showError(this@TournamentActivity, R.string.exportAsFileFail, e)
+            }
+        }
     }
-
-
-    private fun OutputStream.writeText(
-        text: String,
-        charset: Charset = Charsets.UTF_8
-    ): Unit = write(text.toByteArray(charset))
-
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()

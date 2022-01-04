@@ -270,5 +270,22 @@
     <string name="matchUpSubInfo">%1$d with byes</string>
     <string name="playerInfo">%1$d players</string>
 
-    <string name="chooseFolder">Choose folder</string>
+    <string name="error">Error</string>
+    <string name="genericErrorMsg">An unexpected error has occurred\n\n%1$s</string>
+    <string name="reportError">Report Error</string>
+    <string name="noEmailClientMessage">There is no email client installed</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="errorEmailSubject">Reporting error with Quick Tournament Maker</string>
+    <string name="errorEmailBody">
+            <![CDATA[An error has occurred\n\n
+
+            Here is what I did before that happened:\n\n
+
+            <List of steps>\n\n
+
+            Developer section:\n\n
+
+            %1$s
+            ]]>
+        </string>
 </resources>

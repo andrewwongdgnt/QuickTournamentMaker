@@ -1,5 +1,8 @@
 package com.dgnt.quickTournamentMaker.util
 
+import java.io.OutputStream
+import java.nio.charset.Charset
+
 
 fun <E> MutableCollection<E>.update(collection: Collection<E>) {
     this.clear()
@@ -15,3 +18,8 @@ fun <E> Collection<E>.shuffledIf(condition: Boolean): Collection<E> {
 
     return if (condition) this.shuffled() else this
 }
+
+fun OutputStream.writeText(
+    text: String,
+    charset: Charset = Charsets.UTF_8
+): Unit = write(text.toByteArray(charset))

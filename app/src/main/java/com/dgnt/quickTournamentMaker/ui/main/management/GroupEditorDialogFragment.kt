@@ -7,7 +7,6 @@ import android.text.TextWatcher
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.GroupEditorFragmentBinding
@@ -74,8 +73,6 @@ class GroupEditorDialogFragment : DialogFragment(), DIAware {
                 .also {
                     if (arguments?.getBoolean(KEY_EDITING) != true) {
                         it.setNeutralButton(R.string.addAndContinue, null)
-                    } else {
-                        it
                     }
                 }
                 .create()
