@@ -2,12 +2,13 @@ package com.dgnt.quickTournamentMaker.data.tournament
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import org.joda.time.LocalDateTime
 
 @Dao
 interface TournamentDAO {
 
     @Query("SELECT * FROM $TOURNAMENT_TABLE WHERE epoch = :epoch")
-    fun getAll(epoch:Long):LiveData<List<TournamentEntity>>
+    fun getAll(epoch: LocalDateTime):LiveData<List<TournamentEntity>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(vararg entity: TournamentEntity):List<Long>

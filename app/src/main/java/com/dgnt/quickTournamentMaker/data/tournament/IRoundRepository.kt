@@ -1,10 +1,11 @@
 package com.dgnt.quickTournamentMaker.data.tournament
 
 import androidx.lifecycle.LiveData
+import org.joda.time.LocalDateTime
 
 interface IRoundRepository {
 
-    fun getAll(epoch: Long): LiveData<List<RoundEntity>>
+    fun getAll(epoch: LocalDateTime): LiveData<List<RoundEntity>>
     suspend fun insert(vararg entity: RoundEntity): List<Long>
     suspend fun insert(entities: List<RoundEntity>): List<Long>
     suspend fun update(vararg entity: RoundEntity): Int
