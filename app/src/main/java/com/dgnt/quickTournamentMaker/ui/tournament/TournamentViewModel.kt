@@ -10,7 +10,6 @@ import com.dgnt.quickTournamentMaker.data.tournament.IParticipantRepository
 import com.dgnt.quickTournamentMaker.data.tournament.IRoundRepository
 import com.dgnt.quickTournamentMaker.data.tournament.ITournamentRepository
 import com.dgnt.quickTournamentMaker.model.tournament.*
-import com.dgnt.quickTournamentMaker.service.interfaces.IRankingConfigService
 import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentBuilderService
 import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentDataTransformerService
 import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentInitiatorService
@@ -71,9 +70,25 @@ class TournamentViewModel(
         tournament.value?.let { tournamentDataTransformerService.transform(it) }
 
     fun saveTournament() = viewModelScope.launch {
-        tournament.value?.let {
-            it.tournamentInformation.lastModifiedDate = LocalDateTime.now()
-            tournamentRepository.insert(it.toEntity())
+        tournament.value?.let { tournament ->
+            val id = tournament.tournamentInformation.creationDate
+
+            tournament.tournamentInformation.lastModifiedDate = LocalDateTime.now()
+
+            tournamentRepository.upsert(tournament.toEntity())
+
+            tournament.rounds.map { it.toEntity(id) }.let { entities ->
+                roundRepository.upsert(entities)
+            }
+
+            tournament.matchUps.map { it.toEntity(id) }.let { entities ->
+                matchUpRepository.upsert(entities)
+            }
+
+            tournament.orderedParticipants.map { it.toEntity(id) }.let { entities ->
+                participantRepository.upsert(entities)
+            }
+
         }
     }
 }

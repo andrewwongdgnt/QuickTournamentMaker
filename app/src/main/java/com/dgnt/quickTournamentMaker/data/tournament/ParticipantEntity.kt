@@ -2,6 +2,7 @@ package com.dgnt.quickTournamentMaker.data.tournament
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.dgnt.quickTournamentMaker.model.tournament.ParticipantType
 import org.joda.time.LocalDateTime
 
 const val PARTICIPANT_TABLE = "participantTable"
@@ -13,6 +14,6 @@ data class ParticipantEntity(
     val seedIndex: Int,
     val displayName: Int,
     val note: String,
-    val type: String,
+    val type: ParticipantType,
     val color: Int
 )

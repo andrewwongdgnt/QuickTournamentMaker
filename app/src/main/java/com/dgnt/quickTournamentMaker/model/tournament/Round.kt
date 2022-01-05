@@ -1,9 +1,11 @@
 package com.dgnt.quickTournamentMaker.model.tournament
 
 import android.os.Parcelable
+import com.dgnt.quickTournamentMaker.data.tournament.RoundEntity
 import com.dgnt.quickTournamentMaker.model.IKeyable
 import com.dgnt.quickTournamentMaker.util.TournamentUtil
 import kotlinx.parcelize.Parcelize
+import org.joda.time.LocalDateTime
 
 @Parcelize
 data class Round(
@@ -17,6 +19,10 @@ data class Round(
 ) : IKeyable<Pair<Int, Int>>, Parcelable {
     fun isUpdatedTitle() = title != originalTitle
     fun getDisplayTitle() = (if (note.isEmpty()) "" else "*") + title
+    fun toEntity(id: LocalDateTime): RoundEntity {
+        TODO("Not yet implemented")
+    }
+
     override val key = Pair(roundGroupIndex, roundIndex)
 
 }
