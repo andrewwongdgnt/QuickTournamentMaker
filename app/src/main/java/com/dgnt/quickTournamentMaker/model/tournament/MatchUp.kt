@@ -31,7 +31,5 @@ data class MatchUp(
                 && (!singuluar || !(participant1.participantType == ParticipantType.BYE && participant2.participantType == ParticipantType.BYE))
 
     fun getDisplayTitle() = (if (note.isEmpty()) "" else "*") + title
-    fun toEntity(id: LocalDateTime): MatchUpEntity {
-        TODO("Not yet implemented")
-    }
+    fun toEntity(id: LocalDateTime) = MatchUpEntity(id, roundGroupIndex, roundIndex, matchUpIndex, useTitle, title, note, color, status)
 }

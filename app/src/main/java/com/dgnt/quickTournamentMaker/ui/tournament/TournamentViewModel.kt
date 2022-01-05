@@ -85,7 +85,7 @@ class TournamentViewModel(
                 matchUpRepository.upsert(entities)
             }
 
-            tournament.orderedParticipants.map { it.toEntity(id) }.let { entities ->
+            tournament.orderedParticipants.mapIndexed { index, participant -> participant.toEntity(id, index) }.let { entities ->
                 participantRepository.upsert(entities)
             }
 

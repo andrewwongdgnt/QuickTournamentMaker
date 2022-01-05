@@ -19,9 +19,7 @@ data class Round(
 ) : IKeyable<Pair<Int, Int>>, Parcelable {
     fun isUpdatedTitle() = title != originalTitle
     fun getDisplayTitle() = (if (note.isEmpty()) "" else "*") + title
-    fun toEntity(id: LocalDateTime): RoundEntity {
-        TODO("Not yet implemented")
-    }
+    fun toEntity(id: LocalDateTime) = RoundEntity(id, roundGroupIndex, roundIndex, originalTitle, title, note, color)
 
     override val key = Pair(roundGroupIndex, roundIndex)
 

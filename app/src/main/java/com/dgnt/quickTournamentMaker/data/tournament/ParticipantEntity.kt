@@ -12,7 +12,7 @@ data class ParticipantEntity(
     @PrimaryKey val epoch: LocalDateTime,
     val name: String,
     val seedIndex: Int,
-    val displayName: Int,
+    val displayName: String,
     val note: String,
     val type: ParticipantType,
     val color: Int
