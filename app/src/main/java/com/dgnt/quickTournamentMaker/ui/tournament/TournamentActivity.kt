@@ -18,7 +18,6 @@ import com.dgnt.quickTournamentMaker.databinding.TournamentActivityBinding
 import com.dgnt.quickTournamentMaker.model.tournament.Participant
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
 import com.dgnt.quickTournamentMaker.service.interfaces.ICreateDefaultTitleService
-import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentDataTransformerService
 import com.dgnt.quickTournamentMaker.util.AlertUtil
 import com.dgnt.quickTournamentMaker.util.TournamentUtil.Companion.jsonMapper
 import com.dgnt.quickTournamentMaker.util.writeText
@@ -30,14 +29,12 @@ import org.kodein.di.DIAware
 import org.kodein.di.android.di
 import org.kodein.di.instance
 import java.io.*
-import java.lang.IllegalArgumentException
 
 
 class TournamentActivity : AppCompatActivity(), IMoreInfoDialogFragmentListener, IParticipantEditorDialogFragmentListener, IMatchUpEditorDialogFragmentListener, IRoundEditorDialogFragmentListener, DIAware {
     override val di by di()
     private val viewModelFactory: TournamentViewModelFactory by instance()
     private val createDefaultTitleService: ICreateDefaultTitleService by instance()
-    private val tournamentDataTransformerService: ITournamentDataTransformerService by instance()
 
     private var extraLayout: View? = null
     fun extraLayoutHeight() = extraLayout?.height
@@ -111,9 +108,7 @@ class TournamentActivity : AppCompatActivity(), IMoreInfoDialogFragmentListener,
             if (result.resultCode == Activity.RESULT_OK) {
 
                 result.data?.data?.let {
-                    viewModel.tournament.value?.run {
-
-                        val tournamentData = tournamentDataTransformerService.transform(this)
+                    viewModel.transformTournament()?.let { tournamentData ->
                         val content = jsonMapper.encodeToString(tournamentData)
                         CoroutineScope(Dispatchers.Main).launch { write(this@TournamentActivity, it, content) }
                     }

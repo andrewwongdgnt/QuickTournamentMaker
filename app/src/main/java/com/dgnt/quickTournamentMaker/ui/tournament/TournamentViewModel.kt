@@ -4,14 +4,23 @@ import androidx.databinding.Bindable
 import androidx.databinding.Observable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.dgnt.quickTournamentMaker.data.tournament.IMatchUpRepository
+import com.dgnt.quickTournamentMaker.data.tournament.IParticipantRepository
+import com.dgnt.quickTournamentMaker.data.tournament.IRoundRepository
+import com.dgnt.quickTournamentMaker.data.tournament.ITournamentRepository
 import com.dgnt.quickTournamentMaker.model.tournament.*
-import com.dgnt.quickTournamentMaker.service.interfaces.IParticipantService
 import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentBuilderService
+import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentDataTransformerService
 import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentInitiatorService
 
 class TournamentViewModel(
     private val tournamentBuilderService: ITournamentBuilderService,
-    private val tournamentInitiatorService: ITournamentInitiatorService
+    private val tournamentInitiatorService: ITournamentInitiatorService,
+    private val tournamentDataTransformerService: ITournamentDataTransformerService,
+    private val tournamentRepository: ITournamentRepository,
+    private val roundRepository: IRoundRepository,
+    private val matchUpRepository: IMatchUpRepository,
+    private val participantRepository: IParticipantRepository,
 ) : ViewModel(), Observable {
 
 
@@ -53,4 +62,8 @@ class TournamentViewModel(
             it.updateRound(matchUp.roundGroupIndex, matchUp.roundIndex, matchUp.matchUpIndex)
         }
     }
+
+    fun transformTournament() =
+        tournament.value?.let { tournamentDataTransformerService.transform(it) }
+
 }
