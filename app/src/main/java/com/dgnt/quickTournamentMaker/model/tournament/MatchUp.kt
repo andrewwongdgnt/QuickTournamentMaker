@@ -1,9 +1,11 @@
 package com.dgnt.quickTournamentMaker.model.tournament
 
 import android.os.Parcelable
+import com.dgnt.quickTournamentMaker.data.tournament.MatchUpEntity
 import com.dgnt.quickTournamentMaker.model.IKeyable
 import com.dgnt.quickTournamentMaker.util.TournamentUtil
 import kotlinx.parcelize.Parcelize
+import org.joda.time.LocalDateTime
 
 
 enum class MatchUpStatus {
@@ -29,4 +31,7 @@ data class MatchUp(
                 && (!singuluar || !(participant1.participantType == ParticipantType.BYE && participant2.participantType == ParticipantType.BYE))
 
     fun getDisplayTitle() = (if (note.isEmpty()) "" else "*") + title
+    fun toEntity(id: LocalDateTime): MatchUpEntity {
+        TODO("Not yet implemented")
+    }
 }

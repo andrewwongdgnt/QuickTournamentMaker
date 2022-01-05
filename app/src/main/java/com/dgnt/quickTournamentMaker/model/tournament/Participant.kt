@@ -1,10 +1,13 @@
 package com.dgnt.quickTournamentMaker.model.tournament
 
 import android.os.Parcelable
+import com.dgnt.quickTournamentMaker.data.tournament.MatchUpEntity
+import com.dgnt.quickTournamentMaker.data.tournament.ParticipantEntity
 import com.dgnt.quickTournamentMaker.model.IKeyable
 import com.dgnt.quickTournamentMaker.model.management.Person
 import com.dgnt.quickTournamentMaker.util.TournamentUtil
 import kotlinx.parcelize.Parcelize
+import org.joda.time.LocalDateTime
 
 enum class ParticipantType {
     NORMAL, NULL, BYE
@@ -39,6 +42,10 @@ data class Participant(
 
     override fun toString(): String {
         return name
+    }
+
+    fun toEntity(id: LocalDateTime): ParticipantEntity {
+        TODO("Not yet implemented")
     }
 }
 
