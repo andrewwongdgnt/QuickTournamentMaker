@@ -1,7 +1,9 @@
 package com.dgnt.quickTournamentMaker
 
-import android.util.Log
-import com.dgnt.quickTournamentMaker.model.tournament.*
+import com.dgnt.quickTournamentMaker.model.tournament.MatchUp
+import com.dgnt.quickTournamentMaker.model.tournament.MatchUpStatus
+import com.dgnt.quickTournamentMaker.model.tournament.Participant
+import com.dgnt.quickTournamentMaker.model.tournament.ParticipantPosition
 import com.dgnt.quickTournamentMaker.service.implementation.ToggleStatusService
 import com.dgnt.quickTournamentMaker.service.interfaces.IMatchUpStatusTransformService
 import org.junit.Assert
@@ -10,7 +12,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
 import org.powermock.api.mockito.PowerMockito
-import org.powermock.core.classloader.annotations.PrepareForTest
 import org.powermock.modules.junit4.PowerMockRunner
 
 @RunWith(PowerMockRunner::class)

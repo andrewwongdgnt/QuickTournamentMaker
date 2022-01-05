@@ -10,15 +10,20 @@ import com.dgnt.quickTournamentMaker.data.management.GroupDAO
 import com.dgnt.quickTournamentMaker.data.management.GroupEntity
 import com.dgnt.quickTournamentMaker.data.management.PersonDAO
 import com.dgnt.quickTournamentMaker.data.management.PersonEntity
+import com.dgnt.quickTournamentMaker.data.tournament.*
 
 @Database(
-    entities = [PersonEntity::class, GroupEntity::class],
+    entities = [PersonEntity::class, GroupEntity::class, TournamentEntity::class, RoundEntity::class, MatchUpEntity::class, ParticipantEntity::class],
     version = 2001 //Old one was 1002
 )
 @TypeConverters(DateConverter::class)
 abstract class QTMDatabase : RoomDatabase() {
     abstract val personDAO: PersonDAO
     abstract val groupDAO: GroupDAO
+    abstract val tournamentDAO: TournamentDAO
+    abstract val roundDAO: RoundDAO
+    abstract val matchUpDAO: MatchUpDAO
+    abstract val participantDAO: ParticipantDAO
 
     companion object {
 

@@ -1,7 +1,9 @@
 package com.dgnt.quickTournamentMaker.model.tournament
 
 import com.dgnt.quickTournamentMaker.R
+import com.dgnt.quickTournamentMaker.data.tournament.TournamentEntity
 import com.dgnt.quickTournamentMaker.service.interfaces.IMatchUpStatusTransformService
+import com.dgnt.quickTournamentMaker.service.interfaces.IRankingConfigService
 import com.dgnt.quickTournamentMaker.service.interfaces.IRankingService
 import com.dgnt.quickTournamentMaker.service.interfaces.IRoundUpdateService
 
@@ -24,7 +26,8 @@ data class Tournament(
     val roundGroups: List<RoundGroup>,
     val matchUpStatusTransformService: IMatchUpStatusTransformService,
     val roundUpdateService: IRoundUpdateService,
-    val rankingService: IRankingService
+    val rankingService: IRankingService,
+    private val rankingConfigService: IRankingConfigService,
 ) {
 
     val rounds = roundGroups.flatMap { it.rounds }
@@ -41,4 +44,18 @@ data class Tournament(
 
     fun getRanking() = rankingService.calculate(roundGroups, tournamentInformation.rankConfig)
 
+    fun toEntity() = tournamentInformation.run {
+        TournamentEntity(
+            creationDate,
+            lastModifiedDate,
+            title,
+            description,
+            tournamentType,
+            when (tournamentType) {
+                TournamentType.ROUND_ROBIN, TournamentType.SWISS -> rankingConfigService.toString(rankConfig)
+                else -> ""
+            },
+            seedType
+        )
+    }
 }

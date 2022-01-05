@@ -6,10 +6,7 @@ import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentType
 import com.dgnt.quickTournamentMaker.service.data.TournamentTypeServices
 import com.dgnt.quickTournamentMaker.service.implementation.TournamentBuilderService
-import com.dgnt.quickTournamentMaker.service.interfaces.IMatchUpStatusTransformService
-import com.dgnt.quickTournamentMaker.service.interfaces.IRankingService
-import com.dgnt.quickTournamentMaker.service.interfaces.IRoundGeneratorService
-import com.dgnt.quickTournamentMaker.service.interfaces.IRoundUpdateService
+import com.dgnt.quickTournamentMaker.service.interfaces.*
 import org.joda.time.LocalDateTime
 import org.junit.Assert
 import org.junit.Before
@@ -44,6 +41,7 @@ class TournamentBuilderServiceTest {
     private val mockSwissMatchUpStatusTransformService: IMatchUpStatusTransformService = PowerMockito.mock(IMatchUpStatusTransformService::class.java)
     private val mockSurvivalMatchUpStatusTransformService: IMatchUpStatusTransformService = PowerMockito.mock(IMatchUpStatusTransformService::class.java)
 
+    private val mockRankingConfigService: IRankingConfigService = PowerMockito.mock(IRankingConfigService::class.java)
 
     private val sut = TournamentBuilderService(
         mapOf(
@@ -77,7 +75,8 @@ class TournamentBuilderServiceTest {
                 rankingService = mockSurvivalRankingService,
                 matchUpStatusTransformService = mockSurvivalMatchUpStatusTransformService
             )
-        )
+        ),
+        mockRankingConfigService
     )
 
     private val eliminationTournamentInformation = TournamentInformation("title", "description", TournamentType.ELIMINATION, SeedType.CUSTOM, RankPriorityConfig.DEFAULT, LocalDateTime.now())

@@ -37,6 +37,10 @@ class QTMApplication() : Application(), DIAware {
         //DAO
         bind() from singleton { instance<QTMDatabase>().personDAO }
         bind() from singleton { instance<QTMDatabase>().groupDAO }
+        bind() from singleton { instance<QTMDatabase>().tournamentDAO }
+        bind() from singleton { instance<QTMDatabase>().roundDAO }
+        bind() from singleton { instance<QTMDatabase>().matchUpDAO }
+        bind() from singleton { instance<QTMDatabase>().participantDAO }
 
         //Repo
         bind<IPersonRepository>() with singleton { PersonRepository(instance()) }
@@ -63,7 +67,7 @@ class QTMApplication() : Application(), DIAware {
         bind() from provider { GroupEditorViewModelFactory(instance(), instance()) }
         bind() from provider { MovePersonsViewModelFactory(instance()) }
         bind() from provider { PersonEditorViewModelFactory(instance(), instance()) }
-        bind() from provider { TournamentViewModelFactory(instance(), instance()) }
+        bind() from provider { TournamentViewModelFactory(instance(), instance(), instance(), instance(), instance(), instance(), instance()) }
         bind() from provider { MoreInfoViewModelFactory() }
         bind() from provider { RebuildTournamentViewModelFactory(instance(), instance()) }
         bind() from provider { ParticipantEditorViewModelFactory() }
@@ -136,7 +140,8 @@ class QTMApplication() : Application(), DIAware {
                         rankingService = instance(TournamentType.SURVIVAL),
                         matchUpStatusTransformService = instance(ONE_WINNER_TAG)
                     )
-                )
+                ),
+                instance()
             )
         }
 

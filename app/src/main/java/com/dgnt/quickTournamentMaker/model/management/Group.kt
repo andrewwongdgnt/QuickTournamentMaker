@@ -7,6 +7,11 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Group(var id: String, var name: String, var note: String, var favourite: Boolean) : IKeyable<String>, Comparable<Group>, Parcelable {
+
+    companion object {
+        fun fromEntity(entity: GroupEntity) = Group(entity.id, entity.name, entity.note, entity.favourite)
+    }
+
     override val key = name
     override fun compareTo(other: Group): Int {
         if (favourite && !other.favourite) return -1
@@ -21,10 +26,6 @@ data class Group(var id: String, var name: String, var note: String, var favouri
         return super.equals(other)
     }
 
-    override fun hashCode(): Int = id.hashCode()
-    fun toEntity(): GroupEntity = GroupEntity(id, name, note, favourite)
-
-    companion object {
-        fun fromEntity(groupEntity: GroupEntity): Group = Group(groupEntity.id, groupEntity.name, groupEntity.note, groupEntity.favourite)
-    }
+    override fun hashCode() = id.hashCode()
+    fun toEntity() = GroupEntity(id, name, note, favourite)
 }

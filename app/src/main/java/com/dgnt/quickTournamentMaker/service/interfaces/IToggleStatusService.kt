@@ -3,6 +3,7 @@ package com.dgnt.quickTournamentMaker.service.interfaces
 import com.dgnt.quickTournamentMaker.model.tournament.MatchUp
 import com.dgnt.quickTournamentMaker.model.tournament.ParticipantPosition
 
+//TODO Remove this
 interface IToggleStatusService {
 
     /**

@@ -5,12 +5,12 @@ import org.joda.time.LocalDateTime
 
 class DateConverter {
     @TypeConverter
-    fun toDateTime(value: Long): LocalDateTime {
-        return LocalDateTime(value)
+    fun toDateTime(value: Long?): LocalDateTime? {
+        return value?.let { LocalDateTime(it) }
     }
 
     @TypeConverter
-    fun fromDateTime(date: LocalDateTime): Long {
-        return date.toDateTime().millis
+    fun fromDateTime(date: LocalDateTime?): Long? {
+        return date?.toDateTime()?.millis
     }
 }

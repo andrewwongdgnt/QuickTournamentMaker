@@ -4,14 +4,18 @@ import androidx.databinding.Bindable
 import androidx.databinding.Observable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.dgnt.quickTournamentMaker.data.tournament.IMatchUpRepository
 import com.dgnt.quickTournamentMaker.data.tournament.IParticipantRepository
 import com.dgnt.quickTournamentMaker.data.tournament.IRoundRepository
 import com.dgnt.quickTournamentMaker.data.tournament.ITournamentRepository
 import com.dgnt.quickTournamentMaker.model.tournament.*
+import com.dgnt.quickTournamentMaker.service.interfaces.IRankingConfigService
 import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentBuilderService
 import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentDataTransformerService
 import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentInitiatorService
+import kotlinx.coroutines.launch
+import org.joda.time.LocalDateTime
 
 class TournamentViewModel(
     private val tournamentBuilderService: ITournamentBuilderService,
@@ -66,4 +70,10 @@ class TournamentViewModel(
     fun transformTournament() =
         tournament.value?.let { tournamentDataTransformerService.transform(it) }
 
+    fun saveTournament() = viewModelScope.launch {
+        tournament.value?.let {
+            it.tournamentInformation.lastModifiedDate = LocalDateTime.now()
+            tournamentRepository.insert(it.toEntity())
+        }
+    }
 }

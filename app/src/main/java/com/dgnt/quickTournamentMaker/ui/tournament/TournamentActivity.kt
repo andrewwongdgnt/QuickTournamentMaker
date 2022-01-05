@@ -175,6 +175,8 @@ class TournamentActivity : AppCompatActivity(), IMoreInfoDialogFragmentListener,
                     intent.putExtra(Intent.EXTRA_TITLE, "${tournamentInformation.title}.qtm")
                     resultLauncher.launch(intent)
                 }
+                R.id.action_saveTournament,
+                R.id.action_saveAsTournament -> viewModel.saveTournament()
             }
         }
 
