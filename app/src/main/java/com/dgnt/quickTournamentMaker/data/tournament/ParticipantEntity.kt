@@ -7,9 +7,9 @@ import org.joda.time.LocalDateTime
 
 const val PARTICIPANT_TABLE = "participantTable"
 
-@Entity(tableName = PARTICIPANT_TABLE)
+@Entity(tableName = PARTICIPANT_TABLE, primaryKeys = ["epoch", "name", "seedIndex"])
 data class ParticipantEntity(
-    @PrimaryKey val epoch: LocalDateTime,
+    val epoch: LocalDateTime,
     val name: String,
     val seedIndex: Int,
     val displayName: String,

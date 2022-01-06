@@ -7,9 +7,9 @@ import org.joda.time.LocalDateTime
 
 const val MATCH_UP_TABLE = "matchUpTable"
 
-@Entity(tableName = MATCH_UP_TABLE)
+@Entity(tableName = MATCH_UP_TABLE, primaryKeys = ["epoch", "roundGroupIndex", "roundIndex", "matchUpIndex"])
 data class MatchUpEntity(
-    @PrimaryKey val epoch: LocalDateTime,
+    val epoch: LocalDateTime,
     val roundGroupIndex: Int,
     val roundIndex: Int,
     val matchUpIndex: Int,

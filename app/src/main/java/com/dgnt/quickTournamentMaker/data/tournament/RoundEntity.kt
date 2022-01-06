@@ -6,9 +6,9 @@ import org.joda.time.LocalDateTime
 
 const val ROUND_TABLE = "roundTable"
 
-@Entity(tableName = ROUND_TABLE)
+@Entity(tableName = ROUND_TABLE, primaryKeys = ["epoch", "roundGroupIndex", "roundIndex"])
 data class RoundEntity(
-    @PrimaryKey val epoch: LocalDateTime,
+    val epoch: LocalDateTime,
     val roundGroupIndex: Int,
     val roundIndex: Int,
     val originalName: String,
