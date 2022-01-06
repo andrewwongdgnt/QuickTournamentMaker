@@ -64,9 +64,8 @@ class PersonEditorViewModel(private val personRepository: IPersonRepository, pri
             groupRepository.insert(GroupEntity(name = defaultGroupName, note = "", favourite = false))
         }
 
-        val personResult = personRepository.insert(person)
-        when {
-            personResult.isEmpty() || personResult[0] == -1L -> resultEvent.value = Event(Triple(false, failMsg, false))
+        when (personRepository.insert(person)) {
+            -1L -> resultEvent.value = Event(Triple(false, failMsg, false))
             else -> resultEvent.value = Event(Triple(!forceOpen, successMsg, forceErase))
         }
 

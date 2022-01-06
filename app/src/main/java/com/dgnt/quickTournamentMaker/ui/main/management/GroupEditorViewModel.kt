@@ -45,9 +45,8 @@ class GroupEditorViewModel(private val personRepository: IPersonRepository, priv
     fun add(successMsg: String, failMsg: String, forceOpen: Boolean, forceErase: Boolean) = insert(GroupEntity(name = name.value!!, note = note.value!!, favourite = false), successMsg, failMsg, forceOpen, forceErase)
 
     private fun insert(group: GroupEntity, successMsg: String, failMsg: String, forceOpen: Boolean, forceErase: Boolean) = viewModelScope.launch {
-        val groupResult = groupRepository.insert(group)
-        when {
-            groupResult.isEmpty() || groupResult[0] == -1L -> resultEvent.value = Event(Triple(false, failMsg, false))
+        when (groupRepository.insert(group)) {
+            -1L -> resultEvent.value = Event(Triple(false, failMsg, false))
             else -> resultEvent.value = Event(Triple(!forceOpen, successMsg, forceErase))
         }
     }
