@@ -53,10 +53,10 @@ class HomeFragment : Fragment(), DIAware {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val fragment = this
         context?.apply {
-            viewModel = ViewModelProvider(fragment, viewModelFactory).get(HomeViewModel::class.java)
+            viewModel = ViewModelProvider(fragment, viewModelFactory)[HomeViewModel::class.java]
             binding.vm = viewModel
 
-            binding.lifecycleOwner = fragment
+            binding.lifecycleOwner = viewLifecycleOwner
 
             setVMData(viewModel)
 
@@ -87,7 +87,7 @@ class HomeFragment : Fragment(), DIAware {
                 val emptyGroupExpandableGroupMap = groups.map { it.name }.subtract(persons.map { it.groupName }.toSet()).map { GroupCheckedExpandableGroup(it, listOf()) }
                 val groupExpandableGroupMap = persons.groupBy { it.groupName }.map { it.key to it.value.map { Person.fromEntity(it) } }.map { GroupCheckedExpandableGroup(it.first, it.second.sorted()) }
                 allGroups = (groupExpandableGroupMap + emptyGroupExpandableGroupMap).sorted()
-                groupsExpanded.removeAll(groupsExpanded.minus(groups.map { it.key }))
+                groupsExpanded.removeAll(groupsExpanded.minus(groups.map { it.key }.toSet()))
 
                 val adapter = GroupCheckedExpandableRecyclerViewAdapter(allGroups, selectedGroups, ResourcesCompat.getColor(resources, R.color.colorAccent, null), { person: String -> personClicked(person) }, { group: String, checked: Boolean -> groupClicked(group, checked) })
                 adapter.setOnGroupExpandCollapseListener(object : GroupExpandCollapseListener {

@@ -35,17 +35,17 @@ class HomeViewModel(
 
     val personAndGroupLiveData: LiveData<Pair<List<PersonEntity>, List<GroupEntity>>> =
         object : MediatorLiveData<Pair<List<PersonEntity>, List<GroupEntity>>>() {
-            var person: List<PersonEntity>? = null
-            var group: List<GroupEntity>? = null
+            private var personEntities: List<PersonEntity>? = null
+            private var groupEntities: List<GroupEntity>? = null
 
             init {
                 addSource(persons) { persons ->
-                    this.person = persons
-                    group?.let { value = persons to it }
+                    this.personEntities = persons
+                    groupEntities?.let { value = persons to it }
                 }
                 addSource(groups) { groups ->
-                    this.group = groups
-                    person?.let { value = it to groups }
+                    this.groupEntities = groups
+                    personEntities?.let { value = it to groups }
                 }
             }
         }

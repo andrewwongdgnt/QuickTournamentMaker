@@ -81,90 +81,91 @@ class ManagementFragment : Fragment(), DIAware {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.addFab.setOnClickListener { add() }
+        val fragment = this
+        context?.apply {
+            binding.addFab.setOnClickListener { add() }
 
-        actionModeCallback = ManagementFragmentActionModeCallBack(binding, selectedPersons, selectedGroups) { menuId: Int, persons: Set<Person>, groups: Set<Group> -> menuResolver(menuId, persons, groups) }
+            actionModeCallback = ManagementFragmentActionModeCallBack(binding, selectedPersons, selectedGroups) { menuId: Int, persons: Set<Person>, groups: Set<Group> -> menuResolver(menuId, persons, groups) }
 
-        setHasOptionsMenu(true)
+            setHasOptionsMenu(true)
 
-        viewModel = ViewModelProvider(this, viewModelFactory).get(ManagementViewModel::class.java)
-        binding.vm = viewModel
-        binding.lifecycleOwner = this
+            viewModel = ViewModelProvider(fragment, viewModelFactory)[ManagementViewModel::class.java]
+            binding.vm = viewModel
+            binding.lifecycleOwner = viewLifecycleOwner
 
-        viewModel.messageEvent.observe(viewLifecycleOwner, Observer {
-            it.getContentIfNotHandled()?.let { message ->
-                Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+            viewModel.messageEvent.observe(viewLifecycleOwner, {
+                it.getContentIfNotHandled()?.let { message ->
+                    Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+                }
+            })
+
+            val setDrawable = { checkedTextView: CheckedTextView, selectable: Boolean ->
+                if (selectable) {
+                    val attrs = intArrayOf(android.R.attr.listChoiceIndicatorMultiple)
+                    val ta = theme.obtainStyledAttributes(attrs)
+                    val indicator = ta.getDrawable(0)
+                    checkedTextView.checkMarkDrawable = indicator;
+                    ta.recycle()
+                } else {
+                    checkedTextView.checkMarkDrawable = null
+                }
             }
-        })
 
-        val setDrawable = { checkedTextView: CheckedTextView, selectable: Boolean ->
-            if (selectable) {
-                val attrs = intArrayOf(android.R.attr.listChoiceIndicatorMultiple)
-                val ta = context!!.theme.obtainStyledAttributes(attrs)
-                val indicator = ta.getDrawable(0)
-                checkedTextView.checkMarkDrawable = indicator;
-                ta.recycle()
-            } else {
-                checkedTextView.checkMarkDrawable = null
-            }
-        }
+            viewModel.personAndGroupLiveData.observe(viewLifecycleOwner, { (persons, groups) ->
 
+                Log.d("DGNTTAG", "person: $persons")
+                Log.d("DGNTTAG", "group: $groups")
 
+                try {
+                    fragment.groups = groups.map { Group.fromEntity(it) }.sorted()
 
-        viewModel.personAndGroupLiveData.observe(viewLifecycleOwner, Observer { (persons, groups) ->
+                    val groupMap = groups.map { it.name to Group.fromEntity(it) }.toMap()
 
-            Log.d("DGNTTAG", "person: $persons")
-            Log.d("DGNTTAG", "group: $groups")
+                    personToGroupNameMap = persons.map { Person.fromEntity(it) to groupMap.getValue(it.groupName) }.toMap()
+                    val nonEmptyGroups = groups.filter { group -> persons.any { it.groupName == group.name } }.map { Group.fromEntity(it) }.toSet()
 
-            try {
-                this.groups = groups.map { Group.fromEntity(it) }.sorted()
+                    val emptyGroupExpandableGroupMap = fragment.groups.map { it.name }.subtract(persons.map { it.groupName }.toSet()).map { GroupExpandableGroup(it, listOf()) }
+                    val groupExpandableGroupMap = persons.groupBy { it.groupName }.map { it.key to it.value.map { Person.fromEntity(it) } }.map { GroupExpandableGroup(it.first, it.second.sorted()) }
 
-                val groupMap = groups.map { it.name to Group.fromEntity(it) }.toMap()
+                    val personGroups = (groupExpandableGroupMap + emptyGroupExpandableGroupMap).sorted()
 
-                personToGroupNameMap = persons.map { Person.fromEntity(it) to groupMap.getValue(it.groupName) }.toMap()
-                val nonEmptyGroups = groups.filter { group -> persons.any { it.groupName == group.name } }.map { Group.fromEntity(it) }.toSet()
+                    groupsExpanded.removeAll(groupsExpanded.minus(groupMap.map { it.key }))
 
-                val emptyGroupExpandableGroupMap = this.groups.map { it.name }.subtract(persons.map { it.groupName }.toSet()).map { GroupExpandableGroup(it, listOf()) }
-                val groupExpandableGroupMap = persons.groupBy { it.groupName }.map { it.key to it.value.map { Person.fromEntity(it) } }.map { GroupExpandableGroup(it.first, it.second.sorted()) }
+                    val adapter = GroupExpandableRecyclerViewAdapter(setDrawable, actionModeCallback, selectedPersons, selectedGroups, groupMap, nonEmptyGroups, personGroups, { checkable: Checkable, person: Person -> personClicked(checkable, person) }, { checkable: Checkable, group: Group, editType: GroupEditType -> groupClicked(checkable, group, editType) })
+                    adapter.setOnGroupExpandCollapseListener(object : GroupExpandCollapseListener {
+                        override fun onGroupExpanded(group: ExpandableGroup<*>) {
+                            groupsExpanded.add(group.title)
+                        }
 
-                val personGroups = (groupExpandableGroupMap + emptyGroupExpandableGroupMap).sorted()
+                        override fun onGroupCollapsed(group: ExpandableGroup<*>) {
+                            groupsExpanded.remove(group.title)
+                        }
 
-                groupsExpanded.removeAll(groupsExpanded.minus(groupMap.map { it.key }))
-
-                val adapter = GroupExpandableRecyclerViewAdapter(setDrawable, actionModeCallback, selectedPersons, selectedGroups, groupMap, nonEmptyGroups, personGroups, { checkable: Checkable, person: Person -> personClicked(checkable, person) }, { checkable: Checkable, group: Group, editType: GroupEditType -> groupClicked(checkable, group, editType) })
-                adapter.setOnGroupExpandCollapseListener(object : GroupExpandCollapseListener {
-                    override fun onGroupExpanded(group: ExpandableGroup<*>) {
-                        groupsExpanded.add(group.title)
+                    })
+                    binding.personRv.adapter = adapter
+                    adapter.groups.forEach { g ->
+                        if (groupsExpanded.contains(g.title))
+                            adapter.toggleGroup(g)
                     }
 
-                    override fun onGroupCollapsed(group: ExpandableGroup<*>) {
-                        groupsExpanded.remove(group.title)
-                    }
+                    binding.addFab.visibility = View.VISIBLE
+                } catch (e: Exception) {
 
-                })
-                binding.personRv.adapter = adapter
+                    Log.e("DGNTTAG", "Something happened (Probably groups didn't resolve yet) so just do nothing and hope the next observed event fixes it")
+                }
+            })
+
+            viewModel.expandAll.observe(viewLifecycleOwner, {
+
+                val adapter = binding.personRv.adapter as GroupExpandableRecyclerViewAdapter
                 adapter.groups.forEach { g ->
-                    if (groupsExpanded.contains(g.title))
+                    if ((it && !adapter.isGroupExpanded(g)) || (!it && adapter.isGroupExpanded(g))) {
                         adapter.toggleGroup(g)
+                    }
                 }
 
-                binding.addFab.visibility = View.VISIBLE
-            } catch (e: Exception) {
-
-                Log.e("DGNTTAG", "Something happened (Probably groups didn't resolve yet) so just do nothing and hope the next observed event fixes it")
-            }
-        })
-
-        viewModel.expandAll.observe(viewLifecycleOwner, Observer {
-
-            val adapter = binding.personRv.adapter as GroupExpandableRecyclerViewAdapter
-            adapter.groups.forEach { g ->
-                if ((it && !adapter.isGroupExpanded(g)) || (!it && adapter.isGroupExpanded(g))) {
-                    adapter.toggleGroup(g)
-                }
-            }
-
-        })
+            })
+        }
 
     }
 

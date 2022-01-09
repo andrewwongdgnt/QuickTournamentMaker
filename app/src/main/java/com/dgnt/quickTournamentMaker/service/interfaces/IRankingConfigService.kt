@@ -30,4 +30,11 @@ interface IRankingConfigService {
      */
     fun toString(rankConfig: IRankConfig): String
 
+    /**
+     * parse string value to a generic rank config
+     *
+     * @param value the string value
+     * @return a generic rank config
+     */
+    fun buildRankingFromString(value: String): IRankConfig
 }

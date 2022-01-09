@@ -16,6 +16,14 @@ class RankingConfigService : IRankingConfigService {
         else
             getRankingFromScoreAsString(rankConfig as RankScoreConfig)
 
+    override fun buildRankingFromString(value: String) =
+        value.firstOrNull().let {
+            if (it.toString().matches(winLossTieRegex))
+                buildRankingFromScore(value)
+            else
+                buildRankingFromPriority(value)
+        }
+
 
     override fun buildRankingFromPriority(value: String): RankPriorityConfig {
         val listValue = (value.split(";").takeIf {

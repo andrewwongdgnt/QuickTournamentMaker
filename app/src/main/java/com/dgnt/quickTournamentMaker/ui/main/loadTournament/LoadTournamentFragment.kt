@@ -6,11 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.dgnt.quickTournamentMaker.R
-import com.dgnt.quickTournamentMaker.databinding.HomeFragmentBinding
 import com.dgnt.quickTournamentMaker.databinding.LoadTournamentFragmentBinding
-import com.dgnt.quickTournamentMaker.ui.main.home.HomeViewModel
-import com.dgnt.quickTournamentMaker.ui.main.home.HomeViewModelFactory
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 import org.kodein.di.instance
@@ -37,7 +33,10 @@ class LoadTournamentFragment : Fragment(), DIAware {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val fragment = this
         context?.apply {
-            viewModel = ViewModelProvider(fragment, viewModelFactory).get(LoadTournamentViewModel::class.java)
+            viewModel = ViewModelProvider(fragment, viewModelFactory)[LoadTournamentViewModel::class.java]
+            binding.vm = viewModel
+
+            binding.lifecycleOwner = viewLifecycleOwner
         }
 
     }

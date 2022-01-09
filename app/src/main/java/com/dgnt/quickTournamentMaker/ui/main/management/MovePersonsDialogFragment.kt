@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.MovePersonsFragmentBinding
@@ -45,7 +44,7 @@ class MovePersonsDialogFragment : DialogFragment(), DIAware {
 
             binding = MovePersonsFragmentBinding.inflate(activity.layoutInflater)
 
-            viewModel = ViewModelProvider(this, viewModelFactory).get(MovePersonsViewModel::class.java)
+            viewModel = ViewModelProvider(this, viewModelFactory)[MovePersonsViewModel::class.java]
             binding.vm = viewModel
             binding.lifecycleOwner = this
 
@@ -55,7 +54,7 @@ class MovePersonsDialogFragment : DialogFragment(), DIAware {
                 }
             })
 
-            selectedPersons = arguments?.getParcelableArrayList<Person>(KEY_PERSONS)!!
+            selectedPersons = arguments?.getParcelableArrayList(KEY_PERSONS)!!
             val groups = arguments?.getParcelableArrayList<Group>(KEY_GROUPS)!!
 
             binding.groupRv.adapter = GroupRecyclerViewAdapter(groups) { g: Group -> handle(g) }
