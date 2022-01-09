@@ -1,10 +1,14 @@
 package com.dgnt.quickTournamentMaker.data.base
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.dgnt.quickTournamentMaker.data.management.GroupEntity
 
 
 @Dao
 interface BaseDAO<T> {
+
+    fun getAll(): LiveData<List<T>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(entity: T): Long

@@ -4,6 +4,7 @@ import androidx.room.Transaction
 
 abstract class BaseRepository<T>(private val dao: BaseDAO<T>) {
 
+    fun getAll() = dao.getAll()
     suspend fun insert(entity: T) = dao.insert(entity)
     suspend fun insert(entities: List<T>) = dao.insert(entities)
     suspend fun update(entity: T) = dao.update(entity)

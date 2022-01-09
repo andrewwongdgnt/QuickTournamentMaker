@@ -50,7 +50,7 @@ class ManagementFragment : Fragment(), DIAware {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = ManagementFragmentBinding.inflate(inflater)
         return binding.root;
     }
