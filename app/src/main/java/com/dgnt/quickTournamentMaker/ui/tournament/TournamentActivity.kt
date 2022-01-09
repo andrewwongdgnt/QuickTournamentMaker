@@ -92,15 +92,21 @@ class TournamentActivity : AppCompatActivity(), IMoreInfoDialogFragmentListener,
             title.observe(tournamentActivity, {
                 tournamentActivity.title = it
                 tournamentInformation.title = it
+                hasChanges.value = true
             })
             description.observe(tournamentActivity, {
                 tournamentInformation.description = it
+                hasChanges.value = true
             })
 
             tournament.observe(tournamentActivity, {
                 binding.container.draw(it) { m, p ->
                     updateTournament(m, p)
+                    hasChanges.value = true
                 }
+            })
+            hasChanges.observe(tournamentActivity, {
+                invalidateOptionsMenu()
             })
         }
 
@@ -136,6 +142,14 @@ class TournamentActivity : AppCompatActivity(), IMoreInfoDialogFragmentListener,
         return true
     }
 
+    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
+        viewModel.hasChanges.value?.let {
+            menu.findItem(R.id.action_saveTournament)?.setIcon(if (it) R.drawable.ic_save_warning else R.drawable.ic_save)
+        }
+
+        return true
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.actions_tournament, menu)
         return super.onCreateOptionsMenu(menu)
@@ -143,8 +157,6 @@ class TournamentActivity : AppCompatActivity(), IMoreInfoDialogFragmentListener,
 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
-
         viewModel.tournament.value?.apply {
             when (item.itemId) {
                 R.id.action_currentRanking -> RankDialogFragment.newInstance(getRanking()).show(supportFragmentManager, RankDialogFragment.TAG)
@@ -175,50 +187,67 @@ class TournamentActivity : AppCompatActivity(), IMoreInfoDialogFragmentListener,
                     intent.putExtra(Intent.EXTRA_TITLE, "${tournamentInformation.title}.qtm")
                     resultLauncher.launch(intent)
                 }
-                R.id.action_saveTournament,
-                R.id.action_saveAsTournament -> viewModel.saveTournament()
+                R.id.action_saveTournament -> saveChanges(false)
+                R.id.action_saveAsTournament -> saveChanges(true)
             }
         }
 
         return super.onOptionsItemSelected(item)
     }
 
+    private fun saveChanges(duplicate: Boolean) {
+        viewModel.run {
+            hasChanges.value = false
+            saveTournament(duplicate)
+        }
+    }
+
     override fun onEditTournament(title: String, description: String) {
         viewModel.run {
             this.title.value = title
             this.description.value = description
+            hasChanges.value = true
         }
     }
 
     override fun onEditParticipant(key: String, name: String, note: String, color: Int) {
-        viewModel.tournament.value?.run {
-            sortedNormalParticipants.find { it.key == key }?.let {
-                it.name = name
-                it.note = note
-                it.color = color
+        viewModel.run {
+            tournament.value?.run {
+                sortedNormalParticipants.find { it.key == key }?.let {
+                    it.name = name
+                    it.note = note
+                    it.color = color
+                }
+                viewModel.tournament.value = this
             }
-            viewModel.tournament.value = this
+            hasChanges.value = true
         }
     }
 
     override fun onEditMatchUp(key: Triple<Int, Int, Int>, useTitle: Boolean, title: String, note: String, color: Int) {
-        viewModel.tournament.value?.run {
-            roundGroups[key.first].rounds[key.second].matchUps[key.third].let {
-                it.useTitle = useTitle
-                it.title = title
-                it.note = note
-                it.color = color
+        viewModel.run {
+            tournament.value?.run {
+                roundGroups[key.first].rounds[key.second].matchUps[key.third].let {
+                    it.useTitle = useTitle
+                    it.title = title
+                    it.note = note
+                    it.color = color
+                }
             }
+            hasChanges.value = true
         }
     }
 
     override fun onEditRound(key: Pair<Int, Int>, title: String, note: String, color: Int) {
-        viewModel.tournament.value?.run {
-            roundGroups[key.first].rounds[key.second].let {
-                it.title = title
-                it.note = note
-                it.color = color
+        viewModel.run {
+            tournament.value?.run {
+                roundGroups[key.first].rounds[key.second].let {
+                    it.title = title
+                    it.note = note
+                    it.color = color
+                }
             }
+            hasChanges.value = true
         }
     }
 

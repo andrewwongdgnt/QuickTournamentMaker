@@ -36,6 +36,9 @@ class TournamentViewModel(
     @Bindable
     val tournament = MutableLiveData<Tournament>()
 
+    @Bindable
+    val hasChanges = MutableLiveData(true)
+
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
     }
 
@@ -69,11 +72,19 @@ class TournamentViewModel(
     fun transformTournament() =
         tournament.value?.let { tournamentDataTransformerService.transform(it) }
 
-    fun saveTournament() = viewModelScope.launch {
+    fun saveTournament(duplicate: Boolean) = viewModelScope.launch {
         tournament.value?.let { tournament ->
-            val id = tournament.tournamentInformation.creationDate
 
-            tournament.tournamentInformation.lastModifiedDate = LocalDateTime.now()
+            val now = LocalDateTime.now()
+
+            val id = tournament.tournamentInformation.run {
+                if (duplicate)
+                    creationDate = now
+
+                lastModifiedDate = now
+
+                creationDate
+            }
 
             tournamentRepository.upsert(tournament.toEntity())
 

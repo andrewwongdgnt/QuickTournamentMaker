@@ -12,6 +12,6 @@ data class TournamentInformation(
     val tournamentType: TournamentType,
     val seedType: SeedType,
     val rankConfig: IRankConfig,
-    val creationDate: LocalDateTime,
+    var creationDate: LocalDateTime,
     var lastModifiedDate: LocalDateTime? = null
 ) : Parcelable
