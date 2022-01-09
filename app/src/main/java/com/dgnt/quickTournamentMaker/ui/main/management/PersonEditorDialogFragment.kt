@@ -39,6 +39,7 @@ class PersonEditorDialogFragment : DialogFragment(), DIAware {
                     putString(KEY_TITLE, title)
                     putParcelable(KEY_PERSON, person)
                     putString(KEY_GROUP_NAME, groupName)
+                    putParcelableArrayList(KEY_GROUPS, ArrayList<Group>(groups))
                 }
             }
     }
@@ -71,7 +72,7 @@ class PersonEditorDialogFragment : DialogFragment(), DIAware {
             })
 
 
-            viewModel.setData(arguments?.getParcelable(KEY_PERSON), arguments?.getString(KEY_GROUP_NAME), arguments?.getParcelableArrayList<Group>(KEY_GROUPS), getString(R.string.defaultGroupName))
+            viewModel.setData(arguments?.getParcelable(KEY_PERSON), arguments?.getString(KEY_GROUP_NAME), arguments?.getParcelableArrayList(KEY_GROUPS), getString(R.string.defaultGroupName))
             val editing = arguments?.getBoolean(KEY_EDITING) == true
             AlertDialog.Builder(activity)
                 .setTitle(arguments?.getString(KEY_TITLE))
