@@ -113,7 +113,8 @@ class TournamentDataTransformerServiceTest {
             roundGroups,
             mockMatchUpStatusTransformService,
             mockRoundUpdateService,
-            mockRankingService
+            mockRankingService,
+            mockRankingConfigService
         )
 
 

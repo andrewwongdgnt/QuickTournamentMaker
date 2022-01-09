@@ -2,10 +2,7 @@ package com.dgnt.quickTournamentMaker
 
 import com.dgnt.quickTournamentMaker.model.tournament.*
 import com.dgnt.quickTournamentMaker.service.implementation.TournamentInitiatorService
-import com.dgnt.quickTournamentMaker.service.interfaces.IByeStatusResolverService
-import com.dgnt.quickTournamentMaker.service.interfaces.IMatchUpStatusTransformService
-import com.dgnt.quickTournamentMaker.service.interfaces.IRankingService
-import com.dgnt.quickTournamentMaker.service.interfaces.IRoundUpdateService
+import com.dgnt.quickTournamentMaker.service.interfaces.*
 import org.joda.time.LocalDateTime
 import org.junit.Before
 import org.junit.Test
@@ -22,6 +19,7 @@ class TournamentInitiatorServiceTest {
     private val mockRoundUpdateService = PowerMockito.mock(IRoundUpdateService::class.java)
     private val mockRankingService = PowerMockito.mock(IRankingService::class.java)
     private val mockMatchUpStatusTransformService = PowerMockito.mock(IMatchUpStatusTransformService::class.java)
+    private val mockRankingConfigService = PowerMockito.mock(IRankingConfigService::class.java)
     private val sut = TournamentInitiatorService(mockByeStatusResolverService)
 
     private lateinit var roundGroups: List<RoundGroup>
@@ -73,7 +71,8 @@ class TournamentInitiatorServiceTest {
             roundGroups,
             mockMatchUpStatusTransformService,
             mockRoundUpdateService,
-            mockRankingService
+            mockRankingService,
+            mockRankingConfigService
         )
     }
 
