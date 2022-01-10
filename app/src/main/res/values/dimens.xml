@@ -23,6 +23,7 @@
 
     <dimen name="standard_gap">5dp</dimen>
     <dimen name="more_info_gap">10dp</dimen>
+    <dimen name="tournament_info_gap">10dp</dimen>
     <dimen name="more_info_left_padding">15dp</dimen>
 
     <dimen name="match_up_padding">16dp</dimen>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
             android:id="@+id/array_item_tv"
@@ -10,7 +11,7 @@
             android:paddingTop="@dimen/list_item_vertical_margin"
             android:paddingRight="@dimen/list_item_horizontal_margin"
             android:paddingBottom="@dimen/list_item_vertical_margin"
-            android:text="Hello"
+            tools:text="Hello"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </layout>
