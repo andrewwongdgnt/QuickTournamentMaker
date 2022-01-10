@@ -17,5 +17,6 @@ data class MatchUpEntity(
     val name: String,
     val note: String,
     val color: Int,
-    val status: MatchUpStatus
+    val status: MatchUpStatus,
+    val containsBye: Boolean
 )

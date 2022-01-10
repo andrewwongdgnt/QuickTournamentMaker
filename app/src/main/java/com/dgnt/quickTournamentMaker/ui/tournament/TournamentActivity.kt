@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.TournamentActivityBinding
+import com.dgnt.quickTournamentMaker.model.tournament.ExtendedTournamentInformation
 import com.dgnt.quickTournamentMaker.model.tournament.Participant
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
 import com.dgnt.quickTournamentMaker.service.interfaces.ICreateDefaultTitleService
@@ -161,11 +162,13 @@ class TournamentActivity : AppCompatActivity(), IMoreInfoDialogFragmentListener,
             when (item.itemId) {
                 R.id.action_currentRanking -> RankDialogFragment.newInstance(getRanking()).show(supportFragmentManager, RankDialogFragment.TAG)
                 R.id.action_moreInfo -> MoreInfoDialogFragment.newInstance(
-                    tournamentInformation,
-                    rounds.size,
-                    matchUps.size,
-                    getMatchUpsWithSingleByes().size,
-                    sortedNormalParticipants.size
+                    ExtendedTournamentInformation(
+                        tournamentInformation,
+                        rounds.size,
+                        matchUps.size,
+                        getMatchUpsWithSingleByes().size,
+                        sortedNormalParticipants.size
+                    )
                 ).show(supportFragmentManager, MoreInfoDialogFragment.TAG)
                 R.id.action_rebuildTournament -> RebuildTournamentDialogFragment.newInstance(tournamentInformation, orderedParticipants).show(supportFragmentManager, RebuildTournamentDialogFragment.TAG)
                 R.id.action_editAParticipant -> {

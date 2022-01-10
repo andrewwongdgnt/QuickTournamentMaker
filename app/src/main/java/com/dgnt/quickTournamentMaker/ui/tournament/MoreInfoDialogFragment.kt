@@ -8,7 +8,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.MoreInfoFragmentBinding
-import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
+import com.dgnt.quickTournamentMaker.model.tournament.ExtendedTournamentInformation
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 import org.kodein.di.instance
@@ -20,26 +20,14 @@ class MoreInfoDialogFragment : DialogFragment(), DIAware {
     companion object {
 
         const val TAG = "MoreInfoDialogFragment"
-        private const val KEY_TOURNAMENT_INFO = "KEY_TOURNAMENT_INFO"
-        private const val KEY_ROUNDS_SIZE = "KEY_ROUNDS_SIZE"
-        private const val KEY_MATCH_UPS_SIZE = "KEY_MATCH_UPS_SIZE"
-        private const val KEY_MATCH_UPS_BYE_SIZE = "KEY_MATCH_UPS_BYE_SIZE"
-        private const val KEY_PARTICIPANTS_SIZE = "KEY_PARTICIPANTS_SIZE"
+        private const val KEY_EXTENDED_TOURNAMENT_INFO = "KEY_EXTENDED_TOURNAMENT_INFO"
 
         fun newInstance(
-            tournamentInformation: TournamentInformation,
-            roundsSize: Int,
-            matchUpsSize: Int,
-            matchUpsWithSingleByesSize: Int,
-            participantsSize: Int
+            extendedTournamentInformation: ExtendedTournamentInformation
         ) =
             MoreInfoDialogFragment().apply {
                 arguments = Bundle().apply {
-                    putParcelable(KEY_TOURNAMENT_INFO, tournamentInformation)
-                    putInt(KEY_ROUNDS_SIZE, roundsSize)
-                    putInt(KEY_MATCH_UPS_SIZE, matchUpsSize)
-                    putInt(KEY_MATCH_UPS_BYE_SIZE, matchUpsWithSingleByesSize)
-                    putInt(KEY_PARTICIPANTS_SIZE, participantsSize)
+                    putParcelable(KEY_EXTENDED_TOURNAMENT_INFO, extendedTournamentInformation)
                 }
             }
     }
@@ -59,7 +47,7 @@ class MoreInfoDialogFragment : DialogFragment(), DIAware {
 
         activity?.let { activity ->
 
-
+            val extendedTournamentInformation = arguments?.getParcelable<ExtendedTournamentInformation>(KEY_EXTENDED_TOURNAMENT_INFO)!!
             val binding = MoreInfoFragmentBinding.inflate(activity.layoutInflater)
 
             val viewModel = ViewModelProvider(this, viewModelFactory).get(MoreInfoViewModel::class.java)
@@ -67,17 +55,17 @@ class MoreInfoDialogFragment : DialogFragment(), DIAware {
             binding.lifecycleOwner = this
 
             viewModel.setData(
-                arguments?.getParcelable(KEY_TOURNAMENT_INFO)!!,
+                extendedTournamentInformation.basicTournamentInformation,
                 { type -> getString(R.string.typeInfo, getString(type.resource)) },
                 { seedType -> getString(R.string.seedTypeInfo, getString(seedType.resource)) },
                 { date -> getString(R.string.createdDateInfo, date) },
                 { date -> getString(R.string.lastModifiedDateInfo, date) },
-                getString(R.string.roundInfo, arguments?.getInt(KEY_ROUNDS_SIZE)!!),
-                getString(R.string.matchUpInfo, arguments?.getInt(KEY_MATCH_UPS_SIZE)!!),
-                arguments?.getInt(KEY_MATCH_UPS_BYE_SIZE)!!.let {
+                getString(R.string.roundInfo, extendedTournamentInformation.numRounds),
+                getString(R.string.matchUpInfo, extendedTournamentInformation.numMatchUps),
+                extendedTournamentInformation.numMatchUpsWithByes.let {
                     if (it == 0) "" else getString(R.string.matchUpSubInfo, it)
                 },
-                getString(R.string.playerInfo, arguments?.getInt(KEY_PARTICIPANTS_SIZE)!!),
+                getString(R.string.playerInfo, extendedTournamentInformation.numParticipants),
             )
 
             AlertDialog.Builder(activity)

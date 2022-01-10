@@ -1,6 +1,7 @@
 package com.dgnt.quickTournamentMaker.ui.main.loadTournament
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,6 +38,10 @@ class LoadTournamentFragment : Fragment(), DIAware {
             binding.vm = viewModel
 
             binding.lifecycleOwner = viewLifecycleOwner
+
+            viewModel.tournamentLiveData.observe(viewLifecycleOwner, {
+                Log.d("DGNTTAG", "tournament info: $it")
+            })
         }
 
     }

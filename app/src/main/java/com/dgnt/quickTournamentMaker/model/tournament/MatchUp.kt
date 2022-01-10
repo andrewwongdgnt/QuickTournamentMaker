@@ -4,6 +4,7 @@ import android.os.Parcelable
 import com.dgnt.quickTournamentMaker.data.tournament.MatchUpEntity
 import com.dgnt.quickTournamentMaker.model.IKeyable
 import com.dgnt.quickTournamentMaker.util.TournamentUtil
+import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import org.joda.time.LocalDateTime
 
@@ -25,11 +26,12 @@ data class MatchUp(
     var note: String = "",
     var color: Int = TournamentUtil.DEFAULT_DISPLAY_COLOR
 ) : IKeyable<Triple<Int, Int, Int>>, Parcelable {
+    @IgnoredOnParcel
     override val key = Triple(roundGroupIndex, roundIndex, matchUpIndex)
-    fun containsBye(singuluar: Boolean = false) =
+    fun containsBye(singular: Boolean = false) =
         (participant1.participantType == ParticipantType.BYE || participant2.participantType == ParticipantType.BYE)
-                && (!singuluar || !(participant1.participantType == ParticipantType.BYE && participant2.participantType == ParticipantType.BYE))
+                && (!singular || !(participant1.participantType == ParticipantType.BYE && participant2.participantType == ParticipantType.BYE))
 
     fun getDisplayTitle() = (if (note.isEmpty()) "" else "*") + title
-    fun toEntity(id: LocalDateTime) = MatchUpEntity(id, roundGroupIndex, roundIndex, matchUpIndex, useTitle, title, note, color, status)
+    fun toEntity(id: LocalDateTime) = MatchUpEntity(id, roundGroupIndex, roundIndex, matchUpIndex, useTitle, title, note, color, status, containsBye(true))
 }
