@@ -1,5 +1,7 @@
 package com.dgnt.quickTournamentMaker.model.tournament
 
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.data.tournament.TournamentEntity
 import com.dgnt.quickTournamentMaker.service.interfaces.IMatchUpStatusTransformService
@@ -7,12 +9,17 @@ import com.dgnt.quickTournamentMaker.service.interfaces.IRankingConfigService
 import com.dgnt.quickTournamentMaker.service.interfaces.IRankingService
 import com.dgnt.quickTournamentMaker.service.interfaces.IRoundUpdateService
 
-enum class TournamentType(val resource: Int) {
-    ELIMINATION(R.string.elimination),
-    DOUBLE_ELIMINATION(R.string.doubleElimination),
-    ROUND_ROBIN(R.string.roundRobin),
-    SWISS(R.string.swiss),
-    SURVIVAL(R.string.survival)
+enum class TournamentType(
+    @StringRes
+    val stringResource: Int,
+    @DrawableRes
+    val drawableResource: Int
+) {
+    ELIMINATION(R.string.elimination, R.drawable.ic_elimination),
+    DOUBLE_ELIMINATION(R.string.doubleElimination, R.drawable.ic_double_elimination),
+    ROUND_ROBIN(R.string.roundRobin, R.drawable.ic_round_robin),
+    SWISS(R.string.swiss, R.drawable.ic_swiss),
+    SURVIVAL(R.string.survival, R.drawable.ic_survival)
 }
 
 enum class SeedType(val resource: Int) {

@@ -138,11 +138,11 @@ class HomeFragment : Fragment(), DIAware {
         //TODO dont pass the date here. Do it in TournamentInformationCreatorService
         viewModel.setData(
             mapOf(
-                Pair(TournamentType.ELIMINATION, getString(R.string.defaultTitle, getString(TournamentType.ELIMINATION.resource), date)),
-                Pair(TournamentType.DOUBLE_ELIMINATION, getString(R.string.defaultTitle, getString(TournamentType.DOUBLE_ELIMINATION.resource), date)),
-                Pair(TournamentType.ROUND_ROBIN, getString(R.string.defaultTitle, getString(TournamentType.ROUND_ROBIN.resource), date)),
-                Pair(TournamentType.SWISS, getString(R.string.defaultTitle, getString(TournamentType.SWISS.resource), date)),
-                Pair(TournamentType.SURVIVAL, getString(R.string.defaultTitle, getString(TournamentType.SURVIVAL.resource), date))
+                Pair(TournamentType.ELIMINATION, getString(R.string.defaultTitle, getString(TournamentType.ELIMINATION.stringResource), date)),
+                Pair(TournamentType.DOUBLE_ELIMINATION, getString(R.string.defaultTitle, getString(TournamentType.DOUBLE_ELIMINATION.stringResource), date)),
+                Pair(TournamentType.ROUND_ROBIN, getString(R.string.defaultTitle, getString(TournamentType.ROUND_ROBIN.stringResource), date)),
+                Pair(TournamentType.SWISS, getString(R.string.defaultTitle, getString(TournamentType.SWISS.stringResource), date)),
+                Pair(TournamentType.SURVIVAL, getString(R.string.defaultTitle, getString(TournamentType.SURVIVAL.stringResource), date))
             ),
             binding.tournamentTypeEditor.eliminationRb.id,
             binding.tournamentTypeEditor.doubleEliminationRb.id,

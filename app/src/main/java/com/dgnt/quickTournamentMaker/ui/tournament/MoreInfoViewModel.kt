@@ -8,6 +8,7 @@ import com.dgnt.quickTournamentMaker.model.tournament.SeedType
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentType
 import com.dgnt.quickTournamentMaker.ui.main.common.TournamentGeneralEditorViewModel
+import org.joda.time.LocalDateTime
 import org.joda.time.format.DateTimeFormat
 
 
@@ -49,24 +50,25 @@ class MoreInfoViewModel : Observable, ViewModel(), TournamentGeneralEditorViewMo
     }
 
     fun setData(
-        tournamentInformation: TournamentInformation,
-        getTypeInfoString: (TournamentType) -> String,
-        getSeedTypeInfoString: (SeedType) -> String,
-        getCreatedDateInfoString: (String) -> String,
-        getLastModifiedDateInfoString: (String) -> String,
+        title:String,
+        description:String,
+        typeInfo: String,
+        seedTypeInfo: String,
+        getCreatedDateInfoString: Pair<(String) -> String, LocalDateTime>,
+        getLastModifiedDateInfoString: Pair<(String) -> String, LocalDateTime?>,
         roundInfo: String,
         matchUpInfo: String,
         matchUpSubInfo: String,
         participantInfo: String
     ) {
-        title.value = tournamentInformation.title
-        description.value = tournamentInformation.description
-        typeInfo.value = getTypeInfoString(tournamentInformation.tournamentType)
-        seedTypeInfo.value = getSeedTypeInfoString(tournamentInformation.seedType)
+        this.title.value = title
+        this.description.value = description
+        this.typeInfo.value = typeInfo
+        this.seedTypeInfo.value = seedTypeInfo
 
-        DateTimeFormat.mediumDateTime().apply {
-            createdDateInfo.value = getCreatedDateInfoString(print(tournamentInformation.creationDate))
-            lastModifiedDateInfo.value = getLastModifiedDateInfoString(tournamentInformation.lastModifiedDate?.let {
+        DateTimeFormat.mediumDateTime().run {
+            createdDateInfo.value = getCreatedDateInfoString.first(print(getCreatedDateInfoString.second))
+            lastModifiedDateInfo.value = getLastModifiedDateInfoString.first(getLastModifiedDateInfoString.second?.let {
                 print(it)
             } ?: "-")
         }

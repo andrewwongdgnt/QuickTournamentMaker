@@ -22,6 +22,7 @@
     <dimen name="matchUpIndicator_width">20dp</dimen>
 
     <dimen name="standard_gap">5dp</dimen>
+    <dimen name="spacer_gap">8dp</dimen>
     <dimen name="more_info_gap">10dp</dimen>
     <dimen name="tournament_info_gap">10dp</dimen>
     <dimen name="more_info_left_padding">15dp</dimen>

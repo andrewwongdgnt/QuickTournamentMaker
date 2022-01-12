@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/list_item_horizontal_margin"
@@ -12,30 +13,133 @@
 
 
         <ImageView
-
+                android:id="@+id/tournament_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingEnd="@dimen/tournament_info_gap"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:src="@drawable/ic_elimination" />
 
-        <LinearLayout
-                android:layout_width="match_parent"
+        <TextView
+                android:id="@+id/title_tv"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/tournament_info_gap"
-                android:orientation="vertical">
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tournament_iv"
+                app:layout_constraintTop_toTopOf="@id/tournament_iv"
+                tools:text="Elimination Tournament Elimination Tournament Elimination Tournament" />
 
-            <TextView
-                    android:id="@+id/title_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    tools:text="Elimination Tournament" />
+        <TextView
+                android:id="@+id/description_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tournament_iv"
+                app:layout_constraintTop_toBottomOf="@id/title_tv"
+                tools:text="My Cool description My Cool description My Cool description My Cool description My Cool description" />
 
-            <TextView
-                    android:id="@+id/description_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    tools:text="My Cool description" />
-        </LinearLayout>
-    </LinearLayout>
+        <View
+                android:id="@+id/baseInfo_divider"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/spacer_gap"
+                android:background="#a3a3a3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tournament_iv"
+                app:layout_constraintTop_toBottomOf="@id/description_tv" />
+
+
+        <TextView
+                android:id="@+id/typeInfo_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacer_gap"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tournament_iv"
+                app:layout_constraintTop_toBottomOf="@id/baseInfo_divider"
+                tools:text="Type: Elimination" />
+
+        <TextView
+                android:id="@+id/seedTypeInfo_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tournament_iv"
+                app:layout_constraintTop_toBottomOf="@id/typeInfo_tv"
+                tools:text="Seed type: Random" />
+
+        <TextView
+                android:id="@+id/createdDateInfo_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tournament_iv"
+                app:layout_constraintTop_toBottomOf="@id/seedTypeInfo_tv"
+                tools:text="Created On: March 27, 1989" />
+
+        <TextView
+                android:id="@+id/lastModifiedDateInfo_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tournament_iv"
+                app:layout_constraintTop_toBottomOf="@id/createdDateInfo_tv"
+                tools:text="Last Modified: March 27, 1989" />
+
+        <View
+                android:id="@+id/extendedInfo_divider"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/spacer_gap"
+                android:background="#a3a3a3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tournament_iv"
+                app:layout_constraintTop_toBottomOf="@id/lastModifiedDateInfo_tv" />
+
+        <TextView
+                android:id="@+id/roundInfo_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/standard_gap"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tournament_iv"
+                app:layout_constraintTop_toBottomOf="@id/extendedInfo_divider"
+                tools:text="8 rounds" />
+
+        <TextView
+                android:id="@+id/matchUpInfo_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tournament_iv"
+                app:layout_constraintTop_toBottomOf="@id/roundInfo_tv"
+                tools:text="16 matches" />
+
+        <TextView
+                android:id="@+id/matchUpSubInfo_tv"
+                android:layout_width="0dp"
+                android:paddingStart="@dimen/more_info_left_padding"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tournament_iv"
+                app:layout_constraintTop_toBottomOf="@id/matchUpInfo_tv"
+                tools:text="5 with byes" />
+
+        <TextView
+                android:id="@+id/participantInfo_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tournament_iv"
+                app:layout_constraintTop_toBottomOf="@id/matchUpSubInfo_tv"
+                tools:text="32 players" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

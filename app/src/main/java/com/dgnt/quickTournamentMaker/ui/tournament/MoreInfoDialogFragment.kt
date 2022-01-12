@@ -54,19 +54,22 @@ class MoreInfoDialogFragment : DialogFragment(), DIAware {
             binding.vm = viewModel
             binding.lifecycleOwner = this
 
-            viewModel.setData(
-                extendedTournamentInformation.basicTournamentInformation,
-                { type -> getString(R.string.typeInfo, getString(type.resource)) },
-                { seedType -> getString(R.string.seedTypeInfo, getString(seedType.resource)) },
-                { date -> getString(R.string.createdDateInfo, date) },
-                { date -> getString(R.string.lastModifiedDateInfo, date) },
-                getString(R.string.roundInfo, extendedTournamentInformation.numRounds),
-                getString(R.string.matchUpInfo, extendedTournamentInformation.numMatchUps),
-                extendedTournamentInformation.numMatchUpsWithByes.let {
-                    if (it == 0) "" else getString(R.string.matchUpSubInfo, it)
-                },
-                getString(R.string.playerInfo, extendedTournamentInformation.numParticipants),
-            )
+            extendedTournamentInformation.run {
+                viewModel.setData(
+                    basicTournamentInformation.title,
+                    basicTournamentInformation.description,
+                    getString(R.string.typeInfo, getString(basicTournamentInformation.tournamentType.stringResource)),
+                    getString(R.string.seedTypeInfo, getString(basicTournamentInformation.seedType.resource)),
+                    Pair({ date -> getString(R.string.createdDateInfo, date) }, basicTournamentInformation.creationDate),
+                    Pair({ date -> getString(R.string.lastModifiedDateInfo, date) }, basicTournamentInformation.lastModifiedDate),
+                    getString(R.string.roundInfo, extendedTournamentInformation.numRounds),
+                    getString(R.string.matchUpInfo, extendedTournamentInformation.numMatchUps),
+                    extendedTournamentInformation.numMatchUpsWithByes.let {
+                        if (it == 0) "" else getString(R.string.matchUpSubInfo, it)
+                    },
+                    getString(R.string.playerInfo, extendedTournamentInformation.numParticipants),
+                )
+            }
 
             AlertDialog.Builder(activity)
                 .setTitle(R.string.moreInfo)

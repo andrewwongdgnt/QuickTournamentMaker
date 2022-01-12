@@ -41,6 +41,8 @@ class LoadTournamentFragment : Fragment(), DIAware {
 
             viewModel.tournamentLiveData.observe(viewLifecycleOwner, {
                 Log.d("DGNTTAG", "tournament info: $it")
+
+                binding.tournamentRv.adapter = ExtendedTournamentInformationRecyclerViewAdapter(this, it)
             })
         }
 

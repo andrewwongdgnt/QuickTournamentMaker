@@ -110,7 +110,7 @@
                             android:textAppearance="?android:attr/textAppearanceMedium" />
                     <TextView
                             android:layout_marginVertical="@dimen/standard_gap"
-                            android:id="@+id/playerInfo_tv"
+                            android:id="@+id/participantInfo_tv"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             tools:text="32 players"
