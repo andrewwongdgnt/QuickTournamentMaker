@@ -1,7 +1,6 @@
 package com.dgnt.quickTournamentMaker.ui.tournament
 
 import android.app.AlertDialog
-import android.content.Context
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
@@ -9,11 +8,15 @@ import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.MoreInfoFragmentBinding
 import com.dgnt.quickTournamentMaker.model.tournament.ExtendedTournamentInformation
+import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
+import com.dgnt.quickTournamentMaker.ui.main.common.OnEditListener
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 import org.kodein.di.instance
 
-class MoreInfoDialogFragment : DialogFragment(), DIAware {
+class MoreInfoDialogFragment(
+    private val listener: OnEditListener<TournamentInformation>
+) : DialogFragment(), DIAware {
     override val di by di()
     private val viewModelFactory: MoreInfoViewModelFactory by instance()
 
@@ -23,24 +26,16 @@ class MoreInfoDialogFragment : DialogFragment(), DIAware {
         private const val KEY_EXTENDED_TOURNAMENT_INFO = "KEY_EXTENDED_TOURNAMENT_INFO"
 
         fun newInstance(
-            extendedTournamentInformation: ExtendedTournamentInformation
+            extendedTournamentInformation: ExtendedTournamentInformation,
+            listener: OnEditListener<TournamentInformation>
         ) =
-            MoreInfoDialogFragment().apply {
+            MoreInfoDialogFragment(listener).apply {
                 arguments = Bundle().apply {
                     putParcelable(KEY_EXTENDED_TOURNAMENT_INFO, extendedTournamentInformation)
                 }
             }
     }
 
-    private lateinit var listenerEditor: IMoreInfoDialogFragmentListener
-
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        listenerEditor = (context as? IMoreInfoDialogFragmentListener) ?: (targetFragment as? IMoreInfoDialogFragmentListener) ?: (throw IllegalArgumentException("IMoreInfoDialogFragmentListener not found"))
-
-    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?) =
 
@@ -75,7 +70,7 @@ class MoreInfoDialogFragment : DialogFragment(), DIAware {
                 .setTitle(R.string.moreInfo)
                 .setView(binding.root)
                 .setPositiveButton(android.R.string.ok) { _, _ ->
-                    listenerEditor.onEditTournament(viewModel.title.value ?: "", viewModel.description.value ?: "")
+                    listener.onEdit(TournamentInformation(viewModel.title.value ?: "", viewModel.description.value ?: ""))
                 }
                 .setNegativeButton(android.R.string.cancel, null)
                 .create()

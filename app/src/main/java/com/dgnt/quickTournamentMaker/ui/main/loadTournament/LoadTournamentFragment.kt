@@ -8,11 +8,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.databinding.LoadTournamentFragmentBinding
+import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
+import com.dgnt.quickTournamentMaker.ui.main.common.OnEditListener
+import com.dgnt.quickTournamentMaker.ui.tournament.MoreInfoDialogFragment
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 import org.kodein.di.instance
 
-class LoadTournamentFragment : Fragment(), DIAware {
+class LoadTournamentFragment : Fragment(), DIAware, OnEditListener<TournamentInformation> {
     override val di by di()
     private val viewModelFactory: LoadTournamentViewModelFactory by instance()
 
@@ -42,10 +45,20 @@ class LoadTournamentFragment : Fragment(), DIAware {
             viewModel.tournamentLiveData.observe(viewLifecycleOwner, {
                 Log.d("DGNTTAG", "tournament info: $it")
 
-                binding.tournamentRv.adapter = ExtendedTournamentInformationRecyclerViewAdapter(this, it)
+                binding.tournamentRv.adapter = ExtendedTournamentInformationRecyclerViewAdapter(
+                    it,
+                    { extendedTournamentInformation ->
+                        MoreInfoDialogFragment.newInstance(extendedTournamentInformation, fragment).show(activity?.supportFragmentManager!!, MoreInfoDialogFragment.TAG)
+                    },
+                    { extendedTournamentInformation -> print("") }
+                )
             })
         }
 
+    }
+
+    override fun onEdit(value: TournamentInformation) {
+        print("Not yet implemented")
     }
 
 }

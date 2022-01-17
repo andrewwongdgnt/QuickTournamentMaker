@@ -14,4 +14,8 @@ data class TournamentInformation(
     val rankConfig: IRankConfig,
     var creationDate: LocalDateTime,
     var lastModifiedDate: LocalDateTime? = null
-) : Parcelable
+) : Parcelable {
+
+    //When just the title and description is needed
+    constructor(title: String, description: String) : this(title, description, TournamentType.ELIMINATION, SeedType.RANDOM, RankPriorityConfig.DEFAULT, LocalDateTime.now())
+}

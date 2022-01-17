@@ -19,6 +19,7 @@ import com.dgnt.quickTournamentMaker.model.tournament.ExtendedTournamentInformat
 import com.dgnt.quickTournamentMaker.model.tournament.Participant
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
 import com.dgnt.quickTournamentMaker.service.interfaces.ICreateDefaultTitleService
+import com.dgnt.quickTournamentMaker.ui.main.common.OnEditListener
 import com.dgnt.quickTournamentMaker.util.AlertUtil
 import com.dgnt.quickTournamentMaker.util.TournamentUtil.Companion.jsonMapper
 import com.dgnt.quickTournamentMaker.util.writeText
@@ -32,7 +33,7 @@ import org.kodein.di.instance
 import java.io.*
 
 
-class TournamentActivity : AppCompatActivity(), IMoreInfoDialogFragmentListener, IParticipantEditorDialogFragmentListener, IMatchUpEditorDialogFragmentListener, IRoundEditorDialogFragmentListener, DIAware {
+class TournamentActivity : AppCompatActivity(), OnEditListener<TournamentInformation>, IParticipantEditorDialogFragmentListener, IMatchUpEditorDialogFragmentListener, IRoundEditorDialogFragmentListener, DIAware {
     override val di by di()
     private val viewModelFactory: TournamentViewModelFactory by instance()
     private val createDefaultTitleService: ICreateDefaultTitleService by instance()
@@ -168,7 +169,8 @@ class TournamentActivity : AppCompatActivity(), IMoreInfoDialogFragmentListener,
                         matchUps.size,
                         getMatchUpsWithSingleByes().size,
                         sortedNormalParticipants.size
-                    )
+                    ),
+                    this@TournamentActivity
                 ).show(supportFragmentManager, MoreInfoDialogFragment.TAG)
                 R.id.action_rebuildTournament -> RebuildTournamentDialogFragment.newInstance(tournamentInformation, orderedParticipants).show(supportFragmentManager, RebuildTournamentDialogFragment.TAG)
                 R.id.action_editAParticipant -> {
@@ -205,10 +207,10 @@ class TournamentActivity : AppCompatActivity(), IMoreInfoDialogFragmentListener,
         }
     }
 
-    override fun onEditTournament(title: String, description: String) {
+    override fun onEdit(value: TournamentInformation) {
         viewModel.run {
-            this.title.value = title
-            this.description.value = description
+            this.title.value = value.title
+            this.description.value = value.description
             hasChanges.value = true
         }
     }

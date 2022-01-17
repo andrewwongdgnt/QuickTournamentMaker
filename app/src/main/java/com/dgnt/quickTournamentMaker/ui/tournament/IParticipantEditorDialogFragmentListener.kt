@@ -1,7 +1,5 @@
 package com.dgnt.quickTournamentMaker.ui.tournament
 
-import com.dgnt.quickTournamentMaker.model.tournament.Participant
-
 interface IParticipantEditorDialogFragmentListener {
 
     /**
@@ -12,5 +10,5 @@ interface IParticipantEditorDialogFragmentListener {
      * @param note the new note
      * @param color the new color
      */
-    fun onEditParticipant(key:String, name:String,note:String,color:Int)
+    fun onEditParticipant(key: String, name: String, note: String, color: Int)
 }
