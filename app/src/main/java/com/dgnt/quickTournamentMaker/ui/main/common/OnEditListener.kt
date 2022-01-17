@@ -5,7 +5,7 @@ interface OnEditListener<T> {
     /**
      * handles the edit
      *
-     * @param value the new edited value
+     * @param editedValue the new edited value
      */
-    fun onEdit(value:T)
+    fun onEdit(editedValue: T)
 }

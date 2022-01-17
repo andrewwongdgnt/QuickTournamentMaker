@@ -26,6 +26,9 @@ data class MatchUp(
     var note: String = "",
     var color: Int = TournamentUtil.DEFAULT_DISPLAY_COLOR
 ) : IKeyable<Triple<Int, Int, Int>>, Parcelable {
+    constructor(roundGroupIndex: Int, roundIndex: Int, matchUpIndex: Int, title: String, useTitle: Boolean, note:String, color:Int):
+            this(roundGroupIndex, roundIndex, matchUpIndex, Participant.NULL_PARTICIPANT, Participant.NULL_PARTICIPANT, title, useTitle, MatchUpStatus.DEFAULT, note, color)
+
     @IgnoredOnParcel
     override val key = Triple(roundGroupIndex, roundIndex, matchUpIndex)
     fun containsBye(singular: Boolean = false) =

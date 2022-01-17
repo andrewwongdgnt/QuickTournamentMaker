@@ -17,6 +17,9 @@ data class Round(
     var note: String = "",
     var color: Int = TournamentUtil.DEFAULT_DISPLAY_COLOR
 ) : IKeyable<Pair<Int, Int>>, Parcelable {
+    constructor(roundGroupIndex: Int, roundIndex: Int, title: String, note: String, color: Int) :
+            this(roundGroupIndex, roundIndex, listOf(), "", title, note, color)
+
     fun isUpdatedTitle() = title != originalTitle
     fun getDisplayTitle() = (if (note.isEmpty()) "" else "*") + title
     fun toEntity(id: LocalDateTime) = RoundEntity(id, roundGroupIndex, roundIndex, originalTitle, title, note, color)

@@ -8,11 +8,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.NestedScrollViewBinding
+import com.dgnt.quickTournamentMaker.model.tournament.Round
 import com.dgnt.quickTournamentMaker.model.tournament.RoundGroup
+import com.dgnt.quickTournamentMaker.ui.main.common.OnEditListener
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 
-class RoundListDialogFragment : DialogFragment(), DIAware {
+class RoundListDialogFragment(
+    private val listener: OnEditListener<Round>
+) : DialogFragment(), DIAware {
     override val di by di()
 
     companion object {
@@ -21,8 +25,11 @@ class RoundListDialogFragment : DialogFragment(), DIAware {
 
         private const val KEY_ROUND_GROUPS = "KEY_ROUND_GROUPS"
 
-        fun newInstance(roundGroups: List<RoundGroup>) =
-            RoundListDialogFragment().apply {
+        fun newInstance(
+            roundGroups: List<RoundGroup>,
+            listener: OnEditListener<Round>
+        ) =
+            RoundListDialogFragment(listener).apply {
                 arguments = Bundle().apply {
                     putParcelableArrayList(KEY_ROUND_GROUPS, ArrayList<RoundGroup>(roundGroups))
                 }
@@ -47,7 +54,7 @@ class RoundListDialogFragment : DialogFragment(), DIAware {
                     else
                         setAdapter(RoundArrayAdapter(activity, roundGroups[0].rounds)) { _, i ->
                             roundGroups[0].rounds[i].let { round ->
-                                RoundEditorDialogFragment.newInstance(round, round.roundGroupIndex, round.roundIndex).show(activity.supportFragmentManager, RoundEditorDialogFragment.TAG)
+                                RoundEditorDialogFragment.newInstance(round, round.roundGroupIndex, round.roundIndex, listener).show(activity.supportFragmentManager, RoundEditorDialogFragment.TAG)
                             }
                         }
                 }
@@ -59,7 +66,7 @@ class RoundListDialogFragment : DialogFragment(), DIAware {
                 addView(RecyclerView(activity).apply {
                     adapter = RoundGroupExpandableRecyclerViewAdapter(roundGroups.map { RoundGroupExpandableGroup(it, it.rounds) })
                     { round ->
-                        RoundEditorDialogFragment.newInstance(round, round.roundGroupIndex, round.roundIndex).show(activity.supportFragmentManager, RoundEditorDialogFragment.TAG)
+                        RoundEditorDialogFragment.newInstance(round, round.roundGroupIndex, round.roundIndex, listener).show(activity.supportFragmentManager, RoundEditorDialogFragment.TAG)
                         alert.dismiss()
 
                     }.apply {

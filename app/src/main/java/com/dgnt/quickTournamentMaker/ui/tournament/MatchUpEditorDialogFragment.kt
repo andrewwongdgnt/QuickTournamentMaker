@@ -1,11 +1,7 @@
 package com.dgnt.quickTournamentMaker.ui.tournament
 
 import android.app.AlertDialog
-import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
@@ -13,12 +9,15 @@ import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.MatchUpEditorFragmentBinding
 import com.dgnt.quickTournamentMaker.model.tournament.ColorInfo
 import com.dgnt.quickTournamentMaker.model.tournament.MatchUp
+import com.dgnt.quickTournamentMaker.ui.main.common.OnEditListener
 import com.dgnt.quickTournamentMaker.util.TournamentUtil
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 import org.kodein.di.instance
 
-class MatchUpEditorDialogFragment : DialogFragment(), DIAware {
+class MatchUpEditorDialogFragment(
+    private val listener: OnEditListener<MatchUp>
+) : DialogFragment(), DIAware {
     override val di by di()
     private val viewModelFactory: MatchUpEditorViewModelFactory by instance()
 
@@ -30,8 +29,14 @@ class MatchUpEditorDialogFragment : DialogFragment(), DIAware {
         private const val KEY_ROUND_INDEX = "KEY_ROUND_INDEX"
         private const val KEY_MATCH_UP_INDEX = "KEY_MATCH_UP_INDEX"
 
-        fun newInstance(matchUp: MatchUp, roundGroupIndex: Int, roundIndex: Int, matchUpIndex: Int) =
-            MatchUpEditorDialogFragment().apply {
+        fun newInstance(
+            matchUp: MatchUp,
+            roundGroupIndex: Int,
+            roundIndex: Int,
+            matchUpIndex: Int,
+            listener: OnEditListener<MatchUp>
+        ) =
+            MatchUpEditorDialogFragment(listener).apply {
                 arguments = Bundle().apply {
                     putParcelable(KEY_MATCH_UP, matchUp)
                     putInt(KEY_ROUND_GROUP_INDEX, roundGroupIndex)
@@ -41,16 +46,6 @@ class MatchUpEditorDialogFragment : DialogFragment(), DIAware {
 
             }
     }
-
-    private lateinit var listenerEditor: IMatchUpEditorDialogFragmentListener
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        listenerEditor = (context as? IMatchUpEditorDialogFragmentListener) ?: (targetFragment as? IMatchUpEditorDialogFragmentListener) ?: (throw IllegalArgumentException("IMatchUpEditorDialogFragmentListener not found"))
-
-    }
-
 
     override fun onCreateDialog(savedInstanceState: Bundle?) =
         activity?.let { activity ->
@@ -73,7 +68,7 @@ class MatchUpEditorDialogFragment : DialogFragment(), DIAware {
                 .setTitle(getString(R.string.editingThisMatchUp))
                 .setView(binding.root)
                 .setPositiveButton(android.R.string.ok) { _, _ ->
-                    listenerEditor.onEditMatchUp(Triple(roundGroupIndex, roundIndex, matchUpIndex), viewModel.useCustomTitle.value ?: false,viewModel.title.value ?: "",viewModel.note.value ?: "", viewModel.color.value?.hex ?: TournamentUtil.DEFAULT_DISPLAY_COLOR)
+                    listener.onEdit(MatchUp(roundGroupIndex, roundIndex, matchUpIndex, viewModel.title.value ?: "", viewModel.useCustomTitle.value ?: false, viewModel.note.value ?: "", viewModel.color.value?.hex ?: TournamentUtil.DEFAULT_DISPLAY_COLOR))
                 }
                 .setNegativeButton(android.R.string.cancel, null)
                 .create()

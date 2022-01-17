@@ -15,7 +15,7 @@ import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 import org.kodein.di.instance
 
-class LoadTournamentFragment : Fragment(), DIAware, OnEditListener<TournamentInformation> {
+class LoadTournamentFragment : Fragment(), DIAware {
     override val di by di()
     private val viewModelFactory: LoadTournamentViewModelFactory by instance()
 
@@ -48,7 +48,7 @@ class LoadTournamentFragment : Fragment(), DIAware, OnEditListener<TournamentInf
                 binding.tournamentRv.adapter = ExtendedTournamentInformationRecyclerViewAdapter(
                     it,
                     { extendedTournamentInformation ->
-                        MoreInfoDialogFragment.newInstance(extendedTournamentInformation, fragment).show(activity?.supportFragmentManager!!, MoreInfoDialogFragment.TAG)
+                        MoreInfoDialogFragment.newInstance(extendedTournamentInformation, tournamentEditListener).show(activity?.supportFragmentManager!!, MoreInfoDialogFragment.TAG)
                     },
                     { extendedTournamentInformation -> print("") }
                 )
@@ -57,8 +57,11 @@ class LoadTournamentFragment : Fragment(), DIAware, OnEditListener<TournamentInf
 
     }
 
-    override fun onEdit(value: TournamentInformation) {
-        print("Not yet implemented")
+    private val tournamentEditListener = object : OnEditListener<TournamentInformation> {
+        override fun onEdit(editedValue: TournamentInformation) =
+            viewModel.run {
+                print("Not yet implemented")
+            }
     }
 
 }

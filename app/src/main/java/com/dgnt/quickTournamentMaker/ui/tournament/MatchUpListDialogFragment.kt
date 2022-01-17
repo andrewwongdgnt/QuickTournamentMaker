@@ -10,13 +10,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.NestedScrollViewBinding
+import com.dgnt.quickTournamentMaker.model.tournament.MatchUp
 import com.dgnt.quickTournamentMaker.model.tournament.RoundGroup
 import com.dgnt.quickTournamentMaker.service.interfaces.ICreateDefaultTitleService
+import com.dgnt.quickTournamentMaker.ui.main.common.OnEditListener
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 import org.kodein.di.instance
 
-class MatchUpListDialogFragment : DialogFragment(), DIAware {
+class MatchUpListDialogFragment(
+    private val listener: OnEditListener<MatchUp>
+) : DialogFragment(), DIAware {
     override val di by di()
     private val createDefaultTitleService: ICreateDefaultTitleService by instance()
 
@@ -26,8 +30,11 @@ class MatchUpListDialogFragment : DialogFragment(), DIAware {
 
         private const val KEY_ROUND_GROUPS = "KEY_ROUND_GROUPS"
 
-        fun newInstance(roundGroups: List<RoundGroup>) =
-            MatchUpListDialogFragment().apply {
+        fun newInstance(
+            roundGroups: List<RoundGroup>,
+            listener: OnEditListener<MatchUp>
+        ) =
+            MatchUpListDialogFragment(listener).apply {
                 arguments = Bundle().apply {
                     putParcelableArrayList(KEY_ROUND_GROUPS, ArrayList<RoundGroup>(roundGroups))
                 }
@@ -61,7 +68,7 @@ class MatchUpListDialogFragment : DialogFragment(), DIAware {
                     addView(RecyclerView(activity).apply {
                         adapter = RoundExpandableRecyclerViewAdapter(it.rounds.map { RoundExpandableGroup(it, it.matchUps) }, createDefaultTitleService)
                         { matchUp ->
-                            MatchUpEditorDialogFragment.newInstance(matchUp, matchUp.roundGroupIndex, matchUp.roundIndex, matchUp.matchUpIndex).show(activity.supportFragmentManager, MatchUpEditorDialogFragment.TAG)
+                            MatchUpEditorDialogFragment.newInstance(matchUp, matchUp.roundGroupIndex, matchUp.roundIndex, matchUp.matchUpIndex, listener).show(activity.supportFragmentManager, MatchUpEditorDialogFragment.TAG)
                             alert.dismiss()
 
                         }.apply {

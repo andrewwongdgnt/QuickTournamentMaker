@@ -1,7 +1,6 @@
 package com.dgnt.quickTournamentMaker.ui.tournament
 
 import android.app.AlertDialog
-import android.content.Context
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
@@ -10,12 +9,15 @@ import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.ParticipantEditorFragmentBinding
 import com.dgnt.quickTournamentMaker.model.tournament.ColorInfo
 import com.dgnt.quickTournamentMaker.model.tournament.Participant
+import com.dgnt.quickTournamentMaker.ui.main.common.OnEditListener
 import com.dgnt.quickTournamentMaker.util.TournamentUtil
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 import org.kodein.di.instance
 
-class ParticipantEditorDialogFragment : DialogFragment(), DIAware {
+class ParticipantEditorDialogFragment(
+    private val listener: OnEditListener<Participant>
+) : DialogFragment(), DIAware {
     override val di by di()
     private val viewModelFactory: ParticipantEditorViewModelFactory by instance()
 
@@ -25,8 +27,11 @@ class ParticipantEditorDialogFragment : DialogFragment(), DIAware {
 
         private const val KEY_PARTICIPANT = "KEY_PARTICIPANT"
 
-        fun newInstance(participant: Participant) =
-            ParticipantEditorDialogFragment().apply {
+        fun newInstance(
+            participant: Participant,
+            listener: OnEditListener<Participant>
+        ) =
+            ParticipantEditorDialogFragment(listener).apply {
                 arguments = Bundle().apply {
                     putParcelable(KEY_PARTICIPANT, participant)
                 }
@@ -35,19 +40,9 @@ class ParticipantEditorDialogFragment : DialogFragment(), DIAware {
 
     }
 
-    private lateinit var listenerEditor: IParticipantEditorDialogFragmentListener
-
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        listenerEditor = (context as? IParticipantEditorDialogFragmentListener) ?: (targetFragment as? IParticipantEditorDialogFragmentListener) ?: (throw IllegalArgumentException("IParticipantEditorDialogFragmentListener not found"))
-
-    }
-
     override fun onCreateDialog(savedInstanceState: Bundle?) =
         activity?.let { activity ->
-           val binding = ParticipantEditorFragmentBinding.inflate(activity.layoutInflater)
+            val binding = ParticipantEditorFragmentBinding.inflate(activity.layoutInflater)
 
             val viewModel = ViewModelProvider(this, viewModelFactory).get(ParticipantEditorViewModel::class.java)
             binding.vm = viewModel
@@ -63,7 +58,7 @@ class ParticipantEditorDialogFragment : DialogFragment(), DIAware {
                 .setTitle(getString(R.string.editing, participant.name))
                 .setView(binding.root)
                 .setPositiveButton(android.R.string.ok) { _, _ ->
-                    listenerEditor.onEditParticipant(participant.key, viewModel.name.value ?: "", viewModel.note.value ?: "", viewModel.color.value?.hex ?: TournamentUtil.DEFAULT_DISPLAY_COLOR)
+                    listener.onEdit(Participant(participant.person, participant.participantType, viewModel.name.value ?: "", viewModel.note.value ?: "", viewModel.color.value?.hex ?: TournamentUtil.DEFAULT_DISPLAY_COLOR))
                 }
                 .setNegativeButton(android.R.string.cancel, null)
                 .create()

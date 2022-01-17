@@ -25,6 +25,9 @@ data class Participant(
     var record: Record = Record(),
     var color: Int = TournamentUtil.DEFAULT_DISPLAY_COLOR
 ) : IKeyable<String>, Comparable<Participant>, Parcelable {
+    constructor(person: Person, participantType: ParticipantType, name: String, note: String, color: Int) :
+            this(person, participantType, name, note, Record(), color)
+
     companion object {
         val NULL_PARTICIPANT =
             Participant(Person("", "", ""), ParticipantType.NULL)

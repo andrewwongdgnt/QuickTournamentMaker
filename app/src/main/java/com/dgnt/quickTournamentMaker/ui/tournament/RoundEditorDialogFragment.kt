@@ -1,7 +1,6 @@
 package com.dgnt.quickTournamentMaker.ui.tournament
 
 import android.app.AlertDialog
-import android.content.Context
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
@@ -10,12 +9,15 @@ import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.RoundEditorFragmentBinding
 import com.dgnt.quickTournamentMaker.model.tournament.ColorInfo
 import com.dgnt.quickTournamentMaker.model.tournament.Round
+import com.dgnt.quickTournamentMaker.ui.main.common.OnEditListener
 import com.dgnt.quickTournamentMaker.util.TournamentUtil
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 import org.kodein.di.instance
 
-class RoundEditorDialogFragment : DialogFragment(), DIAware {
+class RoundEditorDialogFragment(
+    private val listener: OnEditListener<Round>
+) : DialogFragment(), DIAware {
     override val di by di()
     private val viewModelFactory: RoundEditorViewModelFactory by instance()
 
@@ -26,8 +28,13 @@ class RoundEditorDialogFragment : DialogFragment(), DIAware {
         private const val KEY_ROUND_GROUP_INDEX = "KEY_ROUND_GROUP_INDEX"
         private const val KEY_ROUND_INDEX = "KEY_ROUND_INDEX"
 
-        fun newInstance(round: Round, roundGroupIndex: Int, roundIndex: Int) =
-            RoundEditorDialogFragment().apply {
+        fun newInstance(
+            round: Round,
+            roundGroupIndex: Int,
+            roundIndex: Int,
+            listener: OnEditListener<Round>
+        ) =
+            RoundEditorDialogFragment(listener).apply {
                 arguments = Bundle().apply {
                     putParcelable(KEY_ROUND, round)
                     putInt(KEY_ROUND_GROUP_INDEX, roundGroupIndex)
@@ -36,16 +43,6 @@ class RoundEditorDialogFragment : DialogFragment(), DIAware {
 
             }
     }
-
-    private lateinit var listenerEditor: IRoundEditorDialogFragmentListener
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        listenerEditor = (context as? IRoundEditorDialogFragmentListener) ?: (targetFragment as? IRoundEditorDialogFragmentListener) ?: (throw IllegalArgumentException("IRoundEditorDialogFragmentListener not found"))
-
-    }
-
 
     override fun onCreateDialog(savedInstanceState: Bundle?) =
         activity?.let { activity ->
@@ -67,7 +64,7 @@ class RoundEditorDialogFragment : DialogFragment(), DIAware {
                 .setTitle(getString(R.string.editingThisRound))
                 .setView(binding.root)
                 .setPositiveButton(android.R.string.ok) { _, _ ->
-                    listenerEditor.onEditRound(Pair(roundGroupIndex, roundIndex), viewModel.title.value ?: "", viewModel.note.value ?: "", viewModel.color.value?.hex ?: TournamentUtil.DEFAULT_DISPLAY_COLOR)
+                    listener.onEdit(Round(roundGroupIndex, roundIndex, viewModel.title.value ?: "", viewModel.note.value ?: "", viewModel.color.value?.hex ?: TournamentUtil.DEFAULT_DISPLAY_COLOR))
                 }
                 .setNegativeButton(android.R.string.cancel, null)
                 .create()

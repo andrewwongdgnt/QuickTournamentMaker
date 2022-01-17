@@ -15,9 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.TournamentActivityBinding
-import com.dgnt.quickTournamentMaker.model.tournament.ExtendedTournamentInformation
-import com.dgnt.quickTournamentMaker.model.tournament.Participant
-import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
+import com.dgnt.quickTournamentMaker.model.tournament.*
 import com.dgnt.quickTournamentMaker.service.interfaces.ICreateDefaultTitleService
 import com.dgnt.quickTournamentMaker.ui.main.common.OnEditListener
 import com.dgnt.quickTournamentMaker.util.AlertUtil
@@ -33,7 +31,7 @@ import org.kodein.di.instance
 import java.io.*
 
 
-class TournamentActivity : AppCompatActivity(), OnEditListener<TournamentInformation>, IParticipantEditorDialogFragmentListener, IMatchUpEditorDialogFragmentListener, IRoundEditorDialogFragmentListener, DIAware {
+class TournamentActivity : AppCompatActivity(), DIAware {
     override val di by di()
     private val viewModelFactory: TournamentViewModelFactory by instance()
     private val createDefaultTitleService: ICreateDefaultTitleService by instance()
@@ -170,21 +168,21 @@ class TournamentActivity : AppCompatActivity(), OnEditListener<TournamentInforma
                         getMatchUpsWithSingleByes().size,
                         sortedNormalParticipants.size
                     ),
-                    this@TournamentActivity
+                    tournamentEditListener
                 ).show(supportFragmentManager, MoreInfoDialogFragment.TAG)
                 R.id.action_rebuildTournament -> RebuildTournamentDialogFragment.newInstance(tournamentInformation, orderedParticipants).show(supportFragmentManager, RebuildTournamentDialogFragment.TAG)
                 R.id.action_editAParticipant -> {
                     val sortedParticipants = sortedNormalParticipants
                     AlertDialog.Builder(this@TournamentActivity)
                         .setAdapter(ParticipantArrayAdapter(this@TournamentActivity, sortedParticipants)) { _, i ->
-                            ParticipantEditorDialogFragment.newInstance(sortedParticipants[i]).show(supportFragmentManager, ParticipantEditorDialogFragment.TAG)
+                            ParticipantEditorDialogFragment.newInstance(sortedParticipants[i], participantEditListener).show(supportFragmentManager, ParticipantEditorDialogFragment.TAG)
                         }
                         .setTitle(R.string.participantSelectionHint)
                         .create()
                         .show()
                 }
-                R.id.action_editAMatchUp -> MatchUpListDialogFragment.newInstance(roundGroups).show(supportFragmentManager, MatchUpListDialogFragment.TAG)
-                R.id.action_editARound -> RoundListDialogFragment.newInstance(roundGroups).show(supportFragmentManager, RoundListDialogFragment.TAG)
+                R.id.action_editAMatchUp -> MatchUpListDialogFragment.newInstance(roundGroups, matchUpEditListener).show(supportFragmentManager, MatchUpListDialogFragment.TAG)
+                R.id.action_editARound -> RoundListDialogFragment.newInstance(roundGroups, roundEditListener).show(supportFragmentManager, RoundListDialogFragment.TAG)
                 R.id.action_exportTournamentAsFile -> {
                     val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
                         .setType("application/qtm")
@@ -207,53 +205,58 @@ class TournamentActivity : AppCompatActivity(), OnEditListener<TournamentInforma
         }
     }
 
-    override fun onEdit(value: TournamentInformation) {
-        viewModel.run {
-            this.title.value = value.title
-            this.description.value = value.description
-            hasChanges.value = true
-        }
+    private val tournamentEditListener = object : OnEditListener<TournamentInformation> {
+        override fun onEdit(editedValue: TournamentInformation) =
+            viewModel.run {
+                this.title.value = editedValue.title
+                this.description.value = editedValue.description
+                hasChanges.value = true
+            }
     }
 
-    override fun onEditParticipant(key: String, name: String, note: String, color: Int) {
-        viewModel.run {
-            tournament.value?.run {
-                sortedNormalParticipants.find { it.key == key }?.let {
-                    it.name = name
-                    it.note = note
-                    it.color = color
+    private val participantEditListener = object : OnEditListener<Participant> {
+        override fun onEdit(editedValue: Participant) =
+            viewModel.run {
+                tournament.value?.run {
+                    sortedNormalParticipants.find { it.key == editedValue.key }?.let {
+                        it.name = editedValue.name
+                        it.note = editedValue.note
+                        it.color = editedValue.color
+                    }
+                    tournament.value = this
                 }
-                viewModel.tournament.value = this
+                hasChanges.value = true
             }
-            hasChanges.value = true
-        }
     }
 
-    override fun onEditMatchUp(key: Triple<Int, Int, Int>, useTitle: Boolean, title: String, note: String, color: Int) {
-        viewModel.run {
-            tournament.value?.run {
-                roundGroups[key.first].rounds[key.second].matchUps[key.third].let {
-                    it.useTitle = useTitle
-                    it.title = title
-                    it.note = note
-                    it.color = color
+    private val matchUpEditListener = object : OnEditListener<MatchUp> {
+        override fun onEdit(editedValue: MatchUp) =
+            viewModel.run {
+                tournament.value?.run {
+                    roundGroups[editedValue.key.first].rounds[editedValue.key.second].matchUps[editedValue.key.third].let {
+                        it.useTitle = editedValue.useTitle
+                        it.title = editedValue.title
+                        it.note = editedValue.note
+                        it.color = editedValue.color
+                    }
                 }
+                hasChanges.value = true
             }
-            hasChanges.value = true
-        }
+
     }
 
-    override fun onEditRound(key: Pair<Int, Int>, title: String, note: String, color: Int) {
-        viewModel.run {
-            tournament.value?.run {
-                roundGroups[key.first].rounds[key.second].let {
-                    it.title = title
-                    it.note = note
-                    it.color = color
+    private val roundEditListener = object : OnEditListener<Round> {
+        override fun onEdit(editedValue: Round) =
+            viewModel.run {
+                tournament.value?.run {
+                    roundGroups[editedValue.key.first].rounds[editedValue.key.second].let {
+                        it.title = editedValue.title
+                        it.note = editedValue.note
+                        it.color = editedValue.color
+                    }
                 }
+                hasChanges.value = true
             }
-            hasChanges.value = true
-        }
     }
 
 }
