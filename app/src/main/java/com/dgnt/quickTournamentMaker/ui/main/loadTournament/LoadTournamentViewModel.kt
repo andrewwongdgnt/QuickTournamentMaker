@@ -4,14 +4,16 @@ import androidx.databinding.Observable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.dgnt.quickTournamentMaker.data.tournament.*
 import com.dgnt.quickTournamentMaker.model.tournament.ExtendedTournamentInformation
 import com.dgnt.quickTournamentMaker.model.tournament.ParticipantType
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
 import com.dgnt.quickTournamentMaker.service.interfaces.IRankingConfigService
+import kotlinx.coroutines.launch
 
 class LoadTournamentViewModel(
-    tournamentRepository: ITournamentRepository,
+    private val tournamentRepository: ITournamentRepository,
     roundRepository: IRoundRepository,
     matchUpRepository: IMatchUpRepository,
     participantRepository: IParticipantRepository,
@@ -104,5 +106,17 @@ class LoadTournamentViewModel(
     override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
     }
 
+    fun updateTournament(tournamentInformation: TournamentInformation) = viewModelScope.launch {
+        tournaments.value?.run {
+            find { it.epoch.isEqual(tournamentInformation.creationDate) }?.let { tournamentEntity ->
+                tournamentRepository.upsert(
+                    tournamentEntity.clone(
+                        name = tournamentInformation.title,
+                        note = tournamentInformation.description,
+                    )
+                )
+            }
+        }
+    }
 
 }

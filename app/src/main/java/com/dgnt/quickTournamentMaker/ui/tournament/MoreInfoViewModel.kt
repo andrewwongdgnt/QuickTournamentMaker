@@ -4,9 +4,6 @@ import androidx.databinding.Bindable
 import androidx.databinding.Observable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.dgnt.quickTournamentMaker.model.tournament.SeedType
-import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
-import com.dgnt.quickTournamentMaker.model.tournament.TournamentType
 import com.dgnt.quickTournamentMaker.ui.main.common.TournamentGeneralEditorViewModel
 import org.joda.time.LocalDateTime
 import org.joda.time.format.DateTimeFormat
@@ -43,6 +40,8 @@ class MoreInfoViewModel : Observable, ViewModel(), TournamentGeneralEditorViewMo
     @Bindable
     val participantInfo = MutableLiveData<String>()
 
+    lateinit var creationDate: LocalDateTime
+
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
     }
 
@@ -50,8 +49,8 @@ class MoreInfoViewModel : Observable, ViewModel(), TournamentGeneralEditorViewMo
     }
 
     fun setData(
-        title:String,
-        description:String,
+        title: String,
+        description: String,
         typeInfo: String,
         seedTypeInfo: String,
         getCreatedDateInfoString: Pair<(String) -> String, LocalDateTime>,
@@ -77,6 +76,8 @@ class MoreInfoViewModel : Observable, ViewModel(), TournamentGeneralEditorViewMo
         this.matchUpInfo.value = matchUpInfo
         this.matchUpSubInfo.value = matchUpSubInfo
         this.participantInfo.value = participantInfo
+
+        creationDate = getCreatedDateInfoString.second
 
     }
 }

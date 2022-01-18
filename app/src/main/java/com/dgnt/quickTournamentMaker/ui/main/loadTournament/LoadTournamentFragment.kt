@@ -58,10 +58,9 @@ class LoadTournamentFragment : Fragment(), DIAware {
     }
 
     private val tournamentEditListener = object : OnEditListener<TournamentInformation> {
-        override fun onEdit(editedValue: TournamentInformation) =
-            viewModel.run {
-                print("Not yet implemented")
-            }
+        override fun onEdit(editedValue: TournamentInformation) {
+            viewModel.updateTournament(editedValue)
+        }
     }
 
 }

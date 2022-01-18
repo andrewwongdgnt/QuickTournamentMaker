@@ -45,7 +45,7 @@ class MoreInfoDialogFragment(
             val extendedTournamentInformation = arguments?.getParcelable<ExtendedTournamentInformation>(KEY_EXTENDED_TOURNAMENT_INFO)!!
             val binding = MoreInfoFragmentBinding.inflate(activity.layoutInflater)
 
-            val viewModel = ViewModelProvider(this, viewModelFactory).get(MoreInfoViewModel::class.java)
+            val viewModel = ViewModelProvider(this, viewModelFactory)[MoreInfoViewModel::class.java]
             binding.vm = viewModel
             binding.lifecycleOwner = this
 
@@ -70,7 +70,7 @@ class MoreInfoDialogFragment(
                 .setTitle(R.string.moreInfo)
                 .setView(binding.root)
                 .setPositiveButton(android.R.string.ok) { _, _ ->
-                    listener.onEdit(TournamentInformation(viewModel.title.value ?: "", viewModel.description.value ?: ""))
+                    listener.onEdit(TournamentInformation(viewModel.title.value ?: "", viewModel.description.value ?: "", viewModel.creationDate))
                 }
                 .setNegativeButton(android.R.string.cancel, null)
                 .create()

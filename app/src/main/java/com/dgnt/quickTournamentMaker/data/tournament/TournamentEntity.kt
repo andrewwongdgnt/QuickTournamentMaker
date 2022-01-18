@@ -7,6 +7,7 @@ import com.dgnt.quickTournamentMaker.model.tournament.TournamentType
 import org.joda.time.LocalDateTime
 
 const val TOURNAMENT_TABLE = "tournamentTable"
+
 @Entity(tableName = TOURNAMENT_TABLE)
 data class TournamentEntity(
     @PrimaryKey val epoch: LocalDateTime,
@@ -16,4 +17,24 @@ data class TournamentEntity(
     val type: TournamentType,
     val rankingConfig: String,
     val seedType: SeedType,
-)
+) {
+    fun clone(
+        epoch: LocalDateTime = this.epoch,
+        lastModifiedTime: LocalDateTime? = this.lastModifiedTime,
+        name: String = this.name,
+        note: String = this.note,
+        type: TournamentType = this.type,
+        rankingConfig: String = this.rankingConfig,
+        seedType: SeedType = this.seedType,
+    ) =
+        TournamentEntity(
+            epoch,
+            lastModifiedTime,
+            name,
+            note,
+            type,
+            rankingConfig,
+            seedType
+        )
+}
+
