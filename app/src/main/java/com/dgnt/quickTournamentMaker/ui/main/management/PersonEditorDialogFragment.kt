@@ -53,7 +53,7 @@ class PersonEditorDialogFragment : DialogFragment(), DIAware {
 
             binding = PersonEditorFragmentBinding.inflate(activity.layoutInflater)
 
-            viewModel = ViewModelProvider(this, viewModelFactory).get(PersonEditorViewModel::class.java)
+            viewModel = ViewModelProvider(this, viewModelFactory)[PersonEditorViewModel::class.java]
             binding.vm = viewModel
             binding.lifecycleOwner = this
 

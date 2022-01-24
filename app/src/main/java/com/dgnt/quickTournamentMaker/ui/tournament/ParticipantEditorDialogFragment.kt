@@ -44,7 +44,7 @@ class ParticipantEditorDialogFragment(
         activity?.let { activity ->
             val binding = ParticipantEditorFragmentBinding.inflate(activity.layoutInflater)
 
-            val viewModel = ViewModelProvider(this, viewModelFactory).get(ParticipantEditorViewModel::class.java)
+            val viewModel = ViewModelProvider(this, viewModelFactory)[ParticipantEditorViewModel::class.java]
             binding.vm = viewModel
             binding.lifecycleOwner = this
 

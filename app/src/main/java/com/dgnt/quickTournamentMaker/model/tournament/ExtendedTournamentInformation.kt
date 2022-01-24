@@ -7,9 +7,9 @@ import org.joda.time.LocalDateTime
 
 @Parcelize
 data class ExtendedTournamentInformation(
-    var basicTournamentInformation: TournamentInformation,
-    var numRounds: Int,
-    var numMatchUps: Int,
-    var numMatchUpsWithByes: Int,
-    var numParticipants: Int,
+    val basicTournamentInformation: TournamentInformation,
+    val numRounds: Int,
+    val numMatchUps: Int,
+    val numMatchUpsWithByes: Int,
+    val numParticipants: Int,
 ) : Parcelable

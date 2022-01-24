@@ -47,7 +47,7 @@ class RoundEditorDialogFragment(
     override fun onCreateDialog(savedInstanceState: Bundle?) =
         activity?.let { activity ->
             val binding = RoundEditorFragmentBinding.inflate(activity.layoutInflater)
-            val viewModel = ViewModelProvider(this, viewModelFactory).get(RoundEditorViewModel::class.java)
+            val viewModel = ViewModelProvider(this, viewModelFactory)[RoundEditorViewModel::class.java]
             binding.vm = viewModel
             binding.lifecycleOwner = this
 

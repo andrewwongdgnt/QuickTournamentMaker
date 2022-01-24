@@ -45,11 +45,17 @@ class TournamentActivity : AppCompatActivity(), DIAware {
 
         private const val TOURNAMENT_ACTIVITY_INFO = "com.dgnt.quickTournamentMaker.TOURNAMENT_ACTIVITY_INFO"
         private const val TOURNAMENT_ACTIVITY_PARTICIPANTS = "com.dgnt.quickTournamentMaker.TOURNAMENT_ACTIVITY_PARTICIPANTS"
+        private const val TOURNAMENT_ACTIVITY_SUPER_INFO = "com.dgnt.quickTournamentMaker.TOURNAMENT_ACTIVITY_SUPER_INFO"
 
         fun createIntent(context: Context, tournamentInformation: TournamentInformation, orderedParticipants: List<Participant>): Intent =
             Intent(context, TournamentActivity::class.java).apply {
                 putExtra(TOURNAMENT_ACTIVITY_INFO, tournamentInformation)
                 putParcelableArrayListExtra(TOURNAMENT_ACTIVITY_PARTICIPANTS, ArrayList(orderedParticipants))
+            }
+
+        fun createIntent(context: Context, superExtendedTournamentInformation: SuperExtendedTournamentInformation): Intent =
+            Intent(context, TournamentActivity::class.java).apply {
+                putExtra(TOURNAMENT_ACTIVITY_SUPER_INFO, superExtendedTournamentInformation)
             }
     }
 
@@ -59,15 +65,17 @@ class TournamentActivity : AppCompatActivity(), DIAware {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val tournamentInformation = intent.getParcelableExtra<TournamentInformation>(TOURNAMENT_ACTIVITY_INFO)!!
-        val orderedParticipants = intent.getParcelableArrayListExtra<Participant>(TOURNAMENT_ACTIVITY_PARTICIPANTS)!!
+        val tournamentData = extractTournamentData(intent)
+
+        val tournamentInformation = tournamentData.first
+        val orderedParticipants = tournamentData.second
 
         supportActionBar?.run {
             setDisplayHomeAsUpEnabled(true)
         }
         getString(R.string.main_ad_id)
         val tournamentActivity = this
-        viewModel = ViewModelProvider(tournamentActivity, viewModelFactory).get(TournamentViewModel::class.java).apply {
+        viewModel = ViewModelProvider(tournamentActivity, viewModelFactory)[TournamentViewModel::class.java].apply {
 
             val binding = TournamentActivityBinding.inflate(layoutInflater).also {
                 it.vm = this
@@ -123,6 +131,22 @@ class TournamentActivity : AppCompatActivity(), DIAware {
         }
 
     }
+
+    private fun extractTournamentData(intent: Intent) =
+
+        intent.getParcelableExtra<TournamentInformation>(TOURNAMENT_ACTIVITY_INFO)?.let { tournamentInformation ->
+            intent.getParcelableArrayListExtra<Participant>(TOURNAMENT_ACTIVITY_PARTICIPANTS)?.let { participants ->
+                Pair(tournamentInformation, participants)
+            }
+        } ?: intent.getParcelableExtra<SuperExtendedTournamentInformation>(TOURNAMENT_ACTIVITY_SUPER_INFO)?.let { superExtendedTournamentInformation ->
+            Pair(
+                superExtendedTournamentInformation.extendedTournamentInformation.basicTournamentInformation,
+                superExtendedTournamentInformation.participantEntities
+                    .sortedBy { pe -> pe.seedIndex }
+                    .map { Participant.fromEntity(it) }
+            )
+        } ?: throw IllegalArgumentException("Tournament cannot be instantiated because there is not enough information about it")
+
 
     private suspend fun write(context: Context, source: Uri, text: String) = withContext(Dispatchers.IO)
     {

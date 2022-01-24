@@ -44,7 +44,7 @@ class GroupDeleteDialogFragment : DialogFragment(), DIAware {
 
             binding = GroupDeleteFragmentBinding.inflate(activity.layoutInflater)
 
-            viewModel = ViewModelProvider(this, viewModelFactory).get(GroupDeleteViewModel::class.java)
+            viewModel = ViewModelProvider(this, viewModelFactory)[GroupDeleteViewModel::class.java]
             binding.vm = viewModel
             binding.lifecycleOwner = this
 

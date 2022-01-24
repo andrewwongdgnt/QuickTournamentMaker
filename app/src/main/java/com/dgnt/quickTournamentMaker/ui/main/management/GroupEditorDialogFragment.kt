@@ -46,7 +46,7 @@ class GroupEditorDialogFragment : DialogFragment(), DIAware {
 
             binding = GroupEditorFragmentBinding.inflate(activity.layoutInflater)
 
-            viewModel = ViewModelProvider(this, viewModelFactory).get(GroupEditorViewModel::class.java)
+            viewModel = ViewModelProvider(this, viewModelFactory)[GroupEditorViewModel::class.java]
             binding.vm = viewModel
             binding.lifecycleOwner = this
 

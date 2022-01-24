@@ -1,12 +1,14 @@
 package com.dgnt.quickTournamentMaker.data.tournament
 
+import android.os.Parcelable
 import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.dgnt.quickTournamentMaker.model.tournament.MatchUpStatus
+import kotlinx.parcelize.Parcelize
 import org.joda.time.LocalDateTime
 
 const val MATCH_UP_TABLE = "matchUpTable"
 
+@Parcelize
 @Entity(tableName = MATCH_UP_TABLE, primaryKeys = ["epoch", "roundGroupIndex", "roundIndex", "matchUpIndex"])
 data class MatchUpEntity(
     val epoch: LocalDateTime,
@@ -19,4 +21,4 @@ data class MatchUpEntity(
     val color: Int,
     val status: MatchUpStatus,
     val containsBye: Boolean
-)
+) : Parcelable

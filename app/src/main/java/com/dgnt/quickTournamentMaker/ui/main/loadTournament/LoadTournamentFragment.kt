@@ -11,6 +11,7 @@ import com.dgnt.quickTournamentMaker.databinding.LoadTournamentFragmentBinding
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
 import com.dgnt.quickTournamentMaker.ui.main.common.OnEditListener
 import com.dgnt.quickTournamentMaker.ui.tournament.MoreInfoDialogFragment
+import com.dgnt.quickTournamentMaker.ui.tournament.TournamentActivity
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 import org.kodein.di.instance
@@ -45,12 +46,14 @@ class LoadTournamentFragment : Fragment(), DIAware {
             viewModel.tournamentLiveData.observe(viewLifecycleOwner, {
                 Log.d("DGNTTAG", "tournament info: $it")
 
-                binding.tournamentRv.adapter = ExtendedTournamentInformationRecyclerViewAdapter(
+                binding.tournamentRv.adapter = SuperExtendedTournamentInformationRecyclerViewAdapter(
                     it,
-                    { extendedTournamentInformation ->
-                        MoreInfoDialogFragment.newInstance(extendedTournamentInformation, tournamentEditListener).show(activity?.supportFragmentManager!!, MoreInfoDialogFragment.TAG)
+                    { superExtendedTournamentInformation ->
+                        MoreInfoDialogFragment.newInstance(superExtendedTournamentInformation.extendedTournamentInformation, tournamentEditListener).show(activity?.supportFragmentManager!!, MoreInfoDialogFragment.TAG)
                     },
-                    { extendedTournamentInformation -> print("") }
+                    { superExtendedTournamentInformation ->
+                        startActivity(TournamentActivity.createIntent(this, superExtendedTournamentInformation))
+                    }
                 )
             })
         }

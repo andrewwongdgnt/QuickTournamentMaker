@@ -1,11 +1,13 @@
 package com.dgnt.quickTournamentMaker.data.tournament
 
+import android.os.Parcelable
 import androidx.room.Entity
-import androidx.room.PrimaryKey
+import kotlinx.parcelize.Parcelize
 import org.joda.time.LocalDateTime
 
 const val ROUND_TABLE = "roundTable"
 
+@Parcelize
 @Entity(tableName = ROUND_TABLE, primaryKeys = ["epoch", "roundGroupIndex", "roundIndex"])
 data class RoundEntity(
     val epoch: LocalDateTime,
@@ -15,4 +17,4 @@ data class RoundEntity(
     val name: String,
     val note: String,
     val color: Int
-)
+) : Parcelable

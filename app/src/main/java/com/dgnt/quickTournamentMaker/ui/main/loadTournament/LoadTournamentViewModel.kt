@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.dgnt.quickTournamentMaker.data.tournament.*
 import com.dgnt.quickTournamentMaker.model.tournament.ExtendedTournamentInformation
 import com.dgnt.quickTournamentMaker.model.tournament.ParticipantType
+import com.dgnt.quickTournamentMaker.model.tournament.SuperExtendedTournamentInformation
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
 import com.dgnt.quickTournamentMaker.service.interfaces.IRankingConfigService
 import kotlinx.coroutines.launch
@@ -25,8 +26,8 @@ class LoadTournamentViewModel(
     private val matchUps = matchUpRepository.getAll()
     private val participants = participantRepository.getAll()
 
-    val tournamentLiveData: LiveData<List<ExtendedTournamentInformation>> =
-        object : MediatorLiveData<List<ExtendedTournamentInformation>>() {
+    val tournamentLiveData: LiveData<List<SuperExtendedTournamentInformation>> =
+        object : MediatorLiveData<List<SuperExtendedTournamentInformation>>() {
             private var tournamentEntities: List<TournamentEntity>? = null
             private var roundEntities: List<RoundEntity>? = null
             private var matchUpEntities: List<MatchUpEntity>? = null
@@ -82,20 +83,31 @@ class LoadTournamentViewModel(
                 participantEntities: List<ParticipantEntity>,
             ) =
                 tournamentEntities.map {
-                    ExtendedTournamentInformation(
-                        TournamentInformation(
-                            it.name,
-                            it.note,
-                            it.type,
-                            it.seedType,
-                            rankingConfigService.buildRankingFromString(it.rankingConfig),
-                            it.epoch,
-                            it.lastModifiedTime
+
+                    val filteredRoundEntities = roundEntities.filter { re -> re.epoch == it.epoch }
+                    val filteredMatchUpEntities = matchUpEntities.filter { me -> me.epoch == it.epoch }
+                    val filteredMatchUpEntitiesWithByes = filteredMatchUpEntities.filter { me -> me.containsBye }
+                    val filteredParticipantEntities = participantEntities.filter { pe -> pe.epoch == it.epoch }
+
+                    SuperExtendedTournamentInformation(
+                        ExtendedTournamentInformation(
+                            TournamentInformation(
+                                it.name,
+                                it.note,
+                                it.type,
+                                it.seedType,
+                                rankingConfigService.buildRankingFromString(it.rankingConfig),
+                                it.epoch,
+                                it.lastModifiedTime
+                            ),
+                            filteredRoundEntities.size,
+                            filteredMatchUpEntities.size,
+                            filteredMatchUpEntitiesWithByes.size,
+                            filteredParticipantEntities.count { pe -> pe.type == ParticipantType.NORMAL }
                         ),
-                        roundEntities.count { re -> re.epoch == it.epoch },
-                        matchUpEntities.count { me -> me.epoch == it.epoch },
-                        matchUpEntities.count { me -> me.epoch == it.epoch && me.containsBye },
-                        participantEntities.filter { pe -> pe.type == ParticipantType.NORMAL }.count { pe -> pe.epoch == it.epoch }
+                        filteredRoundEntities,
+                        filteredMatchUpEntities,
+                        filteredParticipantEntities
                     )
                 }
         }

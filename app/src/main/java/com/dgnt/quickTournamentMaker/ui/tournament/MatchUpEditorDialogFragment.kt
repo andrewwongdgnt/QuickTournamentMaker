@@ -50,7 +50,7 @@ class MatchUpEditorDialogFragment(
     override fun onCreateDialog(savedInstanceState: Bundle?) =
         activity?.let { activity ->
             val binding = MatchUpEditorFragmentBinding.inflate(activity.layoutInflater)
-            val viewModel = ViewModelProvider(this, viewModelFactory).get(MatchUpEditorViewModel::class.java)
+            val viewModel = ViewModelProvider(this, viewModelFactory)[MatchUpEditorViewModel::class.java]
             binding.vm = viewModel
             binding.lifecycleOwner = this
 

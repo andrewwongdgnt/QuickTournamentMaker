@@ -47,7 +47,7 @@ class CustomSeedDialogFragment : DialogFragment(), DIAware {
     override fun onCreateDialog(savedInstanceState: Bundle?) =
         activity?.let { activity ->
             val binding = CustomSeedFragmentBinding.inflate(activity.layoutInflater)
-            val viewModel = ViewModelProvider(this, viewModelFactory).get(CustomSeedViewModel::class.java)
+            val viewModel = ViewModelProvider(this, viewModelFactory)[CustomSeedViewModel::class.java]
             binding.vm = viewModel
             binding.lifecycleOwner = this
 

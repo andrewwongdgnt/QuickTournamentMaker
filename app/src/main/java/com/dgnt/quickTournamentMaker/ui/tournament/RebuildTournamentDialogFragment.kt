@@ -44,7 +44,7 @@ class RebuildTournamentDialogFragment : DialogFragment(), DIAware {
 
             val binding = RebuildTournamentFragmentBinding.inflate(activity.layoutInflater)
 
-            val viewModel = ViewModelProvider(this, viewModelFactory).get(RebuildTournamentViewModel::class.java)
+            val viewModel = ViewModelProvider(this, viewModelFactory)[RebuildTournamentViewModel::class.java]
             binding.vm = viewModel
             binding.lifecycleOwner = this
 

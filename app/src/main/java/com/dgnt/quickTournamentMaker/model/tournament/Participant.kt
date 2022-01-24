@@ -1,8 +1,10 @@
 package com.dgnt.quickTournamentMaker.model.tournament
 
 import android.os.Parcelable
+import com.dgnt.quickTournamentMaker.data.management.GroupEntity
 import com.dgnt.quickTournamentMaker.data.tournament.ParticipantEntity
 import com.dgnt.quickTournamentMaker.model.IKeyable
+import com.dgnt.quickTournamentMaker.model.management.Group
 import com.dgnt.quickTournamentMaker.model.management.Person
 import com.dgnt.quickTournamentMaker.util.TournamentUtil
 import kotlinx.parcelize.Parcelize
@@ -22,7 +24,7 @@ data class Participant(
     val participantType: ParticipantType = ParticipantType.NORMAL,
     var name: String = person.name,
     var note: String = person.note,
-    var record: Record = Record(),
+    var record: Record = Record(), //TODO move this from constructor probably. And change to val
     var color: Int = TournamentUtil.DEFAULT_DISPLAY_COLOR
 ) : IKeyable<String>, Comparable<Participant>, Parcelable {
     constructor(person: Person, participantType: ParticipantType, name: String, note: String, color: Int) :
@@ -34,6 +36,9 @@ data class Participant(
 
         val BYE_PARTICIPANT =
             Participant(Person("", "", ""), ParticipantType.BYE)
+
+        fun fromEntity(entity: ParticipantEntity) = Participant(Person("", entity.name, entity.note), entity.type, entity.displayName, entity.note, entity.color)
+
     }
 
     fun isUpdatedTitle() = name != person.name
@@ -47,5 +52,6 @@ data class Participant(
     }
 
     fun toEntity(id: LocalDateTime, seedIndex: Int) = ParticipantEntity(id, person.name, seedIndex, name, note, participantType, color)
+
 }
 
