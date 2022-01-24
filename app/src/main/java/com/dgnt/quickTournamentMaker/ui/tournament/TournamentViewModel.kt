@@ -13,12 +13,14 @@ import com.dgnt.quickTournamentMaker.model.tournament.*
 import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentBuilderService
 import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentDataTransformerService
 import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentInitiatorService
+import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentRestoreService
 import kotlinx.coroutines.launch
 import org.joda.time.LocalDateTime
 
 class TournamentViewModel(
     private val tournamentBuilderService: ITournamentBuilderService,
     private val tournamentInitiatorService: ITournamentInitiatorService,
+    private val tournamentRestoreService: ITournamentRestoreService,
     private val tournamentDataTransformerService: ITournamentDataTransformerService,
     private val tournamentRepository: ITournamentRepository,
     private val roundRepository: IRoundRepository,
@@ -45,7 +47,14 @@ class TournamentViewModel(
     override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
     }
 
-    fun setData(tournamentInformation: TournamentInformation, orderedParticipants: List<Participant>, defaultRoundGroupTitleFunc: (Int) -> String, defaultRoundTitleFunc: (Int) -> String, defaultMatchUpTitleFunc: (Int, Participant, Participant) -> String) {
+    fun setData(
+        tournamentInformation: TournamentInformation,
+        orderedParticipants: List<Participant>,
+        defaultRoundGroupTitleFunc: (Int) -> String,
+        defaultRoundTitleFunc: (Int) -> String,
+        defaultMatchUpTitleFunc: (Int, Participant, Participant) -> String,
+        restoredTournamentInformation: RestoredTournamentInformation?
+    ) {
         title.value = tournamentInformation.title
         description.value = tournamentInformation.description
 
@@ -57,6 +66,9 @@ class TournamentViewModel(
             defaultMatchUpTitleFunc
         ).let {
             tournamentInitiatorService.initiate(it)
+            restoredTournamentInformation?.let { restoredTournamentInformation ->
+                tournamentRestoreService.restore(it, restoredTournamentInformation)
+            }
             this.tournament.value = it
         }
 

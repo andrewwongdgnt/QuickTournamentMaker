@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.dgnt.quickTournamentMaker.data.tournament.*
 import com.dgnt.quickTournamentMaker.model.tournament.ExtendedTournamentInformation
 import com.dgnt.quickTournamentMaker.model.tournament.ParticipantType
-import com.dgnt.quickTournamentMaker.model.tournament.SuperExtendedTournamentInformation
+import com.dgnt.quickTournamentMaker.model.tournament.RestoredTournamentInformation
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
 import com.dgnt.quickTournamentMaker.service.interfaces.IRankingConfigService
 import kotlinx.coroutines.launch
@@ -26,8 +26,8 @@ class LoadTournamentViewModel(
     private val matchUps = matchUpRepository.getAll()
     private val participants = participantRepository.getAll()
 
-    val tournamentLiveData: LiveData<List<SuperExtendedTournamentInformation>> =
-        object : MediatorLiveData<List<SuperExtendedTournamentInformation>>() {
+    val tournamentLiveData: LiveData<List<RestoredTournamentInformation>> =
+        object : MediatorLiveData<List<RestoredTournamentInformation>>() {
             private var tournamentEntities: List<TournamentEntity>? = null
             private var roundEntities: List<RoundEntity>? = null
             private var matchUpEntities: List<MatchUpEntity>? = null
@@ -89,7 +89,7 @@ class LoadTournamentViewModel(
                     val filteredMatchUpEntitiesWithByes = filteredMatchUpEntities.filter { me -> me.containsBye }
                     val filteredParticipantEntities = participantEntities.filter { pe -> pe.epoch == it.epoch }
 
-                    SuperExtendedTournamentInformation(
+                    RestoredTournamentInformation(
                         ExtendedTournamentInformation(
                             TournamentInformation(
                                 it.name,

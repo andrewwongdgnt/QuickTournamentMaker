@@ -68,7 +68,7 @@ class QTMApplication() : Application(), DIAware {
         bind() from provider { GroupEditorViewModelFactory(instance(), instance()) }
         bind() from provider { MovePersonsViewModelFactory(instance()) }
         bind() from provider { PersonEditorViewModelFactory(instance(), instance()) }
-        bind() from provider { TournamentViewModelFactory(instance(), instance(), instance(), instance(), instance(), instance(), instance()) }
+        bind() from provider { TournamentViewModelFactory(instance(), instance(), instance(), instance(), instance(), instance(), instance(), instance()) }
         bind() from provider { MoreInfoViewModelFactory() }
         bind() from provider { RebuildTournamentViewModelFactory(instance(), instance()) }
         bind() from provider { ParticipantEditorViewModelFactory() }

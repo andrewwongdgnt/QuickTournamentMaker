@@ -45,7 +45,7 @@ class TournamentActivity : AppCompatActivity(), DIAware {
 
         private const val TOURNAMENT_ACTIVITY_INFO = "com.dgnt.quickTournamentMaker.TOURNAMENT_ACTIVITY_INFO"
         private const val TOURNAMENT_ACTIVITY_PARTICIPANTS = "com.dgnt.quickTournamentMaker.TOURNAMENT_ACTIVITY_PARTICIPANTS"
-        private const val TOURNAMENT_ACTIVITY_SUPER_INFO = "com.dgnt.quickTournamentMaker.TOURNAMENT_ACTIVITY_SUPER_INFO"
+        private const val TOURNAMENT_ACTIVITY_RESTORED_INFO = "com.dgnt.quickTournamentMaker.TOURNAMENT_ACTIVITY_RESTORED_INFO"
 
         fun createIntent(context: Context, tournamentInformation: TournamentInformation, orderedParticipants: List<Participant>): Intent =
             Intent(context, TournamentActivity::class.java).apply {
@@ -53,9 +53,9 @@ class TournamentActivity : AppCompatActivity(), DIAware {
                 putParcelableArrayListExtra(TOURNAMENT_ACTIVITY_PARTICIPANTS, ArrayList(orderedParticipants))
             }
 
-        fun createIntent(context: Context, superExtendedTournamentInformation: SuperExtendedTournamentInformation): Intent =
+        fun createIntent(context: Context, restoredTournamentInformation: RestoredTournamentInformation): Intent =
             Intent(context, TournamentActivity::class.java).apply {
-                putExtra(TOURNAMENT_ACTIVITY_SUPER_INFO, superExtendedTournamentInformation)
+                putExtra(TOURNAMENT_ACTIVITY_RESTORED_INFO, restoredTournamentInformation)
             }
     }
 
@@ -94,7 +94,8 @@ class TournamentActivity : AppCompatActivity(), DIAware {
                 orderedParticipants,
                 { rgIndex: Int -> createDefaultTitleService.forRoundGroup(resources, tournamentInformation.tournamentType, rgIndex) },
                 { rIndex: Int -> createDefaultTitleService.forRound(resources, rIndex) },
-                { mIndex: Int, participant1: Participant, participant2: Participant -> createDefaultTitleService.forMatchUp(resources, mIndex, participant1, participant2) }
+                { mIndex: Int, participant1: Participant, participant2: Participant -> createDefaultTitleService.forMatchUp(resources, mIndex, participant1, participant2) },
+                getTournamentSuperInfo(intent)
             )
 
             title.observe(tournamentActivity, {
@@ -132,21 +133,22 @@ class TournamentActivity : AppCompatActivity(), DIAware {
 
     }
 
+    private fun getTournamentSuperInfo(intent: Intent) = intent.getParcelableExtra<RestoredTournamentInformation>(TOURNAMENT_ACTIVITY_RESTORED_INFO)
+
     private fun extractTournamentData(intent: Intent) =
 
         intent.getParcelableExtra<TournamentInformation>(TOURNAMENT_ACTIVITY_INFO)?.let { tournamentInformation ->
             intent.getParcelableArrayListExtra<Participant>(TOURNAMENT_ACTIVITY_PARTICIPANTS)?.let { participants ->
                 Pair(tournamentInformation, participants)
             }
-        } ?: intent.getParcelableExtra<SuperExtendedTournamentInformation>(TOURNAMENT_ACTIVITY_SUPER_INFO)?.let { superExtendedTournamentInformation ->
+        } ?: getTournamentSuperInfo(intent)?.let { restoredTournamentInformation ->
             Pair(
-                superExtendedTournamentInformation.extendedTournamentInformation.basicTournamentInformation,
-                superExtendedTournamentInformation.participantEntities
+                restoredTournamentInformation.extendedTournamentInformation.basicTournamentInformation,
+                restoredTournamentInformation.participantEntities
                     .sortedBy { pe -> pe.seedIndex }
                     .map { Participant.fromEntity(it) }
             )
         } ?: throw IllegalArgumentException("Tournament cannot be instantiated because there is not enough information about it")
-
 
     private suspend fun write(context: Context, source: Uri, text: String) = withContext(Dispatchers.IO)
     {

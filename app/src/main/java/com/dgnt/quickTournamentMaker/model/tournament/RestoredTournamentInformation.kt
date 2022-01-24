@@ -7,7 +7,7 @@ import com.dgnt.quickTournamentMaker.data.tournament.RoundEntity
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class SuperExtendedTournamentInformation(
+data class RestoredTournamentInformation(
     val extendedTournamentInformation: ExtendedTournamentInformation,
     val roundEntities: List<RoundEntity>,
     val matchUpEntities: List<MatchUpEntity>,

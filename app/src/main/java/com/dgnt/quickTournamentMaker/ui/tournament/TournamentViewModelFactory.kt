@@ -9,10 +9,12 @@ import com.dgnt.quickTournamentMaker.data.tournament.ITournamentRepository
 import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentBuilderService
 import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentDataTransformerService
 import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentInitiatorService
+import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentRestoreService
 
 class TournamentViewModelFactory(
     private val tournamentBuilderService: ITournamentBuilderService,
     private val tournamentInitiatorService: ITournamentInitiatorService,
+    private val tournamentRestoreService: ITournamentRestoreService,
     private val tournamentDataTransformerService: ITournamentDataTransformerService,
     private val tournamentRepository: ITournamentRepository,
     private val roundRepository: IRoundRepository,
@@ -25,6 +27,7 @@ class TournamentViewModelFactory(
             return TournamentViewModel(
                 tournamentBuilderService,
                 tournamentInitiatorService,
+                tournamentRestoreService,
                 tournamentDataTransformerService,
                 tournamentRepository,
                 roundRepository,

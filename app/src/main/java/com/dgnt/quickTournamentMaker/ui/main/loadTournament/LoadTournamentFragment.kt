@@ -46,13 +46,13 @@ class LoadTournamentFragment : Fragment(), DIAware {
             viewModel.tournamentLiveData.observe(viewLifecycleOwner, {
                 Log.d("DGNTTAG", "tournament info: $it")
 
-                binding.tournamentRv.adapter = SuperExtendedTournamentInformationRecyclerViewAdapter(
+                binding.tournamentRv.adapter = RestoredTournamentInformationRecyclerViewAdapter(
                     it,
-                    { superExtendedTournamentInformation ->
-                        MoreInfoDialogFragment.newInstance(superExtendedTournamentInformation.extendedTournamentInformation, tournamentEditListener).show(activity?.supportFragmentManager!!, MoreInfoDialogFragment.TAG)
+                    { restoredTournamentInformation ->
+                        MoreInfoDialogFragment.newInstance(restoredTournamentInformation.extendedTournamentInformation, tournamentEditListener).show(activity?.supportFragmentManager!!, MoreInfoDialogFragment.TAG)
                     },
-                    { superExtendedTournamentInformation ->
-                        startActivity(TournamentActivity.createIntent(this, superExtendedTournamentInformation))
+                    { restoredTournamentInformation ->
+                        startActivity(TournamentActivity.createIntent(this, restoredTournamentInformation))
                     }
                 )
             })

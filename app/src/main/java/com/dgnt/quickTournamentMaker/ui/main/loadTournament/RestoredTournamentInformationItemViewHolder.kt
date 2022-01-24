@@ -2,19 +2,18 @@ package com.dgnt.quickTournamentMaker.ui.main.loadTournament
 
 import androidx.recyclerview.widget.RecyclerView
 import com.dgnt.quickTournamentMaker.databinding.TournamentListItemBinding
-import com.dgnt.quickTournamentMaker.model.tournament.ExtendedTournamentInformation
-import com.dgnt.quickTournamentMaker.model.tournament.SuperExtendedTournamentInformation
+import com.dgnt.quickTournamentMaker.model.tournament.RestoredTournamentInformation
 
 
-class SuperExtendedTournamentInformationItemViewHolder(
+class RestoredTournamentInformationItemViewHolder(
     private val binding: TournamentListItemBinding,
-    private val moreInfoListener: (SuperExtendedTournamentInformation) -> Unit,
-    private val loadListener: (SuperExtendedTournamentInformation) -> Unit
+    private val moreInfoListener: (RestoredTournamentInformation) -> Unit,
+    private val loadListener: (RestoredTournamentInformation) -> Unit
 ) : RecyclerView.ViewHolder(
     binding.root
 ) {
 
-    fun bind(value: SuperExtendedTournamentInformation) =
+    fun bind(value: RestoredTournamentInformation) =
         binding.run {
             value.extendedTournamentInformation.basicTournamentInformation.let {
                 titleTv.text = it.title
