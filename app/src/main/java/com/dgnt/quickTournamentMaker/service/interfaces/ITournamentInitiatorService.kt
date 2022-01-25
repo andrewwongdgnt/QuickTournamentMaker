@@ -1,6 +1,5 @@
 package com.dgnt.quickTournamentMaker.service.interfaces
 
-import com.dgnt.quickTournamentMaker.model.tournament.RoundGroup
 import com.dgnt.quickTournamentMaker.model.tournament.Tournament
 
 interface ITournamentInitiatorService {

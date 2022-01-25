@@ -82,7 +82,7 @@ class TournamentDataTransformerServiceTest {
             0, 1,
             listOf(
                 MatchUp(0, 1, 0, Participant.NULL_PARTICIPANT, Participant.BYE_PARTICIPANT, ""),
-                MatchUp(0, 1, 0, Participant.BYE_PARTICIPANT, Participant.NULL_PARTICIPANT, "")
+                MatchUp(0, 1, 1, Participant.BYE_PARTICIPANT, Participant.NULL_PARTICIPANT, "")
             ),
             ""
         )
