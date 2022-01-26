@@ -156,6 +156,7 @@ class TournamentRestoreServiceTest {
 
         Assert.assertEquals(2, tournament.roundGroups.size)
 
+        // Asserting round values
         Assert.assertEquals(2, tournament.roundGroups[0].rounds.size)
         tournament.roundGroups[0].rounds[0].let {
             Assert.assertEquals("first Round", it.originalTitle)
@@ -184,6 +185,149 @@ class TournamentRestoreServiceTest {
             Assert.assertEquals(0, it.color)
         }
 
+        // Asserting matchUp values
+        Assert.assertEquals(4, tournament.roundGroups[0].rounds[0].matchUps.size)
+        tournament.roundGroups[0].rounds[0].matchUps[0].let {
+            Assert.assertFalse(it.useTitle)
+            Assert.assertEquals("match up 1 name", it.title)
+            Assert.assertEquals("match up 1 note", it.note)
+            Assert.assertEquals(232, it.color)
+            Assert.assertEquals(MatchUpStatus.P1_WINNER, it.status)
+        }
+        tournament.roundGroups[0].rounds[0].matchUps[1].let {
+            Assert.assertTrue(it.useTitle)
+            Assert.assertEquals("match up 2 name", it.title)
+            Assert.assertEquals("match up 2 note", it.note)
+            Assert.assertEquals(55, it.color)
+            Assert.assertEquals(MatchUpStatus.P2_WINNER, it.status)
+        }
+        tournament.roundGroups[0].rounds[0].matchUps[2].let {
+            Assert.assertFalse(it.useTitle)
+            Assert.assertEquals("", it.title)
+            Assert.assertEquals("", it.note)
+            Assert.assertEquals(0, it.color)
+            Assert.assertEquals(MatchUpStatus.TIE, it.status)
+        }
+        tournament.roundGroups[0].rounds[0].matchUps[3].let {
+            Assert.assertFalse(it.useTitle)
+            Assert.assertEquals("", it.title)
+            Assert.assertEquals("", it.note)
+            Assert.assertEquals(0, it.color)
+            Assert.assertEquals(MatchUpStatus.TIE, it.status)
+        }
+
+        Assert.assertEquals(2, tournament.roundGroups[0].rounds[1].matchUps.size)
+        tournament.roundGroups[0].rounds[1].matchUps[0].let {
+            Assert.assertFalse(it.useTitle)
+            Assert.assertEquals("", it.title)
+            Assert.assertEquals("", it.note)
+            Assert.assertEquals(0, it.color)
+            Assert.assertEquals(MatchUpStatus.P2_WINNER, it.status)
+        }
+        tournament.roundGroups[0].rounds[1].matchUps[1].let {
+            Assert.assertFalse(it.useTitle)
+            Assert.assertEquals("", it.title)
+            Assert.assertEquals("", it.note)
+            Assert.assertEquals(0, it.color)
+            Assert.assertEquals(MatchUpStatus.P1_WINNER, it.status)
+        }
+
+        Assert.assertEquals(4, tournament.roundGroups[1].rounds[0].matchUps.size)
+        tournament.roundGroups[1].rounds[0].matchUps[0].let {
+            Assert.assertFalse(it.useTitle)
+            Assert.assertEquals("Xmatch up 1 name", it.title)
+            Assert.assertEquals("Xmatch up 1 note", it.note)
+            Assert.assertEquals(232, it.color)
+            Assert.assertEquals(MatchUpStatus.P1_WINNER, it.status)
+        }
+        tournament.roundGroups[1].rounds[0].matchUps[1].let {
+            Assert.assertTrue(it.useTitle)
+            Assert.assertEquals("Xmatch up 2 name", it.title)
+            Assert.assertEquals("Xmatch up 2 note", it.note)
+            Assert.assertEquals(55, it.color)
+            Assert.assertEquals(MatchUpStatus.P2_WINNER, it.status)
+        }
+        tournament.roundGroups[1].rounds[0].matchUps[2].let {
+            Assert.assertFalse(it.useTitle)
+            Assert.assertEquals("X", it.title)
+            Assert.assertEquals("", it.note)
+            Assert.assertEquals(0, it.color)
+            Assert.assertEquals(MatchUpStatus.TIE, it.status)
+        }
+        tournament.roundGroups[1].rounds[0].matchUps[3].let {
+            Assert.assertFalse(it.useTitle)
+            Assert.assertEquals("X", it.title)
+            Assert.assertEquals("", it.note)
+            Assert.assertEquals(0, it.color)
+            Assert.assertEquals(MatchUpStatus.TIE, it.status)
+        }
+
+        Assert.assertEquals(2, tournament.roundGroups[1].rounds[1].matchUps.size)
+        tournament.roundGroups[1].rounds[1].matchUps[0].let {
+            Assert.assertFalse(it.useTitle)
+            Assert.assertEquals("", it.title)
+            Assert.assertEquals("", it.note)
+            Assert.assertEquals(0, it.color)
+            Assert.assertEquals(MatchUpStatus.P2_WINNER, it.status)
+        }
+        tournament.roundGroups[1].rounds[1].matchUps[1].let {
+            Assert.assertFalse(it.useTitle)
+            Assert.assertEquals("", it.title)
+            Assert.assertEquals("", it.note)
+            Assert.assertEquals(0, it.color)
+            Assert.assertEquals(MatchUpStatus.P1_WINNER, it.status)
+        }
+
+        // Asserting participant values
+        Assert.assertEquals(8, tournament.orderedParticipants.size)
+        tournament.orderedParticipants[0].let {
+            Assert.assertEquals(Data.ANDREW_PERSON.name, it.person.name)
+            Assert.assertEquals("Andrew X", it.name)
+            Assert.assertEquals("Andrew Note", it.note)
+            Assert.assertEquals(ParticipantType.NORMAL, it.participantType)
+            Assert.assertEquals(123, it.color)
+        }
+        tournament.orderedParticipants[1].let {
+            Assert.assertEquals(Data.KYRA_PERSON.name, it.person.name)
+            Assert.assertEquals("Kyra X", it.name)
+            Assert.assertEquals("Kyra Note", it.note)
+            Assert.assertEquals(ParticipantType.NORMAL, it.participantType)
+            Assert.assertEquals(666666, it.color)
+        }
+        tournament.orderedParticipants[2].let {
+            Assert.assertEquals(Data.DGNT_PERSON.name, it.person.name)
+            Assert.assertEquals("", it.name)
+            Assert.assertEquals("", it.note)
+            Assert.assertEquals(ParticipantType.NORMAL, it.participantType)
+            Assert.assertEquals(0, it.color)
+        }
+        tournament.orderedParticipants[3].let {
+            Assert.assertEquals(Data.KELSEY_PERSON.name, it.person.name)
+            Assert.assertEquals("", it.name)
+            Assert.assertEquals("", it.note)
+            Assert.assertEquals(ParticipantType.NORMAL, it.participantType)
+            Assert.assertEquals(0, it.color)
+        }
+        tournament.orderedParticipants[4].let {
+            Assert.assertEquals(Data.FIRE_PERSON.name, it.person.name)
+            Assert.assertEquals("", it.name)
+            Assert.assertEquals("", it.note)
+            Assert.assertEquals(ParticipantType.NORMAL, it.participantType)
+            Assert.assertEquals(0, it.color)
+        }
+        tournament.orderedParticipants[5].let {
+            Assert.assertEquals(ParticipantType.BYE, it.participantType)
+        }
+        tournament.orderedParticipants[6].let {
+            Assert.assertEquals(Data.HERO_PERSON.name, it.person.name)
+            Assert.assertEquals("", it.name)
+            Assert.assertEquals("", it.note)
+            Assert.assertEquals(ParticipantType.NORMAL, it.participantType)
+            Assert.assertEquals(0, it.color)
+        }
+        tournament.orderedParticipants[7].let {
+            Assert.assertEquals(ParticipantType.BYE, it.participantType)
+        }
     }
 
 }
