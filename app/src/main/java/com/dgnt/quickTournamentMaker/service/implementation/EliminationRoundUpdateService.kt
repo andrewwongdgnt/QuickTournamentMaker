@@ -11,9 +11,9 @@ class EliminationRoundUpdateService : IRoundUpdateService {
 
         val roundGroup = roundGroups[roundGroupIndex]
 
-        var currentRoundIndex = roundIndex;
-        var currentMatchUpIndex = matchUpIndex;
-        var continueLoop = true;
+        var currentRoundIndex = roundIndex
+        var currentMatchUpIndex = matchUpIndex
+        var continueLoop = true
         while (continueLoop && currentRoundIndex < roundGroups[roundGroupIndex].rounds.lastIndex) {
 
             val currentRound = roundGroup.rounds[currentRoundIndex]
@@ -27,7 +27,7 @@ class EliminationRoundUpdateService : IRoundUpdateService {
             val futureMatchUp = futureRound.matchUps[futureMatchUpIndex]
 
             val updateFutureMatchUp: (Participant) -> Boolean = {
-                var differentParticipant: Boolean
+                val differentParticipant: Boolean
                 if (currentMatchUpIndex % 2 == 0) {
                     differentParticipant = futureMatchUp.participant1.key != it.key
                     futureMatchUp.participant1 = it

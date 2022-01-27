@@ -22,7 +22,12 @@ data class Round(
 
     fun isUpdatedTitle() = title != originalTitle
     fun getDisplayTitle() = (if (note.isEmpty()) "" else "*") + title
-    fun toEntity(id: LocalDateTime) = RoundEntity(id, roundGroupIndex, roundIndex, originalTitle, title, note, color)
+    fun toEntity(id: LocalDateTime) = RoundEntity(id, roundGroupIndex, roundIndex, title, note, color)
+    fun updateWith(entity: RoundEntity) {
+        title = entity.name
+        note = entity.note
+        color = entity.color
+    }
 
     override val key = Pair(roundGroupIndex, roundIndex)
 

@@ -2,6 +2,7 @@ package com.dgnt.quickTournamentMaker.model.tournament
 
 import android.os.Parcelable
 import com.dgnt.quickTournamentMaker.data.tournament.MatchUpEntity
+import com.dgnt.quickTournamentMaker.data.tournament.RoundEntity
 import com.dgnt.quickTournamentMaker.model.IKeyable
 import com.dgnt.quickTournamentMaker.util.TournamentUtil
 import kotlinx.parcelize.IgnoredOnParcel
@@ -37,4 +38,9 @@ data class MatchUp(
 
     fun getDisplayTitle() = (if (note.isEmpty()) "" else "*") + title
     fun toEntity(id: LocalDateTime) = MatchUpEntity(id, roundGroupIndex, roundIndex, matchUpIndex, useTitle, title, note, color, status, containsBye(true))
+    fun updateWith(entity: MatchUpEntity) {
+        title = entity.name
+        note = entity.note
+        color = entity.color
+    }
 }

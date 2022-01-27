@@ -13,7 +13,6 @@ data class RoundEntity(
     val epoch: LocalDateTime,
     val roundGroupIndex: Int,
     val roundIndex: Int,
-    val originalName: String,
     val name: String,
     val note: String,
     val color: Int

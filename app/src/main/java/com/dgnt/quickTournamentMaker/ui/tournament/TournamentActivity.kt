@@ -95,7 +95,7 @@ class TournamentActivity : AppCompatActivity(), DIAware {
                 { rgIndex: Int -> createDefaultTitleService.forRoundGroup(resources, tournamentInformation.tournamentType, rgIndex) },
                 { rIndex: Int -> createDefaultTitleService.forRound(resources, rIndex) },
                 { mIndex: Int, participant1: Participant, participant2: Participant -> createDefaultTitleService.forMatchUp(resources, mIndex, participant1, participant2) },
-                getTournamentSuperInfo(intent)
+                getRestoredTournamentInfo(intent)?.foundationalTournamentEntities
             )
 
             title.observe(tournamentActivity, {
@@ -133,7 +133,7 @@ class TournamentActivity : AppCompatActivity(), DIAware {
 
     }
 
-    private fun getTournamentSuperInfo(intent: Intent) = intent.getParcelableExtra<RestoredTournamentInformation>(TOURNAMENT_ACTIVITY_RESTORED_INFO)
+    private fun getRestoredTournamentInfo(intent: Intent) = intent.getParcelableExtra<RestoredTournamentInformation>(TOURNAMENT_ACTIVITY_RESTORED_INFO)
 
     private fun extractTournamentData(intent: Intent) =
 
@@ -141,10 +141,10 @@ class TournamentActivity : AppCompatActivity(), DIAware {
             intent.getParcelableArrayListExtra<Participant>(TOURNAMENT_ACTIVITY_PARTICIPANTS)?.let { participants ->
                 Pair(tournamentInformation, participants)
             }
-        } ?: getTournamentSuperInfo(intent)?.let { restoredTournamentInformation ->
+        } ?: getRestoredTournamentInfo(intent)?.let { restoredTournamentInformation ->
             Pair(
                 restoredTournamentInformation.extendedTournamentInformation.basicTournamentInformation,
-                restoredTournamentInformation.participantEntities
+                restoredTournamentInformation.foundationalTournamentEntities.participantEntities
                     .sortedBy { pe -> pe.seedIndex }
                     .map { Participant.fromEntity(it) }
             )

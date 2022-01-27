@@ -53,7 +53,7 @@ class TournamentViewModel(
         defaultRoundGroupTitleFunc: (Int) -> String,
         defaultRoundTitleFunc: (Int) -> String,
         defaultMatchUpTitleFunc: (Int, Participant, Participant) -> String,
-        restoredTournamentInformation: RestoredTournamentInformation?
+        foundationalTournamentEntities: FoundationalTournamentEntities?
     ) {
         title.value = tournamentInformation.title
         description.value = tournamentInformation.description
@@ -66,8 +66,8 @@ class TournamentViewModel(
             defaultMatchUpTitleFunc
         ).let {
             tournamentInitiatorService.initiate(it)
-            restoredTournamentInformation?.let { restoredTournamentInformation ->
-                tournamentRestoreService.restore(it, restoredTournamentInformation)
+            foundationalTournamentEntities?.let { foundationalTournamentEntities ->
+                tournamentRestoreService.restore(it, foundationalTournamentEntities)
             }
             this.tournament.value = it
         }

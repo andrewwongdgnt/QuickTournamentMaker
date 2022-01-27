@@ -53,5 +53,8 @@ data class Participant(
 
     fun toEntity(id: LocalDateTime, seedIndex: Int) = ParticipantEntity(id, person.name, seedIndex, name, note, participantType, color)
 
+    fun updateWith(entity: ParticipantEntity){
+        name = entity.displayName
+    }
 }
 

@@ -27,6 +27,8 @@ class TournamentRestoreServiceTest {
     private val sut = TournamentRestoreService()
 
     private lateinit var tournament: Tournament
+    val creationTime = LocalDateTime(2020, 3, 12, 4, 23, 23)
+    val lastModifiedTime = LocalDateTime(2020, 6, 14, 6, 43, 3)
 
     @Before
     fun setUp() {
@@ -45,7 +47,7 @@ class TournamentRestoreServiceTest {
                 MatchUp(0, 0, 2, fire, Participant.BYE_PARTICIPANT, ""),
                 MatchUp(0, 0, 3, hero, Participant.BYE_PARTICIPANT, "")
             ),
-            ""
+            "round 1 original title"
         )
         val round2 = Round(
             0, 1,
@@ -53,7 +55,7 @@ class TournamentRestoreServiceTest {
                 MatchUp(0, 1, 0, Participant.NULL_PARTICIPANT, Participant.BYE_PARTICIPANT, ""),
                 MatchUp(0, 1, 1, Participant.BYE_PARTICIPANT, Participant.NULL_PARTICIPANT, "")
             ),
-            ""
+            "round 2 original title"
         )
 
         val round1_2 = Round(
@@ -74,7 +76,15 @@ class TournamentRestoreServiceTest {
         )
         val roundGroups = listOf(RoundGroup(0, listOf(round1, round2), ""), RoundGroup(1, listOf(round1_2, round2_2), ""))
         tournament = Tournament(
-            TournamentInformation("title", "description", TournamentType.ELIMINATION, SeedType.CUSTOM, RankPriorityConfig.DEFAULT, LocalDateTime.now()),
+            TournamentInformation(
+                "new Title",
+                "new Description",
+                TournamentType.ROUND_ROBIN,
+                SeedType.RANDOM,
+                RankScoreConfig(9f, 3f, 2.5f),
+                creationTime,
+                lastModifiedTime,
+            ),
             roundGroups,
             mockMatchUpStatusTransformService,
             mockRoundUpdateService,
@@ -87,29 +97,15 @@ class TournamentRestoreServiceTest {
     @Test
     fun testRestore() {
 
-        val creationTime = LocalDateTime(2020, 3, 12, 4, 23, 23)
-        val lastModifiedTime = LocalDateTime(2020, 6, 14, 6, 43, 3)
-        val restoredTournamentInformation = RestoredTournamentInformation(
-            ExtendedTournamentInformation(
-                TournamentInformation(
-                    "new Title",
-                    "new Description",
-                    TournamentType.ROUND_ROBIN,
-                    SeedType.RANDOM,
-                    RankScoreConfig(9f, 3f, 2.5f),
-                    creationTime,
-                    lastModifiedTime,
-                ),
-                0,
-                0,
-                0,
-                0,
-            ),
+
+        val foundationalTournamentEntities = FoundationalTournamentEntities(
+
+
             listOf(
-                RoundEntity(creationTime, 0, 0, "first Round", "first Round edited", "first Round note", 45),
-                RoundEntity(creationTime, 0, 1, "second Round", "second Round edited", "second Round note", 77),
-                RoundEntity(creationTime, 1, 0, "", "", "", 0),
-                RoundEntity(creationTime, 1, 1, "", "", "", 0),
+                RoundEntity(creationTime, 0, 0, "first Round edited", "first Round note", 45),
+                RoundEntity(creationTime, 0, 1, "second Round edited", "second Round note", 77),
+                RoundEntity(creationTime, 1, 0, "", "", 0),
+                RoundEntity(creationTime, 1, 1, "", "", 0),
             ),
             listOf(
                 MatchUpEntity(creationTime, 0, 0, 0, false, "match up 1 name", "match up 1 note", 232, MatchUpStatus.P1_WINNER, false),
@@ -140,8 +136,7 @@ class TournamentRestoreServiceTest {
             ),
         )
 
-        sut.restore(tournament, restoredTournamentInformation)
-
+        sut.restore(tournament, foundationalTournamentEntities)
 
         Assert.assertEquals("new Title", tournament.tournamentInformation.title)
         Assert.assertEquals("new Description", tournament.tournamentInformation.description)
@@ -159,13 +154,13 @@ class TournamentRestoreServiceTest {
         // Asserting round values
         Assert.assertEquals(2, tournament.roundGroups[0].rounds.size)
         tournament.roundGroups[0].rounds[0].let {
-            Assert.assertEquals("first Round", it.originalTitle)
+            Assert.assertEquals("round 1 original title", it.originalTitle)
             Assert.assertEquals("first Round edited", it.title)
             Assert.assertEquals("first Round note", it.note)
             Assert.assertEquals(45, it.color)
         }
         tournament.roundGroups[0].rounds[1].let {
-            Assert.assertEquals("second Round", it.originalTitle)
+            Assert.assertEquals("round 2 original title", it.originalTitle)
             Assert.assertEquals("second Round edited", it.title)
             Assert.assertEquals("second Round note", it.note)
             Assert.assertEquals(77, it.color)

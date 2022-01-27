@@ -6,10 +6,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dgnt.quickTournamentMaker.data.tournament.*
-import com.dgnt.quickTournamentMaker.model.tournament.ExtendedTournamentInformation
-import com.dgnt.quickTournamentMaker.model.tournament.ParticipantType
-import com.dgnt.quickTournamentMaker.model.tournament.RestoredTournamentInformation
-import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
+import com.dgnt.quickTournamentMaker.model.tournament.*
 import com.dgnt.quickTournamentMaker.service.interfaces.IRankingConfigService
 import kotlinx.coroutines.launch
 
@@ -105,9 +102,11 @@ class LoadTournamentViewModel(
                             filteredMatchUpEntitiesWithByes.size,
                             filteredParticipantEntities.count { pe -> pe.type == ParticipantType.NORMAL }
                         ),
-                        filteredRoundEntities,
-                        filteredMatchUpEntities,
-                        filteredParticipantEntities
+                        FoundationalTournamentEntities(
+                            filteredRoundEntities,
+                            filteredMatchUpEntities,
+                            filteredParticipantEntities
+                        )
                     )
                 }
         }
