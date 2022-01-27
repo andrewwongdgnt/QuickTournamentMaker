@@ -105,7 +105,7 @@ class TournamentInitiatorServiceTest {
         setUpTournament(TournamentType.ROUND_ROBIN)
         sut.initiate(tournament)
 
-        Mockito.verify(mockByeStatusResolverService, Mockito.times(1)).resolve(MockitoHelper.anyObject(), MockitoHelper.anyObject())
+        Mockito.verify(mockByeStatusResolverService, Mockito.times(4)).resolve(MockitoHelper.anyObject(), MockitoHelper.anyObject())
 
         Mockito.verify(mockRoundUpdateService, Mockito.times(4)).update(MockitoHelper.anyObject(), Mockito.eq(0), Mockito.eq(0), Mockito.intThat { it in 0..3 }, MockitoHelper.anyObject())
     }

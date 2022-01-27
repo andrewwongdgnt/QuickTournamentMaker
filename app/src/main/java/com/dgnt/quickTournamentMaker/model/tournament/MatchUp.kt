@@ -40,6 +40,8 @@ data class MatchUp(
     fun toEntity(id: LocalDateTime) = MatchUpEntity(id, roundGroupIndex, roundIndex, matchUpIndex, useTitle, title, note, color, status, containsBye(true))
     fun updateWith(entity: MatchUpEntity) {
         title = entity.name
+        useTitle = entity.useTitle
+        status = entity.status
         note = entity.note
         color = entity.color
     }

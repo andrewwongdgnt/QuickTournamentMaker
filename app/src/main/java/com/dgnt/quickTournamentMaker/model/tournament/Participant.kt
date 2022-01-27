@@ -55,6 +55,8 @@ data class Participant(
 
     fun updateWith(entity: ParticipantEntity){
         name = entity.displayName
+        note = entity.note
+        color = entity.color
     }
 }
 

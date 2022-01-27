@@ -14,6 +14,7 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mockito
 import org.powermock.api.mockito.PowerMockito
 import org.powermock.modules.junit4.PowerMockRunner
 
@@ -305,8 +306,8 @@ class TournamentRestoreServiceTest {
         }
         tournament.orderedParticipants[4].let {
             Assert.assertEquals(Data.FIRE_PERSON.name, it.person.name)
-            Assert.assertEquals("", it.name)
-            Assert.assertEquals("", it.note)
+            Assert.assertEquals("-", it.name)
+            Assert.assertEquals("-", it.note)
             Assert.assertEquals(ParticipantType.NORMAL, it.participantType)
             Assert.assertEquals(0, it.color)
         }
@@ -322,6 +323,11 @@ class TournamentRestoreServiceTest {
         }
         tournament.orderedParticipants[7].let {
             Assert.assertEquals(ParticipantType.BYE, it.participantType)
+        }
+
+        tournament.matchUps.forEach {
+            Mockito.verify(mockRoundUpdateService, Mockito.times(1)).update(tournament.roundGroups, it.roundGroupIndex, it.roundIndex, it.matchUpIndex, tournament.tournamentInformation.rankConfig)
+
         }
     }
 

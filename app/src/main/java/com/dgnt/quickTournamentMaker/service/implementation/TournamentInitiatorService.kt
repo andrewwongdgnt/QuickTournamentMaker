@@ -8,7 +8,8 @@ import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentInitiatorServ
 class TournamentInitiatorService(private val byeStatusResolverService: IByeStatusResolverService) : ITournamentInitiatorService {
     override fun initiate(tournament: Tournament) {
         when (tournament.tournamentInformation.tournamentType) {
-            TournamentType.ELIMINATION, TournamentType.ROUND_ROBIN, TournamentType.SWISS -> listOf(Pair(0, 0))
+            TournamentType.ROUND_ROBIN -> tournament.rounds.map { Pair(it.roundGroupIndex, it.roundIndex) }
+            TournamentType.ELIMINATION, TournamentType.SWISS -> listOf(Pair(0, 0))
             TournamentType.DOUBLE_ELIMINATION -> listOf(Pair(0, 0), Pair(1, 0), Pair(1, 1))
             else -> emptyList()
         }.forEach { pair ->
