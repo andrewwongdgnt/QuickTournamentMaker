@@ -153,6 +153,7 @@ class QTMApplication() : Application(), DIAware {
         bind<IByeStatusResolverService>() with singleton { ByeStatusResolverService() }
         bind<ITournamentInitiatorService>() with singleton { TournamentInitiatorService(instance()) }
         bind<ITournamentDataTransformerService>() with singleton { TournamentDataTransformerService(instance()) }
+        bind<ITournamentRestoreService>() with singleton { TournamentRestoreService() }
     }
 
 
