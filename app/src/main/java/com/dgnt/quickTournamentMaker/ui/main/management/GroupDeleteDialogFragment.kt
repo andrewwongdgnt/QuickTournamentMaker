@@ -48,12 +48,12 @@ class GroupDeleteDialogFragment : DialogFragment(), DIAware {
             binding.vm = viewModel
             binding.lifecycleOwner = this
 
-            viewModel.messageEvent.observe(activity, {
+            viewModel.messageEvent.observe(activity) {
                 it.getContentIfNotHandled()?.let { message ->
                     Toast.makeText(context, message, Toast.LENGTH_LONG).show()
                     dismiss()
                 }
-            })
+            }
 
             val selectedGroups = arguments?.getParcelableArrayList<Group>(KEY_SELECTED_GROUPS)!!
             val groups = arguments?.getParcelableArrayList<Group>(KEY_GROUPS)!!

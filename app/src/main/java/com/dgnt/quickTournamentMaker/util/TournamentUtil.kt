@@ -41,7 +41,7 @@ class TournamentUtil {
             viewModel.tournamentType.value = tournamentTypeEditor.eliminationRb.id
             viewModel.seedType.value = tournamentTypeEditor.randomSeedRb.id
             tournamentTypeEditor.sameSeedRb.visibility = if (sameSeedAllowed) View.VISIBLE else View.GONE
-            viewModel.tournamentType.observe(lifeCycleOwner, {
+            viewModel.tournamentType.observe(lifeCycleOwner) {
                 viewModel.showRankConfig.value = when (it) {
                     tournamentTypeEditor.eliminationRb.id, tournamentTypeEditor.doubleEliminationRb.id, tournamentTypeEditor.survivalRb.id -> false
                     else -> true
@@ -54,14 +54,14 @@ class TournamentUtil {
                 viewModel.handleTournamentTypeChange(it)
                 viewModel.handleRankConfigHelpMsgChange(it, context.getString(R.string.rankConfigurationHelpMsg, context.getString(R.string.rankConfigurationForRoundRobinHelpMsg)), context.getString(R.string.rankConfigurationHelpMsg, context.getString(R.string.rankConfigurationForSwissHelpMsg)))
 
-            })
-            viewModel.rankConfig.observe(lifeCycleOwner, {
+            }
+            viewModel.rankConfig.observe(lifeCycleOwner) {
                 viewModel.showPriorityContent.value = it == tournamentTypeEditor.compareRankFromPriorityRb.id
 
                 viewModel.showScoringContent.value = it == tournamentTypeEditor.compareRankFromScoreRb.id
 
                 viewModel.handleRankConfigChange(it == tournamentTypeEditor.compareRankFromPriorityRb.id)
-            })
+            }
 
             val priorityList = mutableListOf<RankPriorityConfigType>()
             val rankPriorityRecyclerViewAdapter = RankPriorityRecyclerViewAdapter(context, priorityList)
@@ -73,16 +73,16 @@ class TournamentUtil {
                 }
             })
 
-            viewModel.priorityConfig.observe(lifeCycleOwner, {
+            viewModel.priorityConfig.observe(lifeCycleOwner) {
                 priorityList.update(it.toList())
                 rankPriorityRecyclerViewAdapter.notifyDataSetChanged()
-            })
+            }
 
             tournamentTypeEditor.priorityRv.adapter = rankPriorityRecyclerViewAdapter
 
-            viewModel.scoreConfigLiveData.observe(lifeCycleOwner, {
+            viewModel.scoreConfigLiveData.observe(lifeCycleOwner) {
                 viewModel.handleScoreConfigChange(it.first, it.second, it.third)
-            })
+            }
 
         }
 
@@ -95,7 +95,7 @@ class TournamentUtil {
         ) {
 
 
-            tournamentEventHolder.tournamentEvent.observe(lifeCycleOwner, {
+            tournamentEventHolder.tournamentEvent.observe(lifeCycleOwner) {
                 it.getContentIfNotHandled()?.let {
 
                     Log.d("DGNTTAG", "start tournament with random seed: $it")
@@ -103,26 +103,26 @@ class TournamentUtil {
                     context.startActivity(TournamentActivity.createIntent(context, it.first, it.second))
                     onNewTournamentCallback.invoke()
                 }
-            })
+            }
 
-            tournamentEventHolder.customSeedTournamentEvent.observe(lifeCycleOwner, {
+            tournamentEventHolder.customSeedTournamentEvent.observe(lifeCycleOwner) {
                 it.getContentIfNotHandled()?.let {
 
                     Log.d("DGNTTAG", "start tournament with custom seed: $it")
 
-                    CustomSeedDialogFragment.newInstance(it.first, it.second).also{ frag ->
+                    CustomSeedDialogFragment.newInstance(it.first, it.second).also { frag ->
                         frag.setOnNewTournamentCallback(onNewTournamentCallback)
                     }.show(fragmentManager, CustomSeedDialogFragment.TAG)
 
                 }
-            })
+            }
 
-            tournamentEventHolder.failedToStartTournamentMessage.observe(lifeCycleOwner, {
+            tournamentEventHolder.failedToStartTournamentMessage.observe(lifeCycleOwner) {
                 it.getContentIfNotHandled()?.let {
                     Toast.makeText(context, R.string.lessThan3Msg, Toast.LENGTH_LONG).show()
 
                 }
-            })
+            }
         }
     }
 }

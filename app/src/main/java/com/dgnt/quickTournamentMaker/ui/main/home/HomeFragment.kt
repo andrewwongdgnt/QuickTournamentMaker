@@ -79,7 +79,7 @@ class HomeFragment : Fragment(), DIAware {
 
             binding.personToParticipateRv.layoutManager = NonScrollingLinearLayoutManager(this)
 
-            viewModel.personAndGroupLiveData.observe(viewLifecycleOwner, { (persons, groupEntities) ->
+            viewModel.personAndGroupLiveData.observe(viewLifecycleOwner) { (persons, groupEntities) ->
 
                 val groups = groupEntities.map { Group.fromEntity(it) }.sorted()
                 personToGroupNameMap = persons.map { it.name to it.groupName }.toMap()
@@ -107,9 +107,9 @@ class HomeFragment : Fragment(), DIAware {
                 }
 
 
-            })
+            }
 
-            viewModel.expandAll.observe(viewLifecycleOwner, {
+            viewModel.expandAll.observe(viewLifecycleOwner) {
 
                 val adapter = binding.personToParticipateRv.adapter as GroupCheckedExpandableRecyclerViewAdapter
                 adapter.groups.forEach { g ->
@@ -118,16 +118,16 @@ class HomeFragment : Fragment(), DIAware {
                     }
                 }
 
-            })
+            }
 
-            viewModel.selectAll.observe(viewLifecycleOwner, {
+            viewModel.selectAll.observe(viewLifecycleOwner) {
 
                 val adapter = binding.personToParticipateRv.adapter as GroupCheckedExpandableRecyclerViewAdapter
                 adapter.groups.forEach { g ->
                     selectGroup(g as GroupCheckedExpandableGroup, it)
                 }
 
-            })
+            }
         }
 
 

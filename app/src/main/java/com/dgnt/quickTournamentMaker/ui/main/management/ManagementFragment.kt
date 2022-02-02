@@ -93,11 +93,11 @@ class ManagementFragment : Fragment(), DIAware {
             binding.vm = viewModel
             binding.lifecycleOwner = viewLifecycleOwner
 
-            viewModel.messageEvent.observe(viewLifecycleOwner, {
+            viewModel.messageEvent.observe(viewLifecycleOwner) {
                 it.getContentIfNotHandled()?.let { message ->
                     Toast.makeText(context, message, Toast.LENGTH_LONG).show()
                 }
-            })
+            }
 
             val setDrawable = { checkedTextView: CheckedTextView, selectable: Boolean ->
                 if (selectable) {
@@ -111,7 +111,7 @@ class ManagementFragment : Fragment(), DIAware {
                 }
             }
 
-            viewModel.personAndGroupLiveData.observe(viewLifecycleOwner, { (persons, groups) ->
+            viewModel.personAndGroupLiveData.observe(viewLifecycleOwner) { (persons, groups) ->
 
                 Log.d("DGNTTAG", "person: $persons")
                 Log.d("DGNTTAG", "group: $groups")
@@ -153,9 +153,9 @@ class ManagementFragment : Fragment(), DIAware {
 
                     Log.e("DGNTTAG", "Something happened (Probably groups didn't resolve yet) so just do nothing and hope the next observed event fixes it")
                 }
-            })
+            }
 
-            viewModel.expandAll.observe(viewLifecycleOwner, {
+            viewModel.expandAll.observe(viewLifecycleOwner) {
 
                 val adapter = binding.personRv.adapter as GroupExpandableRecyclerViewAdapter
                 adapter.groups.forEach { g ->
@@ -164,7 +164,7 @@ class ManagementFragment : Fragment(), DIAware {
                     }
                 }
 
-            })
+            }
         }
 
     }

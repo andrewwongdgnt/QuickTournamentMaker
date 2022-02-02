@@ -50,7 +50,7 @@ class GroupEditorDialogFragment : DialogFragment(), DIAware {
             binding.vm = viewModel
             binding.lifecycleOwner = this
 
-            viewModel.resultEvent.observe(activity, {
+            viewModel.resultEvent.observe(activity) {
                 it.getContentIfNotHandled()?.let { triple ->
                     Toast.makeText(context, triple.second, Toast.LENGTH_LONG).show()
                     if (triple.first) {
@@ -61,7 +61,7 @@ class GroupEditorDialogFragment : DialogFragment(), DIAware {
                         viewModel.note.value = ""
                     }
                 }
-            })
+            }
 
             viewModel.setData(arguments?.getParcelable(KEY_GROUP))
             val editing = arguments?.getBoolean(KEY_EDITING) == true

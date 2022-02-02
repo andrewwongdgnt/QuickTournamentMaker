@@ -58,7 +58,7 @@ class PersonEditorDialogFragment : DialogFragment(), DIAware {
             binding.lifecycleOwner = this
 
 
-            viewModel.resultEvent.observe(activity, {
+            viewModel.resultEvent.observe(activity) {
                 it.getContentIfNotHandled()?.let { triple ->
                     Toast.makeText(context, triple.second, Toast.LENGTH_LONG).show()
                     if (triple.first) {
@@ -69,7 +69,7 @@ class PersonEditorDialogFragment : DialogFragment(), DIAware {
                         viewModel.note.value = ""
                     }
                 }
-            })
+            }
 
 
             viewModel.setData(arguments?.getParcelable(KEY_PERSON), arguments?.getString(KEY_GROUP_NAME), arguments?.getParcelableArrayList(KEY_GROUPS), getString(R.string.defaultGroupName))

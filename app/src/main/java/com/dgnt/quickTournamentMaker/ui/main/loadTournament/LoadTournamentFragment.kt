@@ -43,7 +43,7 @@ class LoadTournamentFragment : Fragment(), DIAware {
 
             binding.lifecycleOwner = viewLifecycleOwner
 
-            viewModel.tournamentLiveData.observe(viewLifecycleOwner, {
+            viewModel.tournamentLiveData.observe(viewLifecycleOwner) {
                 Log.d("DGNTTAG", "tournament info: $it")
 
                 binding.tournamentRv.adapter = RestoredTournamentInformationRecyclerViewAdapter(
@@ -55,7 +55,7 @@ class LoadTournamentFragment : Fragment(), DIAware {
                         startActivity(TournamentActivity.createIntent(this, restoredTournamentInformation))
                     }
                 )
-            })
+            }
         }
 
     }

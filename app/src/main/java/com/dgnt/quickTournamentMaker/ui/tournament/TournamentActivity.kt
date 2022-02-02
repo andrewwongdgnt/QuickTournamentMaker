@@ -98,25 +98,25 @@ class TournamentActivity : AppCompatActivity(), DIAware {
                 getRestoredTournamentInfo(intent)?.foundationalTournamentEntities
             )
 
-            title.observe(tournamentActivity, {
+            title.observe(tournamentActivity) {
                 tournamentActivity.title = it
                 tournamentInformation.title = it
                 hasChanges.value = true
-            })
-            description.observe(tournamentActivity, {
+            }
+            description.observe(tournamentActivity) {
                 tournamentInformation.description = it
                 hasChanges.value = true
-            })
+            }
 
-            tournament.observe(tournamentActivity, {
+            tournament.observe(tournamentActivity) {
                 binding.container.draw(it) { m, p ->
                     updateTournament(m, p)
                     hasChanges.value = true
                 }
-            })
-            hasChanges.observe(tournamentActivity, {
+            }
+            hasChanges.observe(tournamentActivity) {
                 invalidateOptionsMenu()
-            })
+            }
         }
 
         resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
