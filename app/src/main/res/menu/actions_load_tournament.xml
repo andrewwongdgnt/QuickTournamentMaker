@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:compat="http://schemas.android.com/apk/res-auto">
+    <item
+            android:id="@+id/action_search"
+            android:icon="@drawable/ic_search"
+            android:title="@string/searchHint"
+            compat:actionViewClass="android.support.v7.widget.SearchView"
+            compat:showAsAction="collapseActionView|ifRoom" />
+    <item
+            android:id="@+id/action_startTournamentFromFile"
+            android:icon="@drawable/ic_start_tournament_from_file"
+            android:title="@string/startTournamentFromFile"
+            compat:showAsAction="never" />
+    <item
+            android:id="@+id/action_sort"
+            android:icon="@drawable/ic_sort"
+            android:title="@string/sort"
+            compat:showAsAction="never" />
+    <item
+            android:id="@+id/action_filter"
+            android:title="@string/filter"
+            compat:showAsAction="never" />
+    <item
+            android:id="@+id/action_viewAs"
+            android:title="@string/viewMode"
+            compat:showAsAction="never" />
+</menu>

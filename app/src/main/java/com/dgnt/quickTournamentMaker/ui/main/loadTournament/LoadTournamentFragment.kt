@@ -2,11 +2,10 @@ package com.dgnt.quickTournamentMaker.ui.main.loadTournament
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.LoadTournamentFragmentBinding
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
 import com.dgnt.quickTournamentMaker.ui.main.common.OnEditListener
@@ -35,9 +34,32 @@ class LoadTournamentFragment : Fragment(), DIAware {
         return binding.root
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.actions_load_tournament, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_startTournamentFromFile -> {
+            }
+            R.id.action_sort -> {
+            }
+            R.id.action_filter -> {
+            }
+            R.id.action_viewAs -> {
+            }
+
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val fragment = this
         context?.apply {
+
+            setHasOptionsMenu(true)
+
             viewModel = ViewModelProvider(fragment, viewModelFactory)[LoadTournamentViewModel::class.java]
             binding.vm = viewModel
 

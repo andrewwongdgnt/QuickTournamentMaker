@@ -18,6 +18,28 @@ class PreferenceService(private val sharedPreferences: SharedPreferences, privat
 
         private const val PREF_SWISS_RANK_SCORE_KEY = "rankSwissScoreKey"
         private const val PREF_ROUND_ROBIN_RANK_SCORE_KEY = "rankRoundRobinScoreKey"
+
+        private const val PREF_LOAD_TOURNAMENT_SORT_KEY = "historicalTournamentSortKey"
+
+        private const val PREF_LOAD_TOURNAMENT_VIEW_KEY = "historicalTournamentViewKey"
+
+        private const val PREF_FILTER_TOURNAMENT_TYPE_KEY = "filterTournamentTypeKey"
+
+        private const val PREF_FILTER_MIN_PARTICIPANT_KEY = "filterMinimumParticipantKey"
+        private const val PREF_FILTER_MIN_PARTICIPANT_ALLOWED_KEY = "filterMinimumParticipantAllowedKey"
+        private const val PREF_FILTER_MAX_PARTICIPANT_KEY = "filterMaximumParticipantKey"
+        private const val PREF_FILTER_MAX_PARTICIPANT_ALLOWED_KEY = "filterMaximumParticipantAllowedKey"
+
+        private const val PREF_FILTER_EARLIEST_CREATED_EPOCH_KEY = "filterEarliestCreatedEpochKey"
+        private const val PREF_FILTER_EARLIEST_CREATED_EPOCH_ALLOWED_KEY = "filterEarliestCreatedEpochAllowedKey"
+        private const val PREF_FILTER_LATEST_CREATED_EPOCH_KEY = "filterLatestCreatedEpochKey"
+        private const val PREF_FILTER_LATEST_CREATED_EPOCH_ALLOWED_KEY = "filterLatestCreatedEpochAllowedKey"
+
+        private const val PREF_FILTER_EARLIEST_MODIFIED_EPOCH_KEY = "filterEarliestModifiedEpochKey"
+        private const val PREF_FILTER_EARLIEST_MODIFIED_EPOCH_ALLOWED_KEY = "filterEarliestModifiedEpochAllowedKey"
+        private const val PREF_FILTER_LATEST_MODIFIED_EPOCH_KEY = "filterLatestModifiedEpochKey"
+        private const val PREF_FILTER_LATEST_MODIFIED_EPOCH_ALLOWED_KEY = "filterLatestModifiedEpochAllowedKey"
+
     }
 
     override fun isRankingBasedOnPriority(tournamentType: TournamentType): Boolean =
