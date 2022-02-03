@@ -1,5 +1,6 @@
 package com.dgnt.quickTournamentMaker.service.interfaces
 
+import com.dgnt.quickTournamentMaker.model.loadTournament.Sort
 import com.dgnt.quickTournamentMaker.model.tournament.RankPriorityConfig
 import com.dgnt.quickTournamentMaker.model.tournament.RankScoreConfig
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentType
@@ -55,4 +56,18 @@ interface IPreferenceService {
      * @param rankScoreConfig the score based ranking value
      */
     fun setRankScore(tournamentType: TournamentType, rankScoreConfig:RankScoreConfig)
+
+    /**
+     * get the sort value
+     *
+     * @return the sort value
+     */
+    fun getSort(): Sort
+
+    /**
+     * set the sort value
+     *
+     * @param sort the sort value
+     */
+    fun setSort(sort: Sort)
 }

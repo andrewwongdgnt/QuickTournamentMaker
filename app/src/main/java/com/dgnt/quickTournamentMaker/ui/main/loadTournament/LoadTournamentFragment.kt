@@ -1,5 +1,6 @@
 package com.dgnt.quickTournamentMaker.ui.main.loadTournament
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -7,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.LoadTournamentFragmentBinding
+import com.dgnt.quickTournamentMaker.model.loadTournament.Sort
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
 import com.dgnt.quickTournamentMaker.ui.main.common.OnEditListener
 import com.dgnt.quickTournamentMaker.ui.tournament.MoreInfoDialogFragment
@@ -44,6 +46,20 @@ class LoadTournamentFragment : Fragment(), DIAware {
             R.id.action_startTournamentFromFile -> {
             }
             R.id.action_sort -> {
+                context?.let { context ->
+                    val choices = Sort.values()
+
+                    AlertDialog.Builder(context)
+                        .setTitle(getString(R.string.sortOptionsTitle))
+                        .setSingleChoiceItems(choices.map { getString(it.stringRes) }.toTypedArray(), choices.indexOf(viewModel.getSortPreference())) { dialog, position ->
+                            viewModel.updateSortPreference(choices[position])
+                            dialog.dismiss()
+                        }
+                        .setNegativeButton(android.R.string.cancel, null)
+                        .create()
+                        .show()
+                }
+
             }
             R.id.action_filter -> {
             }

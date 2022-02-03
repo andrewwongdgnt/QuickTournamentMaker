@@ -1,6 +1,7 @@
 package com.dgnt.quickTournamentMaker.service.implementation
 
 import android.content.SharedPreferences
+import com.dgnt.quickTournamentMaker.model.loadTournament.Sort
 import com.dgnt.quickTournamentMaker.model.tournament.RankPriorityConfig
 import com.dgnt.quickTournamentMaker.model.tournament.RankScoreConfig
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentType
@@ -104,4 +105,20 @@ class PreferenceService(private val sharedPreferences: SharedPreferences, privat
         )
         editor.apply()
     }
+
+    override fun getSort() =
+        (sharedPreferences.getString(PREF_LOAD_TOURNAMENT_SORT_KEY, Sort.CREATION_DATE_NEWEST.name) ?: Sort.CREATION_DATE_NEWEST.name).let {
+            try {
+                Sort.valueOf(it)
+            } catch (e: java.lang.IllegalArgumentException) {
+                Sort.CREATION_DATE_NEWEST
+            }
+        }
+
+    override fun setSort(sort: Sort) {
+        val editor = sharedPreferences.edit()
+        editor.putString(PREF_LOAD_TOURNAMENT_SORT_KEY, sort.name)
+        editor.apply()
+    }
+
 }
