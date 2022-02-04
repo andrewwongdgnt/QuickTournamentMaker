@@ -1,6 +1,7 @@
 package com.dgnt.quickTournamentMaker.service.interfaces
 
 import com.dgnt.quickTournamentMaker.model.loadTournament.Sort
+import com.dgnt.quickTournamentMaker.model.loadTournament.ViewMode
 import com.dgnt.quickTournamentMaker.model.tournament.RankPriorityConfig
 import com.dgnt.quickTournamentMaker.model.tournament.RankScoreConfig
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentType
@@ -70,4 +71,18 @@ interface IPreferenceService {
      * @param sort the sort value
      */
     fun setSort(sort: Sort)
+
+    /**
+     * get the view mode
+     *
+     * @return the view mode
+     */
+    fun getViewMode(): ViewMode
+
+    /**
+     * set the view mode
+     *
+     * @param viewMode the view mode
+     */
+    fun setViewMode(viewMode: ViewMode)
 }

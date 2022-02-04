@@ -2,6 +2,7 @@ package com.dgnt.quickTournamentMaker.service.implementation
 
 import android.content.SharedPreferences
 import com.dgnt.quickTournamentMaker.model.loadTournament.Sort
+import com.dgnt.quickTournamentMaker.model.loadTournament.ViewMode
 import com.dgnt.quickTournamentMaker.model.tournament.RankPriorityConfig
 import com.dgnt.quickTournamentMaker.model.tournament.RankScoreConfig
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentType
@@ -130,6 +131,26 @@ class PreferenceService(private val sharedPreferences: SharedPreferences, privat
     override fun setSort(sort: Sort) =
         sharedPreferences.edit().run {
             putString(PREF_LOAD_TOURNAMENT_SORT_KEY, sort.name)
+            apply()
+        }
+
+
+    override fun getViewMode() =
+        try {
+            ViewMode.valueOf(
+                sharedPreferences.getString(
+                    PREF_LOAD_TOURNAMENT_VIEW_KEY,
+                    ViewMode.BASIC.name
+                ) ?: ViewMode.BASIC.name
+            )
+        } catch (e: java.lang.IllegalArgumentException) {
+            ViewMode.BASIC
+        }
+
+
+    override fun setViewMode(viewMode: ViewMode) =
+        sharedPreferences.edit().run {
+            putString(PREF_LOAD_TOURNAMENT_VIEW_KEY, viewMode.name)
             apply()
         }
 

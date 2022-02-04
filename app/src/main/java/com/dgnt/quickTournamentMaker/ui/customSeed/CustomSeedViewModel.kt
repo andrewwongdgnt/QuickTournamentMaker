@@ -8,7 +8,7 @@ import com.dgnt.quickTournamentMaker.model.tournament.MatchUp
 import com.dgnt.quickTournamentMaker.model.tournament.Participant
 import com.dgnt.quickTournamentMaker.service.interfaces.ICustomSeedManagementService
 
-class CustomSeedViewModel(private val customSeedManagementService: ICustomSeedManagementService) : Observable, ViewModel() {
+class CustomSeedViewModel(private val customSeedManagementService: ICustomSeedManagementService) : Observable, ViewModel(), ICustomSeedManagementService by customSeedManagementService {
 
     @Bindable
     val matchUps = MutableLiveData<List<MatchUp>>()
@@ -22,9 +22,5 @@ class CustomSeedViewModel(private val customSeedManagementService: ICustomSeedMa
     fun setData(orderedParticipants: List<Participant>) {
         matchUps.value = customSeedManagementService.setUp(orderedParticipants)
     }
-
-    fun select(matchUpIndex: Int, isParticipant1Selected: Boolean) =
-        customSeedManagementService.select(matchUpIndex, isParticipant1Selected)
-
 
 }

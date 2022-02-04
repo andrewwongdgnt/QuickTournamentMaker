@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.dgnt.quickTournamentMaker.model.tournament.ColorInfo
 import com.dgnt.quickTournamentMaker.model.tournament.Round
 
-class RoundEditorViewModel() : Observable, ViewModel() {
+class RoundEditorViewModel : Observable, ViewModel() {
 
     @Bindable
     val title = MutableLiveData<String>()

@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.LoadTournamentFragmentBinding
 import com.dgnt.quickTournamentMaker.model.loadTournament.Sort
+import com.dgnt.quickTournamentMaker.model.loadTournament.ViewMode
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
 import com.dgnt.quickTournamentMaker.ui.main.common.OnEditListener
 import com.dgnt.quickTournamentMaker.ui.tournament.MoreInfoDialogFragment
@@ -51,8 +52,8 @@ class LoadTournamentFragment : Fragment(), DIAware {
 
                     AlertDialog.Builder(context)
                         .setTitle(getString(R.string.sortOptionsTitle))
-                        .setSingleChoiceItems(choices.map { getString(it.stringRes) }.toTypedArray(), choices.indexOf(viewModel.getSortPreference())) { dialog, position ->
-                            viewModel.updateSortPreference(choices[position])
+                        .setSingleChoiceItems(choices.map { getString(it.stringRes) }.toTypedArray(), choices.indexOf(viewModel.getSort())) { dialog, position ->
+                            viewModel.setSort(choices[position])
                             dialog.dismiss()
                         }
                         .setNegativeButton(android.R.string.cancel, null)
@@ -64,6 +65,19 @@ class LoadTournamentFragment : Fragment(), DIAware {
             R.id.action_filter -> {
             }
             R.id.action_viewAs -> {
+                context?.let { context ->
+                    val choices = ViewMode.values()
+
+                    AlertDialog.Builder(context)
+                        .setTitle(getString(R.string.sortOptionsTitle))
+                        .setSingleChoiceItems(choices.map { getString(it.stringRes) }.toTypedArray(), choices.indexOf(viewModel.getViewMode())) { dialog, position ->
+                            viewModel.setViewMode(choices[position])
+                            dialog.dismiss()
+                        }
+                        .setNegativeButton(android.R.string.cancel, null)
+                        .create()
+                        .show()
+                }
             }
 
         }

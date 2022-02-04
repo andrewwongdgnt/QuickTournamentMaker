@@ -6,7 +6,6 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dgnt.quickTournamentMaker.data.tournament.*
-import com.dgnt.quickTournamentMaker.model.loadTournament.Sort
 import com.dgnt.quickTournamentMaker.model.tournament.*
 import com.dgnt.quickTournamentMaker.service.interfaces.IPreferenceService
 import com.dgnt.quickTournamentMaker.service.interfaces.IRankingConfigService
@@ -19,7 +18,7 @@ class LoadTournamentViewModel(
     participantRepository: IParticipantRepository,
     rankingConfigService: IRankingConfigService,
     private val preferenceService: IPreferenceService
-) : ViewModel(), Observable {
+) : ViewModel(), Observable, IPreferenceService by preferenceService {
 
     private val tournaments = tournamentRepository.getAll()
     private val rounds = roundRepository.getAll()
@@ -132,13 +131,6 @@ class LoadTournamentViewModel(
             }
         }
     }
-
-    fun updateSortPreference(sort: Sort) {
-        preferenceService.setSort(sort)
-    }
-
-    fun getSortPreference() =
-        preferenceService.getSort()
 
 
 }
