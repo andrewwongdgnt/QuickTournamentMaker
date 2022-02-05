@@ -8,6 +8,7 @@ import com.dgnt.quickTournamentMaker.model.tournament.RankScoreConfig
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentType
 import com.dgnt.quickTournamentMaker.service.interfaces.IPreferenceService
 import com.dgnt.quickTournamentMaker.service.interfaces.IRankingConfigService
+import org.joda.time.LocalDateTime
 
 class PreferenceService(private val sharedPreferences: SharedPreferences, private val rankingConfigService: IRankingConfigService) : IPreferenceService {
 
@@ -154,5 +155,128 @@ class PreferenceService(private val sharedPreferences: SharedPreferences, privat
             apply()
         }
 
+    override fun isFilteredOnTournamentType(type: TournamentType) =
+        sharedPreferences.getBoolean(
+            type.filterKey,
+            false
+        )
+
+
+    override fun setFilteredOnTournamentType(type: TournamentType, on: Boolean) =
+        sharedPreferences.edit().run {
+            putBoolean(type.filterKey, on)
+            apply()
+        }
+
+    override fun getMinimumParticipantsToFilterOn() =
+        sharedPreferences.getInt(PREF_FILTER_MIN_PARTICIPANT_KEY, 0)
+
+    override fun setMinimumParticipantsToFilterOn(num: Int) =
+        sharedPreferences.edit().run {
+            putInt(PREF_FILTER_MIN_PARTICIPANT_KEY, num)
+            apply()
+        }
+
+    override fun isFilteredOnMinimumParticipants() =
+        sharedPreferences.getBoolean(PREF_FILTER_MIN_PARTICIPANT_ALLOWED_KEY, false)
+
+    override fun setFilteredOnMinimumParticipants(on: Boolean) =
+        sharedPreferences.edit().run {
+            putBoolean(PREF_FILTER_MIN_PARTICIPANT_ALLOWED_KEY, on)
+            apply()
+        }
+
+    override fun getMaximumParticipantsToFilterOn() =
+        sharedPreferences.getInt(PREF_FILTER_MAX_PARTICIPANT_KEY, 0)
+
+    override fun setMaximumParticipantsToFilterOn(num: Int) =
+        sharedPreferences.edit().run {
+            putInt(PREF_FILTER_MAX_PARTICIPANT_KEY, num)
+            apply()
+        }
+
+    override fun isFilteredOnMaximumParticipants() =
+        sharedPreferences.getBoolean(PREF_FILTER_MAX_PARTICIPANT_ALLOWED_KEY, false)
+
+    override fun setFilteredOnMaximumParticipants(on: Boolean) =
+        sharedPreferences.edit().run {
+            putBoolean(PREF_FILTER_MAX_PARTICIPANT_ALLOWED_KEY, on)
+            apply()
+        }
+
+    override fun getEarliestCreatedDateToFilterOn() =
+        LocalDateTime(sharedPreferences.getLong(PREF_FILTER_EARLIEST_CREATED_EPOCH_KEY, 0))
+
+    override fun setEarliestCreatedDateToFilterOn(date: LocalDateTime) =
+        sharedPreferences.edit().run {
+            putLong(PREF_FILTER_EARLIEST_CREATED_EPOCH_KEY, date.toDateTime().millis)
+            apply()
+        }
+
+    override fun isFilteredOnEarliestCreatedDate() =
+        sharedPreferences.getBoolean(PREF_FILTER_EARLIEST_CREATED_EPOCH_ALLOWED_KEY, false)
+
+    override fun setFilteredOnEarliestCreatedDate(on: Boolean) =
+        sharedPreferences.edit().run {
+            putBoolean(PREF_FILTER_EARLIEST_CREATED_EPOCH_ALLOWED_KEY, on)
+            apply()
+        }
+
+    override fun getLatestCreatedDateToFilterOn() =
+        LocalDateTime(sharedPreferences.getLong(PREF_FILTER_LATEST_CREATED_EPOCH_KEY, 0))
+
+    override fun setLatestCreatedDateToFilterOn(date: LocalDateTime) =
+        sharedPreferences.edit().run {
+            putLong(PREF_FILTER_LATEST_CREATED_EPOCH_KEY, date.toDateTime().millis)
+            apply()
+        }
+
+    override fun isFilteredOnLatestCreatedDate() =
+        sharedPreferences.getBoolean(PREF_FILTER_LATEST_CREATED_EPOCH_ALLOWED_KEY, false)
+
+    override fun setFilteredOnLatestCreatedDate(on: Boolean) =
+        sharedPreferences.edit().run {
+            putBoolean(PREF_FILTER_LATEST_CREATED_EPOCH_ALLOWED_KEY, on)
+            apply()
+        }
+
+    override fun getEarliestModifiedDateToFilterOn() =
+        LocalDateTime(sharedPreferences.getLong(PREF_FILTER_EARLIEST_MODIFIED_EPOCH_KEY, 0))
+
+    override fun setEarliestModifiedDateToFilterOn(date: LocalDateTime) =
+        sharedPreferences.edit().run {
+            putLong(PREF_FILTER_EARLIEST_MODIFIED_EPOCH_KEY, date.toDateTime().millis)
+            apply()
+        }
+
+    override fun isFilteredOnEarliestModifiedDate() =
+        sharedPreferences.getBoolean(PREF_FILTER_EARLIEST_MODIFIED_EPOCH_ALLOWED_KEY, false)
+
+    override fun setFilteredOnEarliestModifiedDate(on: Boolean) =
+        sharedPreferences.edit().run {
+            putBoolean(PREF_FILTER_EARLIEST_MODIFIED_EPOCH_ALLOWED_KEY, on)
+            apply()
+        }
+
+    override fun getLatestModifiedDateToFilterOn() =
+        LocalDateTime(sharedPreferences.getLong(PREF_FILTER_LATEST_MODIFIED_EPOCH_KEY, 0))
+
+    override fun setLatestModifiedDateToFilterOn(date: LocalDateTime) =
+        sharedPreferences.edit().run {
+            putLong(PREF_FILTER_LATEST_MODIFIED_EPOCH_KEY, date.toDateTime().millis)
+            apply()
+        }
+
+    override fun isFilteredOnLatestModifiedDate() =
+        sharedPreferences.getBoolean(PREF_FILTER_LATEST_MODIFIED_EPOCH_ALLOWED_KEY, false)
+
+    override fun setFilteredOnLatestModifiedDate(on: Boolean) =
+        sharedPreferences.edit().run {
+            putBoolean(PREF_FILTER_LATEST_MODIFIED_EPOCH_ALLOWED_KEY, on)
+            apply()
+        }
+
+    private val TournamentType.filterKey
+        get() = PREF_FILTER_TOURNAMENT_TYPE_KEY + name
 
 }
