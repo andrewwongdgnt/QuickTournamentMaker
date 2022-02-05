@@ -63,6 +63,10 @@ class LoadTournamentFragment : Fragment(), DIAware {
 
             }
             R.id.action_filter -> {
+                activity?.supportFragmentManager?.let {
+                    LoadTournamentFilterOptionsDialogFragment.newInstance(filterListener).show(it, LoadTournamentFilterOptionsDialogFragment.TAG)
+                }
+
             }
             R.id.action_viewAs -> {
                 context?.let { context ->
@@ -101,7 +105,9 @@ class LoadTournamentFragment : Fragment(), DIAware {
                 binding.tournamentRv.adapter = RestoredTournamentInformationRecyclerViewAdapter(
                     it,
                     { restoredTournamentInformation ->
-                        MoreInfoDialogFragment.newInstance(restoredTournamentInformation.extendedTournamentInformation, tournamentEditListener).show(activity?.supportFragmentManager!!, MoreInfoDialogFragment.TAG)
+                        activity?.supportFragmentManager?.let { fragManager ->
+                            MoreInfoDialogFragment.newInstance(restoredTournamentInformation.extendedTournamentInformation, tournamentEditListener).show(fragManager, MoreInfoDialogFragment.TAG)
+                        }
                     },
                     { restoredTournamentInformation ->
                         startActivity(TournamentActivity.createIntent(this, restoredTournamentInformation))
@@ -115,6 +121,12 @@ class LoadTournamentFragment : Fragment(), DIAware {
     private val tournamentEditListener = object : OnEditListener<TournamentInformation> {
         override fun onEdit(editedValue: TournamentInformation) {
             viewModel.updateTournament(editedValue)
+        }
+    }
+
+    private val filterListener = object : OnEditListener<Unit> {
+        override fun onEdit(editedValue: Unit) {
+
         }
     }
 

@@ -11,6 +11,7 @@ import com.dgnt.quickTournamentMaker.service.implementation.*
 import com.dgnt.quickTournamentMaker.service.interfaces.*
 import com.dgnt.quickTournamentMaker.ui.customSeed.CustomSeedViewModelFactory
 import com.dgnt.quickTournamentMaker.ui.main.home.HomeViewModelFactory
+import com.dgnt.quickTournamentMaker.ui.main.loadTournament.LoadTournamentFilterOptionsViewModelFactory
 import com.dgnt.quickTournamentMaker.ui.main.loadTournament.LoadTournamentViewModelFactory
 import com.dgnt.quickTournamentMaker.ui.main.management.*
 import com.dgnt.quickTournamentMaker.ui.tournament.*
@@ -76,6 +77,7 @@ class QTMApplication() : Application(), DIAware {
         bind() from provider { RoundEditorViewModelFactory() }
         bind() from provider { CustomSeedViewModelFactory(instance()) }
         bind() from provider { LoadTournamentViewModelFactory(instance(), instance(), instance(), instance(), instance(), instance()) }
+        bind() from provider { LoadTournamentFilterOptionsViewModelFactory(instance()) }
 
         //Service
         bind<IRankingConfigService>() with singleton { RankingConfigService() }

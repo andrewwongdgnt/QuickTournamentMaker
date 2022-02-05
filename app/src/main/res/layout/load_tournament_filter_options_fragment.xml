@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+                name="vm"
+                type="com.dgnt.quickTournamentMaker.ui.main.loadTournament.LoadTournamentFilterOptionsViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/list_item_horizontal_margin"
+            android:paddingTop="@dimen/list_item_vertical_margin"
+            android:paddingRight="@dimen/list_item_horizontal_margin"
+            android:paddingBottom="@dimen/list_item_vertical_margin">
+
+        <TextView
+                android:id="@+id/tournamentTypeTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/showOnly"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        <CheckBox
+                android:id="@+id/eliminationType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standardIndent"
+                android:checked="@={vm.eliminationFilteredOn}"
+                android:text="@string/elimination"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tournamentTypeTitle" />
+
+        <CheckBox
+                android:id="@+id/doubleEliminationType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standardIndent"
+                android:checked="@={vm.doubleEliminationFilteredOn}"
+                android:text="@string/doubleElimination"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/eliminationType" />
+
+        <CheckBox
+                android:id="@+id/roundRobinType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standardIndent"
+                android:checked="@={vm.roundRobinFilteredOn}"
+                android:text="@string/roundRobin"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/doubleEliminationType" />
+
+        <CheckBox
+                android:id="@+id/swissType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standardIndent"
+                android:checked="@={vm.swissFilteredOn}"
+                android:text="@string/swiss"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/roundRobinType" />
+
+        <CheckBox
+                android:id="@+id/survivalType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standardIndent"
+                android:checked="@={vm.survivalFilteredOn}"
+                android:text="@string/survival"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/swissType" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

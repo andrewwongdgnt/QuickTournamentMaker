@@ -47,4 +47,6 @@
     <dimen name="priorityRankTextVerticalPadding">5dp</dimen>
 
     <dimen name="titledLinearLayoutPadding">5dp</dimen>
+
+    <dimen name="standardIndent">10dp</dimen>
 </resources>

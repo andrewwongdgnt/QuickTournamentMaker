@@ -57,7 +57,7 @@ class PersonEditorDialogFragment : DialogFragment(), DIAware {
             binding.vm = viewModel
             binding.lifecycleOwner = this
 
-
+//TODO use this instead of activity for lifecyclerowner. need to find other dialogFragments that have this issue
             viewModel.resultEvent.observe(activity) {
                 it.getContentIfNotHandled()?.let { triple ->
                     Toast.makeText(context, triple.second, Toast.LENGTH_LONG).show()
