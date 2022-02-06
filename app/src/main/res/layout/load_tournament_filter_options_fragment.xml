@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -17,6 +18,13 @@
             android:paddingRight="@dimen/list_item_horizontal_margin"
             android:paddingBottom="@dimen/list_item_vertical_margin">
 
+        <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="100dp" />
+
         <TextView
                 android:id="@+id/tournamentTypeTitle"
                 android:layout_width="wrap_content"
@@ -27,7 +35,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
         <CheckBox
-                android:id="@+id/eliminationType"
+                android:id="@+id/eliminationType_cb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standardIndent"
@@ -37,45 +45,96 @@
                 app:layout_constraintTop_toBottomOf="@id/tournamentTypeTitle" />
 
         <CheckBox
-                android:id="@+id/doubleEliminationType"
+                android:id="@+id/doubleEliminationType_cb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standardIndent"
                 android:checked="@={vm.doubleEliminationFilteredOn}"
                 android:text="@string/doubleElimination"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/eliminationType" />
+                app:layout_constraintTop_toBottomOf="@id/eliminationType_cb" />
 
         <CheckBox
-                android:id="@+id/roundRobinType"
+                android:id="@+id/roundRobinType_cb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standardIndent"
                 android:checked="@={vm.roundRobinFilteredOn}"
                 android:text="@string/roundRobin"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/doubleEliminationType" />
+                app:layout_constraintTop_toBottomOf="@id/doubleEliminationType_cb" />
 
         <CheckBox
-                android:id="@+id/swissType"
+                android:id="@+id/swissType_cb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standardIndent"
                 android:checked="@={vm.swissFilteredOn}"
                 android:text="@string/swiss"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/roundRobinType" />
+                app:layout_constraintTop_toBottomOf="@id/roundRobinType_cb" />
 
         <CheckBox
-                android:id="@+id/survivalType"
+                android:id="@+id/survivalType_cb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standardIndent"
                 android:checked="@={vm.survivalFilteredOn}"
                 android:text="@string/survival"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/swissType" />
+                app:layout_constraintTop_toBottomOf="@id/swissType_cb" />
 
+        <View
+                android:id="@+id/participantFilter_divider"
+                android:layout_width="0dp"
+                android:layout_height="0.5dp"
+                android:layout_marginTop="@dimen/spacer_gap"
+                android:background="#a3a3a3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/survivalType_cb" />
+
+        <TextView
+                android:id="@+id/participantTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacer_gap"
+                android:text="@string/between"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/participantFilter_divider" />
+
+        <CheckBox
+                android:id="@+id/minParticipants_cb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standardIndent"
+                android:checked="@={vm.minParticipantsFilteredOn}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/participantTitle" />
+
+        <EditText
+                android:id="@+id/minParticipants_et"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:text="@={vm.minParticipants}"
+                app:layout_constraintBottom_toBottomOf="@id/minParticipants_cb"
+                app:layout_constraintEnd_toEndOf="@id/guideline"
+                app:layout_constraintStart_toEndOf="@id/minParticipants_cb"
+                app:layout_constraintTop_toBottomOf="@id/participantTitle"
+                app:layout_constraintTop_toTopOf="@id/minParticipants_cb"
+                tools:text="999" />
+
+        <TextView
+                android:id="@+id/minParticipants_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/players"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                app:layout_constraintBottom_toBottomOf="@id/minParticipants_et"
+                app:layout_constraintStart_toEndOf="@id/minParticipants_et"
+                app:layout_constraintTop_toBottomOf="@id/participantTitle"
+                app:layout_constraintTop_toTopOf="@id/minParticipants_et" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

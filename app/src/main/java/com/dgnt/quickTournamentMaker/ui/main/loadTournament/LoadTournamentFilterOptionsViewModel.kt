@@ -6,8 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentType
 import com.dgnt.quickTournamentMaker.service.interfaces.IPreferenceService
+import org.joda.time.LocalDateTime
 
-class LoadTournamentFilterOptionsViewModel(private val preferenceService: IPreferenceService): ViewModel(), Observable, IPreferenceService by preferenceService {
+class LoadTournamentFilterOptionsViewModel(private val preferenceService: IPreferenceService) : ViewModel(), Observable, IPreferenceService by preferenceService {
 
     @Bindable
     val eliminationFilteredOn = MutableLiveData<Boolean>()
@@ -23,6 +24,42 @@ class LoadTournamentFilterOptionsViewModel(private val preferenceService: IPrefe
 
     @Bindable
     val survivalFilteredOn = MutableLiveData<Boolean>()
+
+    @Bindable
+    val minParticipantsFilteredOn = MutableLiveData<Boolean>()
+
+    @Bindable
+    val minParticipants = MutableLiveData<String>()
+
+    @Bindable
+    val maxParticipantsFilteredOn = MutableLiveData<Boolean>()
+
+    @Bindable
+    val maxParticipants = MutableLiveData<String>()
+
+    @Bindable
+    val earliestCreatedDateFilteredOn = MutableLiveData<Boolean>()
+
+    @Bindable
+    val earliestCreatedDate = MutableLiveData<String>()
+
+    @Bindable
+    val latestCreatedDateFilteredOn = MutableLiveData<Boolean>()
+
+    @Bindable
+    val latestCreatedDate = MutableLiveData<String>()
+
+    @Bindable
+    val earliestModifiedDateFilteredOn = MutableLiveData<Boolean>()
+
+    @Bindable
+    val earliestModifiedDate = MutableLiveData<String>()
+
+    @Bindable
+    val latestModifiedDateFilteredOn = MutableLiveData<Boolean>()
+
+    @Bindable
+    val latestModifiedDate = MutableLiveData<String>()
 
 
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
