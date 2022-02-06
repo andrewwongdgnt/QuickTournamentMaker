@@ -53,7 +53,7 @@ class RebuildTournamentDialogFragment : DialogFragment(), DIAware {
             TournamentUtil.setUpTournamentTypeUI(
                 viewModel,
                 binding.tournamentTypeEditor,
-                activity,
+                this,
                 activity,
                 true
             )

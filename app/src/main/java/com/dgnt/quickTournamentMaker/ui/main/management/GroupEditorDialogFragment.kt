@@ -50,7 +50,7 @@ class GroupEditorDialogFragment : DialogFragment(), DIAware {
             binding.vm = viewModel
             binding.lifecycleOwner = this
 
-            viewModel.resultEvent.observe(activity) {
+            viewModel.resultEvent.observe(this) {
                 it.getContentIfNotHandled()?.let { triple ->
                     Toast.makeText(context, triple.second, Toast.LENGTH_LONG).show()
                     if (triple.first) {

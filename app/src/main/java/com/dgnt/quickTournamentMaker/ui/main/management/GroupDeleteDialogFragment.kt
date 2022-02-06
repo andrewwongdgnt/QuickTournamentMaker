@@ -48,7 +48,7 @@ class GroupDeleteDialogFragment : DialogFragment(), DIAware {
             binding.vm = viewModel
             binding.lifecycleOwner = this
 
-            viewModel.messageEvent.observe(activity) {
+            viewModel.messageEvent.observe(this) {
                 it.getContentIfNotHandled()?.let { message ->
                     Toast.makeText(context, message, Toast.LENGTH_LONG).show()
                     dismiss()

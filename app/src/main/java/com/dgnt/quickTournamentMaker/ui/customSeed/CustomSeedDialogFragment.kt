@@ -55,7 +55,7 @@ class CustomSeedDialogFragment : DialogFragment(), DIAware {
             val orderedParticipants = arguments?.getParcelableArrayList<Participant>(KEY_ORDERED_PARTICIPANTS)!!
 
             viewModel.setData(orderedParticipants)
-            viewModel.matchUps.observe(activity) {
+            viewModel.matchUps.observe(this) {
                 val map = mutableMapOf<Int, SimpleMatchUpLayoutBinding>()
                 val myFunc: (Pair<MatchUpInformation, MatchUpInformation>) -> Unit = { pair ->
                     listOf(pair.first, pair.second).forEach { mui ->
