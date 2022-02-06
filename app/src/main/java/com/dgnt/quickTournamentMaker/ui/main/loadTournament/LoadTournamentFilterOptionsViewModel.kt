@@ -44,10 +44,16 @@ class LoadTournamentFilterOptionsViewModel(private val preferenceService: IPrefe
     val earliestCreatedDate = MutableLiveData<String>()
 
     @Bindable
+    val earliestCreatedDateBacking = MutableLiveData<LocalDateTime>()
+
+    @Bindable
     val latestCreatedDateFilteredOn = MutableLiveData<Boolean>()
 
     @Bindable
     val latestCreatedDate = MutableLiveData<String>()
+
+    @Bindable
+    val latestCreatedDateBacking = MutableLiveData<LocalDateTime>()
 
     @Bindable
     val earliestModifiedDateFilteredOn = MutableLiveData<Boolean>()
@@ -56,10 +62,16 @@ class LoadTournamentFilterOptionsViewModel(private val preferenceService: IPrefe
     val earliestModifiedDate = MutableLiveData<String>()
 
     @Bindable
+    val earliestModifiedDateBacking = MutableLiveData<LocalDateTime>()
+
+    @Bindable
     val latestModifiedDateFilteredOn = MutableLiveData<Boolean>()
 
     @Bindable
     val latestModifiedDate = MutableLiveData<String>()
+
+    @Bindable
+    val latestModifiedDateBacking = MutableLiveData<LocalDateTime>()
 
 
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
@@ -74,5 +86,27 @@ class LoadTournamentFilterOptionsViewModel(private val preferenceService: IPrefe
         roundRobinFilteredOn.value = preferenceService.isFilteredOnTournamentType(TournamentType.ROUND_ROBIN)
         swissFilteredOn.value = preferenceService.isFilteredOnTournamentType(TournamentType.SURVIVAL)
         survivalFilteredOn.value = preferenceService.isFilteredOnTournamentType(TournamentType.SWISS)
+
+        minParticipantsFilteredOn.value = preferenceService.isFilteredOnMinimumParticipants()
+        minParticipants.value = preferenceService.getMinimumParticipantsToFilterOn().toString()
+
+        maxParticipantsFilteredOn.value = preferenceService.isFilteredOnMaximumParticipants()
+        maxParticipants.value = preferenceService.getMaximumParticipantsToFilterOn().toString()
+
+        earliestCreatedDateFilteredOn.value = preferenceService.isFilteredOnEarliestCreatedDate()
+        earliestCreatedDate.value = preferenceService.getEarliestCreatedDateToFilterOn().toString()
+        earliestCreatedDateBacking.value = preferenceService.getEarliestCreatedDateToFilterOn()
+
+        latestCreatedDateFilteredOn.value = preferenceService.isFilteredOnLatestCreatedDate()
+        latestCreatedDate.value = preferenceService.getLatestCreatedDateToFilterOn().toString()
+        latestCreatedDateBacking.value = preferenceService.getLatestCreatedDateToFilterOn()
+
+        earliestModifiedDateFilteredOn.value = preferenceService.isFilteredOnEarliestModifiedDate()
+        earliestModifiedDate.value = preferenceService.getEarliestModifiedDateToFilterOn().toString() //TODO format this date string
+        earliestModifiedDateBacking.value = preferenceService.getEarliestModifiedDateToFilterOn()
+
+        latestModifiedDateFilteredOn.value = preferenceService.isFilteredOnLatestModifiedDate()
+        latestModifiedDate.value = preferenceService.getLatestModifiedDateToFilterOn().toString()//TODO format this date string
+        latestModifiedDateBacking.value = preferenceService.getLatestModifiedDateToFilterOn()
     }
 }
