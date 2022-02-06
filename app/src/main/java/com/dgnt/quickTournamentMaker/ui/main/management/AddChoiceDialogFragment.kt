@@ -3,27 +3,27 @@ package com.dgnt.quickTournamentMaker.ui.main.management
 import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.AddChoiceFragmentBinding
 import com.dgnt.quickTournamentMaker.model.management.Group
 import com.dgnt.quickTournamentMaker.model.management.Person
 
 
-class AddChoiceDialogFragment : DialogFragment() {
+class AddChoiceDialogFragment(
+    private val groups: List<Group>
+) : DialogFragment() {
 
 
     companion object {
 
         const val TAG = "AddChoiceDialogFragment"
 
-        private const val KEY_GROUPS = "KEY_GROUPS"
-
-        fun newInstance(group: List<Group>): AddChoiceDialogFragment =
-            AddChoiceDialogFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelableArrayList(KEY_GROUPS, ArrayList<Group>(group))
-                }
-            }
+        fun newInstance(
+            fragmentManager: FragmentManager,
+            groups: List<Group>
+        ) =
+            AddChoiceDialogFragment(groups).show(fragmentManager, TAG)
 
     }
 
@@ -40,13 +40,25 @@ class AddChoiceDialogFragment : DialogFragment() {
 
 
                     setOnShowListener {
-                        binding.personBtn.setOnClickListener { _ ->
-                            PersonEditorDialogFragment.newInstance(false, getString(R.string.addingPlayer), Person("", "", ""), "", arguments?.getParcelableArrayList(KEY_GROUPS) ?: listOf()).show(activity.supportFragmentManager, PersonEditorDialogFragment.TAG)
+                        binding.personBtn.setOnClickListener {
+                            PersonEditorDialogFragment.newInstance(
+                                activity.supportFragmentManager,
+                                false,
+                                getString(R.string.addingPlayer),
+                                Person("", "", ""),
+                                "",
+                                groups
+                            )
                             dismiss()
                         }
 
-                        binding.groupBtn.setOnClickListener { _ ->
-                            GroupEditorDialogFragment.newInstance(false, getString(R.string.addingGroup), Group("", "", "", false)).show(activity.supportFragmentManager, GroupEditorDialogFragment.TAG)
+                        binding.groupBtn.setOnClickListener {
+                            GroupEditorDialogFragment.newInstance(
+                                activity.supportFragmentManager,
+                                false,
+                                getString(R.string.addingGroup),
+                                Group("", "", "", false)
+                            )
                             dismiss()
                         }
                     }

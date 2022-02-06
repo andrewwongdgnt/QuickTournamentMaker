@@ -106,7 +106,7 @@ class LoadTournamentFragment : Fragment(), DIAware {
                     it,
                     { restoredTournamentInformation ->
                         activity?.supportFragmentManager?.let { fragManager ->
-                            MoreInfoDialogFragment.newInstance(restoredTournamentInformation.extendedTournamentInformation, tournamentEditListener).show(fragManager, MoreInfoDialogFragment.TAG)
+                            MoreInfoDialogFragment.newInstance(fragManager, restoredTournamentInformation.extendedTournamentInformation, tournamentEditListener)
                         }
                     },
                     { restoredTournamentInformation ->

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.WindowManager
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.CustomSeedFragmentBinding
@@ -18,29 +19,29 @@ import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 import org.kodein.di.instance
 
-class CustomSeedDialogFragment : DialogFragment(), DIAware {
+class CustomSeedDialogFragment(
+    private val tournamentInformation: TournamentInformation,
+    private val orderedParticipants: List<Participant>,
+    private val onNewTournamentCallback: () -> Unit,
+) : DialogFragment(), DIAware {
     override val di by di()
     private val viewModelFactory: CustomSeedViewModelFactory by instance()
 
-    private var onNewTournamentCallback = {}
 
     companion object {
         const val TAG = "CustomSeedDialogFragment"
 
-        private const val KEY_TOURNAMENT_INFO = "KEY_TOURNAMENT_INFO"
-        private const val KEY_ORDERED_PARTICIPANTS = "KEY_ORDERED_PARTICIPANTS"
-
         fun newInstance(
+            fragmentManager: FragmentManager,
             tournamentInformation: TournamentInformation,
-            orderedParticipants: List<Participant>
+            orderedParticipants: List<Participant>,
+            onNewTournamentCallback: () -> Unit
         ) =
-            CustomSeedDialogFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelable(KEY_TOURNAMENT_INFO, tournamentInformation)
-                    putParcelableArrayList(KEY_ORDERED_PARTICIPANTS, ArrayList(orderedParticipants))
-                }
-
-            }
+            CustomSeedDialogFragment(
+                tournamentInformation,
+                orderedParticipants,
+                onNewTournamentCallback
+            ).show(fragmentManager, TAG)
     }
 
 
@@ -50,9 +51,6 @@ class CustomSeedDialogFragment : DialogFragment(), DIAware {
             val viewModel = ViewModelProvider(this, viewModelFactory)[CustomSeedViewModel::class.java]
             binding.vm = viewModel
             binding.lifecycleOwner = this
-
-            val tournamentInformation = arguments?.getParcelable<TournamentInformation>(KEY_TOURNAMENT_INFO)!!
-            val orderedParticipants = arguments?.getParcelableArrayList<Participant>(KEY_ORDERED_PARTICIPANTS)!!
 
             viewModel.setData(orderedParticipants)
             viewModel.matchUps.observe(this) {
@@ -122,8 +120,5 @@ class CustomSeedDialogFragment : DialogFragment(), DIAware {
         )
     }
 
-    fun setOnNewTournamentCallback(onNewTournamentCallback: () -> Unit) {
-        this.onNewTournamentCallback = onNewTournamentCallback
-    }
 
 }

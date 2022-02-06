@@ -2,9 +2,9 @@ package com.dgnt.quickTournamentMaker.ui.tournament
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.ComponentTournamentTypeEditorBinding
@@ -16,26 +16,26 @@ import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 import org.kodein.di.instance
 
-class RebuildTournamentDialogFragment : DialogFragment(), DIAware {
+class RebuildTournamentDialogFragment(
+    private val tournamentInformation: TournamentInformation,
+    private val orderedParticipants: List<Participant>
+) : DialogFragment(), DIAware {
     override val di by di()
     private val viewModelFactory: RebuildTournamentViewModelFactory by instance()
 
     companion object {
 
         const val TAG = "RebuildTournamentDialogFragment"
-        private const val KEY_TOURNAMENT_INFO = "KEY_TOURNAMENT_INFO"
-        private const val KEY_ORDERED_PARTICIPANTS = "KEY_ORDERED_PARTICIPANTS"
 
         fun newInstance(
+            fragmentManager: FragmentManager,
             tournamentInformation: TournamentInformation,
             orderedParticipants: List<Participant>
         ) =
-            RebuildTournamentDialogFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelable(KEY_TOURNAMENT_INFO, tournamentInformation)
-                    putParcelableArrayList(KEY_ORDERED_PARTICIPANTS, ArrayList(orderedParticipants))
-                }
-            }
+            RebuildTournamentDialogFragment(
+                tournamentInformation,
+                orderedParticipants
+            ).show(fragmentManager, TAG)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?) =
@@ -92,8 +92,9 @@ class RebuildTournamentDialogFragment : DialogFragment(), DIAware {
             tournamentTypeEditor.customSeedRb.id,
             tournamentTypeEditor.compareRankFromPriorityRb.id,
             tournamentTypeEditor.compareRankFromScoreRb.id,
-            arguments?.getParcelable(KEY_TOURNAMENT_INFO)!!,
-            arguments?.getParcelableArrayList(KEY_ORDERED_PARTICIPANTS)!!
+
+            tournamentInformation,
+            orderedParticipants
         )
     }
 

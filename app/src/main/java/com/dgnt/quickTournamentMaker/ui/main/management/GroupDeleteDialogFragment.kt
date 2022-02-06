@@ -6,7 +6,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.Observer
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.GroupDeleteFragmentBinding
@@ -16,7 +16,10 @@ import org.kodein.di.android.x.di
 import org.kodein.di.instance
 
 
-class GroupDeleteDialogFragment : DialogFragment(), DIAware {
+class GroupDeleteDialogFragment(
+    private val selectedGroups: List<Group>,
+    private val groups: List<Group>
+) : DialogFragment(), DIAware {
     override val di by di()
     private val viewModelFactory: GroupDeleteViewModelFactory by instance()
 
@@ -24,16 +27,12 @@ class GroupDeleteDialogFragment : DialogFragment(), DIAware {
 
         const val TAG = "GroupDeleteDialogFragment"
 
-        private const val KEY_SELECTED_GROUPS = "KEY_SELECTED_GROUPS"
-        private const val KEY_GROUPS = "KEY_GROUPS"
-
-        fun newInstance(selectedGroups: List<Group>, groups: List<Group>) =
-            GroupDeleteDialogFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelableArrayList(KEY_SELECTED_GROUPS, ArrayList<Group>(selectedGroups))
-                    putParcelableArrayList(KEY_GROUPS, ArrayList<Group>(groups))
-                }
-            }
+        fun newInstance(
+            fragmentManager: FragmentManager,
+            selectedGroups: List<Group>,
+            groups: List<Group>
+        ) =
+            GroupDeleteDialogFragment(selectedGroups, groups).show(fragmentManager, TAG)
     }
 
     private lateinit var binding: GroupDeleteFragmentBinding
@@ -55,8 +54,6 @@ class GroupDeleteDialogFragment : DialogFragment(), DIAware {
                 }
             }
 
-            val selectedGroups = arguments?.getParcelableArrayList<Group>(KEY_SELECTED_GROUPS)!!
-            val groups = arguments?.getParcelableArrayList<Group>(KEY_GROUPS)!!
             val visibleGroups = groups.subtract(selectedGroups)
             viewModel.setData(visibleGroups.toList().sorted())
             binding.groupDeleteMsgTv.text = getString(R.string.deleteGroupMsg, selectedGroups.size)

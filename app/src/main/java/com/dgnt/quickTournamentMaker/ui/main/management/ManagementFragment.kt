@@ -9,9 +9,7 @@ import android.widget.CheckedTextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.ManagementFragmentBinding
@@ -169,7 +167,9 @@ class ManagementFragment : Fragment(), DIAware {
 
     }
 
-    private fun add() = AddChoiceDialogFragment.newInstance(groups).show(activity?.supportFragmentManager!!, AddChoiceDialogFragment.TAG)
+    private fun add() = activity?.supportFragmentManager?.let {
+        AddChoiceDialogFragment.newInstance(it, groups)
+    }
 
     private fun personClicked(checkable: Checkable, person: Person) {
 
@@ -184,7 +184,7 @@ class ManagementFragment : Fragment(), DIAware {
 
             actionMode?.run {
                 menu.run {
-                    (selectedPersons.size > 0).let {
+                    (selectedPersons.isNotEmpty()).let {
                         findItem(R.id.action_delete).isVisible = it
                         findItem(R.id.action_move).isVisible = it
                     }
@@ -192,8 +192,16 @@ class ManagementFragment : Fragment(), DIAware {
                 title = selectedPersons.size.toString()
             }
         } else if (actionModeCallback.multiSelect == ManagementFragmentActionModeCallBack.SelectType.NONE)
-            PersonEditorDialogFragment.newInstance(true, getString(R.string.editing, person.name), person, personToGroupNameMap[person]?.name ?: "", groups).show(activity?.supportFragmentManager!!, PersonEditorDialogFragment.TAG)
-
+            activity?.supportFragmentManager?.let {
+                PersonEditorDialogFragment.newInstance(
+                    it,
+                    true,
+                    getString(R.string.editing, person.name),
+                    person,
+                    personToGroupNameMap[person]?.name ?: "",
+                    groups
+                )
+            }
     }
 
     private fun menuResolver(menuId: Int, selectedPersons: Set<Person>, selectedGroups: Set<Group>) {
@@ -206,12 +214,16 @@ class ManagementFragment : Fragment(), DIAware {
                         .setPositiveButton(android.R.string.ok) { _, _ -> viewModel.delete(selectedPersons.map { it.toEntity(personToGroupNameMap[it]?.name ?: "") }, getString(R.string.deletePlayerSuccessfulMsg, selectedPersons.size)) }
                         .setNegativeButton(android.R.string.cancel, null).create().show()
                 } else {
-                    GroupDeleteDialogFragment.newInstance(selectedGroups.toList(), groups).show(activity?.supportFragmentManager!!, GroupDeleteDialogFragment.TAG)
+                    activity?.supportFragmentManager?.let {
+                        GroupDeleteDialogFragment.newInstance(it, selectedGroups.toList(), groups)
+                    }
 
                 }
             }
             R.id.action_move -> {
-                MovePersonsDialogFragment.newInstance(selectedPersons.toList(), this.groups).show(activity?.supportFragmentManager!!, MovePersonsDialogFragment.TAG)
+                activity?.supportFragmentManager?.let {
+                    MovePersonsDialogFragment.newInstance(it, selectedPersons.toList(), this.groups)
+                }
             }
         }
     }
@@ -237,12 +249,10 @@ class ManagementFragment : Fragment(), DIAware {
                 title = selectedGroups.size.toString()
             }
         } else if (editType == GroupEditType.EDIT) {
-            GroupEditorDialogFragment.newInstance(true, getString(R.string.editing, group.name), group).show(activity?.supportFragmentManager!!, GroupEditorDialogFragment.TAG)
-            actionMode?.finish()
+            activity?.supportFragmentManager?.let {
+                GroupEditorDialogFragment.newInstance(it, true, getString(R.string.editing, group.name), group)
+                actionMode?.finish()
+            }
         }
-
-
     }
-
-
 }

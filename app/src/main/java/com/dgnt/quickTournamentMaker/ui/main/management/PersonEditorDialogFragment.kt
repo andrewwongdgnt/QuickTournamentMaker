@@ -7,7 +7,7 @@ import android.text.TextWatcher
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.Observer
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.PersonEditorFragmentBinding
@@ -18,7 +18,13 @@ import org.kodein.di.android.x.di
 import org.kodein.di.instance
 
 
-class PersonEditorDialogFragment : DialogFragment(), DIAware {
+class PersonEditorDialogFragment(
+    private val editing: Boolean,
+    private val title: String,
+    private val person: Person,
+    private val groupName: String,
+    private val groups: List<Group>
+) : DialogFragment(), DIAware {
     override val di by di()
     private val viewModelFactory: PersonEditorViewModelFactory by instance()
 
@@ -26,22 +32,15 @@ class PersonEditorDialogFragment : DialogFragment(), DIAware {
 
         const val TAG = "PersonEditorDialogFragment"
 
-        private const val KEY_EDITING = "KEY_EDITING"
-        private const val KEY_TITLE = "KEY_TITLE"
-        private const val KEY_PERSON = "KEY_PERSON"
-        private const val KEY_GROUP_NAME = "KEY_GROUP_NAME"
-        private const val KEY_GROUPS = "KEY_GROUPS"
-
-        fun newInstance(editing: Boolean, title: String, person: Person, groupName: String, groups: List<Group>): PersonEditorDialogFragment =
-            PersonEditorDialogFragment().apply {
-                arguments = Bundle().apply {
-                    putBoolean(KEY_EDITING, editing)
-                    putString(KEY_TITLE, title)
-                    putParcelable(KEY_PERSON, person)
-                    putString(KEY_GROUP_NAME, groupName)
-                    putParcelableArrayList(KEY_GROUPS, ArrayList<Group>(groups))
-                }
-            }
+        fun newInstance(
+            fragmentManager: FragmentManager,
+            editing: Boolean,
+            title: String,
+            person: Person,
+            groupName: String,
+            groups: List<Group>
+        ) =
+            PersonEditorDialogFragment(editing, title, person, groupName, groups).show(fragmentManager, TAG)
     }
 
     private lateinit var binding: PersonEditorFragmentBinding
@@ -71,15 +70,15 @@ class PersonEditorDialogFragment : DialogFragment(), DIAware {
             }
 
 
-            viewModel.setData(arguments?.getParcelable(KEY_PERSON), arguments?.getString(KEY_GROUP_NAME), arguments?.getParcelableArrayList(KEY_GROUPS), getString(R.string.defaultGroupName))
-            val editing = arguments?.getBoolean(KEY_EDITING) == true
+            viewModel.setData(person, groupName, groups, getString(R.string.defaultGroupName))
+
             AlertDialog.Builder(activity)
-                .setTitle(arguments?.getString(KEY_TITLE))
+                .setTitle(title)
                 .setView(binding.root)
                 .setPositiveButton(if (editing) R.string.save else R.string.add, null)
                 .setNegativeButton(android.R.string.cancel, null)
                 .also {
-                    if (arguments?.getBoolean(KEY_EDITING) != true) {
+                    if (!editing) {
                         it.setNeutralButton(R.string.addAndContinue, null)
                     } else {
                         it
@@ -99,7 +98,7 @@ class PersonEditorDialogFragment : DialogFragment(), DIAware {
                             }
                         }
 
-                        val enabled = !arguments?.getParcelable<Person>(KEY_PERSON)?.name.isNullOrBlank()
+                        val enabled = person.name.isNotBlank()
                         getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = enabled
                         getButton(AlertDialog.BUTTON_NEUTRAL).isEnabled = enabled
 

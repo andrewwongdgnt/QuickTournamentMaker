@@ -110,9 +110,7 @@ class TournamentUtil {
 
                     Log.d("DGNTTAG", "start tournament with custom seed: $it")
 
-                    CustomSeedDialogFragment.newInstance(it.first, it.second).also { frag ->
-                        frag.setOnNewTournamentCallback(onNewTournamentCallback)
-                    }.show(fragmentManager, CustomSeedDialogFragment.TAG)
+                    CustomSeedDialogFragment.newInstance(fragmentManager, it.first, it.second, onNewTournamentCallback)
 
                 }
             }

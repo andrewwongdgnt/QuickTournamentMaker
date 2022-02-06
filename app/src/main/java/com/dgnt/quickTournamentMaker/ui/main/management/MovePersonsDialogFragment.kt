@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.MovePersonsFragmentBinding
@@ -14,7 +15,10 @@ import org.kodein.di.android.x.di
 import org.kodein.di.instance
 
 
-class MovePersonsDialogFragment : DialogFragment(), DIAware {
+class MovePersonsDialogFragment(
+    private val selectedPersons: List<Person>,
+    private val groups: List<Group>
+) : DialogFragment(), DIAware {
     override val di by di()
     private val viewModelFactory: MovePersonsViewModelFactory by instance()
 
@@ -22,21 +26,16 @@ class MovePersonsDialogFragment : DialogFragment(), DIAware {
 
         const val TAG = "MovePersonsDialogFragment"
 
-        private const val KEY_PERSONS = "KEY_PERSONS"
-        private const val KEY_GROUPS = "KEY_GROUPS"
-
-        fun newInstance(persons: List<Person>, group: List<Group>): MovePersonsDialogFragment =
-            MovePersonsDialogFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelableArrayList(KEY_PERSONS, ArrayList<Person>(persons))
-                    putParcelableArrayList(KEY_GROUPS, ArrayList<Group>(group))
-                }
-            }
+        fun newInstance(
+            fragmentManager: FragmentManager,
+            selectedPersons: List<Person>,
+            groups: List<Group>
+        ) =
+            MovePersonsDialogFragment(selectedPersons, groups).show(fragmentManager, TAG)
     }
 
     private lateinit var binding: MovePersonsFragmentBinding
     private lateinit var viewModel: MovePersonsViewModel
-    private lateinit var selectedPersons: List<Person>
 
     override fun onCreateDialog(savedInstanceState: Bundle?) =
 
@@ -53,9 +52,6 @@ class MovePersonsDialogFragment : DialogFragment(), DIAware {
                     Toast.makeText(context, message, Toast.LENGTH_LONG).show()
                 }
             }
-
-            selectedPersons = arguments?.getParcelableArrayList(KEY_PERSONS)!!
-            val groups = arguments?.getParcelableArrayList<Group>(KEY_GROUPS)!!
 
             binding.groupRv.adapter = GroupRecyclerViewAdapter(groups) { g: Group -> handle(g) }
 

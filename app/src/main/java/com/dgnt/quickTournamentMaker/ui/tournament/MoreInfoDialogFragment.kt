@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.MoreInfoFragmentBinding
@@ -15,6 +16,7 @@ import org.kodein.di.android.x.di
 import org.kodein.di.instance
 
 class MoreInfoDialogFragment(
+    private val extendedTournamentInformation: ExtendedTournamentInformation,
     private val listener: OnEditListener<TournamentInformation>
 ) : DialogFragment(), DIAware {
     override val di by di()
@@ -23,17 +25,13 @@ class MoreInfoDialogFragment(
     companion object {
 
         const val TAG = "MoreInfoDialogFragment"
-        private const val KEY_EXTENDED_TOURNAMENT_INFO = "KEY_EXTENDED_TOURNAMENT_INFO"
 
         fun newInstance(
+            fragmentManager: FragmentManager,
             extendedTournamentInformation: ExtendedTournamentInformation,
             listener: OnEditListener<TournamentInformation>
         ) =
-            MoreInfoDialogFragment(listener).apply {
-                arguments = Bundle().apply {
-                    putParcelable(KEY_EXTENDED_TOURNAMENT_INFO, extendedTournamentInformation)
-                }
-            }
+            MoreInfoDialogFragment(extendedTournamentInformation, listener).show(fragmentManager, TAG)
     }
 
 
@@ -42,7 +40,6 @@ class MoreInfoDialogFragment(
 
         activity?.let { activity ->
 
-            val extendedTournamentInformation = arguments?.getParcelable<ExtendedTournamentInformation>(KEY_EXTENDED_TOURNAMENT_INFO)!!
             val binding = MoreInfoFragmentBinding.inflate(activity.layoutInflater)
 
             val viewModel = ViewModelProvider(this, viewModelFactory)[MoreInfoViewModel::class.java]

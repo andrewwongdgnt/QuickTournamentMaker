@@ -185,8 +185,9 @@ class TournamentActivity : AppCompatActivity(), DIAware {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         viewModel.tournament.value?.apply {
             when (item.itemId) {
-                R.id.action_currentRanking -> RankDialogFragment.newInstance(getRanking()).show(supportFragmentManager, RankDialogFragment.TAG)
+                R.id.action_currentRanking -> RankDialogFragment.newInstance(supportFragmentManager, getRanking())
                 R.id.action_moreInfo -> MoreInfoDialogFragment.newInstance(
+                    supportFragmentManager,
                     ExtendedTournamentInformation(
                         tournamentInformation,
                         rounds.size,
@@ -195,20 +196,20 @@ class TournamentActivity : AppCompatActivity(), DIAware {
                         sortedNormalParticipants.size
                     ),
                     tournamentEditListener
-                ).show(supportFragmentManager, MoreInfoDialogFragment.TAG)
-                R.id.action_rebuildTournament -> RebuildTournamentDialogFragment.newInstance(tournamentInformation, orderedParticipants).show(supportFragmentManager, RebuildTournamentDialogFragment.TAG)
+                )
+                R.id.action_rebuildTournament -> RebuildTournamentDialogFragment.newInstance(supportFragmentManager, tournamentInformation, orderedParticipants)
                 R.id.action_editAParticipant -> {
                     val sortedParticipants = sortedNormalParticipants
                     AlertDialog.Builder(this@TournamentActivity)
                         .setAdapter(ParticipantArrayAdapter(this@TournamentActivity, sortedParticipants)) { _, i ->
-                            ParticipantEditorDialogFragment.newInstance(sortedParticipants[i], participantEditListener).show(supportFragmentManager, ParticipantEditorDialogFragment.TAG)
+                            ParticipantEditorDialogFragment.newInstance(supportFragmentManager, sortedParticipants[i], participantEditListener)
                         }
                         .setTitle(R.string.participantSelectionHint)
                         .create()
                         .show()
                 }
-                R.id.action_editAMatchUp -> MatchUpListDialogFragment.newInstance(roundGroups, matchUpEditListener).show(supportFragmentManager, MatchUpListDialogFragment.TAG)
-                R.id.action_editARound -> RoundListDialogFragment.newInstance(roundGroups, roundEditListener).show(supportFragmentManager, RoundListDialogFragment.TAG)
+                R.id.action_editAMatchUp -> MatchUpListDialogFragment.newInstance(supportFragmentManager, roundGroups, matchUpEditListener)
+                R.id.action_editARound -> RoundListDialogFragment.newInstance(supportFragmentManager, roundGroups, roundEditListener)
                 R.id.action_exportTournamentAsFile -> {
                     val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
                         .setType("application/qtm")

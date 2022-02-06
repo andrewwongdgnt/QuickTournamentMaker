@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.MatchUpEditorFragmentBinding
@@ -16,6 +17,10 @@ import org.kodein.di.android.x.di
 import org.kodein.di.instance
 
 class MatchUpEditorDialogFragment(
+    private val matchUp: MatchUp,
+    private val roundGroupIndex: Int,
+    private val roundIndex: Int,
+    private val matchUpIndex: Int,
     private val listener: OnEditListener<MatchUp>
 ) : DialogFragment(), DIAware {
     override val di by di()
@@ -24,27 +29,21 @@ class MatchUpEditorDialogFragment(
     companion object {
         const val TAG = "MatchUpEditorDialogFragment"
 
-        private const val KEY_MATCH_UP = "KEY_MATCH_UP"
-        private const val KEY_ROUND_GROUP_INDEX = "KEY_ROUND_GROUP_INDEX"
-        private const val KEY_ROUND_INDEX = "KEY_ROUND_INDEX"
-        private const val KEY_MATCH_UP_INDEX = "KEY_MATCH_UP_INDEX"
-
         fun newInstance(
+            fragmentManager: FragmentManager,
             matchUp: MatchUp,
             roundGroupIndex: Int,
             roundIndex: Int,
             matchUpIndex: Int,
             listener: OnEditListener<MatchUp>
         ) =
-            MatchUpEditorDialogFragment(listener).apply {
-                arguments = Bundle().apply {
-                    putParcelable(KEY_MATCH_UP, matchUp)
-                    putInt(KEY_ROUND_GROUP_INDEX, roundGroupIndex)
-                    putInt(KEY_ROUND_INDEX, roundIndex)
-                    putInt(KEY_MATCH_UP_INDEX, matchUpIndex)
-                }
-
-            }
+            MatchUpEditorDialogFragment(
+                matchUp,
+                roundGroupIndex,
+                roundIndex,
+                matchUpIndex,
+                listener,
+            ).show(fragmentManager, TAG)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?) =
@@ -53,11 +52,6 @@ class MatchUpEditorDialogFragment(
             val viewModel = ViewModelProvider(this, viewModelFactory)[MatchUpEditorViewModel::class.java]
             binding.vm = viewModel
             binding.lifecycleOwner = this
-
-            val matchUp = arguments?.getParcelable<MatchUp>(KEY_MATCH_UP)!!
-            val roundGroupIndex = arguments?.getInt(KEY_ROUND_GROUP_INDEX)!!
-            val roundIndex = arguments?.getInt(KEY_ROUND_INDEX)!!
-            val matchUpIndex = arguments?.getInt(KEY_MATCH_UP_INDEX)!!
 
             viewModel.setData(resources, matchUp, resources.getStringArray(R.array.colorOptionsNames).asList().zip(resources.getIntArray(R.array.colorOptions).asList()).map {
                 ColorInfo(it.first, it.second)
