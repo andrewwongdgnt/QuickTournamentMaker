@@ -14,12 +14,11 @@ fun <K, V> MutableMap<K, V>.update(map: Map<K, V>) {
     this.putAll(map)
 }
 
-fun <E> Collection<E>.shuffledIf(condition: Boolean): Collection<E> {
-
-    return if (condition) this.shuffled() else this
-}
+fun <E> Collection<E>.shuffledIf(condition: Boolean) = if (condition) this.shuffled() else this
 
 fun OutputStream.writeText(
     text: String,
     charset: Charset = Charsets.UTF_8
-): Unit = write(text.toByteArray(charset))
+) = write(text.toByteArray(charset))
+
+fun String?.toIntOr(default: Int) = this?.toIntOrNull() ?: default

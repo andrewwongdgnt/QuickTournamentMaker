@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentType
 import com.dgnt.quickTournamentMaker.service.interfaces.IPreferenceService
 import org.joda.time.LocalDateTime
+import org.joda.time.format.DateTimeFormat
 
 class LoadTournamentFilterOptionsViewModel(private val preferenceService: IPreferenceService) : ViewModel(), Observable, IPreferenceService by preferenceService {
 
@@ -93,20 +94,30 @@ class LoadTournamentFilterOptionsViewModel(private val preferenceService: IPrefe
         maxParticipantsFilteredOn.value = preferenceService.isFilteredOnMaximumParticipants()
         maxParticipants.value = preferenceService.getMaximumParticipantsToFilterOn().toString()
 
+        val dateFormat = DateTimeFormat.mediumDate()
+
         earliestCreatedDateFilteredOn.value = preferenceService.isFilteredOnEarliestCreatedDate()
-        earliestCreatedDate.value = preferenceService.getEarliestCreatedDateToFilterOn().toString()
-        earliestCreatedDateBacking.value = preferenceService.getEarliestCreatedDateToFilterOn()
+        preferenceService.getEarliestCreatedDateToFilterOn().let {
+            earliestCreatedDate.value = dateFormat.print(it)
+            earliestCreatedDateBacking.value = it
+        }
 
         latestCreatedDateFilteredOn.value = preferenceService.isFilteredOnLatestCreatedDate()
-        latestCreatedDate.value = preferenceService.getLatestCreatedDateToFilterOn().toString()
-        latestCreatedDateBacking.value = preferenceService.getLatestCreatedDateToFilterOn()
+        preferenceService.getLatestCreatedDateToFilterOn().let {
+            latestCreatedDate.value = dateFormat.print(it)
+            latestCreatedDateBacking.value = it
+        }
 
         earliestModifiedDateFilteredOn.value = preferenceService.isFilteredOnEarliestModifiedDate()
-        earliestModifiedDate.value = preferenceService.getEarliestModifiedDateToFilterOn().toString() //TODO format this date string
-        earliestModifiedDateBacking.value = preferenceService.getEarliestModifiedDateToFilterOn()
+        preferenceService.getEarliestModifiedDateToFilterOn().let {
+            earliestModifiedDate.value = dateFormat.print(it)
+            earliestModifiedDateBacking.value = it
+        }
 
         latestModifiedDateFilteredOn.value = preferenceService.isFilteredOnLatestModifiedDate()
-        latestModifiedDate.value = preferenceService.getLatestModifiedDateToFilterOn().toString()//TODO format this date string
-        latestModifiedDateBacking.value = preferenceService.getLatestModifiedDateToFilterOn()
+        preferenceService.getLatestModifiedDateToFilterOn().let {
+            latestModifiedDate.value = dateFormat.print(it)
+            latestModifiedDateBacking.value = it
+        }
     }
 }

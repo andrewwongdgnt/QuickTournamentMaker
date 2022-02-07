@@ -14,10 +14,7 @@ class TournamentInformationCreatorService : ITournamentInformationCreatorService
         seedType: SeedType,
         rankConfig: IRankConfig
     ): TournamentInformation {
-        val title = if (titleCandidate.isNotBlank())
-            titleCandidate
-        else
-            alternativeTitles.getValue(tournamentType)
+        val title = titleCandidate.ifBlank { alternativeTitles.getValue(tournamentType) }
 
         return TournamentInformation(title, description, tournamentType, seedType, rankConfig, LocalDateTime.now())
     }

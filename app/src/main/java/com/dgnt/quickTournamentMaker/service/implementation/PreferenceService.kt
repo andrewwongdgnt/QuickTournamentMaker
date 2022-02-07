@@ -205,7 +205,7 @@ class PreferenceService(private val sharedPreferences: SharedPreferences, privat
         }
 
     override fun getEarliestCreatedDateToFilterOn() =
-        LocalDateTime(sharedPreferences.getLong(PREF_FILTER_EARLIEST_CREATED_EPOCH_KEY, 0))
+        LocalDateTime(sharedPreferences.getLong(PREF_FILTER_EARLIEST_CREATED_EPOCH_KEY, LocalDateTime().toDateTime().millis))
 
     override fun setEarliestCreatedDateToFilterOn(date: LocalDateTime) =
         sharedPreferences.edit().run {
@@ -223,7 +223,7 @@ class PreferenceService(private val sharedPreferences: SharedPreferences, privat
         }
 
     override fun getLatestCreatedDateToFilterOn() =
-        LocalDateTime(sharedPreferences.getLong(PREF_FILTER_LATEST_CREATED_EPOCH_KEY, 0))
+        LocalDateTime(sharedPreferences.getLong(PREF_FILTER_LATEST_CREATED_EPOCH_KEY, LocalDateTime().toDateTime().millis))
 
     override fun setLatestCreatedDateToFilterOn(date: LocalDateTime) =
         sharedPreferences.edit().run {
@@ -241,7 +241,7 @@ class PreferenceService(private val sharedPreferences: SharedPreferences, privat
         }
 
     override fun getEarliestModifiedDateToFilterOn() =
-        LocalDateTime(sharedPreferences.getLong(PREF_FILTER_EARLIEST_MODIFIED_EPOCH_KEY, 0))
+        LocalDateTime(sharedPreferences.getLong(PREF_FILTER_EARLIEST_MODIFIED_EPOCH_KEY, LocalDateTime().toDateTime().millis))
 
     override fun setEarliestModifiedDateToFilterOn(date: LocalDateTime) =
         sharedPreferences.edit().run {
@@ -259,7 +259,7 @@ class PreferenceService(private val sharedPreferences: SharedPreferences, privat
         }
 
     override fun getLatestModifiedDateToFilterOn() =
-        LocalDateTime(sharedPreferences.getLong(PREF_FILTER_LATEST_MODIFIED_EPOCH_KEY, 0))
+        LocalDateTime(sharedPreferences.getLong(PREF_FILTER_LATEST_MODIFIED_EPOCH_KEY, LocalDateTime().toDateTime().millis))
 
     override fun setLatestModifiedDateToFilterOn(date: LocalDateTime) =
         sharedPreferences.edit().run {

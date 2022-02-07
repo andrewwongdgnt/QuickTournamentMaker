@@ -18,6 +18,7 @@ import com.dgnt.quickTournamentMaker.util.TournamentUtil
 import com.thoughtbot.expandablecheckrecyclerview.models.CheckedExpandableGroup
 import com.thoughtbot.expandablerecyclerview.listeners.GroupExpandCollapseListener
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup
+import org.joda.time.LocalDateTime
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 import org.kodein.di.instance
@@ -134,7 +135,7 @@ class HomeFragment : Fragment(), DIAware {
     }
 
     private fun setVMData(viewModel: HomeViewModel) {
-        val date = DateFormat.getDateInstance(DateFormat.SHORT).format(System.currentTimeMillis())
+        val date = DateFormat.getDateInstance(DateFormat.SHORT).format(LocalDateTime().toDateTime().millis)
         //TODO dont pass the date here. Do it in TournamentInformationCreatorService
         viewModel.setData(
             mapOf(
