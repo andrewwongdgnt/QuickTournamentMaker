@@ -206,6 +206,7 @@
                     android:layout_height="wrap_content"
                     android:enabled="@{vm.earliestCreatedDateFilteredOn}"
                     android:inputType="date"
+                    android:focusable="false"
                     android:tag="@{vm.earliestCreatedDateBacking}"
                     android:text="@={vm.earliestCreatedDate}"
                     app:layout_constraintBottom_toBottomOf="@id/earliestCreatedDate_cb"
@@ -225,6 +226,7 @@
             <EditText
                     android:id="@+id/latestCreatedDate_et"
                     android:layout_width="0dp"
+                    android:focusable="false"
                     android:layout_height="wrap_content"
                     android:enabled="@{vm.latestCreatedDateFilteredOn}"
                     android:inputType="date"
@@ -266,6 +268,7 @@
             <EditText
                     android:id="@+id/earliestModifiedDate_et"
                     android:layout_width="0dp"
+                    android:focusable="false"
                     android:layout_height="wrap_content"
                     android:enabled="@{vm.earliestModifiedDateFilteredOn}"
                     android:inputType="date"
@@ -293,6 +296,7 @@
                     android:text="@={vm.latestModifiedDate}"
                     app:layout_constraintBottom_toBottomOf="@id/latestModifiedDate_cb"
                     app:layout_constraintEnd_toEndOf="parent"
+                    android:focusable="false"
                     app:layout_constraintStart_toEndOf="@id/latestModifiedDate_cb"
                     app:layout_constraintTop_toTopOf="@id/latestModifiedDate_cb" />
 
