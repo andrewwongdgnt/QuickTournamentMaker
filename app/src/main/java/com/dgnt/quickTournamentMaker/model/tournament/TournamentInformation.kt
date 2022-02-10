@@ -15,6 +15,6 @@ data class TournamentInformation(
     var creationDate: LocalDateTime,
     var lastModifiedDate: LocalDateTime? = null
 ) : Parcelable {
-    constructor(title: String, description: String, creationDate: LocalDateTime) : this(title, description, TournamentType.ELIMINATION, SeedType.RANDOM, RankPriorityConfig.DEFAULT, creationDate)
+    constructor(title: String, description: String) : this(title, description, TournamentType.ELIMINATION, SeedType.RANDOM, RankPriorityConfig.DEFAULT, LocalDateTime.now())
 
 }

@@ -5,12 +5,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.dgnt.quickTournamentMaker.databinding.TournamentListItemBinding
 import com.dgnt.quickTournamentMaker.model.tournament.RestoredTournamentInformation
+import com.dgnt.quickTournamentMaker.util.update
 
 class RestoredTournamentInformationRecyclerViewAdapter(
-    private val items: List<RestoredTournamentInformation>,
+    private val items: MutableList<RestoredTournamentInformation>,
     private val moreInfoListener: (RestoredTournamentInformation) -> Unit,
     private val loadListener: (RestoredTournamentInformation) -> Unit,
 ) : RecyclerView.Adapter<RestoredTournamentInformationItemViewHolder>() {
+
+    val allItems = items;
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestoredTournamentInformationItemViewHolder = RestoredTournamentInformationItemViewHolder( TournamentListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false), moreInfoListener, loadListener)
 
@@ -18,5 +21,9 @@ class RestoredTournamentInformationRecyclerViewAdapter(
 
     override fun getItemCount(): Int = items.size
 
+    fun updateList(newItems: List<RestoredTournamentInformation>) {
+        items.update(newItems)
+        notifyDataSetChanged()
+    }
 
 }

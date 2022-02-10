@@ -41,7 +41,7 @@ data class Tournament(
 
     val matchUps = rounds.flatMap { it.matchUps }
 
-    fun getMatchUpsWithSingleByes() = matchUps.filter { it.containsBye(true) }
+    fun getNumMatchUpsWithSingleByes() = matchUps.count { it.containsBye(true) }
 
     val orderedParticipants = roundGroups.getOrNull(0)?.rounds?.getOrNull(0)?.matchUps?.flatMap { listOf(it.participant1, it.participant2) } ?: listOf()
 

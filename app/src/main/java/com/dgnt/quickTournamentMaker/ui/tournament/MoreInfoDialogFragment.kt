@@ -67,7 +67,7 @@ class MoreInfoDialogFragment(
                 .setTitle(R.string.moreInfo)
                 .setView(binding.root)
                 .setPositiveButton(android.R.string.ok) { _, _ ->
-                    listener.onEdit(TournamentInformation(viewModel.title.value ?: "", viewModel.description.value ?: "", viewModel.creationDate))
+                    listener.onEdit(TournamentInformation(viewModel.title.value ?: "", viewModel.description.value ?: ""))
                 }
                 .setNegativeButton(android.R.string.cancel, null)
                 .create()

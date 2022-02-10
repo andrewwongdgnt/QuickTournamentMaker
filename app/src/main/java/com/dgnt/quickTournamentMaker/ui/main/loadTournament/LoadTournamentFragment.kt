@@ -10,6 +10,7 @@ import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.LoadTournamentFragmentBinding
 import com.dgnt.quickTournamentMaker.model.loadTournament.Sort
 import com.dgnt.quickTournamentMaker.model.loadTournament.ViewMode
+import com.dgnt.quickTournamentMaker.model.tournament.RestoredTournamentInformation
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
 import com.dgnt.quickTournamentMaker.ui.main.common.OnEditListener
 import com.dgnt.quickTournamentMaker.ui.tournament.MoreInfoDialogFragment
@@ -28,6 +29,8 @@ class LoadTournamentFragment : Fragment(), DIAware {
 
     private lateinit var binding: LoadTournamentFragmentBinding
     private lateinit var viewModel: LoadTournamentViewModel
+
+    private lateinit var mainAdapter: RestoredTournamentInformationRecyclerViewAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -103,7 +106,7 @@ class LoadTournamentFragment : Fragment(), DIAware {
                 Log.d("DGNTTAG", "tournament info: $it")
 
                 binding.tournamentRv.adapter = RestoredTournamentInformationRecyclerViewAdapter(
-                    it,
+                    it.toMutableList(),
                     { restoredTournamentInformation ->
                         activity?.supportFragmentManager?.let { fragManager ->
                             MoreInfoDialogFragment.newInstance(fragManager, restoredTournamentInformation.extendedTournamentInformation, tournamentEditListener)
@@ -112,7 +115,9 @@ class LoadTournamentFragment : Fragment(), DIAware {
                     { restoredTournamentInformation ->
                         startActivity(TournamentActivity.createIntent(this, restoredTournamentInformation))
                     }
-                )
+                ).also { adapter ->
+                    mainAdapter = adapter
+                }
             }
         }
 
@@ -126,7 +131,7 @@ class LoadTournamentFragment : Fragment(), DIAware {
 
     private val filterListener = object : OnEditListener<Unit> {
         override fun onEdit(editedValue: Unit) {
-
+            mainAdapter.updateList(listOf())
         }
     }
 

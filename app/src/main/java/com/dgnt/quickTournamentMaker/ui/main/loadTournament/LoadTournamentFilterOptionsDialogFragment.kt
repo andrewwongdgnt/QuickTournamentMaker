@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.LoadTournamentFilterOptionsFragmentBinding
+import com.dgnt.quickTournamentMaker.model.tournament.RestoredTournamentInformation
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentType
 import com.dgnt.quickTournamentMaker.ui.main.common.OnEditListener
 import com.dgnt.quickTournamentMaker.util.toIntOr

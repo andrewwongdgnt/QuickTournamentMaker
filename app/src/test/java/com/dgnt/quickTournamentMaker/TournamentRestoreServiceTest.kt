@@ -28,8 +28,8 @@ class TournamentRestoreServiceTest {
     private val sut = TournamentRestoreService()
 
     private lateinit var tournament: Tournament
-    val creationTime = LocalDateTime(2020, 3, 12, 4, 23, 23)
-    val lastModifiedTime = LocalDateTime(2020, 6, 14, 6, 43, 3)
+    private val creationTime = LocalDateTime(2020, 3, 12, 4, 23, 23)
+    private val lastModifiedTime = LocalDateTime(2020, 6, 14, 6, 43, 3)
 
     @Before
     fun setUp() {
