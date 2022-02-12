@@ -295,11 +295,29 @@ class TournamentSortAndFilterViaSharedPreferenceServiceTest {
     }
 
     @Test
+    fun testMin1000Participants() {
+        PowerMockito.`when`(mockPreferenceService.isFilteredOnMinimumParticipants()).thenReturn(true)
+        PowerMockito.`when`(mockPreferenceService.getMinimumParticipantsToFilterOn()).thenReturn(1000)
+
+        Assert.assertTrue(sut.update(list).isEmpty())
+
+    }
+
+    @Test
     fun testMax5Participants() {
         PowerMockito.`when`(mockPreferenceService.isFilteredOnMaximumParticipants()).thenReturn(true)
         PowerMockito.`when`(mockPreferenceService.getMaximumParticipantsToFilterOn()).thenReturn(5)
 
         Assert.assertEquals(listOf(tournament4, tournament5, tournament6, tournament7, tournament8), sut.update(list))
+
+    }
+
+    @Test
+    fun testMax0Participants() {
+        PowerMockito.`when`(mockPreferenceService.isFilteredOnMaximumParticipants()).thenReturn(true)
+        PowerMockito.`when`(mockPreferenceService.getMaximumParticipantsToFilterOn()).thenReturn(0)
+
+        Assert.assertTrue(sut.update(list).isEmpty())
 
     }
 
