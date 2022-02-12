@@ -205,7 +205,7 @@ class TournamentSortAndFilterViaSharedPreferenceServiceTest {
             foundationalTournamentEntities
         )
 
-        list = listOf()
+        list = listOf(tournament1, tournament2, tournament3, tournament4, tournament5, tournament6, tournament7, tournament8, tournament9, tournament10)
 
         // Everything disabled to start
         listOf(TournamentType.ELIMINATION, TournamentType.DOUBLE_ELIMINATION, TournamentType.ROUND_ROBIN, TournamentType.SWISS, TournamentType.SURVIVAL).forEach {
