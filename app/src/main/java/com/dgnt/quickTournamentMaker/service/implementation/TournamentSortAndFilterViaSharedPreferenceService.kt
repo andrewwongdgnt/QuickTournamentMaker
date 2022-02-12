@@ -9,23 +9,37 @@ class TournamentSortAndFilterViaSharedPreferenceService(private val preferenceSe
     override fun update(restoredTournamentInformationList: List<RestoredTournamentInformation>) =
         TournamentType.values().map { preferenceService.isFilteredOnTournamentType(it) }.run { all { it } || none { it } }.let { allOrNone ->
 
-            if (!allOrNone) {
-
-                var list = restoredTournamentInformationList
+            (if (!allOrNone) {
+                var list = restoredTournamentInformationList.asSequence()
 
                 TournamentType.values().forEach { type ->
-                    list = list.filter { (preferenceService.isFilteredOnTournamentType(type) && it.extendedTournamentInformation.basicTournamentInformation.tournamentType == type) || !preferenceService.isFilteredOnTournamentType(type) }
+                    list = list.filter { filterOn({ preferenceService.isFilteredOnTournamentType(type) }, { it.extendedTournamentInformation.basicTournamentInformation.tournamentType == type }) }
                 }
-                list
+                list.toList()
             } else {
                 restoredTournamentInformationList
-            }.let { finalList ->
-                finalList
-                    .filter { preferenceService.isFilteredOnMinimumParticipants() && it.extendedTournamentInformation.numParticipants >= preferenceService.getMinimumParticipantsToFilterOn() || !preferenceService.isFilteredOnMinimumParticipants() }
-                    .filter { preferenceService.isFilteredOnMaximumParticipants() && it.extendedTournamentInformation.numParticipants <= preferenceService.getMaximumParticipantsToFilterOn() || !preferenceService.isFilteredOnMaximumParticipants() }
-            }
+            })
+                .asSequence()
+                .filter { filterOn({ preferenceService.isFilteredOnMinimumParticipants() }, { it.extendedTournamentInformation.numParticipants >= preferenceService.getMinimumParticipantsToFilterOn() }) }
+                .filter { filterOn({ preferenceService.isFilteredOnMaximumParticipants() }, { it.extendedTournamentInformation.numParticipants <= preferenceService.getMaximumParticipantsToFilterOn() }) }
+                .filter { filterOn({ preferenceService.isFilteredOnEarliestCreatedDate() }, { it.extendedTournamentInformation.basicTournamentInformation.creationDate >= preferenceService.getEarliestCreatedDateToFilterOn() }) }
+                .filter { filterOn({ preferenceService.isFilteredOnLatestCreatedDate() }, { it.extendedTournamentInformation.basicTournamentInformation.creationDate <= preferenceService.getLatestCreatedDateToFilterOn() }) }
+                .filter {
+                    it.extendedTournamentInformation.basicTournamentInformation.lastModifiedDate?.let { lastModifiedDate ->
+                        filterOn({ preferenceService.isFilteredOnEarliestModifiedDate() }, { lastModifiedDate >= preferenceService.getEarliestModifiedDateToFilterOn() })
+                    } ?: true
+                }
+                .filter {
+                    it.extendedTournamentInformation.basicTournamentInformation.lastModifiedDate?.let { lastModifiedDate ->
+                        filterOn({ preferenceService.isFilteredOnLatestModifiedDate() }, { lastModifiedDate <= preferenceService.getLatestModifiedDateToFilterOn() })
+                    } ?: true
+                }
+                .toList()
 
         }
+
+    // lambdas of () -> Boolean because we still want short circuiting to happen
+    private inline fun filterOn(preferenceValue: () -> Boolean, actualValue: () -> Boolean) = preferenceValue() && actualValue() || !preferenceValue()
 
 
 }
