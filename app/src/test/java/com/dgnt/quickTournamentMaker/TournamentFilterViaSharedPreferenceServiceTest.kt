@@ -1,7 +1,7 @@
 package com.dgnt.quickTournamentMaker
 
 import com.dgnt.quickTournamentMaker.model.tournament.*
-import com.dgnt.quickTournamentMaker.service.implementation.TournamentSortAndFilterViaSharedPreferenceService
+import com.dgnt.quickTournamentMaker.service.implementation.TournamentFilterViaSharedPreferenceService
 import com.dgnt.quickTournamentMaker.service.interfaces.IPreferenceService
 import org.joda.time.LocalDateTime
 import org.junit.Assert
@@ -9,12 +9,12 @@ import org.junit.Before
 import org.junit.Test
 import org.powermock.api.mockito.PowerMockito
 
-class TournamentSortAndFilterViaSharedPreferenceServiceTest {
+class TournamentFilterViaSharedPreferenceServiceTest {
 
     private val mockPreferenceService = PowerMockito.mock(IPreferenceService::class.java)
 
 
-    private val sut = TournamentSortAndFilterViaSharedPreferenceService(mockPreferenceService)
+    private val sut = TournamentFilterViaSharedPreferenceService(mockPreferenceService)
 
     private lateinit var list: List<RestoredTournamentInformation>
 

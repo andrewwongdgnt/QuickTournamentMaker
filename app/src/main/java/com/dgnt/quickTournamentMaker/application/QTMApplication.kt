@@ -76,7 +76,7 @@ class QTMApplication() : Application(), DIAware {
         bind() from provider { MatchUpEditorViewModelFactory(instance()) }
         bind() from provider { RoundEditorViewModelFactory() }
         bind() from provider { CustomSeedViewModelFactory(instance()) }
-        bind() from provider { LoadTournamentViewModelFactory(instance(), instance(), instance(), instance(), instance(), instance()) }
+        bind() from provider { LoadTournamentViewModelFactory(instance(), instance(), instance(), instance(), instance(), instance(), instance()) }
         bind() from provider { LoadTournamentFilterOptionsViewModelFactory(instance()) }
 
         //Service
@@ -156,6 +156,7 @@ class QTMApplication() : Application(), DIAware {
         bind<ITournamentInitiatorService>() with singleton { TournamentInitiatorService(instance()) }
         bind<ITournamentDataTransformerService>() with singleton { TournamentDataTransformerService(instance()) }
         bind<ITournamentRestoreService>() with singleton { TournamentRestoreService() }
+        bind<ITournamentFilterService>() with singleton { TournamentFilterViaSharedPreferenceService(instance()) }
     }
 
 

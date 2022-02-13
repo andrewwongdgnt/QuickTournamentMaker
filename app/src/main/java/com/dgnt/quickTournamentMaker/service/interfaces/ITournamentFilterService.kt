@@ -2,7 +2,7 @@ package com.dgnt.quickTournamentMaker.service.interfaces
 
 import com.dgnt.quickTournamentMaker.model.tournament.RestoredTournamentInformation
 
-interface ITournamentSortAndFilterService {
+interface ITournamentFilterService {
 
     /**
      * takes in a base list of RestoredTournamentInformation and apply a filter and sort

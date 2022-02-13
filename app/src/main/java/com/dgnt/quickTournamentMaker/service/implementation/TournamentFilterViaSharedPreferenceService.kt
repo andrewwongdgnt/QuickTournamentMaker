@@ -3,9 +3,9 @@ package com.dgnt.quickTournamentMaker.service.implementation
 import com.dgnt.quickTournamentMaker.model.tournament.RestoredTournamentInformation
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentType
 import com.dgnt.quickTournamentMaker.service.interfaces.IPreferenceService
-import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentSortAndFilterService
+import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentFilterService
 
-class TournamentSortAndFilterViaSharedPreferenceService(private val preferenceService: IPreferenceService) : ITournamentSortAndFilterService {
+class TournamentFilterViaSharedPreferenceService(private val preferenceService: IPreferenceService) : ITournamentFilterService {
     override fun update(restoredTournamentInformationList: List<RestoredTournamentInformation>) =
         TournamentType.values().map { preferenceService.isFilteredOnTournamentType(it) }.run { all { it } || none { it } }.let { allOrNone ->
 
