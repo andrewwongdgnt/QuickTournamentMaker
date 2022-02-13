@@ -333,6 +333,15 @@ class TournamentFilterViaSharedPreferenceServiceTest {
     }
 
     @Test
+    fun testEarliestCreatedDateTimeAgnostic() {
+        PowerMockito.`when`(mockPreferenceService.isFilteredOnEarliestCreatedDate()).thenReturn(true)
+        PowerMockito.`when`(mockPreferenceService.getEarliestCreatedDateToFilterOn()).thenReturn(LocalDateTime(2021, 12, 10, 7, 7, 7))
+
+        Assert.assertEquals(listOf(tournament1, tournament3, tournament5, tournament8, tournament9, tournament10), sut.update(list))
+
+    }
+
+    @Test
     fun testEarliestCreatedDateInDistantFuture() {
         PowerMockito.`when`(mockPreferenceService.isFilteredOnEarliestCreatedDate()).thenReturn(true)
         PowerMockito.`when`(mockPreferenceService.getEarliestCreatedDateToFilterOn()).thenReturn(LocalDateTime(3021, 12, 10, 0, 0, 0))
@@ -344,10 +353,17 @@ class TournamentFilterViaSharedPreferenceServiceTest {
     @Test
     fun testLatestCreatedDate() {
         PowerMockito.`when`(mockPreferenceService.isFilteredOnLatestCreatedDate()).thenReturn(true)
-        PowerMockito.`when`(mockPreferenceService.getLatestCreatedDateToFilterOn()).thenReturn(LocalDateTime(2021, 12, 10, 0, 0, 0))
+        PowerMockito.`when`(mockPreferenceService.getLatestCreatedDateToFilterOn()).thenReturn( LocalDateTime(2021, 6, 11, 13, 4, 34))
 
-        Assert.assertEquals(listOf(tournament2, tournament4, tournament5, tournament6, tournament7), sut.update(list))
+        Assert.assertEquals(listOf(tournament4, tournament6, tournament7), sut.update(list))
+    }
 
+    @Test
+    fun testLatestCreatedDateTimeAgnostic() {
+        PowerMockito.`when`(mockPreferenceService.isFilteredOnLatestCreatedDate()).thenReturn(true)
+        PowerMockito.`when`(mockPreferenceService.getLatestCreatedDateToFilterOn()).thenReturn( LocalDateTime(2021, 6, 11, 0, 0, 0))
+
+        Assert.assertEquals(listOf(tournament4, tournament6, tournament7), sut.update(list))
     }
 
     @Test
@@ -365,7 +381,14 @@ class TournamentFilterViaSharedPreferenceServiceTest {
         PowerMockito.`when`(mockPreferenceService.getEarliestModifiedDateToFilterOn()).thenReturn(LocalDateTime(2010, 4, 30, 0, 0, 0))
 
         Assert.assertEquals(listOf(tournament1, tournament2, tournament4, tournament5, tournament6, tournament7, tournament8, tournament9, tournament10), sut.update(list))
+    }
 
+    @Test
+    fun testEarliestModifiedDateTimeAgnostic() {
+        PowerMockito.`when`(mockPreferenceService.isFilteredOnEarliestModifiedDate()).thenReturn(true)
+        PowerMockito.`when`(mockPreferenceService.getEarliestModifiedDateToFilterOn()).thenReturn(LocalDateTime(2010, 4, 30, 2, 3, 4))
+
+        Assert.assertEquals(listOf(tournament1, tournament2, tournament4, tournament5, tournament6, tournament7, tournament8, tournament9, tournament10), sut.update(list))
     }
 
     @Test
@@ -387,6 +410,15 @@ class TournamentFilterViaSharedPreferenceServiceTest {
     }
 
     @Test
+    fun testLatestModifiedDateTimeAgnostic() {
+        PowerMockito.`when`(mockPreferenceService.isFilteredOnLatestModifiedDate()).thenReturn(true)
+        PowerMockito.`when`(mockPreferenceService.getLatestModifiedDateToFilterOn()).thenReturn(LocalDateTime(2009, 1, 13, 0, 0, 0))
+
+        Assert.assertEquals(listOf(tournament3, tournament6, tournament7, tournament8, tournament9, tournament10), sut.update(list))
+
+    }
+
+    @Test
     fun testLatestModifiedDateLongLongTimeAgo() {
         PowerMockito.`when`(mockPreferenceService.isFilteredOnLatestModifiedDate()).thenReturn(true)
         PowerMockito.`when`(mockPreferenceService.getLatestModifiedDateToFilterOn()).thenReturn(LocalDateTime(1021, 12, 10, 0, 0, 0))
@@ -403,6 +435,34 @@ class TournamentFilterViaSharedPreferenceServiceTest {
 
         Assert.assertEquals(listOf(tournament1, tournament2), sut.update(list))
 
+    }
+
+    @Test
+    fun testEliminationAndDoubleEliminationType() {
+        PowerMockito.`when`(mockPreferenceService.isFilteredOnTournamentType(TournamentType.ELIMINATION)).thenReturn(true)
+        PowerMockito.`when`(mockPreferenceService.isFilteredOnTournamentType(TournamentType.DOUBLE_ELIMINATION)).thenReturn(true)
+
+        Assert.assertEquals(listOf(tournament1, tournament2, tournament6, tournament7, tournament9), sut.update(list))
+    }
+
+    @Test
+    fun testRoundRobinTypeWithAtLeast5Participants() {
+        PowerMockito.`when`(mockPreferenceService.isFilteredOnTournamentType(TournamentType.ROUND_ROBIN)).thenReturn(true)
+        PowerMockito.`when`(mockPreferenceService.isFilteredOnMinimumParticipants()).thenReturn(true)
+        PowerMockito.`when`(mockPreferenceService.getMinimumParticipantsToFilterOn()).thenReturn(5)
+
+        Assert.assertEquals(listOf(tournament3), sut.update(list))
+    }
+
+    @Test
+    fun testRoundRobinTypeWithAtLeast5ParticipantsAndEarlyLatestCreatedDate() {
+        PowerMockito.`when`(mockPreferenceService.isFilteredOnTournamentType(TournamentType.ROUND_ROBIN)).thenReturn(true)
+        PowerMockito.`when`(mockPreferenceService.isFilteredOnMinimumParticipants()).thenReturn(true)
+        PowerMockito.`when`(mockPreferenceService.getMinimumParticipantsToFilterOn()).thenReturn(5)
+        PowerMockito.`when`(mockPreferenceService.isFilteredOnLatestCreatedDate()).thenReturn(true)
+        PowerMockito.`when`(mockPreferenceService.getLatestCreatedDateToFilterOn()).thenReturn(LocalDateTime(2022, 1, 20, 3, 17, 34))
+
+        Assert.assertTrue(sut.update(list).isEmpty())
     }
 
 }
