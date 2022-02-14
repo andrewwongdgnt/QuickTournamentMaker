@@ -3,7 +3,10 @@ package com.dgnt.quickTournamentMaker.application
 import android.app.Application
 import android.preference.PreferenceManager
 import com.dgnt.quickTournamentMaker.data.QTMDatabase
-import com.dgnt.quickTournamentMaker.data.management.*
+import com.dgnt.quickTournamentMaker.data.management.GroupRepository
+import com.dgnt.quickTournamentMaker.data.management.IGroupRepository
+import com.dgnt.quickTournamentMaker.data.management.IPersonRepository
+import com.dgnt.quickTournamentMaker.data.management.PersonRepository
 import com.dgnt.quickTournamentMaker.data.tournament.*
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentType
 import com.dgnt.quickTournamentMaker.service.data.TournamentTypeServices
@@ -19,7 +22,7 @@ import org.kodein.di.*
 import org.kodein.di.android.x.androidXModule
 
 
-class QTMApplication() : Application(), DIAware {
+class QTMApplication : Application(), DIAware {
 
     companion object {
         private const val RECORD_TAG = "RECORD_TAG"
@@ -76,7 +79,7 @@ class QTMApplication() : Application(), DIAware {
         bind() from provider { MatchUpEditorViewModelFactory(instance()) }
         bind() from provider { RoundEditorViewModelFactory() }
         bind() from provider { CustomSeedViewModelFactory(instance()) }
-        bind() from provider { LoadTournamentViewModelFactory(instance(), instance(), instance(), instance(), instance(), instance(), instance()) }
+        bind() from provider { LoadTournamentViewModelFactory(instance(), instance(), instance(), instance(), instance(), instance(), instance(), instance()) }
         bind() from provider { LoadTournamentFilterOptionsViewModelFactory(instance()) }
 
         //Service
@@ -157,6 +160,7 @@ class QTMApplication() : Application(), DIAware {
         bind<ITournamentDataTransformerService>() with singleton { TournamentDataTransformerService(instance()) }
         bind<ITournamentRestoreService>() with singleton { TournamentRestoreService() }
         bind<ITournamentFilterService>() with singleton { TournamentFilterViaSharedPreferenceService(instance()) }
+        bind<ITournamentSortService>() with singleton { TournamentSortViaSharedPreferenceService(instance()) }
     }
 
 

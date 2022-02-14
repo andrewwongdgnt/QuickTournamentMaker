@@ -10,6 +10,7 @@ import com.dgnt.quickTournamentMaker.model.tournament.*
 import com.dgnt.quickTournamentMaker.service.interfaces.IPreferenceService
 import com.dgnt.quickTournamentMaker.service.interfaces.IRankingConfigService
 import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentFilterService
+import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentSortService
 import kotlinx.coroutines.launch
 
 class LoadTournamentViewModel(
@@ -19,8 +20,9 @@ class LoadTournamentViewModel(
     participantRepository: IParticipantRepository,
     rankingConfigService: IRankingConfigService,
     private val preferenceService: IPreferenceService,
-    private val tournamentFilterService: ITournamentFilterService
-) : ViewModel(), Observable, IPreferenceService by preferenceService, ITournamentFilterService by tournamentFilterService {
+    private val tournamentFilterService: ITournamentFilterService,
+    private val tournamentSortService: ITournamentSortService
+) : ViewModel(), Observable, IPreferenceService by preferenceService, ITournamentFilterService by tournamentFilterService, ITournamentSortService by tournamentSortService {
 
     private val tournaments = tournamentRepository.getAll()
     private val rounds = roundRepository.getAll()
@@ -133,6 +135,8 @@ class LoadTournamentViewModel(
             }
         }
     }
+
+
 
 
 }

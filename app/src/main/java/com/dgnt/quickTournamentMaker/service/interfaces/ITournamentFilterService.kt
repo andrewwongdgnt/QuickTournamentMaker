@@ -5,10 +5,10 @@ import com.dgnt.quickTournamentMaker.model.tournament.RestoredTournamentInformat
 interface ITournamentFilterService {
 
     /**
-     * takes in a base list of RestoredTournamentInformation and apply a filter and sort
+     * takes in a base list of RestoredTournamentInformation and apply a filter
      *
-     * @param restoredTournamentInformationList the list to be filtered and sorted
-     * @return the filtered and sorted list
+     * @param restoredTournamentInformationList the list to be filtered
+     * @return the filtered list
      */
-    fun update(restoredTournamentInformationList: List<RestoredTournamentInformation>): List<RestoredTournamentInformation>
+    fun applyFilter(restoredTournamentInformationList: List<RestoredTournamentInformation>): List<RestoredTournamentInformation>
 }

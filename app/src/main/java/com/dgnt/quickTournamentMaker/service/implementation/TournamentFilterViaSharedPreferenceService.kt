@@ -6,7 +6,7 @@ import com.dgnt.quickTournamentMaker.service.interfaces.IPreferenceService
 import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentFilterService
 
 class TournamentFilterViaSharedPreferenceService(private val preferenceService: IPreferenceService) : ITournamentFilterService {
-    override fun update(restoredTournamentInformationList: List<RestoredTournamentInformation>) =
+    override fun applyFilter(restoredTournamentInformationList: List<RestoredTournamentInformation>) =
         TournamentType.values().map { preferenceService.isFilteredOnTournamentType(it) }.run { none { it } }.let { none ->
 
             restoredTournamentInformationList

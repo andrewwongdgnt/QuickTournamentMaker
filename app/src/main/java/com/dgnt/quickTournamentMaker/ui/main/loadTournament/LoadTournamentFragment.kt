@@ -10,6 +10,7 @@ import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.LoadTournamentFragmentBinding
 import com.dgnt.quickTournamentMaker.model.loadTournament.Sort
 import com.dgnt.quickTournamentMaker.model.loadTournament.ViewMode
+import com.dgnt.quickTournamentMaker.model.tournament.RestoredTournamentInformation
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
 import com.dgnt.quickTournamentMaker.ui.main.common.OnEditListener
 import com.dgnt.quickTournamentMaker.ui.tournament.MoreInfoDialogFragment
@@ -46,8 +47,7 @@ class LoadTournamentFragment : Fragment(), DIAware {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_startTournamentFromFile -> {
-            }
+            R.id.action_startTournamentFromFile -> {}
             R.id.action_sort -> {
                 context?.let { context ->
                     val choices = Sort.values()
@@ -56,6 +56,7 @@ class LoadTournamentFragment : Fragment(), DIAware {
                         .setTitle(getString(R.string.sortOptionsTitle))
                         .setSingleChoiceItems(choices.map { getString(it.stringRes) }.toTypedArray(), choices.indexOf(viewModel.getSort())) { dialog, position ->
                             viewModel.setSort(choices[position])
+                            onFilterSortListener.onEdit(Unit)
                             dialog.dismiss()
                         }
                         .setNegativeButton(android.R.string.cancel, null)
@@ -66,7 +67,7 @@ class LoadTournamentFragment : Fragment(), DIAware {
             }
             R.id.action_filter -> {
                 activity?.supportFragmentManager?.let {
-                    LoadTournamentFilterOptionsDialogFragment.newInstance(filterListener).show(it, LoadTournamentFilterOptionsDialogFragment.TAG)
+                    LoadTournamentFilterOptionsDialogFragment.newInstance(onFilterSortListener).show(it, LoadTournamentFilterOptionsDialogFragment.TAG)
                 }
 
             }
@@ -104,7 +105,7 @@ class LoadTournamentFragment : Fragment(), DIAware {
             viewModel.tournamentLiveData.observe(viewLifecycleOwner) {
                 Log.d(LoadTournamentFragment::class.simpleName, "restored tournament info: $it")
 
-                val sortedAndFiltered = viewModel.update(it)
+                val sortedAndFiltered = filterAndSort(it)
 
                 binding.tournamentRv.adapter = RestoredTournamentInformationRecyclerViewAdapter(
                     sortedAndFiltered.toMutableList(),
@@ -130,12 +131,14 @@ class LoadTournamentFragment : Fragment(), DIAware {
         }
     }
 
-    private val filterListener = object : OnEditListener<Unit> {
+    private val onFilterSortListener = object : OnEditListener<Unit> {
         override fun onEdit(editedValue: Unit) {
             viewModel.tournamentLiveData.value?.let {
-                mainAdapter.updateList(viewModel.update(it))
+                mainAdapter.updateList(filterAndSort(it))
             }
         }
     }
+
+    private fun filterAndSort(list: List<RestoredTournamentInformation>) = viewModel.applyFilter(list).also { viewModel.applySort(it) }
 
 }
