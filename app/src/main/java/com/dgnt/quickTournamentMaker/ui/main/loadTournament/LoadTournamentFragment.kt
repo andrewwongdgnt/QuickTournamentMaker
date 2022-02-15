@@ -139,6 +139,6 @@ class LoadTournamentFragment : Fragment(), DIAware {
         }
     }
 
-    private fun filterAndSort(list: List<RestoredTournamentInformation>) = viewModel.applyFilter(list).also { viewModel.applySort(it) }
+    private fun filterAndSort(list: List<RestoredTournamentInformation>) = viewModel.applyFilter(list).let { viewModel.applySort(it) }
 
 }
