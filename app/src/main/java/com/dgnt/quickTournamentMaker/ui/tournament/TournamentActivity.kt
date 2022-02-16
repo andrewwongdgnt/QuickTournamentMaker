@@ -28,7 +28,6 @@ import kotlinx.serialization.encodeToString
 import org.kodein.di.DIAware
 import org.kodein.di.android.di
 import org.kodein.di.instance
-import java.io.*
 
 
 class TournamentActivity : AppCompatActivity(), DIAware {
@@ -191,7 +190,7 @@ class TournamentActivity : AppCompatActivity(), DIAware {
                     ExtendedTournamentInformation(
                         tournamentInformation,
                         rounds.size,
-                        matchUps.size,
+                        getNumMatchUpsWithBothParticipants(),
                         getNumMatchUpsWithSingleByes(),
                         sortedNormalParticipants.size
                     ),

@@ -89,8 +89,11 @@ class LoadTournamentViewModel(
 
                     val filteredRoundEntities = roundEntities.filter { re -> re.epoch == it.epoch }
                     val filteredMatchUpEntities = matchUpEntities.filter { me -> me.epoch == it.epoch }
-                    val filteredMatchUpEntitiesWithByes = filteredMatchUpEntities.filter { me -> me.containsBye }
                     val filteredParticipantEntities = participantEntities.filter { pe -> pe.epoch == it.epoch }
+
+                    //FIXME
+                    val filteredMatchUpEntitiesWithParticipants = filteredMatchUpEntities
+                    val filteredMatchUpEntitiesWithByes = filteredMatchUpEntities
 
                     RestoredTournamentInformation(
                         ExtendedTournamentInformation(
@@ -104,7 +107,7 @@ class LoadTournamentViewModel(
                                 it.lastModifiedTime
                             ),
                             filteredRoundEntities.size,
-                            filteredMatchUpEntities.size,
+                            filteredMatchUpEntitiesWithParticipants.size,
                             filteredMatchUpEntitiesWithByes.size,
                             filteredParticipantEntities.count { pe -> pe.type == ParticipantType.NORMAL }
                         ),

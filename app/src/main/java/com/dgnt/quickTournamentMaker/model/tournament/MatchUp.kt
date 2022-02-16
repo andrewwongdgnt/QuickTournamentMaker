@@ -36,6 +36,10 @@ data class MatchUp(
         (participant1.participantType == ParticipantType.BYE || participant2.participantType == ParticipantType.BYE)
                 && (!singular || !(participant1.participantType == ParticipantType.BYE && participant2.participantType == ParticipantType.BYE))
 
+    //FIXME This will be about match ups that will potentially have both participants
+    fun containsBothParticipants() =
+        participant1.participantType == ParticipantType.NORMAL && participant2.participantType == ParticipantType.NORMAL
+
     fun getDisplayTitle() = (if (note.isEmpty()) "" else "*") + title
     fun toEntity(id: LocalDateTime) = MatchUpEntity(id, roundGroupIndex, roundIndex, matchUpIndex, useTitle, title, note, color, status, containsBye(true))
     fun updateWith(entity: MatchUpEntity) {
