@@ -79,6 +79,7 @@ class LoadTournamentFragment : Fragment(), DIAware {
                         .setTitle(getString(R.string.sortOptionsTitle))
                         .setSingleChoiceItems(choices.map { getString(it.stringRes) }.toTypedArray(), choices.indexOf(viewModel.getViewMode())) { dialog, position ->
                             viewModel.setViewMode(choices[position])
+                            onUpdateViewMode()
                             dialog.dismiss()
                         }
                         .setNegativeButton(android.R.string.cancel, null)
@@ -108,6 +109,7 @@ class LoadTournamentFragment : Fragment(), DIAware {
                 val sortedAndFiltered = filterAndSort(it)
 
                 binding.tournamentRv.adapter = RestoredTournamentInformationRecyclerViewAdapter(
+                    this,
                     sortedAndFiltered.toMutableList(),
                     { restoredTournamentInformation ->
                         activity?.supportFragmentManager?.let { fragManager ->
@@ -116,7 +118,8 @@ class LoadTournamentFragment : Fragment(), DIAware {
                     },
                     { restoredTournamentInformation ->
                         startActivity(TournamentActivity.createIntent(this, restoredTournamentInformation))
-                    }
+                    },
+                    viewModel.getViewMode()
                 ).also { adapter ->
                     mainAdapter = adapter
                 }
@@ -141,4 +144,7 @@ class LoadTournamentFragment : Fragment(), DIAware {
 
     private fun filterAndSort(list: List<RestoredTournamentInformation>) = viewModel.applyFilter(list).let { viewModel.applySort(it) }
 
+    private fun onUpdateViewMode() {
+        mainAdapter.updateList(viewModel.getViewMode())
+    }
 }
