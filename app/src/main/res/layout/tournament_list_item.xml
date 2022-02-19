@@ -54,32 +54,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/tournament_iv"
                 app:layout_constraintTop_toBottomOf="@id/description_tv" />
+
+
         <TextView
-                android:id="@+id/typeInfo_tv"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacer_gap"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/tournament_iv"
-                app:layout_constraintTop_toBottomOf="@id/baseInfo_divider"
-                tools:text="Type: Elimination" />
-
-        <TextView
-                android:id="@+id/seedTypeInfo_tv"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/tournament_iv"
-                app:layout_constraintTop_toBottomOf="@id/typeInfo_tv"
-                tools:text="Seed type: Random" />
-
-        <TextView
                 android:id="@+id/createdDateInfo_tv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/tournament_iv"
-                app:layout_constraintTop_toBottomOf="@id/seedTypeInfo_tv"
+                app:layout_constraintTop_toBottomOf="@id/baseInfo_divider"
                 tools:text="Created On: March 27, 1989" />
 
         <TextView
@@ -101,52 +85,7 @@
                 app:layout_constraintStart_toEndOf="@id/tournament_iv"
                 app:layout_constraintTop_toBottomOf="@id/lastModifiedDateInfo_tv" />
 
-        <TextView
-                android:id="@+id/roundInfo_tv"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/standard_gap"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/tournament_iv"
-                app:layout_constraintTop_toBottomOf="@id/extendedInfo_divider"
-                tools:text="8 rounds" />
 
-        <TextView
-                android:id="@+id/matchUpInfo_tv"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/tournament_iv"
-                app:layout_constraintTop_toBottomOf="@id/roundInfo_tv"
-                tools:text="16 matches" />
-
-        <TextView
-                android:id="@+id/matchUpSubInfo_tv"
-                android:layout_width="0dp"
-                android:paddingStart="@dimen/more_info_left_padding"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/tournament_iv"
-                app:layout_constraintTop_toBottomOf="@id/matchUpInfo_tv"
-                tools:text="5 with byes" />
-
-        <TextView
-                android:id="@+id/participantInfo_tv"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/tournament_iv"
-                app:layout_constraintTop_toBottomOf="@id/matchUpSubInfo_tv"
-                tools:text="32 players" />
-        <View
-                android:id="@+id/foundationalInfo_divider"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginTop="@dimen/spacer_gap"
-                android:background="#a3a3a3"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/tournament_iv"
-                app:layout_constraintTop_toBottomOf="@id/participantInfo_tv" />
         <Button
                 android:id="@+id/moreInfo_btn"
                 android:layout_width="0dp"
@@ -156,7 +95,7 @@
                 android:text="@string/moreInfo"
                 app:layout_constraintEnd_toStartOf="@id/load_btn"
                 app:layout_constraintStart_toEndOf="@id/tournament_iv"
-                app:layout_constraintTop_toBottomOf="@id/foundationalInfo_divider" />
+                app:layout_constraintTop_toBottomOf="@id/extendedInfo_divider" />
 
         <Button
                 android:id="@+id/load_btn"
@@ -167,7 +106,7 @@
                 android:text="@string/load"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/moreInfo_btn"
-                app:layout_constraintTop_toBottomOf="@id/foundationalInfo_divider" />
+                app:layout_constraintTop_toBottomOf="@id/extendedInfo_divider" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -33,18 +33,11 @@ class RestoredTournamentInformationItemViewHolder(
 
                     val dateFormat = DateTimeFormat.mediumDateTime()
 
-                    typeInfoTv.text = context.getString(basic.tournamentType.stringResource)
-                    seedTypeInfoTv.text = context.getString(basic.seedType.resource)
                     createdDateInfoTv.text = context.getString(R.string.createdDateInfo, dateFormat.print(basic.creationDate))
                     lastModifiedDateInfoTv.text = context.getString(R.string.lastModifiedDateInfo, dateFormat.print(basic.lastModifiedDate))
                 }
 
-                roundInfoTv.text = context.getString(R.string.roundInfo, ext.numRounds)
-                matchUpInfoTv.text = context.getString(R.string.matchUpInfo, ext.numMatchUps)
-                matchUpSubInfoTv.text = context.getString(R.string.matchUpSubInfo, ext.numMatchUpsWithByes)
-                participantInfoTv.text = context.getString(R.string.playerInfo, ext.numParticipants)
-
-                listOf(typeInfoTv, seedTypeInfoTv, createdDateInfoTv, lastModifiedDateInfoTv, roundInfoTv, matchUpInfoTv, matchUpSubInfoTv, participantInfoTv, extendedInfoDivider, foundationalInfoDivider).forEach {
+                listOf(createdDateInfoTv, lastModifiedDateInfoTv, extendedInfoDivider).forEach {
                     it.visibility = if (viewMode == ViewMode.DETAILED) View.VISIBLE else View.GONE
                 }
             }
