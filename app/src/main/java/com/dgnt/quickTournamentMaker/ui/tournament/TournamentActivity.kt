@@ -190,7 +190,7 @@ class TournamentActivity : AppCompatActivity(), DIAware {
                     ExtendedTournamentInformation(
                         tournamentInformation,
                         rounds.size,
-                        getNumMatchUpsWithBothParticipants(),
+                        getNumOpenMatchUps(),
                         getNumMatchUpsWithSingleByes(),
                         sortedNormalParticipants.size
                     ),

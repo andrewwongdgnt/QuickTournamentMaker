@@ -109,21 +109,21 @@ class TournamentRestoreServiceTest {
                 RoundEntity(creationTime, 1, 1, "", "", 0),
             ),
             listOf(
-                MatchUpEntity(creationTime, 0, 0, 0, false, "match up 1 name", "match up 1 note", 232, MatchUpStatus.P1_WINNER, false),
-                MatchUpEntity(creationTime, 0, 0, 1, true, "match up 2 name", "match up 2 note", 55, MatchUpStatus.P2_WINNER, false),
-                MatchUpEntity(creationTime, 0, 0, 2, false, "", "", 0, MatchUpStatus.TIE, true),
-                MatchUpEntity(creationTime, 0, 0, 3, false, "", "", 0, MatchUpStatus.TIE, true),
+                MatchUpEntity(creationTime, 0, 0, 0, false, "match up 1 name", "match up 1 note", 232, MatchUpStatus.P1_WINNER, false, true),
+                MatchUpEntity(creationTime, 0, 0, 1, true, "match up 2 name", "match up 2 note", 55, MatchUpStatus.P2_WINNER, false, true),
+                MatchUpEntity(creationTime, 0, 0, 2, false, "", "", 0, MatchUpStatus.TIE, true, true),
+                MatchUpEntity(creationTime, 0, 0, 3, false, "", "", 0, MatchUpStatus.TIE, true, true),
 
-                MatchUpEntity(creationTime, 0, 1, 0, false, "", "", 0, MatchUpStatus.P2_WINNER, true),
-                MatchUpEntity(creationTime, 0, 1, 1, false, "", "", 0, MatchUpStatus.P1_WINNER, true),
+                MatchUpEntity(creationTime, 0, 1, 0, false, "", "", 0, MatchUpStatus.P2_WINNER, true, false),
+                MatchUpEntity(creationTime, 0, 1, 1, false, "", "", 0, MatchUpStatus.P1_WINNER, true, false),
 
-                MatchUpEntity(creationTime, 1, 0, 0, false, "Xmatch up 1 name", "Xmatch up 1 note", 232, MatchUpStatus.P1_WINNER, false),
-                MatchUpEntity(creationTime, 1, 0, 1, true, "Xmatch up 2 name", "Xmatch up 2 note", 55, MatchUpStatus.P2_WINNER, false),
-                MatchUpEntity(creationTime, 1, 0, 2, false, "X", "", 0, MatchUpStatus.TIE, true),
-                MatchUpEntity(creationTime, 1, 0, 3, false, "X", "", 0, MatchUpStatus.TIE, true),
+                MatchUpEntity(creationTime, 1, 0, 0, false, "Xmatch up 1 name", "Xmatch up 1 note", 232, MatchUpStatus.P1_WINNER, false, true),
+                MatchUpEntity(creationTime, 1, 0, 1, true, "Xmatch up 2 name", "Xmatch up 2 note", 55, MatchUpStatus.P2_WINNER, false, false),
+                MatchUpEntity(creationTime, 1, 0, 2, false, "X", "", 0, MatchUpStatus.TIE, true, true),
+                MatchUpEntity(creationTime, 1, 0, 3, false, "X", "", 0, MatchUpStatus.TIE, true, false),
 
-                MatchUpEntity(creationTime, 1, 1, 0, false, "", "", 0, MatchUpStatus.P2_WINNER, true),
-                MatchUpEntity(creationTime, 1, 1, 1, false, "", "", 0, MatchUpStatus.P1_WINNER, true),
+                MatchUpEntity(creationTime, 1, 1, 0, false, "", "", 0, MatchUpStatus.P2_WINNER, true, false),
+                MatchUpEntity(creationTime, 1, 1, 1, false, "", "", 0, MatchUpStatus.P1_WINNER, true, false),
             ),
             listOf(
                 ParticipantEntity(creationTime, Data.ANDREW_PERSON.name, 0, "Andrew X", "Andrew Note", ParticipantType.NORMAL, 123),

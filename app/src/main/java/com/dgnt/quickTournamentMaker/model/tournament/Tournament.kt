@@ -43,8 +43,7 @@ data class Tournament(
 
     fun getNumMatchUpsWithSingleByes() = matchUps.count { it.containsBye(true) }
 
-    //FIXME needs a different name. This will be about match ups that will potentially have both participants
-    fun getNumMatchUpsWithBothParticipants() = matchUps.count { it.containsBothParticipants() }
+    fun getNumOpenMatchUps() = if (tournamentInformation.tournamentType == TournamentType.SURVIVAL) 0 else matchUps.count { it.isOpen() }
 
     val orderedParticipants = roundGroups.getOrNull(0)?.rounds?.getOrNull(0)?.matchUps?.flatMap { listOf(it.participant1, it.participant2) } ?: listOf()
 

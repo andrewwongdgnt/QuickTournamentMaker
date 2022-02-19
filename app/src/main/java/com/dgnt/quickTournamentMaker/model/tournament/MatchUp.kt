@@ -2,7 +2,6 @@ package com.dgnt.quickTournamentMaker.model.tournament
 
 import android.os.Parcelable
 import com.dgnt.quickTournamentMaker.data.tournament.MatchUpEntity
-import com.dgnt.quickTournamentMaker.data.tournament.RoundEntity
 import com.dgnt.quickTournamentMaker.model.IKeyable
 import com.dgnt.quickTournamentMaker.util.TournamentUtil
 import kotlinx.parcelize.IgnoredOnParcel
@@ -36,12 +35,10 @@ data class MatchUp(
         (participant1.participantType == ParticipantType.BYE || participant2.participantType == ParticipantType.BYE)
                 && (!singular || !(participant1.participantType == ParticipantType.BYE && participant2.participantType == ParticipantType.BYE))
 
-    //FIXME This will be about match ups that will potentially have both participants
-    fun containsBothParticipants() =
-        participant1.participantType == ParticipantType.NORMAL && participant2.participantType == ParticipantType.NORMAL
+    fun isOpen() = !containsBye()
 
     fun getDisplayTitle() = (if (note.isEmpty()) "" else "*") + title
-    fun toEntity(id: LocalDateTime) = MatchUpEntity(id, roundGroupIndex, roundIndex, matchUpIndex, useTitle, title, note, color, status, containsBye(true))
+    fun toEntity(id: LocalDateTime) = MatchUpEntity(id, roundGroupIndex, roundIndex, matchUpIndex, useTitle, title, note, color, status, containsBye(true), isOpen())
     fun updateWith(entity: MatchUpEntity) {
         title = entity.name
         useTitle = entity.useTitle

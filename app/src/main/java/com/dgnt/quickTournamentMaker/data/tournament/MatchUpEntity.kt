@@ -20,5 +20,6 @@ data class MatchUpEntity(
     val note: String,
     val color: Int,
     val status: MatchUpStatus,
-    val containsBye: Boolean
+    val containsBye: Boolean,
+    val isOpen: Boolean
 ) : Parcelable
