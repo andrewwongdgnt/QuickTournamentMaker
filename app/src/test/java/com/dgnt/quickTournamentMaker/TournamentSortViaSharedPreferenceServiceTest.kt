@@ -51,7 +51,7 @@ class TournamentSortViaSharedPreferenceServiceTest {
                 4,
                 0,
                 8,
-                Progress(2,3)
+                Progress(2,3) //66.66
             ),
             foundationalTournamentEntities
         )
@@ -70,7 +70,7 @@ class TournamentSortViaSharedPreferenceServiceTest {
                 4,
                 0,
                 8,
-                Progress(21,33)
+                Progress(21,33) //63.63
             ),
             foundationalTournamentEntities
         )
@@ -89,7 +89,7 @@ class TournamentSortViaSharedPreferenceServiceTest {
                 4,
                 3,
                 7,
-                Progress(10,15)
+                Progress(10,15) //66.66
             ),
             foundationalTournamentEntities
         )
@@ -108,7 +108,7 @@ class TournamentSortViaSharedPreferenceServiceTest {
                 2,
                 0,
                 2,
-                Progress(10,15)
+                Progress(10,15) //66.66
             ),
             foundationalTournamentEntities
         )
@@ -127,7 +127,7 @@ class TournamentSortViaSharedPreferenceServiceTest {
                 5,
                 1,
                 4,
-                Progress(4,15)
+                Progress(4,15) //26.66
             ),
             foundationalTournamentEntities
         )
@@ -145,7 +145,7 @@ class TournamentSortViaSharedPreferenceServiceTest {
                 2,
                 4,
                 4,
-                Progress(4,15)
+                Progress(4,15) //26.66
             ),
             foundationalTournamentEntities
         )
@@ -163,7 +163,7 @@ class TournamentSortViaSharedPreferenceServiceTest {
                 2,
                 4,
                 4,
-                Progress(19,95)
+                Progress(19,95) // 20.00
             ),
             foundationalTournamentEntities
         )
@@ -181,7 +181,7 @@ class TournamentSortViaSharedPreferenceServiceTest {
                 2,
                 4,
                 4,
-                Progress(10,10)
+                Progress(10,10) //100.00
             ),
             foundationalTournamentEntities
         )
@@ -199,7 +199,7 @@ class TournamentSortViaSharedPreferenceServiceTest {
                 6,
                 4,
                 6,
-                Progress(10,10)
+                Progress(10,10) //100.00
             ),
             foundationalTournamentEntities
         )
@@ -217,7 +217,7 @@ class TournamentSortViaSharedPreferenceServiceTest {
                 6,
                 4,
                 6,
-                Progress(2,4)
+                Progress(2,4) //50.00
             ),
             foundationalTournamentEntities
         )
@@ -281,6 +281,20 @@ class TournamentSortViaSharedPreferenceServiceTest {
         PowerMockito.`when`(mockPreferenceService.getSort()).thenReturn(Sort.TOURNAMENT_TYPE_REVERSED)
 
         Assert.assertEquals(listOf(tournament10, tournament4, tournament5, tournament8, tournament3, tournament7, tournament6, tournament2, tournament1, tournament9), sut.applySort(list))
+    }
+
+    @Test
+    fun testSortOnProgress() {
+        PowerMockito.`when`(mockPreferenceService.getSort()).thenReturn(Sort.PROGRESS)
+
+        Assert.assertEquals(listOf(tournament7, tournament6, tournament5, tournament10, tournament2, tournament3, tournament4, tournament1, tournament8, tournament9), sut.applySort(list))
+    }
+
+    @Test
+    fun testSortOnProgressReversed() {
+        PowerMockito.`when`(mockPreferenceService.getSort()).thenReturn(Sort.PROGRESS_REVERSED)
+
+        Assert.assertEquals(listOf(tournament8, tournament9, tournament3, tournament4, tournament1, tournament2, tournament10, tournament6, tournament5, tournament7), sut.applySort(list))
     }
 
 

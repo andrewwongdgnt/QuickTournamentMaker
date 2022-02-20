@@ -12,4 +12,6 @@ enum class Sort(@StringRes val stringRes: Int) {
     NAME_REVERSED(R.string.nameReversed),
     TOURNAMENT_TYPE(R.string.tournamentType),
     TOURNAMENT_TYPE_REVERSED(R.string.tournamentTypeReversed),
+    PROGRESS(R.string.progress),
+    PROGRESS_REVERSED(R.string.progressReversed),
 }

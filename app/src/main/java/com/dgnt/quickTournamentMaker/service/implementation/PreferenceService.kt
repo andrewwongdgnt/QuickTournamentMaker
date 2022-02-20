@@ -43,6 +43,11 @@ class PreferenceService(private val sharedPreferences: SharedPreferences, privat
         private const val PREF_FILTER_LATEST_MODIFIED_EPOCH_KEY = "filterLatestModifiedEpochKey"
         private const val PREF_FILTER_LATEST_MODIFIED_EPOCH_ALLOWED_KEY = "filterLatestModifiedEpochAllowedKey"
 
+        private const val PREF_FILTER_LEAST_PROGRESS_KEY = "filterLeastProgressKey"
+        private const val PREF_FILTER_LEAST_PROGRESS_ALLOWED_KEY = "filterLeastProgressAllowedKey"
+        private const val PREF_FILTER_MOST_PROGRESS_KEY = "filterMostProgressKey"
+        private const val PREF_FILTER_MOST_PROGRESS_ALLOWED_KEY = "filterMostProgressAllowedKey"
+
     }
 
     override fun isRankingBasedOnPriority(tournamentType: TournamentType) =
@@ -275,6 +280,47 @@ class PreferenceService(private val sharedPreferences: SharedPreferences, privat
             putBoolean(PREF_FILTER_LATEST_MODIFIED_EPOCH_ALLOWED_KEY, on)
             apply()
         }
+
+    override fun getLeastProgressToFilterOn() =
+        sharedPreferences.getInt(PREF_FILTER_LEAST_PROGRESS_KEY, 0)
+
+
+    override fun setLeastProgressToFilterOn(progress: Int) {
+        sharedPreferences.edit().run {
+            putInt(PREF_FILTER_LEAST_PROGRESS_KEY, progress)
+            apply()
+        }
+    }
+
+    override fun isFilteredOnLeastProgress() =
+        sharedPreferences.getBoolean(PREF_FILTER_LEAST_PROGRESS_ALLOWED_KEY, false)
+
+    override fun setFilteredOnLeastProgress(on: Boolean) {
+        sharedPreferences.edit().run {
+            putBoolean(PREF_FILTER_LEAST_PROGRESS_ALLOWED_KEY, on)
+            apply()
+        }
+    }
+
+    override fun getMostProgressToFilterOn() =
+        sharedPreferences.getInt(PREF_FILTER_MOST_PROGRESS_KEY, 100)
+
+    override fun setMostProgressToFilterOn(progress: Int) {
+        sharedPreferences.edit().run {
+            putInt(PREF_FILTER_MOST_PROGRESS_KEY, progress)
+            apply()
+        }
+    }
+
+    override fun isFilteredOnMostProgress() =
+        sharedPreferences.getBoolean(PREF_FILTER_MOST_PROGRESS_ALLOWED_KEY, false)
+
+    override fun setFilteredOnMostProgress(on: Boolean) {
+        sharedPreferences.edit().run {
+            putBoolean(PREF_FILTER_MOST_PROGRESS_ALLOWED_KEY, on)
+            apply()
+        }
+    }
 
     private val TournamentType.filterKey
         get() = PREF_FILTER_TOURNAMENT_TYPE_KEY + name

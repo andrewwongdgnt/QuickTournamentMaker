@@ -138,6 +138,8 @@
     <string name="nameReversed">Name (reversed)</string>
     <string name="tournamentType">Tournament type</string>
     <string name="tournamentTypeReversed">Tournament type (reversed)</string>
+    <string name="progress">Least Progressed</string>
+    <string name="progressReversed">Most Progressed</string>
 
     <string name="viewAsMinimal">Minimal (title only)</string>
     <string name="viewAsBasic">Basic (title &amp; description)</string>

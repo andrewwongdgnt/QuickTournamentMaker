@@ -270,4 +270,62 @@ interface IPreferenceService {
      * @param on the boolean value
      */
     fun setFilteredOnLatestModifiedDate(on: Boolean)
+
+    /**
+     * if there is a filter on least progress, get the number
+     *
+     * @return the progress from 0 - 100
+     */
+    fun getLeastProgressToFilterOn(): Int
+
+    /**
+     * if there is a filter on least progress, set the number
+     *
+     * @param progress the progress from 0 - 100
+     */
+    fun setLeastProgressToFilterOn(progress: Int)
+
+    /**
+     * gets if least progress is being filtered on
+     *
+     * @return the boolean value
+     */
+    fun isFilteredOnLeastProgress(): Boolean
+
+    /**
+     * sets if least progress is to be filtered on
+     *
+     * @param on the boolean value
+     */
+    fun setFilteredOnLeastProgress(on: Boolean)
+
+    /**
+     * if there is a filter on most progress, get the number
+     *
+     * @return the progress from 0 - 100
+     */
+    fun getMostProgressToFilterOn(): Int
+
+    /**
+     * if there is a filter on most progress, set the number
+     *
+     * @param progress the progress from 0 - 100
+     */
+    fun setMostProgressToFilterOn(progress: Int)
+
+    /**
+     * gets if most progress is being filtered on
+     *
+     * @return the boolean value
+     */
+    fun isFilteredOnMostProgress(): Boolean
+
+    /**
+     * sets if most progress is to be filtered on
+     *
+     * @param on the boolean value
+     */
+    fun setFilteredOnMostProgress(on: Boolean)
+    
+    
 }

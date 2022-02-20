@@ -16,6 +16,8 @@ class TournamentSortViaSharedPreferenceService(private val preferenceService: IP
             Sort.NAME_REVERSED -> restoredTournamentInformationList.sortedByDescending { it.extendedTournamentInformation.basicTournamentInformation.title }
             Sort.TOURNAMENT_TYPE -> restoredTournamentInformationList.sortedBy { it.extendedTournamentInformation.basicTournamentInformation.tournamentType }
             Sort.TOURNAMENT_TYPE_REVERSED -> restoredTournamentInformationList.sortedByDescending { it.extendedTournamentInformation.basicTournamentInformation.tournamentType }
+            Sort.PROGRESS -> restoredTournamentInformationList.sortedBy { it.extendedTournamentInformation.progress }
+            Sort.PROGRESS_REVERSED -> restoredTournamentInformationList.sortedByDescending { it.extendedTournamentInformation.progress }
         }
 
 }
