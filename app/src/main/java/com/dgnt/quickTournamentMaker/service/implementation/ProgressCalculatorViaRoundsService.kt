@@ -1,11 +1,17 @@
 package com.dgnt.quickTournamentMaker.service.implementation
 
-import com.dgnt.quickTournamentMaker.model.tournament.Progress
-import com.dgnt.quickTournamentMaker.model.tournament.Tournament
+import com.dgnt.quickTournamentMaker.model.tournament.*
 import com.dgnt.quickTournamentMaker.service.interfaces.IProgressCalculatorService
 
 class ProgressCalculatorViaRoundsService : IProgressCalculatorService {
-    override fun calculate(tournament: Tournament): Progress {
-        return Progress(33,5) //TODO implement this
-    }
+    override fun calculate(tournament: Tournament) =
+        tournament.run {
+            Progress(rounds.count { it.completed() }, rounds.size)
+        }
+
+    private fun Round.completed() = matchUps.all { it.completed() }
+
+    private fun MatchUp.completed() =
+        this.participant1.participantType == ParticipantType.NORMAL &&
+                this.status != MatchUpStatus.DEFAULT
 }
