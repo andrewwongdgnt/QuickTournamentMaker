@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.dgnt.quickTournamentMaker.data.converter.DateConverter
+import com.dgnt.quickTournamentMaker.data.converter.ProgressConverter
 import com.dgnt.quickTournamentMaker.data.management.GroupDAO
 import com.dgnt.quickTournamentMaker.data.management.GroupEntity
 import com.dgnt.quickTournamentMaker.data.management.PersonDAO
@@ -16,7 +17,7 @@ import com.dgnt.quickTournamentMaker.data.tournament.*
     entities = [PersonEntity::class, GroupEntity::class, TournamentEntity::class, RoundEntity::class, MatchUpEntity::class, ParticipantEntity::class],
     version = 2001 //Old one was 1002
 )
-@TypeConverters(DateConverter::class)
+@TypeConverters(DateConverter::class, ProgressConverter::class)
 abstract class QTMDatabase : RoomDatabase() {
     abstract val personDAO: PersonDAO
     abstract val groupDAO: GroupDAO

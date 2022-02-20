@@ -2,7 +2,6 @@ package com.dgnt.quickTournamentMaker.model.tournament
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import org.joda.time.LocalDateTime
 
 
 @Parcelize
@@ -12,4 +11,5 @@ data class ExtendedTournamentInformation(
     val numOpenMatchUps: Int,
     val numMatchUpsWithByes: Int,
     val numParticipants: Int,
+    val progress: Progress
 ) : Parcelable

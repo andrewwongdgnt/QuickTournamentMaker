@@ -2,6 +2,7 @@ package com.dgnt.quickTournamentMaker.data.tournament
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.dgnt.quickTournamentMaker.model.tournament.Progress
 import com.dgnt.quickTournamentMaker.model.tournament.SeedType
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentType
 import org.joda.time.LocalDateTime
@@ -17,6 +18,7 @@ data class TournamentEntity(
     val type: TournamentType,
     val rankingConfig: String,
     val seedType: SeedType,
+    val progress: Progress
 ) {
     fun clone(
         epoch: LocalDateTime = this.epoch,
@@ -26,6 +28,7 @@ data class TournamentEntity(
         type: TournamentType = this.type,
         rankingConfig: String = this.rankingConfig,
         seedType: SeedType = this.seedType,
+        progress: Progress = this.progress
     ) =
         TournamentEntity(
             epoch,
@@ -34,7 +37,8 @@ data class TournamentEntity(
             note,
             type,
             rankingConfig,
-            seedType
+            seedType,
+            progress
         )
 }
 

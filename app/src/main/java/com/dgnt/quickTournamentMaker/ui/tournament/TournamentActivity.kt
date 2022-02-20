@@ -192,7 +192,8 @@ class TournamentActivity : AppCompatActivity(), DIAware {
                         rounds.size,
                         getNumOpenMatchUps(),
                         getNumMatchUpsWithSingleByes(),
-                        sortedNormalParticipants.size
+                        sortedNormalParticipants.size,
+                        getProgress()
                     ),
                     tournamentEditListener
                 )

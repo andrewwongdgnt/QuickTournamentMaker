@@ -4,10 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.data.tournament.TournamentEntity
-import com.dgnt.quickTournamentMaker.service.interfaces.IMatchUpStatusTransformService
-import com.dgnt.quickTournamentMaker.service.interfaces.IRankingConfigService
-import com.dgnt.quickTournamentMaker.service.interfaces.IRankingService
-import com.dgnt.quickTournamentMaker.service.interfaces.IRoundUpdateService
+import com.dgnt.quickTournamentMaker.service.interfaces.*
 
 enum class TournamentType(
     @StringRes
@@ -34,6 +31,7 @@ data class Tournament(
     val matchUpStatusTransformService: IMatchUpStatusTransformService,
     val roundUpdateService: IRoundUpdateService,
     val rankingService: IRankingService,
+    val progressCalculatorService: IProgressCalculatorService,
     private val rankingConfigService: IRankingConfigService,
 ) {
 
@@ -44,6 +42,8 @@ data class Tournament(
     fun getNumMatchUpsWithSingleByes() = matchUps.count { it.containsBye(true) }
 
     fun getNumOpenMatchUps() = if (tournamentInformation.tournamentType == TournamentType.SURVIVAL) 0 else matchUps.count { it.isOpen() }
+
+    fun getProgress() = progressCalculatorService.calculate(this)
 
     val orderedParticipants = roundGroups.getOrNull(0)?.rounds?.getOrNull(0)?.matchUps?.flatMap { listOf(it.participant1, it.participant2) } ?: listOf()
 
@@ -64,7 +64,8 @@ data class Tournament(
                 TournamentType.ROUND_ROBIN, TournamentType.SWISS -> rankingConfigService.toString(rankConfig)
                 else -> ""
             },
-            seedType
+            seedType,
+            getProgress()
         )
     }
 }

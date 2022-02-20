@@ -41,6 +41,12 @@ class TournamentBuilderServiceTest {
     private val mockSwissMatchUpStatusTransformService: IMatchUpStatusTransformService = PowerMockito.mock(IMatchUpStatusTransformService::class.java)
     private val mockSurvivalMatchUpStatusTransformService: IMatchUpStatusTransformService = PowerMockito.mock(IMatchUpStatusTransformService::class.java)
 
+    private val mockEliminationProgressCalculatorService: IProgressCalculatorService = PowerMockito.mock(IProgressCalculatorService::class.java)
+    private val mockDoubleEliminationProgressCalculatorService: IProgressCalculatorService = PowerMockito.mock(IProgressCalculatorService::class.java)
+    private val mockRoundRobinProgressCalculatorService: IProgressCalculatorService = PowerMockito.mock(IProgressCalculatorService::class.java)
+    private val mockSwissProgressCalculatorService: IProgressCalculatorService = PowerMockito.mock(IProgressCalculatorService::class.java)
+    private val mockSurvivalProgressCalculatorService: IProgressCalculatorService = PowerMockito.mock(IProgressCalculatorService::class.java)
+
     private val mockRankingConfigService: IRankingConfigService = PowerMockito.mock(IRankingConfigService::class.java)
 
     private val sut = TournamentBuilderService(
@@ -49,31 +55,36 @@ class TournamentBuilderServiceTest {
                 roundGeneratorService = mockEliminationRoundGeneratorService,
                 roundUpdateService = mockEliminationRoundUpdateService,
                 rankingService = mockEliminationRankingService,
-                matchUpStatusTransformService = mockEliminationMatchUpStatusTransformService
+                matchUpStatusTransformService = mockEliminationMatchUpStatusTransformService,
+                progressCalculatorService = mockEliminationProgressCalculatorService
             ),
             TournamentType.DOUBLE_ELIMINATION to TournamentTypeServices(
                 roundGeneratorService = mockDoubleEliminationRoundGeneratorService,
                 roundUpdateService = mockDoubleEliminationRoundUpdateService,
                 rankingService = mockDoubleEliminationRankingService,
-                matchUpStatusTransformService = mockDoubleEliminationMatchUpStatusTransformService
+                matchUpStatusTransformService = mockDoubleEliminationMatchUpStatusTransformService,
+                progressCalculatorService = mockDoubleEliminationProgressCalculatorService
             ),
             TournamentType.ROUND_ROBIN to TournamentTypeServices(
                 roundGeneratorService = mockRoundRobinRoundGeneratorService,
                 roundUpdateService = mockRoundRobinRoundUpdateService,
                 rankingService = mockRoundRobinRankingService,
-                matchUpStatusTransformService = mockRoundRobinMatchUpStatusTransformService
+                matchUpStatusTransformService = mockRoundRobinMatchUpStatusTransformService,
+                progressCalculatorService = mockRoundRobinProgressCalculatorService
             ),
             TournamentType.SWISS to TournamentTypeServices(
                 roundGeneratorService = mockSwissRoundGeneratorService,
                 roundUpdateService = mockSwissRoundUpdateService,
                 rankingService = mockSwissRankingService,
-                matchUpStatusTransformService = mockSwissMatchUpStatusTransformService
+                matchUpStatusTransformService = mockSwissMatchUpStatusTransformService,
+                progressCalculatorService = mockSwissProgressCalculatorService
             ),
             TournamentType.SURVIVAL to TournamentTypeServices(
                 roundGeneratorService = mockSurvivalRoundGeneratorService,
                 roundUpdateService = mockSurvivalRoundUpdateService,
                 rankingService = mockSurvivalRankingService,
-                matchUpStatusTransformService = mockSurvivalMatchUpStatusTransformService
+                matchUpStatusTransformService = mockSurvivalMatchUpStatusTransformService,
+                progressCalculatorService = mockSurvivalProgressCalculatorService
             )
         ),
         mockRankingConfigService

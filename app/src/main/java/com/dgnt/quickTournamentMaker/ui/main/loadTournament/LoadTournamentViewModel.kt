@@ -108,7 +108,8 @@ class LoadTournamentViewModel(
                             filteredRoundEntities.size,
                             filteredOpenMatchUpEntities.size,
                             filteredMatchUpEntitiesWithByes.size,
-                            filteredParticipantEntities.count { pe -> pe.type == ParticipantType.NORMAL }
+                            filteredParticipantEntities.count { pe -> pe.type == ParticipantType.NORMAL },
+                            it.progress
                         ),
                         FoundationalTournamentEntities(
                             filteredRoundEntities,
