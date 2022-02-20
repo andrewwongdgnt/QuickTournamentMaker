@@ -87,7 +87,7 @@ class ProgressCalculatorViaMatchUpsServiceTest {
     @Test
     fun testProgressCalculation() {
 
-        Assert.assertEquals(Progress(3, 5), sut.calculate(tournament))
+        Assert.assertEquals(Progress(2, 8), sut.calculate(tournament))
     }
 
 }

@@ -12,7 +12,4 @@ data class Progress(
 {
     val percentageRep: Float = truncate(matchesCompleted.toFloat() / totalMatches.toFloat() * 100) / 100
 
-    override fun toString() = "$percentageRep"
-
-
 }
