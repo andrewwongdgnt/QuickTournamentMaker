@@ -9,7 +9,7 @@ import org.joda.time.LocalDateTime
 data class ExtendedTournamentInformation(
     val basicTournamentInformation: TournamentInformation,
     val numRounds: Int,
-    val numMatchUps: Int,
+    val numOpenMatchUps: Int,
     val numMatchUpsWithByes: Int,
     val numParticipants: Int,
 ) : Parcelable

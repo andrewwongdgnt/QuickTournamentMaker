@@ -55,7 +55,7 @@ class MoreInfoDialogFragment(
                     Pair({ date -> getString(R.string.createdDateInfo, date) }, basicTournamentInformation.creationDate),
                     Pair({ date -> getString(R.string.lastModifiedDateInfo, date) }, basicTournamentInformation.lastModifiedDate),
                     getString(R.string.roundInfo, extendedTournamentInformation.numRounds),
-                    getString(R.string.matchUpInfo, extendedTournamentInformation.numMatchUps),
+                    getString(R.string.matchUpInfo, extendedTournamentInformation.numOpenMatchUps),
                     extendedTournamentInformation.numMatchUpsWithByes.let {
                         if (it == 0) "" else getString(R.string.matchUpSubInfo, it)
                     },
