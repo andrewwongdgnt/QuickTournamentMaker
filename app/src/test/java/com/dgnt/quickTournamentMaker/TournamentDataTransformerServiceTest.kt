@@ -8,10 +8,7 @@ import com.dgnt.quickTournamentMaker.Data.Companion.KELSEY_PERSON
 import com.dgnt.quickTournamentMaker.Data.Companion.KYRA_PERSON
 import com.dgnt.quickTournamentMaker.model.tournament.*
 import com.dgnt.quickTournamentMaker.service.implementation.TournamentDataTransformerService
-import com.dgnt.quickTournamentMaker.service.interfaces.IMatchUpStatusTransformService
-import com.dgnt.quickTournamentMaker.service.interfaces.IRankingConfigService
-import com.dgnt.quickTournamentMaker.service.interfaces.IRankingService
-import com.dgnt.quickTournamentMaker.service.interfaces.IRoundUpdateService
+import com.dgnt.quickTournamentMaker.service.interfaces.*
 import org.joda.time.LocalDateTime
 import org.junit.Assert
 import org.junit.Before
@@ -41,6 +38,7 @@ class TournamentDataTransformerServiceTest {
     private val mockRoundUpdateService = PowerMockito.mock(IRoundUpdateService::class.java)
     private val mockRankingService = PowerMockito.mock(IRankingService::class.java)
     private val mockMatchUpStatusTransformService = PowerMockito.mock(IMatchUpStatusTransformService::class.java)
+    private val mockProgressCalculatorService = PowerMockito.mock(IProgressCalculatorService::class.java)
     private val sut = TournamentDataTransformerService(mockRankingConfigService)
 
     private val CREATION_TIME = LocalDateTime(666555444)
@@ -114,6 +112,7 @@ class TournamentDataTransformerServiceTest {
             mockMatchUpStatusTransformService,
             mockRoundUpdateService,
             mockRankingService,
+            mockProgressCalculatorService,
             mockRankingConfigService
         )
 

@@ -146,29 +146,34 @@ class TournamentBuilderServiceTest {
             Assert.assertEquals(mockEliminationRoundUpdateService, roundUpdateService)
             Assert.assertEquals(mockEliminationRankingService, rankingService)
             Assert.assertEquals(mockEliminationMatchUpStatusTransformService, matchUpStatusTransformService)
+            Assert.assertEquals(mockEliminationProgressCalculatorService, progressCalculatorService)
         }
 
         sut.build(doubleEliminationTournamentInformation, listOf()).run {
             Assert.assertEquals(mockDoubleEliminationRoundUpdateService, roundUpdateService)
             Assert.assertEquals(mockDoubleEliminationRankingService, rankingService)
             Assert.assertEquals(mockDoubleEliminationMatchUpStatusTransformService, matchUpStatusTransformService)
+            Assert.assertEquals(mockDoubleEliminationProgressCalculatorService, progressCalculatorService)
         }
         sut.build(roundRobinTournamentInformation, listOf()).run {
             Assert.assertEquals(mockRoundRobinRoundUpdateService, roundUpdateService)
             Assert.assertEquals(mockRoundRobinRankingService, rankingService)
             Assert.assertEquals(mockRoundRobinMatchUpStatusTransformService, matchUpStatusTransformService)
+            Assert.assertEquals(mockRoundRobinProgressCalculatorService, progressCalculatorService)
         }
 
         sut.build(swissTournamentInformation, listOf()).run {
             Assert.assertEquals(mockSwissRoundUpdateService, roundUpdateService)
             Assert.assertEquals(mockSwissRankingService, rankingService)
             Assert.assertEquals(mockSwissMatchUpStatusTransformService, matchUpStatusTransformService)
+            Assert.assertEquals(mockSwissProgressCalculatorService, progressCalculatorService)
         }
 
         sut.build(survivalTournamentInformation, listOf()).run {
             Assert.assertEquals(mockSurvivalRoundUpdateService, roundUpdateService)
             Assert.assertEquals(mockSurvivalRankingService, rankingService)
             Assert.assertEquals(mockSurvivalMatchUpStatusTransformService, matchUpStatusTransformService)
+            Assert.assertEquals(mockSurvivalProgressCalculatorService, progressCalculatorService)
         }
 
     }

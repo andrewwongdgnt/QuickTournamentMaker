@@ -31,6 +31,7 @@ data class MatchUp(
 
     @IgnoredOnParcel
     override val key = Triple(roundGroupIndex, roundIndex, matchUpIndex)
+
     fun containsBye(singular: Boolean = false) =
         (participant1.participantType == ParticipantType.BYE || participant2.participantType == ParticipantType.BYE)
                 && (!singular || !(participant1.participantType == ParticipantType.BYE && participant2.participantType == ParticipantType.BYE))

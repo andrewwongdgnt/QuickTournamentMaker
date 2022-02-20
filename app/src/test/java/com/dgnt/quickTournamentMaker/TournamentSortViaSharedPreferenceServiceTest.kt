@@ -50,7 +50,8 @@ class TournamentSortViaSharedPreferenceServiceTest {
                 8,
                 4,
                 0,
-                8
+                8,
+                Progress(2,3)
             ),
             foundationalTournamentEntities
         )
@@ -68,7 +69,8 @@ class TournamentSortViaSharedPreferenceServiceTest {
                 8,
                 4,
                 0,
-                8
+                8,
+                Progress(21,33)
             ),
             foundationalTournamentEntities
         )
@@ -86,7 +88,8 @@ class TournamentSortViaSharedPreferenceServiceTest {
                 7,
                 4,
                 3,
-                7
+                7,
+                Progress(10,15)
             ),
             foundationalTournamentEntities
         )
@@ -104,7 +107,8 @@ class TournamentSortViaSharedPreferenceServiceTest {
                 3,
                 2,
                 0,
-                2
+                2,
+                Progress(10,15)
             ),
             foundationalTournamentEntities
         )
@@ -122,7 +126,8 @@ class TournamentSortViaSharedPreferenceServiceTest {
                 4,
                 5,
                 1,
-                4
+                4,
+                Progress(4,15)
             ),
             foundationalTournamentEntities
         )
@@ -139,7 +144,8 @@ class TournamentSortViaSharedPreferenceServiceTest {
                 4,
                 2,
                 4,
-                4
+                4,
+                Progress(4,15)
             ),
             foundationalTournamentEntities
         )
@@ -156,7 +162,8 @@ class TournamentSortViaSharedPreferenceServiceTest {
                 4,
                 2,
                 4,
-                4
+                4,
+                Progress(19,95)
             ),
             foundationalTournamentEntities
         )
@@ -173,7 +180,8 @@ class TournamentSortViaSharedPreferenceServiceTest {
                 1,
                 2,
                 4,
-                4
+                4,
+                Progress(10,10)
             ),
             foundationalTournamentEntities
         )
@@ -190,7 +198,8 @@ class TournamentSortViaSharedPreferenceServiceTest {
                 6,
                 6,
                 4,
-                6
+                6,
+                Progress(10,10)
             ),
             foundationalTournamentEntities
         )
@@ -207,7 +216,8 @@ class TournamentSortViaSharedPreferenceServiceTest {
                 6,
                 6,
                 4,
-                6
+                6,
+                Progress(2,4)
             ),
             foundationalTournamentEntities
         )

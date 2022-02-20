@@ -19,6 +19,7 @@ class TournamentInitiatorServiceTest {
     private val mockRoundUpdateService = PowerMockito.mock(IRoundUpdateService::class.java)
     private val mockRankingService = PowerMockito.mock(IRankingService::class.java)
     private val mockMatchUpStatusTransformService = PowerMockito.mock(IMatchUpStatusTransformService::class.java)
+    private val mockProgressCalculatorService = PowerMockito.mock(IProgressCalculatorService::class.java)
     private val mockRankingConfigService = PowerMockito.mock(IRankingConfigService::class.java)
     private val sut = TournamentInitiatorService(mockByeStatusResolverService)
 
@@ -72,6 +73,7 @@ class TournamentInitiatorServiceTest {
             mockMatchUpStatusTransformService,
             mockRoundUpdateService,
             mockRankingService,
+            mockProgressCalculatorService,
             mockRankingConfigService
         )
     }

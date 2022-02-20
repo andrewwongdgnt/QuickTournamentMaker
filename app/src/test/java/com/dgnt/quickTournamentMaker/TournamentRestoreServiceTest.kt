@@ -5,10 +5,7 @@ import com.dgnt.quickTournamentMaker.data.tournament.ParticipantEntity
 import com.dgnt.quickTournamentMaker.data.tournament.RoundEntity
 import com.dgnt.quickTournamentMaker.model.tournament.*
 import com.dgnt.quickTournamentMaker.service.implementation.TournamentRestoreService
-import com.dgnt.quickTournamentMaker.service.interfaces.IMatchUpStatusTransformService
-import com.dgnt.quickTournamentMaker.service.interfaces.IRankingConfigService
-import com.dgnt.quickTournamentMaker.service.interfaces.IRankingService
-import com.dgnt.quickTournamentMaker.service.interfaces.IRoundUpdateService
+import com.dgnt.quickTournamentMaker.service.interfaces.*
 import org.joda.time.LocalDateTime
 import org.junit.Assert
 import org.junit.Before
@@ -24,6 +21,7 @@ class TournamentRestoreServiceTest {
     private val mockRoundUpdateService = PowerMockito.mock(IRoundUpdateService::class.java)
     private val mockRankingService = PowerMockito.mock(IRankingService::class.java)
     private val mockMatchUpStatusTransformService = PowerMockito.mock(IMatchUpStatusTransformService::class.java)
+    private val mockProgressCalculatorService = PowerMockito.mock(IProgressCalculatorService::class.java)
     private val mockRankingConfigService = PowerMockito.mock(IRankingConfigService::class.java)
     private val sut = TournamentRestoreService()
 
@@ -90,6 +88,7 @@ class TournamentRestoreServiceTest {
             mockMatchUpStatusTransformService,
             mockRoundUpdateService,
             mockRankingService,
+            mockProgressCalculatorService,
             mockRankingConfigService
         )
     }

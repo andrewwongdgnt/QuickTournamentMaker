@@ -49,7 +49,8 @@ class TournamentFilterViaSharedPreferenceServiceTest {
                 8,
                 4,
                 0,
-                8
+                8,
+                Progress(2,3)
             ),
             foundationalTournamentEntities
         )
@@ -67,7 +68,8 @@ class TournamentFilterViaSharedPreferenceServiceTest {
                 8,
                 4,
                 0,
-                8
+                8,
+                Progress(1,3)
             ),
             foundationalTournamentEntities
         )
@@ -85,7 +87,8 @@ class TournamentFilterViaSharedPreferenceServiceTest {
                 7,
                 4,
                 3,
-                7
+                7,
+                Progress(2,9)
             ),
             foundationalTournamentEntities
         )
@@ -103,7 +106,8 @@ class TournamentFilterViaSharedPreferenceServiceTest {
                 3,
                 2,
                 0,
-                2
+                2,
+                Progress(25,50)
             ),
             foundationalTournamentEntities
         )
@@ -121,7 +125,8 @@ class TournamentFilterViaSharedPreferenceServiceTest {
                 4,
                 5,
                 1,
-                4
+                4,
+                Progress(6,9)
             ),
             foundationalTournamentEntities
         )
@@ -138,7 +143,8 @@ class TournamentFilterViaSharedPreferenceServiceTest {
                 4,
                 2,
                 4,
-                4
+                4,
+                Progress(22,53)
             ),
             foundationalTournamentEntities
         )
@@ -155,7 +161,8 @@ class TournamentFilterViaSharedPreferenceServiceTest {
                 4,
                 2,
                 4,
-                4
+                4,
+                Progress(2,3)
             ),
             foundationalTournamentEntities
         )
@@ -172,7 +179,8 @@ class TournamentFilterViaSharedPreferenceServiceTest {
                 1,
                 2,
                 4,
-                4
+                4,
+                Progress(2,3)
             ),
             foundationalTournamentEntities
         )
@@ -189,7 +197,8 @@ class TournamentFilterViaSharedPreferenceServiceTest {
                 6,
                 6,
                 4,
-                6
+                6,
+                Progress(25,50)
             ),
             foundationalTournamentEntities
         )
@@ -206,7 +215,8 @@ class TournamentFilterViaSharedPreferenceServiceTest {
                 6,
                 6,
                 4,
-                6
+                6,
+                Progress(60,60)
             ),
             foundationalTournamentEntities
         )
