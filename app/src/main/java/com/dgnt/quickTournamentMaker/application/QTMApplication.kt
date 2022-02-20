@@ -31,8 +31,8 @@ class QTMApplication : Application(), DIAware {
         private const val NULL_POPULATE_TAG = "NULL_POPULATE_TAG"
         private const val ONE_WINNER_TAG = "ONE_WINNER_TAG"
         private const val TIE_TAG = "TIE_TAG"
-        private const val PROGRESS_VIA_MATCHUPS_TAG = "PROGRESS_VIA_MATCHUPS_TAG"
-        private const val PROGRESS_VIA_ROUNDS_TAG = "PROGRESS_VIA_ROUNDS_TAG"
+        private const val PROGRESS_VIA_MATCH_UPS_TAG = "PROGRESS_VIA_MATCH_UPS_TAG"
+        private const val PROGRESS_FOR_SURVIVAL_TAG = "PROGRESS_FOR_SURVIVAL_TAG"
     }
 
     override val di = DI.lazy {
@@ -124,35 +124,35 @@ class QTMApplication : Application(), DIAware {
                         roundUpdateService = instance(TournamentType.ELIMINATION),
                         rankingService = instance(TournamentType.ELIMINATION),
                         matchUpStatusTransformService = instance(ONE_WINNER_TAG),
-                        progressCalculatorService = instance(PROGRESS_VIA_MATCHUPS_TAG),
+                        progressCalculatorService = instance(PROGRESS_VIA_MATCH_UPS_TAG),
                     ),
                     TournamentType.DOUBLE_ELIMINATION to TournamentTypeServices(
                         roundGeneratorService = instance(TournamentType.DOUBLE_ELIMINATION),
                         roundUpdateService = instance(TournamentType.DOUBLE_ELIMINATION),
                         rankingService = instance(TournamentType.DOUBLE_ELIMINATION),
                         matchUpStatusTransformService = instance(ONE_WINNER_TAG),
-                        progressCalculatorService = instance(PROGRESS_VIA_MATCHUPS_TAG),
+                        progressCalculatorService = instance(PROGRESS_VIA_MATCH_UPS_TAG),
                     ),
                     TournamentType.ROUND_ROBIN to TournamentTypeServices(
                         roundGeneratorService = instance(TournamentType.ROUND_ROBIN),
                         roundUpdateService = instance(TournamentType.ROUND_ROBIN),
                         rankingService = instance(RECORD_TAG),
                         matchUpStatusTransformService = instance(TIE_TAG),
-                        progressCalculatorService = instance(PROGRESS_VIA_MATCHUPS_TAG),
+                        progressCalculatorService = instance(PROGRESS_VIA_MATCH_UPS_TAG),
                     ),
                     TournamentType.SWISS to TournamentTypeServices(
                         roundGeneratorService = instance(TournamentType.SWISS),
                         roundUpdateService = instance(TournamentType.SWISS),
                         rankingService = instance(RECORD_TAG),
                         matchUpStatusTransformService = instance(TIE_TAG),
-                        progressCalculatorService = instance(PROGRESS_VIA_MATCHUPS_TAG),
+                        progressCalculatorService = instance(PROGRESS_VIA_MATCH_UPS_TAG),
                     ),
                     TournamentType.SURVIVAL to TournamentTypeServices(
                         roundGeneratorService = instance(TournamentType.SURVIVAL),
                         roundUpdateService = instance(TournamentType.SURVIVAL),
                         rankingService = instance(TournamentType.SURVIVAL),
                         matchUpStatusTransformService = instance(ONE_WINNER_TAG),
-                        progressCalculatorService = instance(PROGRESS_VIA_ROUNDS_TAG),
+                        progressCalculatorService = instance(PROGRESS_FOR_SURVIVAL_TAG),
                     )
                 ),
                 instance()
@@ -169,8 +169,8 @@ class QTMApplication : Application(), DIAware {
         bind<ITournamentFilterService>() with singleton { TournamentFilterViaSharedPreferenceService(instance()) }
         bind<ITournamentSortService>() with singleton { TournamentSortViaSharedPreferenceService(instance()) }
 
-        bind<IProgressCalculatorService>(PROGRESS_VIA_MATCHUPS_TAG) with singleton { ProgressCalculatorViaMatchUpsService() }
-        bind<IProgressCalculatorService>(PROGRESS_VIA_ROUNDS_TAG) with singleton { ProgressCalculatorViaRoundsService() }
+        bind<IProgressCalculatorService>(PROGRESS_VIA_MATCH_UPS_TAG) with singleton { ProgressCalculatorViaMatchUpsService() }
+        bind<IProgressCalculatorService>(PROGRESS_FOR_SURVIVAL_TAG) with singleton { ProgressCalculatorForSurvivalService() }
     }
 
 
