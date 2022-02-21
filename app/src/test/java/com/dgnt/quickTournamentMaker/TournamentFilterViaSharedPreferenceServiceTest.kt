@@ -50,7 +50,7 @@ class TournamentFilterViaSharedPreferenceServiceTest {
                 4,
                 0,
                 8,
-                Progress(2,3)
+                Progress(2,3) //66.66
             ),
             foundationalTournamentEntities
         )
@@ -69,7 +69,7 @@ class TournamentFilterViaSharedPreferenceServiceTest {
                 4,
                 0,
                 8,
-                Progress(1,3)
+                Progress(1,3) //33.33
             ),
             foundationalTournamentEntities
         )
@@ -88,7 +88,7 @@ class TournamentFilterViaSharedPreferenceServiceTest {
                 4,
                 3,
                 7,
-                Progress(2,9)
+                Progress(2,9) //22.22
             ),
             foundationalTournamentEntities
         )
@@ -107,7 +107,7 @@ class TournamentFilterViaSharedPreferenceServiceTest {
                 2,
                 0,
                 2,
-                Progress(25,50)
+                Progress(25,50) //50.00
             ),
             foundationalTournamentEntities
         )
@@ -126,7 +126,7 @@ class TournamentFilterViaSharedPreferenceServiceTest {
                 5,
                 1,
                 4,
-                Progress(6,9)
+                Progress(0,9) //0.00
             ),
             foundationalTournamentEntities
         )
@@ -144,7 +144,7 @@ class TournamentFilterViaSharedPreferenceServiceTest {
                 2,
                 4,
                 4,
-                Progress(22,53)
+                Progress(22,53) //41.50
             ),
             foundationalTournamentEntities
         )
@@ -162,7 +162,7 @@ class TournamentFilterViaSharedPreferenceServiceTest {
                 2,
                 4,
                 4,
-                Progress(2,3)
+                Progress(2,3) //66.66
             ),
             foundationalTournamentEntities
         )
@@ -180,7 +180,7 @@ class TournamentFilterViaSharedPreferenceServiceTest {
                 2,
                 4,
                 4,
-                Progress(2,3)
+                Progress(2,3) //66.66
             ),
             foundationalTournamentEntities
         )
@@ -198,7 +198,7 @@ class TournamentFilterViaSharedPreferenceServiceTest {
                 6,
                 4,
                 6,
-                Progress(25,50)
+                Progress(25,50) //50.00
             ),
             foundationalTournamentEntities
         )
@@ -216,7 +216,7 @@ class TournamentFilterViaSharedPreferenceServiceTest {
                 6,
                 4,
                 6,
-                Progress(60,60)
+                Progress(60,60) //100.00
             ),
             foundationalTournamentEntities
         )
@@ -236,6 +236,9 @@ class TournamentFilterViaSharedPreferenceServiceTest {
 
         PowerMockito.`when`(mockPreferenceService.isFilteredOnEarliestModifiedDate()).thenReturn(false)
         PowerMockito.`when`(mockPreferenceService.isFilteredOnLatestModifiedDate()).thenReturn(false)
+
+        PowerMockito.`when`(mockPreferenceService.isFilteredOnLeastProgress()).thenReturn(false)
+        PowerMockito.`when`(mockPreferenceService.isFilteredOnMostProgress()).thenReturn(false)
     }
 
     @Test
@@ -255,6 +258,8 @@ class TournamentFilterViaSharedPreferenceServiceTest {
         PowerMockito.`when`(mockPreferenceService.getLatestCreatedDateToFilterOn()).thenReturn(LocalDateTime(0))
         PowerMockito.`when`(mockPreferenceService.getEarliestModifiedDateToFilterOn()).thenReturn(LocalDateTime.now().plusYears(9999))
         PowerMockito.`when`(mockPreferenceService.getLatestModifiedDateToFilterOn()).thenReturn(LocalDateTime(0))
+        PowerMockito.`when`(mockPreferenceService.getLeastProgressToFilterOn()).thenReturn(100)
+        PowerMockito.`when`(mockPreferenceService.getMostProgressToFilterOn()).thenReturn(0)
 
         Assert.assertEquals(listOf(tournament1, tournament2, tournament3, tournament4, tournament5, tournament6, tournament7, tournament8, tournament9, tournament10), sut.applyFilter(list))
 
@@ -446,6 +451,26 @@ class TournamentFilterViaSharedPreferenceServiceTest {
         Assert.assertEquals(listOf(tournament1, tournament2), sut.applyFilter(list))
 
     }
+
+    @Test
+    fun testLeastProgress() {
+        PowerMockito.`when`(mockPreferenceService.isFilteredOnLeastProgress()).thenReturn(true)
+        PowerMockito.`when`(mockPreferenceService.getLeastProgressToFilterOn()).thenReturn(50)
+
+        Assert.assertEquals(listOf(tournament1, tournament4, tournament7, tournament8, tournament9, tournament10), sut.applyFilter(list))
+    }
+
+    @Test
+    fun testMostProgress() {
+        PowerMockito.`when`(mockPreferenceService.isFilteredOnMostProgress()).thenReturn(true)
+        PowerMockito.`when`(mockPreferenceService.getMostProgressToFilterOn()).thenReturn(50)
+
+        Assert.assertEquals(listOf(tournament2, tournament3, tournament4, tournament5, tournament6, tournament9), sut.applyFilter(list))
+    }
+
+    //---------------------------------------------------
+    // Mixed Filters
+    //---------------------------------------------------
 
     @Test
     fun testEliminationAndDoubleEliminationType() {

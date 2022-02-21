@@ -32,6 +32,8 @@ class TournamentFilterViaSharedPreferenceService(private val preferenceService: 
                         filterOn({ preferenceService.isFilteredOnLatestModifiedDate() }, { lastModifiedDate.toLocalDate() <= preferenceService.getLatestModifiedDateToFilterOn().toLocalDate() })
                     } ?: true
                 }
+                .filter { filterOn({ preferenceService.isFilteredOnLeastProgress() }, { it.extendedTournamentInformation.progress.percentageRep >= preferenceService.getLeastProgressToFilterOn() }) }
+                .filter { filterOn({ preferenceService.isFilteredOnMostProgress() }, { it.extendedTournamentInformation.progress.percentageRep <= preferenceService.getMostProgressToFilterOn() }) }
                 .toList()
 
         }
