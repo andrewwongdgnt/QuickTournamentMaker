@@ -100,7 +100,11 @@ class LoadTournamentFilterOptionsDialogFragment(
                         latestModifiedDateFilteredOn.value?.let { setFilteredOnLatestModifiedDate(it) }
                         latestModifiedDateBacking.value?.let { setLatestModifiedDateToFilterOn(it) }
 
-                        progressFilteredOn.value?.let { setFilteredOnLeastProgress(it) }
+                        progressFilteredOn.value?.let { setFilteredOnProgress(it) }
+                        progressRange.value?.let {
+                            setLeastProgressToFilterOn(it[0])
+                            setMostProgressToFilterOn(it[1])
+                        }
                     }
 
                     listener.onEdit(Unit)

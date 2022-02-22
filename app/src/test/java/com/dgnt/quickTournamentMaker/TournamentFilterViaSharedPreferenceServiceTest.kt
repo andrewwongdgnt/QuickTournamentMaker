@@ -8,7 +8,7 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.powermock.api.mockito.PowerMockito
-//TODO test progress
+
 class TournamentFilterViaSharedPreferenceServiceTest {
 
     private val mockPreferenceService = PowerMockito.mock(IPreferenceService::class.java)
@@ -237,8 +237,7 @@ class TournamentFilterViaSharedPreferenceServiceTest {
         PowerMockito.`when`(mockPreferenceService.isFilteredOnEarliestModifiedDate()).thenReturn(false)
         PowerMockito.`when`(mockPreferenceService.isFilteredOnLatestModifiedDate()).thenReturn(false)
 
-        PowerMockito.`when`(mockPreferenceService.isFilteredOnLeastProgress()).thenReturn(false)
-        PowerMockito.`when`(mockPreferenceService.isFilteredOnMostProgress()).thenReturn(false)
+        PowerMockito.`when`(mockPreferenceService.isFilteredOnProgress()).thenReturn(false)
     }
 
     @Test
@@ -258,8 +257,8 @@ class TournamentFilterViaSharedPreferenceServiceTest {
         PowerMockito.`when`(mockPreferenceService.getLatestCreatedDateToFilterOn()).thenReturn(LocalDateTime(0))
         PowerMockito.`when`(mockPreferenceService.getEarliestModifiedDateToFilterOn()).thenReturn(LocalDateTime.now().plusYears(9999))
         PowerMockito.`when`(mockPreferenceService.getLatestModifiedDateToFilterOn()).thenReturn(LocalDateTime(0))
-        PowerMockito.`when`(mockPreferenceService.getLeastProgressToFilterOn()).thenReturn(100)
-        PowerMockito.`when`(mockPreferenceService.getMostProgressToFilterOn()).thenReturn(0)
+        PowerMockito.`when`(mockPreferenceService.getLeastProgressToFilterOn()).thenReturn(100f)
+        PowerMockito.`when`(mockPreferenceService.getMostProgressToFilterOn()).thenReturn(0f)
 
         Assert.assertEquals(listOf(tournament1, tournament2, tournament3, tournament4, tournament5, tournament6, tournament7, tournament8, tournament9, tournament10), sut.applyFilter(list))
 
@@ -454,16 +453,18 @@ class TournamentFilterViaSharedPreferenceServiceTest {
 
     @Test
     fun testLeastProgress() {
-        PowerMockito.`when`(mockPreferenceService.isFilteredOnLeastProgress()).thenReturn(true)
-        PowerMockito.`when`(mockPreferenceService.getLeastProgressToFilterOn()).thenReturn(50)
+        PowerMockito.`when`(mockPreferenceService.isFilteredOnProgress()).thenReturn(true)
+        PowerMockito.`when`(mockPreferenceService.getLeastProgressToFilterOn()).thenReturn(50f)
+        PowerMockito.`when`(mockPreferenceService.getMostProgressToFilterOn()).thenReturn(100f)
 
         Assert.assertEquals(listOf(tournament1, tournament4, tournament7, tournament8, tournament9, tournament10), sut.applyFilter(list))
     }
 
     @Test
     fun testMostProgress() {
-        PowerMockito.`when`(mockPreferenceService.isFilteredOnMostProgress()).thenReturn(true)
-        PowerMockito.`when`(mockPreferenceService.getMostProgressToFilterOn()).thenReturn(50)
+        PowerMockito.`when`(mockPreferenceService.isFilteredOnProgress()).thenReturn(true)
+        PowerMockito.`when`(mockPreferenceService.getLeastProgressToFilterOn()).thenReturn(0f)
+        PowerMockito.`when`(mockPreferenceService.getMostProgressToFilterOn()).thenReturn(50f)
 
         Assert.assertEquals(listOf(tournament2, tournament3, tournament4, tournament5, tournament6, tournament9), sut.applyFilter(list))
     }

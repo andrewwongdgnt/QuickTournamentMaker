@@ -126,6 +126,7 @@ class LoadTournamentFilterOptionsViewModel(private val preferenceService: IPrefe
             latestModifiedDateBacking.value = it
         }
 
-        progressFilteredOn.value = preferenceService.isFilteredOnLeastProgress()
+        progressFilteredOn.value = preferenceService.isFilteredOnProgress()
+        progressRange.value = listOf(preferenceService.getLeastProgressToFilterOn(), preferenceService.getMostProgressToFilterOn())
     }
 }

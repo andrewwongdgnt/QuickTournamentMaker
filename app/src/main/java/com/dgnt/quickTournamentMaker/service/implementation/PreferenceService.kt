@@ -43,10 +43,9 @@ class PreferenceService(private val sharedPreferences: SharedPreferences, privat
         private const val PREF_FILTER_LATEST_MODIFIED_EPOCH_KEY = "filterLatestModifiedEpochKey"
         private const val PREF_FILTER_LATEST_MODIFIED_EPOCH_ALLOWED_KEY = "filterLatestModifiedEpochAllowedKey"
 
+        private const val PREF_FILTER_PROGRESS_ALLOWED_KEY = "filterProgressAllowedKey"
         private const val PREF_FILTER_LEAST_PROGRESS_KEY = "filterLeastProgressKey"
-        private const val PREF_FILTER_LEAST_PROGRESS_ALLOWED_KEY = "filterLeastProgressAllowedKey"
         private const val PREF_FILTER_MOST_PROGRESS_KEY = "filterMostProgressKey"
-        private const val PREF_FILTER_MOST_PROGRESS_ALLOWED_KEY = "filterMostProgressAllowedKey"
 
     }
 
@@ -282,42 +281,32 @@ class PreferenceService(private val sharedPreferences: SharedPreferences, privat
         }
 
     override fun getLeastProgressToFilterOn() =
-        sharedPreferences.getInt(PREF_FILTER_LEAST_PROGRESS_KEY, 0)
+        sharedPreferences.getFloat(PREF_FILTER_LEAST_PROGRESS_KEY, 0f)
 
 
-    override fun setLeastProgressToFilterOn(progress: Int) {
+    override fun setLeastProgressToFilterOn(progress: Float) {
         sharedPreferences.edit().run {
-            putInt(PREF_FILTER_LEAST_PROGRESS_KEY, progress)
+            putFloat(PREF_FILTER_LEAST_PROGRESS_KEY, progress)
             apply()
         }
     }
 
-    override fun isFilteredOnLeastProgress() =
-        sharedPreferences.getBoolean(PREF_FILTER_LEAST_PROGRESS_ALLOWED_KEY, false)
+    override fun isFilteredOnProgress() =
+        sharedPreferences.getBoolean(PREF_FILTER_PROGRESS_ALLOWED_KEY, false)
 
-    override fun setFilteredOnLeastProgress(on: Boolean) {
+    override fun setFilteredOnProgress(on: Boolean) {
         sharedPreferences.edit().run {
-            putBoolean(PREF_FILTER_LEAST_PROGRESS_ALLOWED_KEY, on)
+            putBoolean(PREF_FILTER_PROGRESS_ALLOWED_KEY, on)
             apply()
         }
     }
 
     override fun getMostProgressToFilterOn() =
-        sharedPreferences.getInt(PREF_FILTER_MOST_PROGRESS_KEY, 100)
+        sharedPreferences.getFloat(PREF_FILTER_MOST_PROGRESS_KEY, 100f)
 
-    override fun setMostProgressToFilterOn(progress: Int) {
+    override fun setMostProgressToFilterOn(progress: Float) {
         sharedPreferences.edit().run {
-            putInt(PREF_FILTER_MOST_PROGRESS_KEY, progress)
-            apply()
-        }
-    }
-
-    override fun isFilteredOnMostProgress() =
-        sharedPreferences.getBoolean(PREF_FILTER_MOST_PROGRESS_ALLOWED_KEY, false)
-
-    override fun setFilteredOnMostProgress(on: Boolean) {
-        sharedPreferences.edit().run {
-            putBoolean(PREF_FILTER_MOST_PROGRESS_ALLOWED_KEY, on)
+            putFloat(PREF_FILTER_MOST_PROGRESS_KEY, progress)
             apply()
         }
     }
