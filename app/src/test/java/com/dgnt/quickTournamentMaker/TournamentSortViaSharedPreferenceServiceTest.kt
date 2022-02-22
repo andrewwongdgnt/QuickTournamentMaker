@@ -10,7 +10,6 @@ import org.junit.Before
 import org.junit.Test
 import org.powermock.api.mockito.PowerMockito
 
-//TODO test progress
 class TournamentSortViaSharedPreferenceServiceTest {
 
     private val mockPreferenceService = PowerMockito.mock(IPreferenceService::class.java)
