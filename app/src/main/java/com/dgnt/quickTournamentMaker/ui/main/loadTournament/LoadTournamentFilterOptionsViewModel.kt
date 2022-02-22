@@ -74,6 +74,12 @@ class LoadTournamentFilterOptionsViewModel(private val preferenceService: IPrefe
     @Bindable
     val latestModifiedDateBacking = MutableLiveData<LocalDateTime>()
 
+    @Bindable
+    val progressFilteredOn = MutableLiveData<Boolean>()
+
+    @Bindable
+    val progressRange = MutableLiveData<List<Float>>().apply { value = listOf(0f, 100f) }
+
 
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
     }
@@ -119,5 +125,7 @@ class LoadTournamentFilterOptionsViewModel(private val preferenceService: IPrefe
             latestModifiedDate.value = dateFormat.print(it)
             latestModifiedDateBacking.value = it
         }
+
+        progressFilteredOn.value = preferenceService.isFilteredOnLeastProgress()
     }
 }

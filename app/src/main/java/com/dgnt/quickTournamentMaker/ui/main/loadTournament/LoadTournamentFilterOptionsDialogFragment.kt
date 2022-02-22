@@ -3,6 +3,7 @@ package com.dgnt.quickTournamentMaker.ui.main.loadTournament
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
@@ -98,6 +99,8 @@ class LoadTournamentFilterOptionsDialogFragment(
                         earliestModifiedDateBacking.value?.let { setEarliestModifiedDateToFilterOn(it) }
                         latestModifiedDateFilteredOn.value?.let { setFilteredOnLatestModifiedDate(it) }
                         latestModifiedDateBacking.value?.let { setLatestModifiedDateToFilterOn(it) }
+
+                        progressFilteredOn.value?.let { setFilteredOnLeastProgress(it) }
                     }
 
                     listener.onEdit(Unit)

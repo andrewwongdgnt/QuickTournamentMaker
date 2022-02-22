@@ -162,6 +162,7 @@
     <string name="showOnly">Show only</string>
     <string name="createdBetween">Created between</string>
     <string name="modifiedBetween">Modified between</string>
+    <string name="progression">Progression range</string>
     <string name="between">Between</string>
     <string name="seedType">Seed type</string>
 
