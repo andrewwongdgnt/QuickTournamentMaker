@@ -1,5 +1,7 @@
 package com.dgnt.quickTournamentMaker.ui.main.home
 
+import android.app.UiModeManager
+import android.content.Context.UI_MODE_SERVICE
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View

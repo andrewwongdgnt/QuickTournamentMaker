@@ -300,6 +300,46 @@
                     app:layout_constraintStart_toEndOf="@id/latestModifiedDate_cb"
                     app:layout_constraintTop_toTopOf="@id/latestModifiedDate_cb" />
 
+
+            <View
+                    android:id="@+id/progressFilter_divider"
+                    android:layout_width="0dp"
+                    android:layout_height="0.5dp"
+                    android:layout_marginTop="@dimen/spacer_gap"
+                    android:background="#a3a3a3"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/latestModifiedDate_et" />
+
+            <TextView
+                    android:id="@+id/progressTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacer_gap"
+                    android:text="@string/modifiedBetween"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/progressFilter_divider" />
+
+            <CheckBox
+                    android:id="@+id/progress_cb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/standardIndent"
+                    android:checked="@={vm.latestModifiedDateFilteredOn}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/progressTitle" />
+
+            <com.google.android.material.slider.RangeSlider
+                    android:id="@+id/slider"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:valueFrom="0"
+                    android:valueTo="10"
+                    app:layout_constraintBottom_toBottomOf="@id/progress_cb"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/progress_cb"
+                    app:layout_constraintTop_toTopOf="@id/progress_cb" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </layout>
