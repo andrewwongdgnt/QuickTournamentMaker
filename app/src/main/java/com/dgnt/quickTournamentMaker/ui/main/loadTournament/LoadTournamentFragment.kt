@@ -1,9 +1,15 @@
 package com.dgnt.quickTournamentMaker.ui.main.loadTournament
 
 import android.app.AlertDialog
+import android.app.SearchManager
+import android.database.MatrixCursor
 import android.os.Bundle
+import android.provider.BaseColumns
 import android.util.Log
 import android.view.*
+import androidx.appcompat.widget.SearchView
+import androidx.cursoradapter.widget.CursorAdapter
+import androidx.cursoradapter.widget.SimpleCursorAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
@@ -40,8 +46,44 @@ class LoadTournamentFragment : Fragment(), DIAware {
         return binding.root
     }
 
+
+    //FIXME suggestion part
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.actions_load_tournament, menu)
+        val suggestions = listOf("")
+        val searchMenu = menu.findItem(R.id.action_search)
+
+        val simple = SimpleCursorAdapter(
+            activity,
+            R.layout.list_item,
+            null,
+            arrayOf(SearchManager.SUGGEST_COLUMN_TEXT_1),
+            intArrayOf(R.id.list_item_tv),
+            CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER
+        )
+
+        (searchMenu?.actionView as? SearchView)?.apply {
+            suggestionsAdapter = simple
+        }?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
+            override fun onQueryTextChange(qString: String): Boolean {
+                val cursor = MatrixCursor(arrayOf(BaseColumns._ID, SearchManager.SUGGEST_COLUMN_TEXT_1))
+
+                suggestions.forEachIndexed { index, suggestion ->
+                    if (suggestion.contains(qString, true))
+                        cursor.addRow(arrayOf(index, suggestion))
+                }
+
+                simple.changeCursor(cursor)
+                return true
+            }
+
+            override fun onQueryTextSubmit(qString: String): Boolean {
+                searchMenu.collapseActionView()
+                return true
+            }
+        })
+
         super.onCreateOptionsMenu(menu, inflater)
     }
 
