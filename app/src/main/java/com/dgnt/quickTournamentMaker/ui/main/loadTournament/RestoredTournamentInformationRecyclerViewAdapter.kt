@@ -39,7 +39,7 @@ class RestoredTournamentInformationRecyclerViewAdapter(
         notifyDataSetChanged()
     }
 
-    fun updateList(searchText: String) {
+    fun updateList(searchText: String): Boolean {
         this.searchText = searchText
         val filteredItems = allItems
             .filter {
@@ -49,6 +49,14 @@ class RestoredTournamentInformationRecyclerViewAdapter(
             }
         items.update(filteredItems)
         notifyDataSetChanged()
+        return filteredItems.isNotEmpty()
+    }
+
+    fun reset(): Boolean {
+        searchText = ""
+        items.update(allItems)
+        notifyDataSetChanged()
+        return items.isNotEmpty()
     }
 
 }

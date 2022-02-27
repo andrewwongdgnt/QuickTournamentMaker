@@ -30,9 +30,11 @@ fun String?.toIntOr(default: Int) = this?.toIntOrNull() ?: default
 
 fun String.containsCaseInsensitive(compared: String) = this.lowercase(Locale.getDefault()).contains(compared.lowercase(Locale.getDefault()))
 
-fun TextView.highlight(input: String, color: Int) {
+fun TextView.highlight(input: String, color: Int, caseSensitive: Boolean = false) {
 
-    if (input.isBlank())
+    val searchText = if (caseSensitive) input else input.lowercase(Locale.getDefault())
+
+    if (searchText.isBlank())
         return
     //Get the text from text view and create a spannable string
     val spannableString = SpannableString(text)
@@ -42,14 +44,15 @@ fun TextView.highlight(input: String, color: Int) {
         spannableString.removeSpan(span)
     }
 
+    val adjustedSpannableString = if (caseSensitive) spannableString.toString() else spannableString.toString().lowercase(Locale.getDefault())
     //Search for all occurrences of the keyword in the string
-    var indexOfKeyword = spannableString.toString().indexOf(input)
+    var indexOfKeyword = adjustedSpannableString.indexOf(searchText)
     while (indexOfKeyword >= 0) {
         //Create a background color span on the keyword
-        spannableString.setSpan(BackgroundColorSpan(color), indexOfKeyword, indexOfKeyword + input.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannableString.setSpan(BackgroundColorSpan(color), indexOfKeyword, indexOfKeyword + searchText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 
         //Get the next index of the keyword
-        indexOfKeyword = spannableString.toString().indexOf(input, indexOfKeyword + input.length)
+        indexOfKeyword = adjustedSpannableString.indexOf(searchText, indexOfKeyword + searchText.length)
     }
 
     //Set the final text on TextView

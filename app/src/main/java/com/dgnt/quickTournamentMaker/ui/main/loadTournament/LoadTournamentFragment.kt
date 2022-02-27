@@ -36,7 +36,7 @@ class LoadTournamentFragment : Fragment(), DIAware {
     private lateinit var binding: LoadTournamentFragmentBinding
     private lateinit var viewModel: LoadTournamentViewModel
 
-    private lateinit var mainAdapter: RestoredTournamentInformationRecyclerViewAdapter
+    private var mainAdapter: RestoredTournamentInformationRecyclerViewAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -79,7 +79,14 @@ class LoadTournamentFragment : Fragment(), DIAware {
             }
 
             override fun onQueryTextSubmit(qString: String): Boolean {
-                mainAdapter.updateList(qString)
+                binding.clearSearchTv.apply {
+                    visibility = View.VISIBLE
+                    text = getString(R.string.clearSearch, qString)
+                }
+                mainAdapter?.updateList(qString)?.takeUnless { it }?.run {
+                    binding.noResultsTv.visibility = View.VISIBLE
+                } ?: run { binding.noResultsTv.visibility = View.GONE }
+
                 searchMenu.collapseActionView()
                 return true
             }
@@ -146,14 +153,22 @@ class LoadTournamentFragment : Fragment(), DIAware {
 
             binding.lifecycleOwner = viewLifecycleOwner
 
+            binding.swipeRefresh.setOnRefreshListener {
+                mainAdapter?.reset()?.takeUnless { it }?.run {
+                    binding.noResultsTv.visibility = View.VISIBLE
+                } ?: run { binding.noResultsTv.visibility = View.GONE }
+                binding.clearSearchTv.visibility = View.GONE
+                binding.swipeRefresh.isRefreshing = false
+            }
+
             viewModel.tournamentLiveData.observe(viewLifecycleOwner) {
                 Log.d(LoadTournamentFragment::class.simpleName, "restored tournament info: $it")
 
-                val sortedAndFiltered = filterAndSort(it)
+                val filteredAndSorted = filterAndSort(it)
 
                 binding.tournamentRv.adapter = RestoredTournamentInformationRecyclerViewAdapter(
                     this,
-                    sortedAndFiltered.toMutableList(),
+                    filteredAndSorted.toMutableList(),
                     { restoredTournamentInformation ->
                         activity?.supportFragmentManager?.let { fragManager ->
                             MoreInfoDialogFragment.newInstance(fragManager, restoredTournamentInformation.extendedTournamentInformation, tournamentEditListener)
@@ -165,6 +180,13 @@ class LoadTournamentFragment : Fragment(), DIAware {
                     viewModel.getViewMode()
                 ).also { adapter ->
                     mainAdapter = adapter
+                }
+                filteredAndSorted.takeUnless { it.isEmpty() }?.run {
+                    binding.noResultsTv.visibility = View.GONE
+                    binding.clearSearchTv.visibility = View.GONE
+
+                } ?: run {
+                    binding.noResultsTv.visibility = View.VISIBLE
                 }
             }
         }
@@ -180,7 +202,7 @@ class LoadTournamentFragment : Fragment(), DIAware {
     private val onFilterSortListener = object : OnEditListener<Unit> {
         override fun onEdit(editedValue: Unit) {
             viewModel.tournamentLiveData.value?.let {
-                mainAdapter.updateList(filterAndSort(it))
+                mainAdapter?.updateList(filterAndSort(it))
             }
         }
     }
@@ -188,6 +210,6 @@ class LoadTournamentFragment : Fragment(), DIAware {
     private fun filterAndSort(list: List<RestoredTournamentInformation>) = viewModel.applyFilter(list).let { viewModel.applySort(it) }
 
     private fun onUpdateViewMode() {
-        mainAdapter.updateList(viewModel.getViewMode())
+        mainAdapter?.updateList(viewModel.getViewMode())
     }
 }
