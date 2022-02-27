@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dgnt.quickTournamentMaker.databinding.TournamentListItemBinding
 import com.dgnt.quickTournamentMaker.model.loadTournament.ViewMode
 import com.dgnt.quickTournamentMaker.model.tournament.RestoredTournamentInformation
+import com.dgnt.quickTournamentMaker.util.containsCaseInsensitive
 import com.dgnt.quickTournamentMaker.util.update
 
 class RestoredTournamentInformationRecyclerViewAdapter(
@@ -17,19 +18,36 @@ class RestoredTournamentInformationRecyclerViewAdapter(
     private var viewMode: ViewMode
 ) : RecyclerView.Adapter<RestoredTournamentInformationItemViewHolder>() {
 
+    var searchText:String = ""
+
+    private val allItems = items.toMutableList()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestoredTournamentInformationItemViewHolder = RestoredTournamentInformationItemViewHolder(context, TournamentListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false), moreInfoListener, loadListener)
 
-    override fun onBindViewHolder(holder: RestoredTournamentInformationItemViewHolder, position: Int) = holder.bind(items[position], viewMode)
+    override fun onBindViewHolder(holder: RestoredTournamentInformationItemViewHolder, position: Int) = holder.bind(items[position], viewMode, searchText)
 
     override fun getItemCount(): Int = items.size
 
     fun updateList(newItems: List<RestoredTournamentInformation>) {
+        allItems.update(newItems)
         items.update(newItems)
         notifyDataSetChanged()
     }
 
     fun updateList(viewMode: ViewMode) {
         this.viewMode = viewMode
+        notifyDataSetChanged()
+    }
+
+    fun updateList(searchText: String) {
+        this.searchText = searchText
+        val filteredItems = allItems
+            .filter {
+                it.extendedTournamentInformation.basicTournamentInformation.run {
+                    title.containsCaseInsensitive(searchText) || description.containsCaseInsensitive(searchText)
+                }
+            }
+        items.update(filteredItems)
         notifyDataSetChanged()
     }
 

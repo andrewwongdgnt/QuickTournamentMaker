@@ -1,7 +1,12 @@
 package com.dgnt.quickTournamentMaker.util
 
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.BackgroundColorSpan
+import android.widget.TextView
 import java.io.OutputStream
 import java.nio.charset.Charset
+import java.util.*
 
 
 fun <E> MutableCollection<E>.update(collection: Collection<E>) {
@@ -22,3 +27,31 @@ fun OutputStream.writeText(
 ) = write(text.toByteArray(charset))
 
 fun String?.toIntOr(default: Int) = this?.toIntOrNull() ?: default
+
+fun String.containsCaseInsensitive(compared: String) = this.lowercase(Locale.getDefault()).contains(compared.lowercase(Locale.getDefault()))
+
+fun TextView.highlight(input: String, color: Int) {
+
+    if (input.isBlank())
+        return
+    //Get the text from text view and create a spannable string
+    val spannableString = SpannableString(text)
+    //Get the previous spans and remove them
+    val backgroundSpans = spannableString.getSpans(0, spannableString.length, BackgroundColorSpan::class.java)
+    for (span in backgroundSpans) {
+        spannableString.removeSpan(span)
+    }
+
+    //Search for all occurrences of the keyword in the string
+    var indexOfKeyword = spannableString.toString().indexOf(input)
+    while (indexOfKeyword >= 0) {
+        //Create a background color span on the keyword
+        spannableString.setSpan(BackgroundColorSpan(color), indexOfKeyword, indexOfKeyword + input.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+        //Get the next index of the keyword
+        indexOfKeyword = spannableString.toString().indexOf(input, indexOfKeyword + input.length)
+    }
+
+    //Set the final text on TextView
+    text = spannableString
+}

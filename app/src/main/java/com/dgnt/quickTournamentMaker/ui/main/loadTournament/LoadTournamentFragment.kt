@@ -53,7 +53,7 @@ class LoadTournamentFragment : Fragment(), DIAware {
         val suggestions = listOf("")
         val searchMenu = menu.findItem(R.id.action_search)
 
-        val simple = SimpleCursorAdapter(
+        val simpleCursor = SimpleCursorAdapter(
             activity,
             R.layout.list_item,
             null,
@@ -63,7 +63,7 @@ class LoadTournamentFragment : Fragment(), DIAware {
         )
 
         (searchMenu?.actionView as? SearchView)?.apply {
-            suggestionsAdapter = simple
+            suggestionsAdapter = simpleCursor
         }?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
             override fun onQueryTextChange(qString: String): Boolean {
@@ -74,11 +74,12 @@ class LoadTournamentFragment : Fragment(), DIAware {
                         cursor.addRow(arrayOf(index, suggestion))
                 }
 
-                simple.changeCursor(cursor)
+                simpleCursor.changeCursor(cursor)
                 return true
             }
 
             override fun onQueryTextSubmit(qString: String): Boolean {
+                mainAdapter.updateList(qString)
                 searchMenu.collapseActionView()
                 return true
             }

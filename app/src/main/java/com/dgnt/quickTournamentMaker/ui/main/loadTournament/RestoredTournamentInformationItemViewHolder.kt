@@ -1,12 +1,16 @@
 package com.dgnt.quickTournamentMaker.ui.main.loadTournament
 
 import android.content.Context
+import android.text.SpannableString
+import android.text.style.BackgroundColorSpan
 import android.view.View
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.TournamentListItemBinding
 import com.dgnt.quickTournamentMaker.model.loadTournament.ViewMode
 import com.dgnt.quickTournamentMaker.model.tournament.RestoredTournamentInformation
+import com.dgnt.quickTournamentMaker.util.highlight
 import org.joda.time.format.DateTimeFormat
 
 
@@ -21,14 +25,23 @@ class RestoredTournamentInformationItemViewHolder(
 
     fun bind(
         value: RestoredTournamentInformation,
-        viewMode: ViewMode
+        viewMode: ViewMode,
+        searchText: String
     ) =
         binding.run {
             value.extendedTournamentInformation.let { ext ->
                 ext.basicTournamentInformation.let { basic ->
+
+                    val color = ResourcesCompat.getColor(context.resources, R.color.searchHighlight, context.theme)
+
+
                     titleTv.text = basic.title
+                    titleTv.highlight(searchText, color)
+
                     descriptionTv.text = basic.description
                     descriptionTv.visibility = if (viewMode == ViewMode.MINIMAL) View.INVISIBLE else View.VISIBLE
+                    descriptionTv.highlight(searchText, color)
+
                     tournamentIv.setImageResource(basic.tournamentType.drawableResource)
 
                     val dateFormat = DateTimeFormat.mediumDateTime()

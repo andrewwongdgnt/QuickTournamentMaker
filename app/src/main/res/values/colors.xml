@@ -83,4 +83,6 @@
     <color name="colorTournamentMsg">#118cff</color>
 
     <color name="titledLinearLayout">#acacac</color>
+
+    <color name="searchHighlight">#C6BD1A</color>
 </resources>
