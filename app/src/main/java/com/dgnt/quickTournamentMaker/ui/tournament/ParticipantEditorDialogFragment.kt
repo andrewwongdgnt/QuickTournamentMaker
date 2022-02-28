@@ -15,9 +15,7 @@ import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 import org.kodein.di.instance
 
-class ParticipantEditorDialogFragment(
-    private val listener: OnEditListener<Participant>
-) : DialogFragment(), DIAware {
+class ParticipantEditorDialogFragment : DialogFragment(), DIAware {
     override val di by di()
     private val viewModelFactory: ParticipantEditorViewModelFactory by instance()
 
@@ -26,18 +24,18 @@ class ParticipantEditorDialogFragment(
         const val TAG = "ParticipantEditorDialogFragment"
 
         private const val KEY_PARTICIPANT = "KEY_PARTICIPANT"
+        private const val KEY_LISTENER = "KEY_LISTENER"
 
         fun newInstance(
             participant: Participant,
             listener: OnEditListener<Participant>
         ) =
-            ParticipantEditorDialogFragment(listener).apply {
+            ParticipantEditorDialogFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable(KEY_PARTICIPANT, participant)
+                    putParcelable(KEY_LISTENER, listener)
                 }
-
             }
-
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?) =
@@ -49,6 +47,7 @@ class ParticipantEditorDialogFragment(
             binding.lifecycleOwner = this
 
             val participant = arguments?.getParcelable<Participant>(KEY_PARTICIPANT)!!
+            val listener = arguments?.getParcelable<OnEditListener<Participant>>(KEY_LISTENER)!!
 
             viewModel.setData(participant, resources.getStringArray(R.array.colorOptionsNames).asList().zip(resources.getIntArray(R.array.colorOptions).asList()).map {
                 ColorInfo(it.first, it.second)

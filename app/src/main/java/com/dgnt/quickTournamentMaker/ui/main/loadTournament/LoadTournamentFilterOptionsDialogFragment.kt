@@ -10,8 +10,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.LoadTournamentFilterOptionsFragmentBinding
 import com.dgnt.quickTournamentMaker.model.tournament.RestoredTournamentInformation
+import com.dgnt.quickTournamentMaker.model.tournament.RoundGroup
+import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentType
 import com.dgnt.quickTournamentMaker.ui.main.common.OnEditListener
+import com.dgnt.quickTournamentMaker.ui.tournament.MatchUpListDialogFragment
+import com.dgnt.quickTournamentMaker.ui.tournament.MoreInfoDialogFragment
 import com.dgnt.quickTournamentMaker.util.toIntOr
 import org.joda.time.LocalDateTime
 import org.joda.time.format.DateTimeFormat
@@ -20,9 +24,7 @@ import org.kodein.di.android.x.di
 import org.kodein.di.instance
 
 
-class LoadTournamentFilterOptionsDialogFragment(
-    private val listener: OnEditListener<Unit>
-) : DialogFragment(), DIAware {
+class LoadTournamentFilterOptionsDialogFragment : DialogFragment(), DIAware {
     override val di by di()
     private val viewModelFactory: LoadTournamentFilterOptionsViewModelFactory by instance()
 
@@ -30,9 +32,14 @@ class LoadTournamentFilterOptionsDialogFragment(
 
         const val TAG = "LoadTournamentFilterOptionsDialogFragment"
 
-        fun newInstance(listener: OnEditListener<Unit>): LoadTournamentFilterOptionsDialogFragment =
-            LoadTournamentFilterOptionsDialogFragment(listener)
+        private const val KEY_LISTENER = "KEY_LISTENER"
 
+        fun newInstance(listener: OnEditListener<Unit>): LoadTournamentFilterOptionsDialogFragment =
+            LoadTournamentFilterOptionsDialogFragment().apply {
+                arguments = Bundle().apply {
+                    putParcelable(KEY_LISTENER, listener)
+                }
+            }
     }
 
     private lateinit var binding: LoadTournamentFilterOptionsFragmentBinding
@@ -42,6 +49,7 @@ class LoadTournamentFilterOptionsDialogFragment(
 
         activity?.let { activity ->
 
+            val listener = arguments?.getParcelable<OnEditListener<Unit>>(KEY_LISTENER)!!
             binding = LoadTournamentFilterOptionsFragmentBinding.inflate(activity.layoutInflater)
 
             viewModel = ViewModelProvider(this, viewModelFactory)[LoadTournamentFilterOptionsViewModel::class.java]

@@ -15,9 +15,7 @@ import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 import org.kodein.di.instance
 
-class RoundEditorDialogFragment(
-    private val listener: OnEditListener<Round>
-) : DialogFragment(), DIAware {
+class RoundEditorDialogFragment : DialogFragment(), DIAware {
     override val di by di()
     private val viewModelFactory: RoundEditorViewModelFactory by instance()
 
@@ -27,6 +25,7 @@ class RoundEditorDialogFragment(
         private const val KEY_ROUND = "KEY_MATCH_UP"
         private const val KEY_ROUND_GROUP_INDEX = "KEY_ROUND_GROUP_INDEX"
         private const val KEY_ROUND_INDEX = "KEY_ROUND_INDEX"
+        private const val KEY_LISTENER = "KEY_LISTENER"
 
         fun newInstance(
             round: Round,
@@ -34,11 +33,12 @@ class RoundEditorDialogFragment(
             roundIndex: Int,
             listener: OnEditListener<Round>
         ) =
-            RoundEditorDialogFragment(listener).apply {
+            RoundEditorDialogFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable(KEY_ROUND, round)
                     putInt(KEY_ROUND_GROUP_INDEX, roundGroupIndex)
                     putInt(KEY_ROUND_INDEX, roundIndex)
+                    putParcelable(KEY_LISTENER, listener)
                 }
 
             }
@@ -54,6 +54,7 @@ class RoundEditorDialogFragment(
             val round = arguments?.getParcelable<Round>(KEY_ROUND)!!
             val roundGroupIndex = arguments?.getInt(KEY_ROUND_GROUP_INDEX)!!
             val roundIndex = arguments?.getInt(KEY_ROUND_INDEX)!!
+            val listener = arguments?.getParcelable<OnEditListener<Round>>(KEY_LISTENER)!!
 
             viewModel.setData(round, resources.getStringArray(R.array.colorOptionsNames).asList().zip(resources.getIntArray(R.array.colorOptions).asList()).map {
                 ColorInfo(it.first, it.second)

@@ -12,10 +12,7 @@ import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.ComponentTournamentTypeEditorBinding
 import com.dgnt.quickTournamentMaker.model.tournament.RankPriorityConfigType
 import com.dgnt.quickTournamentMaker.ui.customSeed.CustomSeedDialogFragment
-import com.dgnt.quickTournamentMaker.ui.main.common.DraggableItemTouchHelperCallback
-import com.dgnt.quickTournamentMaker.ui.main.common.RankPriorityRecyclerViewAdapter
-import com.dgnt.quickTournamentMaker.ui.main.common.TournamentEventHolder
-import com.dgnt.quickTournamentMaker.ui.main.common.TournamentTypeEditorViewModel
+import com.dgnt.quickTournamentMaker.ui.main.common.*
 import com.dgnt.quickTournamentMaker.ui.tournament.TournamentActivity
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
@@ -91,7 +88,9 @@ class TournamentUtil {
             lifeCycleOwner: LifecycleOwner,
             context: Context,
             fragmentManager: FragmentManager,
-            onNewTournamentCallback: () -> Unit = {}
+            callback: OnEditListener<Unit> = object : OnEditListener<Unit> {
+                override fun onEdit(editedValue: Unit) {}
+            }
         ) {
 
 
@@ -101,7 +100,7 @@ class TournamentUtil {
                     Log.d("DGNTTAG", "start tournament with random seed: $it")
 
                     context.startActivity(TournamentActivity.createIntent(context, it.first, it.second))
-                    onNewTournamentCallback.invoke()
+                    callback.onEdit(Unit)
                 }
             }
 
@@ -110,9 +109,7 @@ class TournamentUtil {
 
                     Log.d("DGNTTAG", "start tournament with custom seed: $it")
 
-                    CustomSeedDialogFragment.newInstance(it.first, it.second).also { frag ->
-                        frag.setOnNewTournamentCallback(onNewTournamentCallback)
-                    }.show(fragmentManager, CustomSeedDialogFragment.TAG)
+                    CustomSeedDialogFragment.newInstance(it.first, it.second, callback).show(fragmentManager, CustomSeedDialogFragment.TAG)
 
                 }
             }

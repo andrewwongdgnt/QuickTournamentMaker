@@ -1,5 +1,6 @@
 package com.dgnt.quickTournamentMaker.ui.tournament
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +12,7 @@ import com.dgnt.quickTournamentMaker.databinding.ComponentTournamentTypeEditorBi
 import com.dgnt.quickTournamentMaker.databinding.RebuildTournamentFragmentBinding
 import com.dgnt.quickTournamentMaker.model.tournament.Participant
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
+import com.dgnt.quickTournamentMaker.ui.main.common.OnEditListener
 import com.dgnt.quickTournamentMaker.util.TournamentUtil
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
@@ -62,10 +64,13 @@ class RebuildTournamentDialogFragment : DialogFragment(), DIAware {
                 viewModel,
                 activity,
                 activity,
-                requireActivity().supportFragmentManager
-            ) {
-                activity.finish()
-            }
+                requireActivity().supportFragmentManager,
+                object : OnEditListener<Unit> {
+                    override fun onEdit(editedValue: Unit) {
+                        activity.finish()
+                    }
+                }
+            )
 
             AlertDialog.Builder(activity)
                 .setTitle(R.string.rebuildTournament)

@@ -11,12 +11,11 @@ import com.dgnt.quickTournamentMaker.databinding.NestedScrollViewBinding
 import com.dgnt.quickTournamentMaker.model.tournament.Round
 import com.dgnt.quickTournamentMaker.model.tournament.RoundGroup
 import com.dgnt.quickTournamentMaker.ui.main.common.OnEditListener
+import com.dgnt.quickTournamentMaker.ui.main.loadTournament.LoadTournamentFilterOptionsDialogFragment
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 
-class RoundListDialogFragment(
-    private val listener: OnEditListener<Round>
-) : DialogFragment(), DIAware {
+class RoundListDialogFragment : DialogFragment(), DIAware {
     override val di by di()
 
     companion object {
@@ -24,14 +23,16 @@ class RoundListDialogFragment(
         const val TAG = "RoundListDialogFragment"
 
         private const val KEY_ROUND_GROUPS = "KEY_ROUND_GROUPS"
+        private const val KEY_LISTENER = "KEY_LISTENER"
 
         fun newInstance(
             roundGroups: List<RoundGroup>,
             listener: OnEditListener<Round>
         ) =
-            RoundListDialogFragment(listener).apply {
+            RoundListDialogFragment().apply {
                 arguments = Bundle().apply {
                     putParcelableArrayList(KEY_ROUND_GROUPS, ArrayList<RoundGroup>(roundGroups))
+                    putParcelable(KEY_LISTENER, listener)
                 }
 
             }
@@ -43,6 +44,7 @@ class RoundListDialogFragment(
     override fun onCreateDialog(savedInstanceState: Bundle?) =
         activity?.let { activity ->
             val roundGroups = arguments?.getParcelableArrayList<RoundGroup>(KEY_ROUND_GROUPS)!!
+            val listener = arguments?.getParcelable<OnEditListener<Round>>(KEY_LISTENER)!!
 
             binding = NestedScrollViewBinding.inflate(activity.layoutInflater)
             val alert = AlertDialog.Builder(activity)

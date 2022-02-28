@@ -18,9 +18,7 @@ import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 import org.kodein.di.instance
 
-class MatchUpListDialogFragment(
-    private val listener: OnEditListener<MatchUp>
-) : DialogFragment(), DIAware {
+class MatchUpListDialogFragment : DialogFragment(), DIAware {
     override val di by di()
     private val createDefaultTitleService: ICreateDefaultTitleService by instance()
 
@@ -29,18 +27,18 @@ class MatchUpListDialogFragment(
         const val TAG = "MatchUpListDialogFragment"
 
         private const val KEY_ROUND_GROUPS = "KEY_ROUND_GROUPS"
+        private const val KEY_LISTENER = "KEY_LISTENER"
 
         fun newInstance(
             roundGroups: List<RoundGroup>,
             listener: OnEditListener<MatchUp>
         ) =
-            MatchUpListDialogFragment(listener).apply {
+            MatchUpListDialogFragment().apply {
                 arguments = Bundle().apply {
                     putParcelableArrayList(KEY_ROUND_GROUPS, ArrayList<RoundGroup>(roundGroups))
+                    putParcelable(KEY_LISTENER, listener)
                 }
-
             }
-
     }
 
     private lateinit var binding: NestedScrollViewBinding
@@ -56,6 +54,8 @@ class MatchUpListDialogFragment(
                 .create()
 
             val roundGroups = arguments?.getParcelableArrayList<RoundGroup>(KEY_ROUND_GROUPS)!!
+            val listener = arguments?.getParcelable<OnEditListener<MatchUp>>(KEY_LISTENER)!!
+
             roundGroups.forEach {
                 binding.container.apply {
                     if (roundGroups.size > 1) {

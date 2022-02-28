@@ -15,9 +15,7 @@ import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 import org.kodein.di.instance
 
-class MatchUpEditorDialogFragment(
-    private val listener: OnEditListener<MatchUp>
-) : DialogFragment(), DIAware {
+class MatchUpEditorDialogFragment : DialogFragment(), DIAware {
     override val di by di()
     private val viewModelFactory: MatchUpEditorViewModelFactory by instance()
 
@@ -28,6 +26,7 @@ class MatchUpEditorDialogFragment(
         private const val KEY_ROUND_GROUP_INDEX = "KEY_ROUND_GROUP_INDEX"
         private const val KEY_ROUND_INDEX = "KEY_ROUND_INDEX"
         private const val KEY_MATCH_UP_INDEX = "KEY_MATCH_UP_INDEX"
+        private const val KEY_LISTENER = "KEY_LISTENER"
 
         fun newInstance(
             matchUp: MatchUp,
@@ -36,12 +35,13 @@ class MatchUpEditorDialogFragment(
             matchUpIndex: Int,
             listener: OnEditListener<MatchUp>
         ) =
-            MatchUpEditorDialogFragment(listener).apply {
+            MatchUpEditorDialogFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable(KEY_MATCH_UP, matchUp)
                     putInt(KEY_ROUND_GROUP_INDEX, roundGroupIndex)
                     putInt(KEY_ROUND_INDEX, roundIndex)
                     putInt(KEY_MATCH_UP_INDEX, matchUpIndex)
+                    putParcelable(KEY_LISTENER, listener)
                 }
 
             }
@@ -58,6 +58,7 @@ class MatchUpEditorDialogFragment(
             val roundGroupIndex = arguments?.getInt(KEY_ROUND_GROUP_INDEX)!!
             val roundIndex = arguments?.getInt(KEY_ROUND_INDEX)!!
             val matchUpIndex = arguments?.getInt(KEY_MATCH_UP_INDEX)!!
+            val listener = arguments?.getParcelable<OnEditListener<MatchUp>>(KEY_LISTENER)!!
 
             viewModel.setData(resources, matchUp, resources.getStringArray(R.array.colorOptionsNames).asList().zip(resources.getIntArray(R.array.colorOptions).asList()).map {
                 ColorInfo(it.first, it.second)

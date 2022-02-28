@@ -1,6 +1,9 @@
 package com.dgnt.quickTournamentMaker.ui.main.common
 
-interface OnEditListener<T> {
+import android.os.Parcel
+import android.os.Parcelable
+
+interface OnEditListener<T> : Parcelable {
 
     /**
      * handles the edit
@@ -8,4 +11,10 @@ interface OnEditListener<T> {
      * @param editedValue the new edited value
      */
     fun onEdit(editedValue: T)
+
+    override fun describeContents() = 0
+
+    override fun writeToParcel(p0: Parcel?, p1: Int) {
+
+    }
 }

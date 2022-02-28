@@ -8,15 +8,14 @@ import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.MoreInfoFragmentBinding
 import com.dgnt.quickTournamentMaker.model.tournament.ExtendedTournamentInformation
+import com.dgnt.quickTournamentMaker.model.tournament.MatchUp
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
 import com.dgnt.quickTournamentMaker.ui.main.common.OnEditListener
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 import org.kodein.di.instance
 
-class MoreInfoDialogFragment(
-    private val listener: OnEditListener<TournamentInformation>
-) : DialogFragment(), DIAware {
+class MoreInfoDialogFragment : DialogFragment(), DIAware {
     override val di by di()
     private val viewModelFactory: MoreInfoViewModelFactory by instance()
 
@@ -24,14 +23,16 @@ class MoreInfoDialogFragment(
 
         const val TAG = "MoreInfoDialogFragment"
         private const val KEY_EXTENDED_TOURNAMENT_INFO = "KEY_EXTENDED_TOURNAMENT_INFO"
+        private const val KEY_LISTENER = "KEY_LISTENER"
 
         fun newInstance(
             extendedTournamentInformation: ExtendedTournamentInformation,
             listener: OnEditListener<TournamentInformation>
         ) =
-            MoreInfoDialogFragment(listener).apply {
+            MoreInfoDialogFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable(KEY_EXTENDED_TOURNAMENT_INFO, extendedTournamentInformation)
+                    putParcelable(KEY_LISTENER, listener)
                 }
             }
     }
@@ -43,6 +44,7 @@ class MoreInfoDialogFragment(
         activity?.let { activity ->
 
             val extendedTournamentInformation = arguments?.getParcelable<ExtendedTournamentInformation>(KEY_EXTENDED_TOURNAMENT_INFO)!!
+            val listener = arguments?.getParcelable<OnEditListener<TournamentInformation>>(KEY_LISTENER)!!
             val binding = MoreInfoFragmentBinding.inflate(activity.layoutInflater)
 
             val viewModel = ViewModelProvider(this, viewModelFactory)[MoreInfoViewModel::class.java]
