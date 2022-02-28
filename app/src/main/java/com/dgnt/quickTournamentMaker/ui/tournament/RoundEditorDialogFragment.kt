@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.RoundEditorFragmentBinding
@@ -17,9 +16,6 @@ import org.kodein.di.android.x.di
 import org.kodein.di.instance
 
 class RoundEditorDialogFragment(
-    private val round: Round,
-    private val roundGroupIndex: Int,
-    private val roundIndex: Int,
     private val listener: OnEditListener<Round>
 ) : DialogFragment(), DIAware {
     override val di by di()
@@ -28,19 +24,24 @@ class RoundEditorDialogFragment(
     companion object {
         const val TAG = "RoundEditorDialogFragment"
 
+        private const val KEY_ROUND = "KEY_MATCH_UP"
+        private const val KEY_ROUND_GROUP_INDEX = "KEY_ROUND_GROUP_INDEX"
+        private const val KEY_ROUND_INDEX = "KEY_ROUND_INDEX"
+
         fun newInstance(
-            fragmentManager: FragmentManager,
             round: Round,
             roundGroupIndex: Int,
             roundIndex: Int,
             listener: OnEditListener<Round>
         ) =
-            RoundEditorDialogFragment(
-                round,
-                roundGroupIndex,
-                roundIndex,
-                listener
-            ).show(fragmentManager, TAG)
+            RoundEditorDialogFragment(listener).apply {
+                arguments = Bundle().apply {
+                    putParcelable(KEY_ROUND, round)
+                    putInt(KEY_ROUND_GROUP_INDEX, roundGroupIndex)
+                    putInt(KEY_ROUND_INDEX, roundIndex)
+                }
+
+            }
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?) =
@@ -49,6 +50,10 @@ class RoundEditorDialogFragment(
             val viewModel = ViewModelProvider(this, viewModelFactory)[RoundEditorViewModel::class.java]
             binding.vm = viewModel
             binding.lifecycleOwner = this
+
+            val round = arguments?.getParcelable<Round>(KEY_ROUND)!!
+            val roundGroupIndex = arguments?.getInt(KEY_ROUND_GROUP_INDEX)!!
+            val roundIndex = arguments?.getInt(KEY_ROUND_INDEX)!!
 
             viewModel.setData(round, resources.getStringArray(R.array.colorOptionsNames).asList().zip(resources.getIntArray(R.array.colorOptions).asList()).map {
                 ColorInfo(it.first, it.second)

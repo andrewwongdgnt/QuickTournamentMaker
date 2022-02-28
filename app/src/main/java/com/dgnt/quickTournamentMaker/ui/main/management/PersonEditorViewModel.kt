@@ -46,13 +46,13 @@ class PersonEditorViewModel(private val personRepository: IPersonRepository, pri
     }
 
 
-    fun setData(person: Person, groupName: String, groups: List<Group>, defaultGroupName: String) {
-        name.value = person.name
-        note.value = person.note
-        id = (person.id).ifBlank { UUID.randomUUID().toString() }
+    fun setData(person: Person?, groupName: String?, groups: List<Group>?, defaultGroupName: String) {
+        name.value = person?.name ?: ""
+        note.value = person?.note ?: ""
+        id = (person?.id ?: "").ifBlank { UUID.randomUUID().toString() }
         this.defaultGroupName = defaultGroupName
-        this.groupNames.value = (groups.map { it.name }).ifEmpty { listOf(defaultGroupName) }
-        this.groupName.value = (groupName)
+        this.groupNames.value = (groups?.map { it.name } ?: listOf()).ifEmpty { listOf(defaultGroupName) }
+        this.groupName.value = (groupName ?: "")
         this.newGroupName.value = this.groupName.value
     }
 

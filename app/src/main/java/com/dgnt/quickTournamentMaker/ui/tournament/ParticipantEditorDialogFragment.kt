@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.ParticipantEditorFragmentBinding
@@ -17,7 +16,6 @@ import org.kodein.di.android.x.di
 import org.kodein.di.instance
 
 class ParticipantEditorDialogFragment(
-    private val participant: Participant,
     private val listener: OnEditListener<Participant>
 ) : DialogFragment(), DIAware {
     override val di by di()
@@ -27,12 +25,18 @@ class ParticipantEditorDialogFragment(
 
         const val TAG = "ParticipantEditorDialogFragment"
 
+        private const val KEY_PARTICIPANT = "KEY_PARTICIPANT"
+
         fun newInstance(
-            fragmentManager: FragmentManager,
             participant: Participant,
             listener: OnEditListener<Participant>
         ) =
-            ParticipantEditorDialogFragment(participant, listener).show(fragmentManager, TAG)
+            ParticipantEditorDialogFragment(listener).apply {
+                arguments = Bundle().apply {
+                    putParcelable(KEY_PARTICIPANT, participant)
+                }
+
+            }
 
     }
 
@@ -43,6 +47,8 @@ class ParticipantEditorDialogFragment(
             val viewModel = ViewModelProvider(this, viewModelFactory)[ParticipantEditorViewModel::class.java]
             binding.vm = viewModel
             binding.lifecycleOwner = this
+
+            val participant = arguments?.getParcelable<Participant>(KEY_PARTICIPANT)!!
 
             viewModel.setData(participant, resources.getStringArray(R.array.colorOptionsNames).asList().zip(resources.getIntArray(R.array.colorOptions).asList()).map {
                 ColorInfo(it.first, it.second)

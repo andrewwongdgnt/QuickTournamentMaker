@@ -7,7 +7,6 @@ import android.text.TextWatcher
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.GroupEditorFragmentBinding
@@ -17,11 +16,7 @@ import org.kodein.di.android.x.di
 import org.kodein.di.instance
 
 
-class GroupEditorDialogFragment(
-    private val editing: Boolean,
-    private val title: String,
-    private val group: Group
-) : DialogFragment(), DIAware {
+class GroupEditorDialogFragment : DialogFragment(), DIAware {
     override val di by di()
     private val viewModelFactory: GroupEditorViewModelFactory by instance()
 
@@ -29,13 +24,18 @@ class GroupEditorDialogFragment(
 
         const val TAG = "GroupEditorDialogFragment"
 
-        fun newInstance(
-            fragmentManager: FragmentManager,
-            editing: Boolean,
-            title: String,
-            group: Group
-        ) =
-            GroupEditorDialogFragment(editing, title, group).show(fragmentManager, TAG)
+        private const val KEY_EDITING = "KEY_EDITING"
+        private const val KEY_TITLE = "KEY_TITLE"
+        private const val KEY_GROUP = "KEY_GROUP"
+
+        fun newInstance(editing: Boolean, title: String, group: Group): GroupEditorDialogFragment =
+            GroupEditorDialogFragment().apply {
+                arguments = Bundle().apply {
+                    putBoolean(KEY_EDITING, editing)
+                    putString(KEY_TITLE, title)
+                    putParcelable(KEY_GROUP, group)
+                }
+            }
     }
 
     private lateinit var binding: GroupEditorFragmentBinding
@@ -63,15 +63,15 @@ class GroupEditorDialogFragment(
                 }
             }
 
-            viewModel.setData(group)
-
+            viewModel.setData(arguments?.getParcelable(KEY_GROUP))
+            val editing = arguments?.getBoolean(KEY_EDITING) == true
             AlertDialog.Builder(activity)
-                .setTitle(title)
+                .setTitle(arguments?.getString(KEY_TITLE))
                 .setView(binding.root)
                 .setPositiveButton(if (editing) R.string.save else R.string.add, null)
                 .setNegativeButton(android.R.string.cancel, null)
                 .also {
-                    if (!editing) {
+                    if (arguments?.getBoolean(KEY_EDITING) != true) {
                         it.setNeutralButton(R.string.addAndContinue, null)
                     }
                 }
@@ -88,7 +88,7 @@ class GroupEditorDialogFragment(
                                 viewModel.add(getString(R.string.addSuccessfulMsg, viewModel.name.value), getString(R.string.duplicateMsg, viewModel.name.value), forceOpen = false, forceErase = false)
                         }
 
-                        val enabled = group.name.isNotBlank()
+                        val enabled = !arguments?.getParcelable<Group>(KEY_GROUP)?.name.isNullOrBlank()
                         getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = enabled
                         getButton(AlertDialog.BUTTON_NEUTRAL).isEnabled = enabled
 

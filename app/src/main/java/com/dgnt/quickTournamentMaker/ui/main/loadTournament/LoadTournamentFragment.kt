@@ -171,7 +171,7 @@ class LoadTournamentFragment : Fragment(), DIAware {
                     filteredAndSorted.toMutableList(),
                     { restoredTournamentInformation ->
                         activity?.supportFragmentManager?.let { fragManager ->
-                            MoreInfoDialogFragment.newInstance(fragManager, restoredTournamentInformation.extendedTournamentInformation, tournamentEditListener)
+                            MoreInfoDialogFragment.newInstance(restoredTournamentInformation.extendedTournamentInformation, tournamentEditListener).show(fragManager, MoreInfoDialogFragment.TAG)
                         }
                     },
                     { restoredTournamentInformation ->
