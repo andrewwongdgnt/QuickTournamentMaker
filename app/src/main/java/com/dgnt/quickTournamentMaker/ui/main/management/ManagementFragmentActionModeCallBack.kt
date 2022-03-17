@@ -11,28 +11,32 @@ import com.dgnt.quickTournamentMaker.model.management.Person
 
 
 
-class ManagementFragmentActionModeCallBack(private val binding: ManagementFragmentBinding, private val selectedPersons: MutableSet<Person>, private val selectedGroups: MutableSet<Group>, private val menuResolver: (Int, Set<Person>, Set<Group>) -> Unit) : ActionMode.Callback {
+class ManagementFragmentActionModeCallBack(
+    private val selectedPersons: MutableSet<Person>,
+    private val selectedGroups: MutableSet<Group>,
+    private val onChange: (Int) -> Unit,
+    private val menuResolver: (Int, Set<Person>, Set<Group>) -> Unit
+) : ActionMode.Callback {
 
     enum class SelectType {
         NONE, PERSON, GROUP
     }
 
-    var multiSelectRequest = SelectType.NONE
-    var multiSelect = SelectType.NONE
+    private var _multiSelect = SelectType.NONE
+    val multiSelect
+        get() = _multiSelect
 
     override fun onCreateActionMode(actionMode: ActionMode, menu: Menu): Boolean {
-        multiSelect = multiSelectRequest
-        multiSelectRequest = SelectType.NONE
-        binding.addFab.visibility = View.INVISIBLE
         actionMode.title = if (multiSelect == SelectType.PERSON) selectedPersons.size.toString() else selectedGroups.size.toString()
         actionMode.menuInflater.inflate(R.menu.actions_management_contextual, menu)
         menu.findItem(R.id.action_delete)?.isVisible = if (multiSelect == SelectType.PERSON) selectedPersons.isNotEmpty() else selectedGroups.isNotEmpty()
         menu.findItem(R.id.action_move)?.isVisible = if (multiSelect == SelectType.PERSON) selectedPersons.isNotEmpty() else selectedGroups.isNotEmpty()
-        binding.personRv.adapter?.notifyDataSetChanged()
+        onChange(View.INVISIBLE)
         return true;
     }
 
     override fun onPrepareActionMode(actionMode: ActionMode, menu: Menu): Boolean {
+        _multiSelect = (actionMode.tag as? SelectType) ?: SelectType.NONE
         return false
     }
 
@@ -48,11 +52,10 @@ class ManagementFragmentActionModeCallBack(private val binding: ManagementFragme
     }
 
     private fun reset() {
-        multiSelect = SelectType.NONE
-        binding.addFab.visibility = View.VISIBLE
+        _multiSelect = SelectType.NONE
         selectedPersons.clear()
         selectedGroups.clear()
-        binding.personRv.adapter?.notifyDataSetChanged()
+        onChange(View.VISIBLE)
     }
 
 }

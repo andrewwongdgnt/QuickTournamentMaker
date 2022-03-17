@@ -20,8 +20,8 @@ class GroupExpandableRecyclerViewAdapter(
     private val groupMap: Map<String, Group>,
     private val nonEmptyGroups: Set<Group>,
     personGroups: List<ExpandableGroup<Person>>,
-    private val personClickListener: (Checkable, Person) -> Unit,
-    private val groupClickListener: (Checkable, Group, ManagementFragment.GroupEditType) -> Unit
+    private val personClickListener: (Boolean, Person) -> Unit,
+    private val groupClickListener: (Boolean, Group, ManagementFragment.GroupEditType) -> Unit
 ) : ExpandableRecyclerViewAdapter<ManagementExpandedGroupViewHolder, PersonExpandedChildViewHolder>(personGroups) {
 
     override fun onCreateGroupViewHolder(parent: ViewGroup, viewType: Int): ManagementExpandedGroupViewHolder = ManagementExpandedGroupViewHolder(GroupItemBinding.inflate(LayoutInflater.from(parent.context), parent, false), nonEmptyGroups, selectedGroups, groupClickListener)

@@ -2,13 +2,17 @@ package com.dgnt.quickTournamentMaker.ui.main.management
 
 import android.graphics.Typeface
 import android.view.View
-import android.widget.Checkable
 import com.dgnt.quickTournamentMaker.databinding.GroupItemBinding
 import com.dgnt.quickTournamentMaker.model.management.Group
 import com.dgnt.quickTournamentMaker.ui.main.common.ExpandedGroupViewHolder
 
 
-class ManagementExpandedGroupViewHolder(private val binding: GroupItemBinding, private val nonEmptyGroups: Set<Group>, private val selectedGroups: Set<Group>, private val clickListener: (Checkable, Group, ManagementFragment.GroupEditType) -> Unit) : ExpandedGroupViewHolder(binding) {
+class ManagementExpandedGroupViewHolder(
+    private val binding: GroupItemBinding,
+    private val nonEmptyGroups: Set<Group>,
+    private val selectedGroups: Set<Group>,
+    private val clickListener: (Boolean, Group, ManagementFragment.GroupEditType) -> Unit
+) : ExpandedGroupViewHolder(binding) {
 
     fun bind(group: Group, selectableType: ManagementFragmentActionModeCallBack.SelectType) =
         binding.run {
@@ -24,15 +28,19 @@ class ManagementExpandedGroupViewHolder(private val binding: GroupItemBinding, p
                 visibility = if (selectableGroup) View.VISIBLE else View.GONE
 
                 setOnClickListener {
-                    if (selectableGroup)
-                        clickListener(this, group, ManagementFragment.GroupEditType.CHECK)
+                    if (selectableGroup) {
+                        this.isChecked = !isChecked
+                        clickListener(this.isChecked, group, ManagementFragment.GroupEditType.CHECK)
+                    }
                 }
             }
             sectionHeaderIv.run {
                 visibility = if (selectableGroup) View.GONE else if (selectablePerson) View.INVISIBLE else View.VISIBLE
                 setOnClickListener {
-                    if (!selectableGroup)
-                        clickListener(sectionHeaderCtv, group, ManagementFragment.GroupEditType.EDIT)
+                    if (!selectableGroup) {
+                        sectionHeaderCtv.isChecked = !sectionHeaderCtv.isChecked
+                        clickListener(sectionHeaderCtv.isChecked, group, ManagementFragment.GroupEditType.EDIT)
+                    }
                 }
             }
         }

@@ -7,7 +7,11 @@ import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.model.tournament.RestoredTournamentInformation
 
 
-class LoadTournamentFragmentActionModeCallBack(private val selectedTournaments: MutableSet<RestoredTournamentInformation>, private val onChange: () -> Unit, private val menuResolver: (Int, Set<RestoredTournamentInformation>) -> Unit) : ActionMode.Callback {
+class LoadTournamentFragmentActionModeCallBack(
+    private val selectedTournaments: MutableSet<RestoredTournamentInformation>,
+    private val onChange: () -> Unit,
+    private val menuResolver: (Int, Set<RestoredTournamentInformation>) -> Unit
+) : ActionMode.Callback {
 
     private var _multiSelect = false
     val multiSelect

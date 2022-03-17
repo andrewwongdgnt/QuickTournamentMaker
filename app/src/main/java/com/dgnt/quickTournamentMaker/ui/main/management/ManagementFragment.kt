@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.Checkable
 import android.widget.CheckedTextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -61,12 +60,16 @@ class ManagementFragment : Fragment(), DIAware {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_editPersonMode -> {
-                actionModeCallback.multiSelectRequest = ManagementFragmentActionModeCallBack.SelectType.PERSON
-                actionMode = (activity as AppCompatActivity).startSupportActionMode(actionModeCallback)
+                actionMode = (activity as AppCompatActivity).startSupportActionMode(actionModeCallback)?.also {
+                    it.tag = ManagementFragmentActionModeCallBack.SelectType.PERSON
+                    it.invalidate()
+                }
             }
             R.id.action_editGroupMode -> {
-                actionModeCallback.multiSelectRequest = ManagementFragmentActionModeCallBack.SelectType.GROUP
-                actionMode = (activity as AppCompatActivity).startSupportActionMode(actionModeCallback)
+                actionMode = (activity as AppCompatActivity).startSupportActionMode(actionModeCallback)?.also {
+                    it.tag = ManagementFragmentActionModeCallBack.SelectType.GROUP
+                    it.invalidate()
+                }
             }
         }
         return super.onOptionsItemSelected(item)
@@ -83,7 +86,15 @@ class ManagementFragment : Fragment(), DIAware {
         context?.apply {
             binding.addFab.setOnClickListener { add() }
 
-            actionModeCallback = ManagementFragmentActionModeCallBack(binding, selectedPersons, selectedGroups) { menuId: Int, persons: Set<Person>, groups: Set<Group> -> menuResolver(menuId, persons, groups) }
+            actionModeCallback = ManagementFragmentActionModeCallBack(
+                selectedPersons,
+                selectedGroups,
+                { viewVisibility ->
+                    binding.addFab.visibility = viewVisibility
+                    binding.personRv.adapter?.notifyDataSetChanged()
+                },
+                { menuId: Int, persons: Set<Person>, groups: Set<Group> -> menuResolver(menuId, persons, groups) }
+            )
 
             setHasOptionsMenu(true)
 
@@ -102,7 +113,7 @@ class ManagementFragment : Fragment(), DIAware {
                     val attrs = intArrayOf(android.R.attr.listChoiceIndicatorMultiple)
                     val ta = theme.obtainStyledAttributes(attrs)
                     val indicator = ta.getDrawable(0)
-                    checkedTextView.checkMarkDrawable = indicator;
+                    checkedTextView.checkMarkDrawable = indicator
                     ta.recycle()
                 } else {
                     checkedTextView.checkMarkDrawable = null
@@ -137,8 +148,8 @@ class ManagementFragment : Fragment(), DIAware {
                         groupMap,
                         nonEmptyGroups,
                         personGroups,
-                        { checkable, person -> personClicked(checkable, person) },
-                        { checkable, group, editType: GroupEditType -> groupClicked(checkable, group, editType) }
+                        { checked, person -> personClicked(checked, person) },
+                        { checked, group, editType: GroupEditType -> groupClicked(checked, group, editType) }
                     )
                     adapter.setOnGroupExpandCollapseListener(object : GroupExpandCollapseListener {
                         override fun onGroupExpanded(group: ExpandableGroup<*>) {
@@ -179,16 +190,14 @@ class ManagementFragment : Fragment(), DIAware {
 
     private fun add() = AddChoiceDialogFragment.newInstance(groups).show(activity?.supportFragmentManager!!, AddChoiceDialogFragment.TAG)
 
-    private fun personClicked(checkable: Checkable, person: Person) {
+    private fun personClicked(checked: Boolean, person: Person) {
 
         if (actionModeCallback.multiSelect == ManagementFragmentActionModeCallBack.SelectType.PERSON) {
-            (!checkable.isChecked).let {
-                if (it)
-                    selectedPersons.add(person)
-                else
-                    selectedPersons.remove(person)
-                checkable.isChecked = it
-            }
+            if (checked)
+                selectedPersons.add(person)
+            else
+                selectedPersons.remove(person)
+
 
             actionMode?.run {
                 menu.run {
@@ -201,6 +210,31 @@ class ManagementFragment : Fragment(), DIAware {
             }
         } else if (actionModeCallback.multiSelect == ManagementFragmentActionModeCallBack.SelectType.NONE)
             PersonEditorDialogFragment.newInstance(true, getString(R.string.editing, person.name), person, personToGroupNameMap[person]?.name ?: "", groups).show(activity?.supportFragmentManager!!, PersonEditorDialogFragment.TAG)
+
+    }
+
+    private fun groupClicked(checked: Boolean, group: Group, editType: GroupEditType) {
+
+        if (editType == GroupEditType.CHECK && actionModeCallback.multiSelect == ManagementFragmentActionModeCallBack.SelectType.GROUP) {
+
+            if (checked)
+                selectedGroups.add(group)
+            else
+                selectedGroups.remove(group)
+
+
+            actionMode?.run {
+                menu.run {
+                    findItem(R.id.action_delete).isVisible = selectedGroups.isNotEmpty()
+                    findItem(R.id.action_move).isVisible = false
+                }
+                title = selectedGroups.size.toString()
+            }
+        } else if (editType == GroupEditType.EDIT) {
+            GroupEditorDialogFragment.newInstance(true, getString(R.string.editing, group.name), group).show(activity?.supportFragmentManager!!, GroupEditorDialogFragment.TAG)
+            actionMode?.finish()
+        }
+
 
     }
 
@@ -222,34 +256,6 @@ class ManagementFragment : Fragment(), DIAware {
                 MovePersonsDialogFragment.newInstance(selectedPersons.toList(), this.groups).show(activity?.supportFragmentManager!!, MovePersonsDialogFragment.TAG)
             }
         }
-    }
-
-
-    private fun groupClicked(checkable: Checkable, group: Group, editType: GroupEditType) {
-
-        if (editType == GroupEditType.CHECK && actionModeCallback.multiSelect == ManagementFragmentActionModeCallBack.SelectType.GROUP) {
-
-            (!checkable.isChecked).let {
-                if (it)
-                    selectedGroups.add(group)
-                else
-                    selectedGroups.remove(group)
-                checkable.isChecked = it
-            }
-
-            actionMode?.run {
-                menu.run {
-                    findItem(R.id.action_delete).isVisible = selectedGroups.isNotEmpty()
-                    findItem(R.id.action_move).isVisible = false
-                }
-                title = selectedGroups.size.toString()
-            }
-        } else if (editType == GroupEditType.EDIT) {
-            GroupEditorDialogFragment.newInstance(true, getString(R.string.editing, group.name), group).show(activity?.supportFragmentManager!!, GroupEditorDialogFragment.TAG)
-            actionMode?.finish()
-        }
-
-
     }
 
 

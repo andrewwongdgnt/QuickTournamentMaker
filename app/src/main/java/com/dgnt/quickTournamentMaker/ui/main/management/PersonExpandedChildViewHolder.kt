@@ -11,7 +11,7 @@ class PersonExpandedChildViewHolder(
     private val binding: SingleCheckableListItemBinding,
     private val setDrawable: (CheckedTextView, Boolean) -> Unit,
     private val selectedPersons: Set<Person>,
-    private val clickListener: (Checkable, Person) -> Unit
+    private val clickListener: (Boolean, Person) -> Unit
 ) : ChildViewHolder(binding.root) {
     fun bind(person: Person, selectable: Boolean) =
         binding.checkableListItemCtv.run{
@@ -19,7 +19,8 @@ class PersonExpandedChildViewHolder(
             setDrawable(binding.checkableListItemCtv, selectable)
             isChecked = if (!selectable) false else selectedPersons.contains(person)
             itemView.setOnClickListener {
-                clickListener(this, person)
+                this.isChecked = !this.isChecked
+                clickListener(this.isChecked, person)
             }
         }
 
