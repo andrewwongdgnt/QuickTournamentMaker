@@ -8,6 +8,11 @@
             compat:actionViewClass="androidx.appcompat.widget.SearchView"
             compat:showAsAction="collapseActionView|ifRoom" />
     <item
+            android:id="@+id/action_edit"
+            android:icon="@drawable/ic_edit"
+            android:title="@string/searchHint"
+            compat:showAsAction="ifRoom" />
+    <item
             android:id="@+id/action_startTournamentFromFile"
             android:icon="@drawable/ic_start_tournament_from_file"
             android:title="@string/startTournamentFromFile"

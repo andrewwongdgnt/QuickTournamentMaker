@@ -1,8 +1,6 @@
 package com.dgnt.quickTournamentMaker.ui.main.loadTournament
 
 import android.content.Context
-import android.text.SpannableString
-import android.text.style.BackgroundColorSpan
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -18,7 +16,8 @@ class RestoredTournamentInformationItemViewHolder(
     private val context: Context,
     private val binding: TournamentListItemBinding,
     private val moreInfoListener: (RestoredTournamentInformation) -> Unit,
-    private val loadListener: (RestoredTournamentInformation) -> Unit
+    private val loadListener: (RestoredTournamentInformation) -> Unit,
+    private val clickListener: (Boolean, RestoredTournamentInformation) -> Unit
 ) : RecyclerView.ViewHolder(
     binding.root
 ) {
@@ -26,7 +25,8 @@ class RestoredTournamentInformationItemViewHolder(
     fun bind(
         value: RestoredTournamentInformation,
         viewMode: ViewMode,
-        searchText: String
+        searchText: String,
+        selectable: Boolean
     ) =
         binding.run {
             value.extendedTournamentInformation.let { ext ->
@@ -34,6 +34,7 @@ class RestoredTournamentInformationItemViewHolder(
 
                     val color = ResourcesCompat.getColor(context.resources, R.color.searchHighlight, context.theme)
 
+                    tournamentCb.visibility = if (selectable) View.VISIBLE else View.GONE
 
                     titleTv.text = basic.title
                     titleTv.highlight(searchText, color)
@@ -56,6 +57,10 @@ class RestoredTournamentInformationItemViewHolder(
             }
             moreInfoBtn.setOnClickListener { moreInfoListener.invoke(value) }
             loadBtn.setOnClickListener { loadListener.invoke(value) }
+
+            tournamentCb.setOnCheckedChangeListener { _, b ->
+                clickListener(b, value)
+            }
         }
 
 

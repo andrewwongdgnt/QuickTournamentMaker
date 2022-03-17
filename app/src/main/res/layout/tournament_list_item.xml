@@ -28,7 +28,7 @@
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tournament_cb"
                 app:layout_constraintStart_toEndOf="@id/tournament_iv"
                 app:layout_constraintTop_toTopOf="@id/tournament_iv"
                 tools:text="Elimination Tournament Elimination Tournament Elimination Tournament" />
@@ -40,10 +40,17 @@
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tournament_cb"
                 app:layout_constraintStart_toEndOf="@id/tournament_iv"
                 app:layout_constraintTop_toBottomOf="@id/title_tv"
                 tools:text="My Cool description My Cool description My Cool description My Cool description My Cool description" />
+
+        <CheckBox
+                android:id="@+id/tournament_cb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tournament_iv" />
 
         <View
                 android:id="@+id/baseInfo_divider"

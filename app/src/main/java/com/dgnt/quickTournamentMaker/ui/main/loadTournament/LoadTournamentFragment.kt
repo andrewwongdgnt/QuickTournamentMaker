@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.provider.BaseColumns
 import android.util.Log
 import android.view.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.SearchView
 import androidx.cursoradapter.widget.CursorAdapter
 import androidx.cursoradapter.widget.SimpleCursorAdapter
@@ -33,6 +35,10 @@ class LoadTournamentFragment : Fragment(), DIAware {
         fun newInstance() = LoadTournamentFragment()
     }
 
+    private val selectedTournaments = mutableSetOf<RestoredTournamentInformation>()
+    private var actionMode: ActionMode? = null
+
+    private lateinit var actionModeCallback: LoadTournamentFragmentActionModeCallBack
     private lateinit var binding: LoadTournamentFragmentBinding
     private lateinit var viewModel: LoadTournamentViewModel
 
@@ -95,8 +101,22 @@ class LoadTournamentFragment : Fragment(), DIAware {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (hidden)
+            actionMode?.finish()
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+
+            R.id.action_edit -> {
+                actionMode = (activity as AppCompatActivity).startSupportActionMode(actionModeCallback)?.also {
+                    it.tag = true
+                    it.invalidate()
+                }
+
+            }
             R.id.action_startTournamentFromFile -> {}
             R.id.action_sort -> {
                 context?.let { context ->
@@ -148,6 +168,12 @@ class LoadTournamentFragment : Fragment(), DIAware {
 
             setHasOptionsMenu(true)
 
+            actionModeCallback = LoadTournamentFragmentActionModeCallBack(
+                selectedTournaments,
+                { mainAdapter?.notifyDataSetChanged() },
+                { menuId: Int, tournaments: Set<RestoredTournamentInformation> -> menuResolver(menuId, tournaments) }
+            )
+
             viewModel = ViewModelProvider(fragment, viewModelFactory)[LoadTournamentViewModel::class.java]
             binding.vm = viewModel
 
@@ -177,7 +203,9 @@ class LoadTournamentFragment : Fragment(), DIAware {
                     { restoredTournamentInformation ->
                         startActivity(TournamentActivity.createIntent(this, restoredTournamentInformation))
                     },
-                    viewModel.getViewMode()
+                    viewModel.getViewMode(),
+                    actionModeCallback,
+                    { checked, tournament -> tournamentClicked(checked, tournament) }
                 ).also { adapter ->
                     mainAdapter = adapter
                 }
@@ -191,6 +219,23 @@ class LoadTournamentFragment : Fragment(), DIAware {
             }
         }
 
+    }
+
+    private fun tournamentClicked(checked: Boolean, tournament: RestoredTournamentInformation) {
+
+        if (checked)
+            selectedTournaments.add(tournament)
+        else
+            selectedTournaments.remove(tournament)
+
+        actionMode?.run {
+            menu.run {
+                (selectedTournaments.size > 0).let {
+                    findItem(R.id.action_delete).isVisible = it
+                }
+            }
+            title = selectedTournaments.size.toString()
+        }
     }
 
     private val tournamentEditListener = object : OnEditListener<TournamentInformation> {
@@ -211,5 +256,20 @@ class LoadTournamentFragment : Fragment(), DIAware {
 
     private fun onUpdateViewMode() {
         mainAdapter?.updateList(viewModel.getViewMode())
+    }
+
+    private fun menuResolver(menuId: Int, selectedTournaments: Set<RestoredTournamentInformation>) {
+        when (menuId) {
+            R.id.action_delete -> {
+                if (actionModeCallback.multiSelect) {
+                    AlertDialog.Builder(activity)
+                        .setMessage(getString(R.string.deleteTournamentMsg, selectedTournaments.size))
+                        .setPositiveButton(android.R.string.ok) { _, _ ->
+                            Log.d("DGNT", "Delete ${selectedTournaments.size} tournaments")
+                        }
+                        .setNegativeButton(android.R.string.cancel, null).create().show()
+                }
+            }
+        }
     }
 }

@@ -12,7 +12,17 @@ import com.thoughtbot.expandablerecyclerview.ExpandableRecyclerViewAdapter
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup
 
 
-class GroupExpandableRecyclerViewAdapter(private val setDrawable: (CheckedTextView, Boolean) -> Unit, private val actionModeCallback: ManagementFragmentActionModeCallBack, private val selectedPersons: Set<Person>, private val selectedGroups: Set<Group>, private val groupMap: Map<String, Group>, private val nonEmptyGroups: Set<Group>, personGroups: List<ExpandableGroup<Person>>, private val personClickListener: (Checkable, Person) -> Unit, private val groupClickListener: (Checkable, Group, ManagementFragment.GroupEditType) -> Unit) : ExpandableRecyclerViewAdapter<ManagementExpandedGroupViewHolder, PersonExpandedChildViewHolder>(personGroups) {
+class GroupExpandableRecyclerViewAdapter(
+    private val setDrawable: (CheckedTextView, Boolean) -> Unit,
+    private val actionModeCallback: ManagementFragmentActionModeCallBack,
+    private val selectedPersons: Set<Person>,
+    private val selectedGroups: Set<Group>,
+    private val groupMap: Map<String, Group>,
+    private val nonEmptyGroups: Set<Group>,
+    personGroups: List<ExpandableGroup<Person>>,
+    private val personClickListener: (Checkable, Person) -> Unit,
+    private val groupClickListener: (Checkable, Group, ManagementFragment.GroupEditType) -> Unit
+) : ExpandableRecyclerViewAdapter<ManagementExpandedGroupViewHolder, PersonExpandedChildViewHolder>(personGroups) {
 
     override fun onCreateGroupViewHolder(parent: ViewGroup, viewType: Int): ManagementExpandedGroupViewHolder = ManagementExpandedGroupViewHolder(GroupItemBinding.inflate(LayoutInflater.from(parent.context), parent, false), nonEmptyGroups, selectedGroups, groupClickListener)
 

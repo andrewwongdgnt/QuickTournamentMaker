@@ -15,16 +15,18 @@ class RestoredTournamentInformationRecyclerViewAdapter(
     private val items: MutableList<RestoredTournamentInformation>,
     private val moreInfoListener: (RestoredTournamentInformation) -> Unit,
     private val loadListener: (RestoredTournamentInformation) -> Unit,
-    private var viewMode: ViewMode
+    private var viewMode: ViewMode,
+    private val actionModeCallback: LoadTournamentFragmentActionModeCallBack,
+    private val clickListener: (Boolean, RestoredTournamentInformation) -> Unit,
 ) : RecyclerView.Adapter<RestoredTournamentInformationItemViewHolder>() {
 
     var searchText:String = ""
 
     private val allItems = items.toMutableList()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestoredTournamentInformationItemViewHolder = RestoredTournamentInformationItemViewHolder(context, TournamentListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false), moreInfoListener, loadListener)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestoredTournamentInformationItemViewHolder = RestoredTournamentInformationItemViewHolder(context, TournamentListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false), moreInfoListener, loadListener, clickListener)
 
-    override fun onBindViewHolder(holder: RestoredTournamentInformationItemViewHolder, position: Int) = holder.bind(items[position], viewMode, searchText)
+    override fun onBindViewHolder(holder: RestoredTournamentInformationItemViewHolder, position: Int) = holder.bind(items[position], viewMode, searchText, actionModeCallback.multiSelect)
 
     override fun getItemCount(): Int = items.size
 

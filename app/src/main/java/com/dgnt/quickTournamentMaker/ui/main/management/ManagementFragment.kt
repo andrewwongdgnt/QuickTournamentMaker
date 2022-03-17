@@ -9,9 +9,7 @@ import android.widget.CheckedTextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.ManagementFragmentBinding
@@ -131,7 +129,17 @@ class ManagementFragment : Fragment(), DIAware {
 
                     groupsExpanded.removeAll(groupsExpanded.minus(groupMap.map { it.key }))
 
-                    val adapter = GroupExpandableRecyclerViewAdapter(setDrawable, actionModeCallback, selectedPersons, selectedGroups, groupMap, nonEmptyGroups, personGroups, { checkable: Checkable, person: Person -> personClicked(checkable, person) }, { checkable: Checkable, group: Group, editType: GroupEditType -> groupClicked(checkable, group, editType) })
+                    val adapter = GroupExpandableRecyclerViewAdapter(
+                        setDrawable,
+                        actionModeCallback,
+                        selectedPersons,
+                        selectedGroups,
+                        groupMap,
+                        nonEmptyGroups,
+                        personGroups,
+                        { checkable, person -> personClicked(checkable, person) },
+                        { checkable, group, editType: GroupEditType -> groupClicked(checkable, group, editType) }
+                    )
                     adapter.setOnGroupExpandCollapseListener(object : GroupExpandCollapseListener {
                         override fun onGroupExpanded(group: ExpandableGroup<*>) {
                             groupsExpanded.add(group.title)
