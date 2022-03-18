@@ -1,28 +1,28 @@
 package com.dgnt.quickTournamentMaker.ui.main.loadTournament
 
 import androidx.databinding.Observable
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.dgnt.quickTournamentMaker.data.tournament.*
 import com.dgnt.quickTournamentMaker.model.tournament.*
 import com.dgnt.quickTournamentMaker.service.interfaces.IPreferenceService
 import com.dgnt.quickTournamentMaker.service.interfaces.IRankingConfigService
 import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentFilterService
 import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentSortService
+import com.dgnt.quickTournamentMaker.util.Event
 import kotlinx.coroutines.launch
 
 class LoadTournamentViewModel(
     private val tournamentRepository: ITournamentRepository,
-    roundRepository: IRoundRepository,
-    matchUpRepository: IMatchUpRepository,
-    participantRepository: IParticipantRepository,
-    rankingConfigService: IRankingConfigService,
+    private val roundRepository: IRoundRepository,
+    private val matchUpRepository: IMatchUpRepository,
+    private val participantRepository: IParticipantRepository,
+    private val rankingConfigService: IRankingConfigService,
     private val preferenceService: IPreferenceService,
     private val tournamentFilterService: ITournamentFilterService,
     private val tournamentSortService: ITournamentSortService
 ) : ViewModel(), Observable, IPreferenceService by preferenceService, ITournamentFilterService by tournamentFilterService, ITournamentSortService by tournamentSortService {
+
+    val messageEvent = MutableLiveData<Event<String>>()
 
     private val tournaments = tournamentRepository.getAll()
     private val rounds = roundRepository.getAll()
@@ -139,7 +139,12 @@ class LoadTournamentViewModel(
         }
     }
 
-
-
+    fun delete(tournaments: Set<RestoredTournamentInformation>, successMsg: String) = viewModelScope.launch {
+        tournamentRepository.delete(tournaments.map { it.toTournamentEntity(rankingConfigService) })
+        roundRepository.delete(tournaments.flatMap { it.foundationalTournamentEntities.roundEntities })
+        matchUpRepository.delete(tournaments.flatMap { it.foundationalTournamentEntities.matchUpEntities })
+        participantRepository.delete(tournaments.flatMap { it.foundationalTournamentEntities.participantEntities })
+        messageEvent.value = Event(successMsg)
+    }
 
 }

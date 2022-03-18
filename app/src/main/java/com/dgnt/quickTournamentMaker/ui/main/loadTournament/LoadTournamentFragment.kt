@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.provider.BaseColumns
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.SearchView
@@ -176,7 +177,6 @@ class LoadTournamentFragment : Fragment(), DIAware {
 
             viewModel = ViewModelProvider(fragment, viewModelFactory)[LoadTournamentViewModel::class.java]
             binding.vm = viewModel
-
             binding.lifecycleOwner = viewLifecycleOwner
 
             binding.swipeRefresh.setOnRefreshListener {
@@ -185,6 +185,12 @@ class LoadTournamentFragment : Fragment(), DIAware {
                 } ?: run { binding.noResultsTv.visibility = View.GONE }
                 binding.clearSearchTv.visibility = View.GONE
                 binding.swipeRefresh.isRefreshing = false
+            }
+
+            viewModel.messageEvent.observe(viewLifecycleOwner) {
+                it.getContentIfNotHandled()?.let { message ->
+                    Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+                }
             }
 
             viewModel.tournamentLiveData.observe(viewLifecycleOwner) {
@@ -266,6 +272,7 @@ class LoadTournamentFragment : Fragment(), DIAware {
                         .setMessage(getString(R.string.deleteTournamentMsg, selectedTournaments.size))
                         .setPositiveButton(android.R.string.ok) { _, _ ->
                             Log.d("DGNT", "Delete ${selectedTournaments.size} tournaments")
+                            viewModel.delete(selectedTournaments, getString(R.string.deleteTournamentSuccessfulMsg, selectedTournaments.size))
                         }
                         .setNegativeButton(android.R.string.cancel, null).create().show()
                 }

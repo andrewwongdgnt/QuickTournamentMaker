@@ -1,6 +1,5 @@
 package com.dgnt.quickTournamentMaker.data.management
 
-import androidx.lifecycle.LiveData
 import com.dgnt.quickTournamentMaker.data.base.IRepository
 
 interface IPersonRepository : IRepository<PersonEntity> {
