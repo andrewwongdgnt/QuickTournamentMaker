@@ -2,7 +2,6 @@ package com.dgnt.quickTournamentMaker.ui.main.management
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.CheckedTextView
 import android.widget.Toast
@@ -14,6 +13,7 @@ import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.ManagementFragmentBinding
 import com.dgnt.quickTournamentMaker.model.management.Group
 import com.dgnt.quickTournamentMaker.model.management.Person
+import com.dgnt.quickTournamentMaker.util.SimpleLogger
 import com.thoughtbot.expandablerecyclerview.listeners.GroupExpandCollapseListener
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup
 import org.kodein.di.DIAware
@@ -82,8 +82,7 @@ class ManagementFragment : Fragment(), DIAware {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val fragment = this
-        context?.apply {
+        context?.let { context ->
             binding.addFab.setOnClickListener { add() }
 
             actionModeCallback = ManagementFragmentActionModeCallBack(
@@ -98,7 +97,7 @@ class ManagementFragment : Fragment(), DIAware {
 
             setHasOptionsMenu(true)
 
-            viewModel = ViewModelProvider(fragment, viewModelFactory)[ManagementViewModel::class.java]
+            viewModel = ViewModelProvider(this, viewModelFactory)[ManagementViewModel::class.java]
             binding.vm = viewModel
             binding.lifecycleOwner = viewLifecycleOwner
 
@@ -111,7 +110,7 @@ class ManagementFragment : Fragment(), DIAware {
             val setDrawable = { checkedTextView: CheckedTextView, selectable: Boolean ->
                 if (selectable) {
                     val attrs = intArrayOf(android.R.attr.listChoiceIndicatorMultiple)
-                    val ta = theme.obtainStyledAttributes(attrs)
+                    val ta = context.theme.obtainStyledAttributes(attrs)
                     val indicator = ta.getDrawable(0)
                     checkedTextView.checkMarkDrawable = indicator
                     ta.recycle()
@@ -122,18 +121,18 @@ class ManagementFragment : Fragment(), DIAware {
 
             viewModel.personAndGroupLiveData.observe(viewLifecycleOwner) { (persons, groups) ->
 
-                Log.d("DGNTTAG", "person: $persons")
-                Log.d("DGNTTAG", "group: $groups")
+                SimpleLogger.d(this, "person: $persons")
+                SimpleLogger.d(this, "group: $groups")
 
                 try {
-                    fragment.groups = groups.map { Group.fromEntity(it) }.sorted()
+                    this.groups = groups.map { Group.fromEntity(it) }.sorted()
 
                     val groupMap = groups.map { it.name to Group.fromEntity(it) }.toMap()
 
                     personToGroupNameMap = persons.map { Person.fromEntity(it) to groupMap.getValue(it.groupName) }.toMap()
                     val nonEmptyGroups = groups.filter { group -> persons.any { it.groupName == group.name } }.map { Group.fromEntity(it) }.toSet()
 
-                    val emptyGroupExpandableGroupMap = fragment.groups.map { it.name }.subtract(persons.map { it.groupName }.toSet()).map { GroupExpandableGroup(it, listOf()) }
+                    val emptyGroupExpandableGroupMap = this.groups.map { it.name }.subtract(persons.map { it.groupName }.toSet()).map { GroupExpandableGroup(it, listOf()) }
                     val groupExpandableGroupMap = persons.groupBy { it.groupName }.map { it.key to it.value.map { Person.fromEntity(it) } }.map { GroupExpandableGroup(it.first, it.second.sorted()) }
 
                     val personGroups = (groupExpandableGroupMap + emptyGroupExpandableGroupMap).sorted()
@@ -169,8 +168,7 @@ class ManagementFragment : Fragment(), DIAware {
 
                     binding.addFab.visibility = View.VISIBLE
                 } catch (e: Exception) {
-
-                    Log.e("DGNTTAG", "Something happened (Probably groups didn't resolve yet) so just do nothing and hope the next observed event fixes it")
+                    SimpleLogger.e(this, "Something happened (Probably groups didn't resolve yet) so just do nothing and hope the next observed event fixes it", e)
                 }
             }
 

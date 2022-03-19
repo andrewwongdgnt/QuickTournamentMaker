@@ -1,9 +1,7 @@
 package com.dgnt.quickTournamentMaker.ui.tournament
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider

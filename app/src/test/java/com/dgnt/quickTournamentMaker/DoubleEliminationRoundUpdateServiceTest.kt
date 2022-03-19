@@ -1,16 +1,13 @@
 package com.dgnt.quickTournamentMaker
 
-import android.util.Log
 import com.dgnt.quickTournamentMaker.model.tournament.*
 import com.dgnt.quickTournamentMaker.service.implementation.DoubleEliminationRoundUpdateService
-import com.dgnt.quickTournamentMaker.service.implementation.EliminationRoundUpdateService
 import com.dgnt.quickTournamentMaker.service.interfaces.IRoundUpdateService
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.powermock.api.mockito.PowerMockito
-import org.powermock.core.classloader.annotations.PrepareForTest
 import org.powermock.modules.junit4.PowerMockRunner
 
 @RunWith(PowerMockRunner::class)

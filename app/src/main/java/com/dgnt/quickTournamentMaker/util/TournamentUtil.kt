@@ -1,7 +1,6 @@
 package com.dgnt.quickTournamentMaker.util
 
 import android.content.Context
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.FragmentManager
@@ -96,9 +95,7 @@ class TournamentUtil {
 
             tournamentEventHolder.tournamentEvent.observe(lifeCycleOwner) {
                 it.getContentIfNotHandled()?.let {
-
-                    Log.d("DGNTTAG", "start tournament with random seed: $it")
-
+                    SimpleLogger.d(this, "start tournament with random seed: $it")
                     context.startActivity(TournamentActivity.createIntent(context, it.first, it.second))
                     callback.onEdit(Unit)
                 }
@@ -107,7 +104,7 @@ class TournamentUtil {
             tournamentEventHolder.customSeedTournamentEvent.observe(lifeCycleOwner) {
                 it.getContentIfNotHandled()?.let {
 
-                    Log.d("DGNTTAG", "start tournament with custom seed: $it")
+                    SimpleLogger.d(this, "start tournament with custom seed: $it")
 
                     CustomSeedDialogFragment.newInstance(it.first, it.second, callback).show(fragmentManager, CustomSeedDialogFragment.TAG)
 

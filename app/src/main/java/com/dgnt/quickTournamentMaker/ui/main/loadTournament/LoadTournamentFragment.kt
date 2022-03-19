@@ -5,7 +5,6 @@ import android.app.SearchManager
 import android.database.MatrixCursor
 import android.os.Bundle
 import android.provider.BaseColumns
-import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -24,6 +23,7 @@ import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
 import com.dgnt.quickTournamentMaker.ui.main.common.OnEditListener
 import com.dgnt.quickTournamentMaker.ui.tournament.MoreInfoDialogFragment
 import com.dgnt.quickTournamentMaker.ui.tournament.TournamentActivity
+import com.dgnt.quickTournamentMaker.util.SimpleLogger
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 import org.kodein.di.instance
@@ -164,8 +164,8 @@ class LoadTournamentFragment : Fragment(), DIAware {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val fragment = this
-        context?.apply {
+
+        context?.let { context ->
 
             setHasOptionsMenu(true)
 
@@ -175,7 +175,7 @@ class LoadTournamentFragment : Fragment(), DIAware {
                 { menuId: Int, tournaments: Set<RestoredTournamentInformation> -> menuResolver(menuId, tournaments) }
             )
 
-            viewModel = ViewModelProvider(fragment, viewModelFactory)[LoadTournamentViewModel::class.java]
+            viewModel = ViewModelProvider(this, viewModelFactory)[LoadTournamentViewModel::class.java]
             binding.vm = viewModel
             binding.lifecycleOwner = viewLifecycleOwner
 
@@ -194,12 +194,11 @@ class LoadTournamentFragment : Fragment(), DIAware {
             }
 
             viewModel.tournamentLiveData.observe(viewLifecycleOwner) {
-                Log.d(LoadTournamentFragment::class.simpleName, "restored tournament info: $it")
-
+                SimpleLogger.d(this, "restored tournament info: $it")
                 val filteredAndSorted = filterAndSort(it)
 
                 binding.tournamentRv.adapter = RestoredTournamentInformationRecyclerViewAdapter(
-                    this,
+                    context,
                     filteredAndSorted.toMutableList(),
                     { restoredTournamentInformation ->
                         activity?.supportFragmentManager?.let { fragManager ->
@@ -207,7 +206,7 @@ class LoadTournamentFragment : Fragment(), DIAware {
                         }
                     },
                     { restoredTournamentInformation ->
-                        startActivity(TournamentActivity.createIntent(this, restoredTournamentInformation))
+                        startActivity(TournamentActivity.createIntent(context, restoredTournamentInformation))
                     },
                     viewModel.getViewMode(),
                     actionModeCallback,
@@ -271,7 +270,7 @@ class LoadTournamentFragment : Fragment(), DIAware {
                     AlertDialog.Builder(activity)
                         .setMessage(getString(R.string.deleteTournamentMsg, selectedTournaments.size))
                         .setPositiveButton(android.R.string.ok) { _, _ ->
-                            Log.d("DGNT", "Delete ${selectedTournaments.size} tournaments")
+                            SimpleLogger.d(this, "Delete ${selectedTournaments.size} tournaments")
                             viewModel.delete(selectedTournaments, getString(R.string.deleteTournamentSuccessfulMsg, selectedTournaments.size))
                         }
                         .setNegativeButton(android.R.string.cancel, null).create().show()
