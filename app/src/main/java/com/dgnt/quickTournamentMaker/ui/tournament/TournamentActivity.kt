@@ -49,13 +49,20 @@ class TournamentActivity : AppCompatActivity(), DIAware {
         private const val TOURNAMENT_ACTIVITY_PARTICIPANTS = "com.dgnt.quickTournamentMaker.TOURNAMENT_ACTIVITY_PARTICIPANTS"
         private const val TOURNAMENT_ACTIVITY_RESTORED_INFO = "com.dgnt.quickTournamentMaker.TOURNAMENT_ACTIVITY_RESTORED_INFO"
 
-        fun createIntent(context: Context, tournamentInformation: TournamentInformation, orderedParticipants: List<Participant>): Intent =
+        fun createIntent(
+            context: Context,
+            tournamentInformation: TournamentInformation,
+            orderedParticipants: List<Participant>
+        ): Intent =
             Intent(context, TournamentActivity::class.java).apply {
                 putExtra(TOURNAMENT_ACTIVITY_INFO, tournamentInformation)
                 putParcelableArrayListExtra(TOURNAMENT_ACTIVITY_PARTICIPANTS, ArrayList(orderedParticipants))
             }
 
-        fun createIntent(context: Context, restoredTournamentInformation: RestoredTournamentInformation): Intent =
+        fun createIntent(
+            context: Context,
+            restoredTournamentInformation: RestoredTournamentInformation
+        ): Intent =
             Intent(context, TournamentActivity::class.java).apply {
                 putExtra(TOURNAMENT_ACTIVITY_RESTORED_INFO, restoredTournamentInformation)
             }
@@ -100,14 +107,21 @@ class TournamentActivity : AppCompatActivity(), DIAware {
                 getRestoredTournamentInfo(intent)?.foundationalTournamentEntities
             )
 
+            var firstTitleChange = true
+
             title.observe(tournamentActivity) {
                 tournamentActivity.title = it
                 tournamentInformation.title = it
-                hasChanges.value = true
+                if (!firstTitleChange)
+                    hasChanges.value = true
+                firstTitleChange = false
             }
+            var firstDescriptionChange = true
             description.observe(tournamentActivity) {
                 tournamentInformation.description = it
-                hasChanges.value = true
+                if (!firstDescriptionChange)
+                    hasChanges.value = true
+                firstDescriptionChange = false
             }
 
             tournament.observe(tournamentActivity) {
@@ -119,6 +133,7 @@ class TournamentActivity : AppCompatActivity(), DIAware {
             hasChanges.observe(tournamentActivity) {
                 invalidateOptionsMenu()
             }
+            hasChanges.value = !fromRestoration(intent)
         }
 
         resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -134,6 +149,8 @@ class TournamentActivity : AppCompatActivity(), DIAware {
         }
 
     }
+
+    private fun fromRestoration(intent: Intent) = intent.hasExtra(TOURNAMENT_ACTIVITY_RESTORED_INFO)
 
     private fun getRestoredTournamentInfo(intent: Intent) = intent.getParcelableExtra<RestoredTournamentInformation>(TOURNAMENT_ACTIVITY_RESTORED_INFO)
 

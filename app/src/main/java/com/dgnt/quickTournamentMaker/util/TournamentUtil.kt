@@ -14,6 +14,7 @@ import com.dgnt.quickTournamentMaker.ui.customSeed.CustomSeedDialogFragment
 import com.dgnt.quickTournamentMaker.ui.main.common.*
 import com.dgnt.quickTournamentMaker.ui.tournament.TournamentActivity
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.json.Json
 
 
@@ -91,12 +92,15 @@ class TournamentUtil {
                 override fun onEdit(editedValue: Unit) {}
             }
         ) {
-
-
             tournamentEventHolder.tournamentEvent.observe(lifeCycleOwner) {
                 it.getContentIfNotHandled()?.let {
                     SimpleLogger.d(this, "start tournament with random seed: $it")
-                    context.startActivity(TournamentActivity.createIntent(context, it.first, it.second))
+                    context.startActivity(TournamentActivity.createIntent(
+                        context,
+                        it.first,
+                        it.second
+                    )
+                    )
                     callback.onEdit(Unit)
                 }
             }
@@ -106,7 +110,11 @@ class TournamentUtil {
 
                     SimpleLogger.d(this, "start tournament with custom seed: $it")
 
-                    CustomSeedDialogFragment.newInstance(it.first, it.second, callback).show(fragmentManager, CustomSeedDialogFragment.TAG)
+                    CustomSeedDialogFragment.newInstance(
+                        it.first,
+                        it.second,
+                        callback
+                    ).show(fragmentManager, CustomSeedDialogFragment.TAG)
 
                 }
             }

@@ -39,7 +39,7 @@ class TournamentViewModel(
     val tournament = MutableLiveData<Tournament>()
 
     @Bindable
-    val hasChanges = MutableLiveData(true)
+    val hasChanges = MutableLiveData<Boolean>()
 
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
     }

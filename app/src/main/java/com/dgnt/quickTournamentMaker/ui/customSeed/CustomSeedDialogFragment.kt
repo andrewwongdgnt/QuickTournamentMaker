@@ -30,6 +30,7 @@ class CustomSeedDialogFragment : DialogFragment(), DIAware {
         private const val KEY_TOURNAMENT_INFO = "KEY_TOURNAMENT_INFO"
         private const val KEY_ORDERED_PARTICIPANTS = "KEY_ORDERED_PARTICIPANTS"
         private const val KEY_LISTENER = "KEY_LISTENER"
+        private const val KEY_FROM_REBUILD = "KEY_FROM_REBUILD"
 
         fun newInstance(
             tournamentInformation: TournamentInformation,
@@ -106,7 +107,11 @@ class CustomSeedDialogFragment : DialogFragment(), DIAware {
                 .setView(binding.root)
                 .setPositiveButton(android.R.string.ok) { _, _ ->
                     viewModel.matchUps.value?.apply {
-                        startActivity(TournamentActivity.createIntent(activity, tournamentInformation, flatMap { listOf(it.participant1, it.participant2) }))
+                        startActivity(TournamentActivity.createIntent(
+                            activity,
+                            tournamentInformation,
+                            flatMap { listOf(it.participant1, it.participant2) }
+                        ))
                         listener.onEdit(Unit)
                     }
                 }
