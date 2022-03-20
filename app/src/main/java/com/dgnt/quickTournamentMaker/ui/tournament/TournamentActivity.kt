@@ -244,6 +244,23 @@ class TournamentActivity : AppCompatActivity(), DIAware {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onBackPressed() {
+        viewModel.hasChanges.value?.takeIf { it }?.run {
+            android.app.AlertDialog.Builder(this@TournamentActivity)
+                .setMessage(R.string.unSavedChangesWarningMsg)
+                .setPositiveButton(R.string.save) { _, _ ->
+                    viewModel.saveTournament(false)
+                    super.onBackPressed()
+                }
+                .setNeutralButton(R.string.dontSave) { _, _ ->
+                    super.onBackPressed()
+                }
+                .setNegativeButton(android.R.string.cancel, null)
+                .create()
+                .show()
+        } ?: run { super.onBackPressed() }
+    }
+
     private fun saveChanges(duplicate: Boolean) {
         viewModel.run {
             hasChanges.value = false
