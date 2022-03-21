@@ -6,7 +6,7 @@
             <solid android:color="@android:color/transparent" />
             <stroke
                     android:width="2dip"
-                    android:color="@color/titledLinearLayout" />
+                    android:color="@color/neutralBg" />
             <corners android:radius="15dp" />
         </shape>
     </item>

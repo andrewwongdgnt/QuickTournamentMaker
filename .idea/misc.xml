@@ -4,15 +4,21 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Owner/AndroidProjects/QuickTournamentMaker/app/src/main/res/drawable/checkable_list_item_background.xml" value="0.191" />
+        <entry key="..\:/Users/Owner/AndroidProjects/QuickTournamentMaker/app/src/main/res/drawable/ic_add_person.xml" value="0.1885" />
+        <entry key="..\:/Users/Owner/AndroidProjects/QuickTournamentMaker/app/src/main/res/drawable/ic_arrow_down.xml" value="0.191" />
+        <entry key="..\:/Users/Owner/AndroidProjects/QuickTournamentMaker/app/src/main/res/drawable/ic_delete.xml" value="0.191" />
+        <entry key="..\:/Users/Owner/AndroidProjects/QuickTournamentMaker/app/src/main/res/drawable/ic_load.xml" value="0.191" />
         <entry key="..\:/Users/Owner/AndroidProjects/QuickTournamentMaker/app/src/main/res/drawable/nav_color.xml" value="0.191" />
         <entry key="..\:/Users/Owner/AndroidProjects/QuickTournamentMaker/app/src/main/res/drawable/side_nav_bar.xml" value="0.191" />
+        <entry key="..\:/Users/Owner/AndroidProjects/QuickTournamentMaker/app/src/main/res/drawable/titled_linear_layout_background.xml" value="0.191" />
         <entry key="..\:/Users/Owner/AndroidProjects/QuickTournamentMaker/app/src/main/res/layout/add_choice_fragment.xml" value="0.1828125" />
         <entry key="..\:/Users/Owner/AndroidProjects/QuickTournamentMaker/app/src/main/res/layout/array_item.xml" value="0.1828125" />
         <entry key="..\:/Users/Owner/AndroidProjects/QuickTournamentMaker/app/src/main/res/layout/child_list_item.xml" value="0.1828125" />
         <entry key="..\:/Users/Owner/AndroidProjects/QuickTournamentMaker/app/src/main/res/layout/component_tournament_general_editor.xml" value="0.25104166666666666" />
         <entry key="..\:/Users/Owner/AndroidProjects/QuickTournamentMaker/app/src/main/res/layout/component_tournament_type_editor.xml" value="0.19739583333333333" />
         <entry key="..\:/Users/Owner/AndroidProjects/QuickTournamentMaker/app/src/main/res/layout/draggable_list_item.xml" value="0.19739583333333333" />
-        <entry key="..\:/Users/Owner/AndroidProjects/QuickTournamentMaker/app/src/main/res/layout/group_item.xml" value="0.1828125" />
+        <entry key="..\:/Users/Owner/AndroidProjects/QuickTournamentMaker/app/src/main/res/layout/editable_list_item.xml" value="0.75" />
+        <entry key="..\:/Users/Owner/AndroidProjects/QuickTournamentMaker/app/src/main/res/layout/group_item.xml" value="0.33" />
         <entry key="..\:/Users/Owner/AndroidProjects/QuickTournamentMaker/app/src/main/res/layout/home_fragment.xml" value="0.19739583333333333" />
         <entry key="..\:/Users/Owner/AndroidProjects/QuickTournamentMaker/app/src/main/res/layout/list_item.xml" value="0.33" />
         <entry key="..\:/Users/Owner/AndroidProjects/QuickTournamentMaker/app/src/main/res/layout/load_tournament_filter_options.xml" value="0.3546875" />
@@ -26,7 +32,7 @@
         <entry key="..\:/Users/Owner/AndroidProjects/QuickTournamentMaker/app/src/main/res/layout/rebuild_tournament_fragment.xml" value="0.3061389337641357" />
         <entry key="..\:/Users/Owner/AndroidProjects/QuickTournamentMaker/app/src/main/res/layout/single_checkable_list_item.xml" value="0.1828125" />
         <entry key="..\:/Users/Owner/AndroidProjects/QuickTournamentMaker/app/src/main/res/layout/single_choice_item.xml" value="0.1828125" />
-        <entry key="..\:/Users/Owner/AndroidProjects/QuickTournamentMaker/app/src/main/res/layout/title_text_view.xml" value="0.15885416666666666" />
+        <entry key="..\:/Users/Owner/AndroidProjects/QuickTournamentMaker/app/src/main/res/layout/title_text_view.xml" value="0.75" />
         <entry key="..\:/Users/Owner/AndroidProjects/QuickTournamentMaker/app/src/main/res/layout/tournament_list_item.xml" value="0.3546875" />
         <entry key="..\:/Users/Owner/AndroidProjects/QuickTournamentMaker/app/src/main/res/menu/actions_history.xml" value="0.3546875" />
         <entry key="..\:/Users/Owner/AndroidProjects/QuickTournamentMaker/app/src/main/res/menu/actions_history_cab.xml" value="0.3546875" />

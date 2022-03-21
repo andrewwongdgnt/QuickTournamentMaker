@@ -20,6 +20,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical|end"
                 android:layout_marginEnd="@dimen/standard_gap"
+                app:tint="@color/neutralBg"
                 android:src="@drawable/ic_arrow_down" />
 
         <TextView
@@ -54,7 +55,7 @@
                     android:layout_height="wrap_content"
                     android:scaleType="fitEnd"
                     android:src="@drawable/ic_edit"
-                    app:tint="@android:color/darker_gray" />
+                    app:tint="@color/neutralBg" />
         </LinearLayout>
     </LinearLayout>
 </layout>

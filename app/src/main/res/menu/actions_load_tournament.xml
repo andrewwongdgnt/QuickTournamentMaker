@@ -14,12 +14,10 @@
             compat:showAsAction="ifRoom" />
     <item
             android:id="@+id/action_startTournamentFromFile"
-            android:icon="@drawable/ic_start_tournament_from_file"
             android:title="@string/startTournamentFromFile"
             compat:showAsAction="never" />
     <item
             android:id="@+id/action_sort"
-            android:icon="@drawable/ic_sort"
             android:title="@string/sort"
             compat:showAsAction="never" />
     <item

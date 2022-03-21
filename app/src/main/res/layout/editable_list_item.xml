@@ -29,7 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_edit"
-                app:tint="@android:color/darker_gray" />
+                app:tint="@color/neutralBg" />
 
     </LinearLayout>
 </layout>
