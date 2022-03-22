@@ -128,7 +128,6 @@
                         <com.dgnt.quickTournamentMaker.ui.widget.MyNumberPicker
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:theme="@style/AppTheme.Picker"
                                 android:value="@={vm.winValue}" />
                     </LinearLayout>
 
@@ -150,7 +149,6 @@
                         <com.dgnt.quickTournamentMaker.ui.widget.MyNumberPicker
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:theme="@style/AppTheme.Picker"
                                 android:value="@={vm.lossValue}" />
                     </LinearLayout>
 
@@ -171,7 +169,6 @@
                         <com.dgnt.quickTournamentMaker.ui.widget.MyNumberPicker
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:theme="@style/AppTheme.Picker"
                                 android:value="@={vm.tieValue}" />
 
 
