@@ -240,11 +240,13 @@ class ManagementFragment : Fragment(), DIAware {
         when (menuId) {
             R.id.action_delete -> {
                 if (actionModeCallback.multiSelect == ManagementFragmentActionModeCallBack.SelectType.PERSON) {
-                    AlertDialog.Builder(activity)
-                        .setTitle(getString(R.string.deletingPlayers, selectedPersons.size))
-                        .setMessage(getString(R.string.deletePlayerMsg, selectedPersons.size))
-                        .setPositiveButton(android.R.string.ok) { _, _ -> viewModel.delete(selectedPersons.map { it.toEntity(personToGroupNameMap[it]?.name ?: "") }, getString(R.string.deletePlayerSuccessfulMsg, selectedPersons.size)) }
-                        .setNegativeButton(android.R.string.cancel, null).create().show()
+                    activity?.let { activity ->
+                        AlertDialog.Builder(activity)
+                            .setTitle(getString(R.string.deletingPlayers, selectedPersons.size))
+                            .setMessage(getString(R.string.deletePlayerMsg, selectedPersons.size))
+                            .setPositiveButton(android.R.string.ok) { _, _ -> viewModel.delete(selectedPersons.map { it.toEntity(personToGroupNameMap[it]?.name ?: "") }, getString(R.string.deletePlayerSuccessfulMsg, selectedPersons.size)) }
+                            .setNegativeButton(android.R.string.cancel, null).create().show()
+                    }
                 } else {
                     GroupDeleteDialogFragment.newInstance(selectedGroups.toList(), groups).show(activity?.supportFragmentManager!!, GroupDeleteDialogFragment.TAG)
 

@@ -1,12 +1,12 @@
 package com.dgnt.quickTournamentMaker.ui.main.loadTournament
 
-import androidx.appcompat.app.AlertDialog
 import android.app.SearchManager
 import android.database.MatrixCursor
 import android.os.Bundle
 import android.provider.BaseColumns
 import android.view.*
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.SearchView
@@ -267,13 +267,15 @@ class LoadTournamentFragment : Fragment(), DIAware {
         when (menuId) {
             R.id.action_delete -> {
                 if (actionModeCallback.multiSelect) {
-                    AlertDialog.Builder(activity)
-                        .setMessage(getString(R.string.deleteTournamentMsg, selectedTournaments.size))
-                        .setPositiveButton(android.R.string.ok) { _, _ ->
-                            SimpleLogger.d(this, "Delete ${selectedTournaments.size} tournaments")
-                            viewModel.delete(selectedTournaments, getString(R.string.deleteTournamentSuccessfulMsg, selectedTournaments.size))
-                        }
-                        .setNegativeButton(android.R.string.cancel, null).create().show()
+                    activity?.let { activity ->
+                        AlertDialog.Builder(activity)
+                            .setMessage(getString(R.string.deleteTournamentMsg, selectedTournaments.size))
+                            .setPositiveButton(android.R.string.ok) { _, _ ->
+                                SimpleLogger.d(this, "Delete ${selectedTournaments.size} tournaments")
+                                viewModel.delete(selectedTournaments, getString(R.string.deleteTournamentSuccessfulMsg, selectedTournaments.size))
+                            }
+                            .setNegativeButton(android.R.string.cancel, null).create().show()
+                    }
                 }
             }
         }
