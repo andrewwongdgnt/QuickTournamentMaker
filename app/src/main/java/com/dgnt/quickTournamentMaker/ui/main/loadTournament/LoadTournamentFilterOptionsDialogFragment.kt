@@ -1,6 +1,6 @@
 package com.dgnt.quickTournamentMaker.ui.main.loadTournament
 
-import android.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import android.app.DatePickerDialog
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment

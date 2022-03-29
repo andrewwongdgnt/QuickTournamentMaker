@@ -1,6 +1,6 @@
 package com.dgnt.quickTournamentMaker.ui.tournament
 
-import android.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.MoreInfoFragmentBinding
 import com.dgnt.quickTournamentMaker.model.tournament.ExtendedTournamentInformation
-import com.dgnt.quickTournamentMaker.model.tournament.MatchUp
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
 import com.dgnt.quickTournamentMaker.ui.main.common.OnEditListener
 import org.kodein.di.DIAware

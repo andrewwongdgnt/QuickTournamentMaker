@@ -1,6 +1,6 @@
 package com.dgnt.quickTournamentMaker.ui.customSeed
 
-import android.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.core.content.ContextCompat

@@ -1,6 +1,6 @@
 package com.dgnt.quickTournamentMaker.ui.main.loadTournament
 
-import android.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import android.app.SearchManager
 import android.database.MatrixCursor
 import android.os.Bundle
@@ -57,7 +57,7 @@ class LoadTournamentFragment : Fragment(), DIAware {
     //FIXME suggestion part
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.actions_load_tournament, menu)
-        val suggestions = listOf("")
+        val suggestions = listOf("Test", "test2", "Andrew", "Anderson")
         val searchMenu = menu.findItem(R.id.action_search)
 
         val simpleCursor = SimpleCursorAdapter(

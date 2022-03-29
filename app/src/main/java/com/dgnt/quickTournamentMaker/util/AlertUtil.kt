@@ -1,6 +1,6 @@
 package com.dgnt.quickTournamentMaker.util
 
-import android.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent

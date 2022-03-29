@@ -246,7 +246,7 @@ class TournamentActivity : AppCompatActivity(), DIAware {
 
     override fun onBackPressed() {
         viewModel.hasChanges.value?.takeIf { it }?.run {
-            android.app.AlertDialog.Builder(this@TournamentActivity)
+            AlertDialog.Builder(this@TournamentActivity)
                 .setMessage(R.string.unSavedChangesWarningMsg)
                 .setPositiveButton(R.string.save) { _, _ ->
                     viewModel.saveTournament(false)

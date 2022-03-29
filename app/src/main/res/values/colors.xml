@@ -47,7 +47,7 @@
     <color name="md_theme_dark_onErrorContainer">#F9DEDC</color>
     <color name="md_theme_dark_background">#1C1B1F</color>
     <color name="md_theme_dark_onBackground">#E6E1E5</color>
-    <color name="md_theme_dark_surface">#1C1B1F</color>
+    <color name="md_theme_dark_surface">#1C1B1F</color> <!-- this is the action bar background color for some reason -->
     <color name="md_theme_dark_onSurface">#E6E1E5</color>
     <color name="md_theme_dark_surfaceVariant">#49454F</color>
     <color name="md_theme_dark_onSurfaceVariant">#CAC4D0</color>

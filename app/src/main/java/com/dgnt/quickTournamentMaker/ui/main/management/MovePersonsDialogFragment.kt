@@ -1,6 +1,6 @@
 package com.dgnt.quickTournamentMaker.ui.main.management
 
-import android.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import android.os.Bundle
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment

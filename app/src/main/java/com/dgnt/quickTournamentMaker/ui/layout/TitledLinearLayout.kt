@@ -1,6 +1,6 @@
 package com.dgnt.quickTournamentMaker.ui.layout
 
-import android.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
