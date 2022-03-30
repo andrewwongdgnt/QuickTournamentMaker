@@ -1,6 +1,7 @@
 package com.dgnt.quickTournamentMaker.ui.main.loadTournament
 
 import android.app.SearchManager
+import android.database.Cursor
 import android.database.MatrixCursor
 import android.os.Bundle
 import android.provider.BaseColumns
@@ -11,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.SearchView
 import androidx.cursoradapter.widget.CursorAdapter
-import androidx.cursoradapter.widget.SimpleCursorAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
@@ -21,6 +21,7 @@ import com.dgnt.quickTournamentMaker.model.loadTournament.ViewMode
 import com.dgnt.quickTournamentMaker.model.tournament.RestoredTournamentInformation
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
 import com.dgnt.quickTournamentMaker.ui.main.common.OnEditListener
+import com.dgnt.quickTournamentMaker.ui.main.common.SuggestionCursorAdapter
 import com.dgnt.quickTournamentMaker.ui.tournament.MoreInfoDialogFragment
 import com.dgnt.quickTournamentMaker.ui.tournament.TournamentActivity
 import com.dgnt.quickTournamentMaker.util.SimpleLogger
@@ -43,7 +44,10 @@ class LoadTournamentFragment : Fragment(), DIAware {
     private lateinit var binding: LoadTournamentFragmentBinding
     private lateinit var viewModel: LoadTournamentViewModel
 
+    val suggestions = listOf("Test", "test2", "Andrew", "Anderson")
+
     private var mainAdapter: RestoredTournamentInformationRecyclerViewAdapter? = null
+    private var suggestionCursorAdapter: SuggestionCursorAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,53 +57,66 @@ class LoadTournamentFragment : Fragment(), DIAware {
         return binding.root
     }
 
-
-    //FIXME suggestion part
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.actions_load_tournament, menu)
-        val suggestions = listOf("Test", "test2", "Andrew", "Anderson")
-        val searchMenu = menu.findItem(R.id.action_search)
-
-        val simpleCursor = SimpleCursorAdapter(
-            activity,
-            R.layout.list_item,
-            null,
-            arrayOf(SearchManager.SUGGEST_COLUMN_TEXT_1),
-            intArrayOf(R.id.list_item_tv),
-            CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER
-        )
-
-        (searchMenu?.actionView as? SearchView)?.apply {
-            suggestionsAdapter = simpleCursor
-        }?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-
-            override fun onQueryTextChange(qString: String): Boolean {
-                val cursor = MatrixCursor(arrayOf(BaseColumns._ID, SearchManager.SUGGEST_COLUMN_TEXT_1))
-
-                suggestions.forEachIndexed { index, suggestion ->
-                    if (suggestion.contains(qString, true))
-                        cursor.addRow(arrayOf(index, suggestion))
-                }
-
-                simpleCursor.changeCursor(cursor)
-                return true
-            }
-
-            override fun onQueryTextSubmit(qString: String): Boolean {
-                binding.clearSearchTv.apply {
-                    visibility = View.VISIBLE
-                    text = getString(R.string.clearSearch, qString)
-                }
-                mainAdapter?.updateList(qString)?.takeUnless { it }?.run {
-                    binding.noResultsTv.visibility = View.VISIBLE
-                } ?: run { binding.noResultsTv.visibility = View.GONE }
-
-                searchMenu.collapseActionView()
-                return true
-            }
-        })
-
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+        val searchMenu = menu.findItem(R.id.action_search)
+        suggestionCursorAdapter?.let { suggestionCursorAdapter ->
+
+            (searchMenu?.actionView as? SearchView)?.let { searchView ->
+                searchView.suggestionsAdapter = suggestionCursorAdapter
+                searchView.setIconifiedByDefault(false)
+
+                searchView.setOnSuggestionListener(object : SearchView.OnSuggestionListener {
+                    override fun onSuggestionClick(position: Int): Boolean {
+                        val cursor = suggestionCursorAdapter.getItem(position) as Cursor
+                        cursor.getColumnIndex(SearchManager.SUGGEST_COLUMN_TEXT_1).takeIf { it >= 0 }?.apply {
+                            val txt: String = cursor.getString(this)
+                            searchView.setQuery(txt, true)
+                            return true
+                        }
+                        return false
+                    }
+
+                    override fun onSuggestionSelect(position: Int): Boolean {
+                        // Your code here
+                        return true
+                    }
+                })
+                searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
+                    override fun onQueryTextChange(qString: String): Boolean {
+                        val cursor = MatrixCursor(arrayOf(BaseColumns._ID, SearchManager.SUGGEST_COLUMN_TEXT_1, SearchManager.SUGGEST_COLUMN_ICON_1))
+
+                        suggestions.forEachIndexed { index, suggestion ->
+                            if (suggestion.contains(qString, true))
+                                cursor.addRow(arrayOf(index, suggestion, suggestion))
+                        }
+
+                        suggestionCursorAdapter.changeCursor(cursor)
+                        return true
+                    }
+
+                    override fun onQueryTextSubmit(qString: String): Boolean {
+                        binding.clearSearchTv.apply {
+                            visibility = View.VISIBLE
+                            text = getString(R.string.clearSearch, qString)
+                        }
+                        mainAdapter?.updateList(qString)?.takeUnless { it }?.run {
+                            binding.noResultsTv.visibility = View.VISIBLE
+                        } ?: run { binding.noResultsTv.visibility = View.GONE }
+
+                        searchMenu.collapseActionView()
+                        return true
+                    }
+                })
+
+            }
+        }
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
@@ -222,6 +239,15 @@ class LoadTournamentFragment : Fragment(), DIAware {
                     binding.noResultsTv.visibility = View.VISIBLE
                 }
             }
+
+            suggestionCursorAdapter = SuggestionCursorAdapter(
+                context,
+                R.layout.search_suggest_list_item,
+                arrayOf(SearchManager.SUGGEST_COLUMN_TEXT_1, SearchManager.SUGGEST_COLUMN_ICON_1),
+                intArrayOf(R.id.search_item_tv, R.id.clear_search_iv),
+                CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER
+            )
+
         }
 
     }
