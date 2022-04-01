@@ -2,6 +2,8 @@ package com.dgnt.quickTournamentMaker.ui.main.loadTournament
 
 import androidx.databinding.Observable
 import androidx.lifecycle.*
+import com.dgnt.quickTournamentMaker.data.search.ISearchTermRepository
+import com.dgnt.quickTournamentMaker.data.search.SearchTermEntity
 import com.dgnt.quickTournamentMaker.data.tournament.*
 import com.dgnt.quickTournamentMaker.model.tournament.*
 import com.dgnt.quickTournamentMaker.service.interfaces.IPreferenceService
@@ -16,6 +18,7 @@ class LoadTournamentViewModel(
     private val roundRepository: IRoundRepository,
     private val matchUpRepository: IMatchUpRepository,
     private val participantRepository: IParticipantRepository,
+    private val searchTermRepository: ISearchTermRepository,
     private val rankingConfigService: IRankingConfigService,
     private val preferenceService: IPreferenceService,
     private val tournamentFilterService: ITournamentFilterService,
@@ -120,6 +123,8 @@ class LoadTournamentViewModel(
                 }
         }
 
+    val searchTerms = searchTermRepository.getAll()
+
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
     }
 
@@ -145,6 +150,14 @@ class LoadTournamentViewModel(
         matchUpRepository.delete(tournaments.flatMap { it.foundationalTournamentEntities.matchUpEntities })
         participantRepository.delete(tournaments.flatMap { it.foundationalTournamentEntities.participantEntities })
         messageEvent.value = Event(successMsg)
+    }
+
+    fun clearSearchTerm(term: String) = viewModelScope.launch {
+        searchTermRepository.delete(term)
+    }
+
+    fun addSearchTerm(termPair: Pair<String, Int>) = viewModelScope.launch {
+        searchTermRepository.upsert(SearchTermEntity(termPair.first, termPair.second + 1))
     }
 
 }

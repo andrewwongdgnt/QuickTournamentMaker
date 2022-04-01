@@ -11,10 +11,12 @@ import com.dgnt.quickTournamentMaker.data.management.GroupDAO
 import com.dgnt.quickTournamentMaker.data.management.GroupEntity
 import com.dgnt.quickTournamentMaker.data.management.PersonDAO
 import com.dgnt.quickTournamentMaker.data.management.PersonEntity
+import com.dgnt.quickTournamentMaker.data.search.SearchTermDAO
+import com.dgnt.quickTournamentMaker.data.search.SearchTermEntity
 import com.dgnt.quickTournamentMaker.data.tournament.*
 
 @Database(
-    entities = [PersonEntity::class, GroupEntity::class, TournamentEntity::class, RoundEntity::class, MatchUpEntity::class, ParticipantEntity::class],
+    entities = [PersonEntity::class, GroupEntity::class, TournamentEntity::class, RoundEntity::class, MatchUpEntity::class, ParticipantEntity::class, SearchTermEntity::class],
     version = 2001 //Old one was 1002
 )
 @TypeConverters(DateConverter::class, ProgressConverter::class)
@@ -25,6 +27,7 @@ abstract class QTMDatabase : RoomDatabase() {
     abstract val roundDAO: RoundDAO
     abstract val matchUpDAO: MatchUpDAO
     abstract val participantDAO: ParticipantDAO
+    abstract val searchTermDAO: SearchTermDAO
 
     companion object {
 

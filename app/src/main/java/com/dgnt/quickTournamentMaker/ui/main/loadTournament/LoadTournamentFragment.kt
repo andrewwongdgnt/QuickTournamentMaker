@@ -20,11 +20,12 @@ import com.dgnt.quickTournamentMaker.model.loadTournament.Sort
 import com.dgnt.quickTournamentMaker.model.loadTournament.ViewMode
 import com.dgnt.quickTournamentMaker.model.tournament.RestoredTournamentInformation
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
+import com.dgnt.quickTournamentMaker.ui.adapter.SuggestionCursorAdapter
 import com.dgnt.quickTournamentMaker.ui.main.common.OnEditListener
-import com.dgnt.quickTournamentMaker.ui.main.common.SuggestionCursorAdapter
 import com.dgnt.quickTournamentMaker.ui.tournament.MoreInfoDialogFragment
 import com.dgnt.quickTournamentMaker.ui.tournament.TournamentActivity
 import com.dgnt.quickTournamentMaker.util.SimpleLogger
+import com.dgnt.quickTournamentMaker.util.update
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 import org.kodein.di.instance
@@ -44,10 +45,11 @@ class LoadTournamentFragment : Fragment(), DIAware {
     private lateinit var binding: LoadTournamentFragmentBinding
     private lateinit var viewModel: LoadTournamentViewModel
 
-    val suggestions = listOf("Test", "test2", "Andrew", "Anderson")
+    val suggestions = mutableListOf<Pair<String, Int>>()
 
     private var mainAdapter: RestoredTournamentInformationRecyclerViewAdapter? = null
     private var suggestionCursorAdapter: SuggestionCursorAdapter? = null
+    private var searchView: SearchView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,6 +70,7 @@ class LoadTournamentFragment : Fragment(), DIAware {
         suggestionCursorAdapter?.let { suggestionCursorAdapter ->
 
             (searchMenu?.actionView as? SearchView)?.let { searchView ->
+                this.searchView = searchView
                 searchView.suggestionsAdapter = suggestionCursorAdapter
                 searchView.setIconifiedByDefault(false)
 
@@ -92,7 +95,7 @@ class LoadTournamentFragment : Fragment(), DIAware {
                     override fun onQueryTextChange(qString: String): Boolean {
                         val cursor = MatrixCursor(arrayOf(BaseColumns._ID, SearchManager.SUGGEST_COLUMN_TEXT_1, SearchManager.SUGGEST_COLUMN_ICON_1))
 
-                        suggestions.forEachIndexed { index, suggestion ->
+                        suggestions.map { it.first }.forEachIndexed { index, suggestion ->
                             if (suggestion.contains(qString, true))
                                 cursor.addRow(arrayOf(index, suggestion, suggestion))
                         }
@@ -109,6 +112,9 @@ class LoadTournamentFragment : Fragment(), DIAware {
                         mainAdapter?.updateList(qString)?.takeUnless { it }?.run {
                             binding.noResultsTv.visibility = View.VISIBLE
                         } ?: run { binding.noResultsTv.visibility = View.GONE }
+
+                        val count = suggestions.find { it.first == qString }?.second ?: 0
+                        viewModel.addSearchTerm(Pair(qString, count))
 
                         searchMenu.collapseActionView()
                         return true
@@ -240,13 +246,20 @@ class LoadTournamentFragment : Fragment(), DIAware {
                 }
             }
 
+            viewModel.searchTerms.observe(viewLifecycleOwner) { searchTermEntities ->
+                suggestions.update(searchTermEntities.map { Pair(it.term, it.count) })
+            }
+
             suggestionCursorAdapter = SuggestionCursorAdapter(
                 context,
                 R.layout.search_suggest_list_item,
                 arrayOf(SearchManager.SUGGEST_COLUMN_TEXT_1, SearchManager.SUGGEST_COLUMN_ICON_1),
                 intArrayOf(R.id.search_item_tv, R.id.clear_search_iv),
-                CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER
-            )
+                CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER,
+            ) {
+                viewModel.clearSearchTerm(it)
+                searchView?.onActionViewCollapsed()
+            }
 
         }
 

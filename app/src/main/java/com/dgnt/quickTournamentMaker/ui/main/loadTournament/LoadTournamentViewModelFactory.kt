@@ -2,6 +2,7 @@ package com.dgnt.quickTournamentMaker.ui.main.loadTournament
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.dgnt.quickTournamentMaker.data.search.ISearchTermRepository
 import com.dgnt.quickTournamentMaker.data.tournament.IMatchUpRepository
 import com.dgnt.quickTournamentMaker.data.tournament.IParticipantRepository
 import com.dgnt.quickTournamentMaker.data.tournament.IRoundRepository
@@ -16,6 +17,7 @@ class LoadTournamentViewModelFactory(
     private val roundRepository: IRoundRepository,
     private val matchUpRepository: IMatchUpRepository,
     private val participantRepository: IParticipantRepository,
+    private val searchTermRepository: ISearchTermRepository,
     private val rankingConfigService: IRankingConfigService,
     private val preferenceService: IPreferenceService,
     private val tournamentFilterService: ITournamentFilterService,
@@ -24,7 +26,7 @@ class LoadTournamentViewModelFactory(
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(LoadTournamentViewModel::class.java)) {
-            return LoadTournamentViewModel(tournamentRepository, roundRepository, matchUpRepository, participantRepository, rankingConfigService, preferenceService, tournamentFilterService, tournamentSortService) as T
+            return LoadTournamentViewModel(tournamentRepository, roundRepository, matchUpRepository, participantRepository, searchTermRepository, rankingConfigService, preferenceService, tournamentFilterService, tournamentSortService) as T
         }
         throw IllegalArgumentException("Unknown View Model class")
     }

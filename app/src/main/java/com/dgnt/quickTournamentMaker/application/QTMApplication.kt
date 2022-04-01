@@ -7,6 +7,8 @@ import com.dgnt.quickTournamentMaker.data.management.GroupRepository
 import com.dgnt.quickTournamentMaker.data.management.IGroupRepository
 import com.dgnt.quickTournamentMaker.data.management.IPersonRepository
 import com.dgnt.quickTournamentMaker.data.management.PersonRepository
+import com.dgnt.quickTournamentMaker.data.search.ISearchTermRepository
+import com.dgnt.quickTournamentMaker.data.search.SearchTermRepository
 import com.dgnt.quickTournamentMaker.data.tournament.*
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentType
 import com.dgnt.quickTournamentMaker.service.data.TournamentTypeServices
@@ -48,6 +50,7 @@ class QTMApplication : Application(), DIAware {
         bind() from singleton { instance<QTMDatabase>().roundDAO }
         bind() from singleton { instance<QTMDatabase>().matchUpDAO }
         bind() from singleton { instance<QTMDatabase>().participantDAO }
+        bind() from singleton { instance<QTMDatabase>().searchTermDAO }
 
         //Repo
         bind<IPersonRepository>() with singleton { PersonRepository(instance()) }
@@ -56,6 +59,7 @@ class QTMApplication : Application(), DIAware {
         bind<IParticipantRepository>() with singleton { ParticipantRepository(instance()) }
         bind<IRoundRepository>() with singleton { RoundRepository(instance()) }
         bind<ITournamentRepository>() with singleton { TournamentRepository(instance()) }
+        bind<ISearchTermRepository>() with singleton { SearchTermRepository(instance()) }
 
         //ViewModelFactory
         bind() from provider {
@@ -81,7 +85,7 @@ class QTMApplication : Application(), DIAware {
         bind() from provider { MatchUpEditorViewModelFactory(instance()) }
         bind() from provider { RoundEditorViewModelFactory() }
         bind() from provider { CustomSeedViewModelFactory(instance()) }
-        bind() from provider { LoadTournamentViewModelFactory(instance(), instance(), instance(), instance(), instance(), instance(), instance(), instance()) }
+        bind() from provider { LoadTournamentViewModelFactory(instance(), instance(), instance(), instance(), instance(), instance(), instance(), instance(), instance()) }
         bind() from provider { LoadTournamentFilterOptionsViewModelFactory(instance()) }
 
         //Service
