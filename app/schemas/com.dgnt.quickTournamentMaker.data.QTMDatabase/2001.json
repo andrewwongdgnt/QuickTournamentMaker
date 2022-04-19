@@ -2,10 +2,10 @@
   "formatVersion": 1,
   "database": {
     "version": 2001,
-    "identityHash": "22ef6d1ab7e1fa340b47407320fcfc31",
+    "identityHash": "10459b4942b1cd79512f10e179b11f97",
     "entities": [
       {
-        "tableName": "personTableV2",
+        "tableName": "personTable",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT NOT NULL, `note` TEXT NOT NULL, `groupName` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
@@ -41,19 +41,19 @@
         },
         "indices": [
           {
-            "name": "index_personTableV2_name",
+            "name": "index_personTable_name",
             "unique": true,
             "columnNames": [
               "name"
             ],
             "orders": [],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_personTableV2_name` ON `${TABLE_NAME}` (`name`)"
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_personTable_name` ON `${TABLE_NAME}` (`name`)"
           }
         ],
         "foreignKeys": []
       },
       {
-        "tableName": "groupTableV2",
+        "tableName": "groupTable",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT NOT NULL, `note` TEXT NOT NULL, `favourite` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
@@ -89,13 +89,13 @@
         },
         "indices": [
           {
-            "name": "index_groupTableV2_name",
+            "name": "index_groupTable_name",
             "unique": true,
             "columnNames": [
               "name"
             ],
             "orders": [],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_groupTableV2_name` ON `${TABLE_NAME}` (`name`)"
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_groupTable_name` ON `${TABLE_NAME}` (`name`)"
           }
         ],
         "foreignKeys": []
@@ -385,7 +385,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '22ef6d1ab7e1fa340b47407320fcfc31')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '10459b4942b1cd79512f10e179b11f97')"
     ]
   }
 }
