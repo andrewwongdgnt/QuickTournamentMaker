@@ -11,8 +11,23 @@ apply plugin: 'kotlin-parcelize'
 
 
 apply plugin: 'kotlin-kapt'
-
+kapt {
+    arguments {
+        arg("room.schemaLocation", "$projectDir/schemas".toString())
+    }
+}
 android {
+    signingConfigs {
+        debug {
+            Properties keystoreProps = new Properties()
+            keystoreProps.load(new FileInputStream(file('keystore.config')))
+
+            keyAlias keystoreProps['keyAlias']
+            keyPassword keystoreProps['keyPassword']
+            storePassword keystoreProps['storePassword']
+            storeFile file('keystore.jks')
+        }
+    }
     compileSdkVersion 31
     defaultConfig {
         applicationId "com.dgnt.quickTournamentMaker"
@@ -33,7 +48,9 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+            debuggable true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
         }
     }
 
