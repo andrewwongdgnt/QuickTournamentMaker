@@ -49,9 +49,9 @@ abstract class QTMDatabase : RoomDatabase() {
                 QTMDatabase::class.java, "db"
             )
                 .setQueryCallback({ sqlQuery, bindArgs ->
-                    SimpleLogger.d(this,"SQL Query: $sqlQuery SQL Args: $bindArgs")
+                    SimpleLogger.d(this, "SQL Query: $sqlQuery SQL Args: $bindArgs")
                 }, Executors.newSingleThreadExecutor())
-//                .addMigrations(MIGRATION_1002_2001)
+                .addMigrations(MIGRATION_1002_2001)
                 .build()
 
         private val MIGRATION_1002_2001: Migration = object : Migration(1002, 2001) {
@@ -72,24 +72,76 @@ abstract class QTMDatabase : RoomDatabase() {
                 // migrate person table
                 database.execSQL(
                     """
-                    INSERT INTO personTableV2 (id, name, note, groupName)
+                    CREATE TABLE personTable_temp (
+                        id TEXT NOT NULL PRIMARY KEY,
+                        name TEXT NOT NULL,
+                        note TEXT NOT NULL,
+                        groupName TEXT NOT NULL                        
+                    );     
+                """.trimMargin()
+                )
+                database.execSQL(
+                    """
+                    INSERT INTO personTable_temp (id, name, note, groupName)
                     SELECT 
                     $newUUID id,
                     name, note, groupName FROM personTable;      
                 """.trimMargin()
                 )
+                database.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS index_personTable_name ON personTable_temp (name)")
+                database.execSQL("DROP TABLE personTable")
+                database.execSQL("ALTER TABLE personTable_temp RENAME TO personTable")
+
                 // migrate group table
                 database.execSQL(
                     """
-                    INSERT INTO groupTableV2 (id, name, note, favourite)
+                    CREATE TABLE groupTable_temp (
+                        id TEXT NOT NULL PRIMARY KEY,
+                        name TEXT NOT NULL,
+                        note TEXT NOT NULL,
+                        favourite INTEGER NOT NULL                        
+                    );     
+                """.trimMargin()
+                )
+                database.execSQL(
+                    """
+                    INSERT INTO groupTable_temp (id, name, note, favourite)
                     SELECT 
                     $newUUID id,
                     name, note, favourite FROM groupTable;      
                 """.trimMargin()
                 )
+                database.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS index_groupTable_name ON groupTable_temp (name)")
+                database.execSQL("DROP TABLE groupTable")
+                database.execSQL("ALTER TABLE groupTable_temp RENAME TO groupTable")
+
                 //migrate tournament table
-                database.execSQL("ALTER TABLE tournamentTable ADD seedType TEXT;")
-                database.execSQL("ALTER TABLE tournamentTable ADD progress TEXT;")
+                database.execSQL(
+                    """
+                    CREATE TABLE tournamentTable_temp (
+                        epoch INTEGER NOT NULL PRIMARY KEY,
+                        lastModifiedTime INTEGER,
+                        name TEXT NOT NULL,
+                        note TEXT NOT NULL,
+                        type TEXT NOT NULL,
+                        rankingConfig TEXT NOT NULL,
+                        seedType TEXT NOT NULL,                      
+                        progress TEXT NOT NULL                      
+                    );     
+                """.trimMargin()
+                )
+                database.execSQL(
+                    """
+                    INSERT INTO tournamentTable_temp (epoch, lastModifiedTime, name, note, type, rankingConfig, seedType, progress)
+                    SELECT 
+                    epoch, lastModifiedTime, name, note, type, rankingConfig,
+                    'CUSTOM' seedType,
+                    '100/100' progress
+                    FROM tournamentTable;      
+                """.trimMargin()
+                )
+                database.execSQL("DROP TABLE tournamentTable")
+                database.execSQL("ALTER TABLE tournamentTable_temp RENAME TO tournamentTable")
                 //migrate matchUp table
                 database.execSQL("ALTER TABLE matchUpTable ADD useTitle INTEGER;")
                 database.execSQL("ALTER TABLE matchUpTable ADD name TEXT;")
