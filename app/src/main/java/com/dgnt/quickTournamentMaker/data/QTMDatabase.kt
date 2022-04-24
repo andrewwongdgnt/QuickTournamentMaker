@@ -82,10 +82,18 @@ abstract class QTMDatabase : RoomDatabase() {
                 )
                 database.execSQL(
                     """
-                    INSERT INTO personTable_temp (id, name, note, groupName)
+                    INSERT INTO personTable_temp (
+                        id, 
+                        name, 
+                        note, 
+                        groupName
+                    )
                     SELECT 
-                    $newUUID id,
-                    name, note, groupName FROM personTable;      
+                        $newUUID id,
+                        name, 
+                        note, 
+                        groupName 
+                    FROM personTable;      
                 """.trimMargin()
                 )
                 database.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS index_personTable_name ON personTable_temp (name)")
@@ -105,10 +113,18 @@ abstract class QTMDatabase : RoomDatabase() {
                 )
                 database.execSQL(
                     """
-                    INSERT INTO groupTable_temp (id, name, note, favourite)
+                    INSERT INTO groupTable_temp (
+                        id, 
+                        name, 
+                        note, 
+                        favourite
+                    )
                     SELECT 
-                    $newUUID id,
-                    name, note, favourite FROM groupTable;      
+                        $newUUID id,
+                        name, 
+                        note, 
+                        favourite 
+                    FROM groupTable;      
                 """.trimMargin()
                 )
                 database.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS index_groupTable_name ON groupTable_temp (name)")
@@ -132,21 +148,178 @@ abstract class QTMDatabase : RoomDatabase() {
                 )
                 database.execSQL(
                     """
-                    INSERT INTO tournamentTable_temp (epoch, lastModifiedTime, name, note, type, rankingConfig, seedType, progress)
+                    INSERT INTO tournamentTable_temp (
+                        epoch, 
+                        lastModifiedTime, 
+                        name, 
+                        note, 
+                        type, 
+                        rankingConfig, 
+                        seedType, 
+                        progress
+                    )
                     SELECT 
-                    epoch, lastModifiedTime, name, note, type, rankingConfig,
-                    'CUSTOM' seedType,
-                    '100/100' progress
+                        epoch, 
+                        lastModifiedTime, 
+                        name, 
+                        note, 
+                        type, 
+                        rankingConfig,
+                        'CUSTOM' seedType,
+                        '100/100' progress
                     FROM tournamentTable;      
                 """.trimMargin()
                 )
                 database.execSQL("DROP TABLE tournamentTable")
                 database.execSQL("ALTER TABLE tournamentTable_temp RENAME TO tournamentTable")
+                //migrate round table
+                database.execSQL(
+                    """
+                    CREATE TABLE roundTable_temp (
+                        epoch INTEGER NOT NULL,
+                        roundGroupIndex INTEGER NOT NULL,
+                        roundIndex INTEGER NOT NULL,
+                        name TEXT NOT NULL,
+                        note TEXT NOT NULL,
+                        color INTEGER NOT NULL,                                                                  
+                        PRIMARY KEY (
+                            epoch,
+                            roundGroupIndex,
+                            roundIndex
+                        )
+                    );     
+                """.trimMargin()
+                )
+                database.execSQL(
+                    """
+                    INSERT INTO roundTable_temp (
+                        epoch, 
+                        roundGroupIndex,
+                        roundIndex, 
+                        name, 
+                        note, 
+                        color
+                    )
+                    SELECT 
+                        epoch, 
+                        roundGroupIndex, 
+                        roundIndex, 
+                        name,
+                        note,
+                        color
+                    FROM roundTable;      
+                """.trimMargin()
+                )
+                database.execSQL("DROP TABLE roundTable")
+                database.execSQL("ALTER TABLE roundTable_temp RENAME TO roundTable")
                 //migrate matchUp table
-                database.execSQL("ALTER TABLE matchUpTable ADD useTitle INTEGER;")
-                database.execSQL("ALTER TABLE matchUpTable ADD name TEXT;")
-                database.execSQL("ALTER TABLE matchUpTable ADD containsBye INTEGER;")
-                database.execSQL("ALTER TABLE matchUpTable ADD isOpen INTEGER;")
+                database.execSQL(
+                    """
+                    CREATE TABLE matchUpTable_temp (
+                        epoch INTEGER NOT NULL,
+                        roundGroupIndex INTEGER NOT NULL,
+                        roundIndex INTEGER NOT NULL,
+                        matchUpIndex INTEGER NOT NULL,
+                        useTitle INTEGER NOT NULL,
+                        name TEXT NOT NULL,
+                        note TEXT NOT NULL,
+                        color INTEGER NOT NULL,
+                        status TEXT NOT NULL,
+                        containsBye INTEGER NOT NULL,                      
+                        isOpen INTEGER NOT NULL,                                              
+                        PRIMARY KEY (
+                            epoch,
+                            roundGroupIndex,
+                            roundIndex,
+                            matchUpIndex
+                        )
+                    );     
+                """.trimMargin()
+                )
+                database.execSQL(
+                    """
+                    INSERT INTO matchUpTable_temp (
+                        epoch, 
+                        roundGroupIndex,
+                        roundIndex, 
+                        matchUpIndex, 
+                        useTitle, 
+                        name, 
+                        note, 
+                        color, 
+                        status, 
+                        containsBye, 
+                        isOpen
+                    )
+                    SELECT 
+                        epoch, 
+                        roundGroupIndex, 
+                        roundIndex, 
+                        matchUpIndex, 
+                        0 useTitle, 
+                        '' name,
+                        note,
+                        color,
+                        matchUpStatus,
+                        0 containsBye,
+                        1 isOpen
+                    FROM matchUpTable;      
+                """.trimMargin()
+                )
+                database.execSQL("DROP TABLE matchUpTable")
+                database.execSQL("ALTER TABLE matchUpTable_temp RENAME TO matchUpTable")
+                //migrate participant table
+                database.execSQL(
+                    """
+                    CREATE TABLE participantTable_temp (
+                        epoch INTEGER NOT NULL,
+                        name TEXT NOT NULL,
+                        seedIndex INTEGER NOT NULL,
+                        displayName TEXT NOT NULL,
+                        note TEXT NOT NULL,
+                        type TEXT NOT NULL,
+                        color INTEGER NOT NULL,                                            
+                        PRIMARY KEY (
+                            epoch,
+                            name,
+                            seedIndex
+                        )
+                    );     
+                """.trimMargin()
+                )
+                database.execSQL(
+                    """
+                    INSERT INTO participantTable_temp (
+                        epoch,
+                        name,
+                        seedIndex,
+                        displayName,
+                        note,
+                        type,
+                        color  
+                    )
+                    SELECT                         
+                        epoch,
+                        name,
+                        seedIndex,
+                        displayName,
+                        note,
+                        type,
+                        color  
+                    FROM participantTable;      
+                """.trimMargin()
+                )
+                database.execSQL("DROP TABLE participantTable")
+                database.execSQL("ALTER TABLE participantTable_temp RENAME TO participantTable")
+                //create search term table
+                database.execSQL(
+                    """
+                    CREATE TABLE searchTermTable (
+                        term TEXT NOT NULL PRIMARY KEY,
+                        count INTEGER NOT NULL
+                    );     
+                """.trimMargin()
+                )
 
                 database.setTransactionSuccessful()
                 database.endTransaction()
