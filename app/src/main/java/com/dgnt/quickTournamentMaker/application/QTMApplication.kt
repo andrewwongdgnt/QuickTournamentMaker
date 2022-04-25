@@ -41,7 +41,7 @@ class QTMApplication : Application(), DIAware {
 
         import(androidXModule(this@QTMApplication))
         //Database
-        bind() from singleton { QTMDatabase(instance()) }
+        bind() from singleton { QTMDatabase(instance(), instance(), instance()) }
 
         //DAO
         bind() from singleton { instance<QTMDatabase>().personDAO }

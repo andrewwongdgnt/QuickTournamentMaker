@@ -1,6 +1,8 @@
 package com.dgnt.quickTournamentMaker.data
 
+import android.content.ContentValues
 import android.content.Context
+import android.database.sqlite.SQLiteDatabase
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -16,7 +18,12 @@ import com.dgnt.quickTournamentMaker.data.management.PersonEntity
 import com.dgnt.quickTournamentMaker.data.search.SearchTermDAO
 import com.dgnt.quickTournamentMaker.data.search.SearchTermEntity
 import com.dgnt.quickTournamentMaker.data.tournament.*
+import com.dgnt.quickTournamentMaker.model.management.Person
+import com.dgnt.quickTournamentMaker.model.tournament.*
+import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentBuilderService
+import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentInformationCreatorService
 import com.dgnt.quickTournamentMaker.util.SimpleLogger
+import org.joda.time.LocalDateTime
 import java.util.concurrent.Executors
 
 
@@ -36,11 +43,22 @@ abstract class QTMDatabase : RoomDatabase() {
 
     companion object {
 
-        @Volatile private var instance: QTMDatabase? = null
+        @Volatile
+        private var instance: QTMDatabase? = null
         private val LOCK = Any()
+        private lateinit var tournamentBuilderService: ITournamentBuilderService
+        private lateinit var tournamentInformationCreatorService: ITournamentInformationCreatorService
 
-        operator fun invoke(context: Context) = instance ?: synchronized(LOCK) {
-            instance ?: buildDatabase(context).also { instance = it }
+        operator fun invoke(
+            context: Context,
+            tournamentBuilderService: ITournamentBuilderService,
+            tournamentInformationCreatorService: ITournamentInformationCreatorService
+        ) = instance ?: synchronized(LOCK) {
+            instance ?: run {
+                this.tournamentBuilderService = tournamentBuilderService
+                this.tournamentInformationCreatorService = tournamentInformationCreatorService
+                buildDatabase(context).also { instance = it }
+            }
         }
 
         private fun buildDatabase(context: Context) =
@@ -321,9 +339,119 @@ abstract class QTMDatabase : RoomDatabase() {
                 """.trimMargin()
                 )
 
+                deriveValues1002_2001(database)
                 database.setTransactionSuccessful()
                 database.endTransaction()
             }
+        }
+
+        private fun deriveValues1002_2001(database: SupportSQLiteDatabase) {
+            val participantMap = mutableMapOf<Long, MutableList<Participant>>()
+            database.query("SELECT epoch, name, seedIndex, type from participantTable ORDER BY seedIndex").use { cursor ->
+                val epochIndex = cursor.getColumnIndex("epoch")
+                val nameIndex = cursor.getColumnIndex("name")
+                val seedIndexIndex = cursor.getColumnIndex("seedIndex")
+                val typeIndex = cursor.getColumnIndex("type")
+                while (cursor.moveToNext()) {
+                    val epoch = cursor.getLong(epochIndex)
+                    val model = Participant(
+                        Person("", "", ""),
+                        ParticipantType.valueOf(cursor.getString(typeIndex))
+                    )
+                    participantMap[epoch]?.add(model) ?: run {
+                        participantMap[epoch] = mutableListOf(model)
+                    }
+                }
+            }
+
+            val matchUpMap = mutableMapOf<Long, MutableList<MatchUpEntity>>()
+            database.query("SELECT epoch, roundGroupIndex, roundIndex, matchUpIndex, status from matchUpTable").use { cursor ->
+                val epochIndex = cursor.getColumnIndex("epoch")
+                val roundGroupIndexIndex = cursor.getColumnIndex("roundGroupIndex")
+                val roundIndexIndex = cursor.getColumnIndex("roundIndex")
+                val matchUpIndexIndex = cursor.getColumnIndex("matchUpIndex")
+                val statusIndex = cursor.getColumnIndex("status")
+                while (cursor.moveToNext()) {
+                    val epoch = cursor.getLong(epochIndex)
+                    val entity = MatchUpEntity(
+                        LocalDateTime(epoch),
+                        cursor.getInt(roundGroupIndexIndex),
+                        cursor.getInt(roundIndexIndex),
+                        cursor.getInt(matchUpIndexIndex),
+                        false,
+                        "",
+                        "",
+                        0,
+                        MatchUpStatus.valueOf(cursor.getString(statusIndex)),
+                        false,
+                        false
+                    )
+                    matchUpMap[epoch]?.add(entity) ?: run {
+                        matchUpMap[epoch] = mutableListOf(entity)
+                    }
+                }
+            }
+
+            val tournaments = mutableListOf<Pair<Long, Tournament>>()
+            database.query("SELECT epoch, type from tournamentTable").use { cursor ->
+                val epochIndex = cursor.getColumnIndex("epoch")
+                val typeIndex = cursor.getColumnIndex("type")
+                while (cursor.moveToNext()) {
+                    val epoch = cursor.getLong(epochIndex)
+
+                    val tournamentInfo = tournamentInformationCreatorService.create(
+                        "fake",
+                        mapOf(),
+                        "",
+                        TournamentType.valueOf(cursor.getString(typeIndex)),
+                        SeedType.CUSTOM,
+                        RankPriorityConfig.DEFAULT
+                    )
+                    participantMap[epoch]?.let { participants ->
+                        matchUpMap[epoch]?.let { matchUps ->
+
+                            tournamentBuilderService.build(tournamentInfo, participants).also { tournament ->
+                                matchUps.forEach { entity ->
+                                    tournament.matchUps.find { matchUp -> matchUp.roundGroupIndex == entity.roundGroupIndex && matchUp.roundIndex == entity.roundIndex && matchUp.matchUpIndex == entity.matchUpIndex }?.status = entity.status
+                                    tournament.updateRound(entity.roundGroupIndex, entity.roundIndex, entity.matchUpIndex)
+                                }
+                                tournaments.add(epoch to tournament)
+                            }
+                        }
+                    }
+                }
+            }
+
+            tournaments.forEach { pair ->
+
+                val epoch = pair.first
+                val tournament = pair.second
+
+                database.update(
+                    "tournamentTable",
+                    SQLiteDatabase.CONFLICT_ABORT,
+                    ContentValues().apply {
+                        put("progress", ProgressConverter().fromProgress(tournament.getProgress()))
+                    },
+                    "epoch = ?",
+                    arrayOf(epoch)
+                )
+
+                tournament.matchUps.forEach { matchUp ->
+                    database.update(
+                        "matchUpTable",
+                        SQLiteDatabase.CONFLICT_ABORT,
+                        ContentValues().apply {
+                            put("containsBye", matchUp.containsBye(true))
+                            put("isOpen", matchUp.isOpen())
+                        },
+                        "epoch = ? AND roundGroupIndex = ? AND roundIndex = ? AND matchUpIndex = ?",
+                        arrayOf(epoch, matchUp.roundGroupIndex, matchUp.roundIndex, matchUp.matchUpIndex)
+                    )
+                }
+
+            }
+
         }
     }
 
