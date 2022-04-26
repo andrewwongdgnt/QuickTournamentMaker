@@ -2,7 +2,6 @@ package com.dgnt.quickTournamentMaker.ui.layout
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
 import android.util.AttributeSet
@@ -10,6 +9,7 @@ import android.view.Gravity.CENTER
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.DoubleEliminationConfigurationBinding
 import com.dgnt.quickTournamentMaker.databinding.SimpleMatchUpLayoutBinding
@@ -208,10 +208,10 @@ class TournamentLayout : LinearLayout {
         }
     }
 
-    private val shadowPaint = Paint().apply {
+    private val mainPaint = Paint().apply {
         isAntiAlias = true
         isDither = true
-        color = Color.BLACK
+        color = ResourcesCompat.getColor(resources, R.color.defaultStroke, null)
         style = Paint.Style.STROKE
         strokeJoin = Paint.Join.ROUND
         strokeCap = Paint.Cap.ROUND
@@ -285,16 +285,16 @@ class TournamentLayout : LinearLayout {
         val midPointX = (startX + endX) / 2
         val cornerRadius = CURVATURE
 
-        canvas.drawLine(startX, startY, (midPointX - cornerRadius), startY, shadowPaint)
+        canvas.drawLine(startX, startY, (midPointX - cornerRadius), startY, mainPaint)
 
         val mPath = Path()
         mPath.moveTo((midPointX - cornerRadius), startY)
         mPath.quadTo(midPointX, startY, midPointX, (startY + cornerRadius * endY.compareTo(startY)))
 
-        canvas.drawLine(midPointX, (startY + cornerRadius * endY.compareTo(startY)), midPointX, endY, shadowPaint)
-        canvas.drawLine(midPointX, endY, endX, endY, shadowPaint)
+        canvas.drawLine(midPointX, (startY + cornerRadius * endY.compareTo(startY)), midPointX, endY, mainPaint)
+        canvas.drawLine(midPointX, endY, endX, endY, mainPaint)
 
-        canvas.drawPath(mPath, shadowPaint)
+        canvas.drawPath(mPath, mainPaint)
     }
 
 
