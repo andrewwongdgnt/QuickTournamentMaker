@@ -349,8 +349,6 @@ abstract class QTMDatabase : RoomDatabase() {
             val participantMap = mutableMapOf<Long, MutableList<Participant>>()
             database.query("SELECT epoch, name, seedIndex, type from participantTable ORDER BY seedIndex").use { cursor ->
                 val epochIndex = cursor.getColumnIndex("epoch")
-                val nameIndex = cursor.getColumnIndex("name")
-                val seedIndexIndex = cursor.getColumnIndex("seedIndex")
                 val typeIndex = cursor.getColumnIndex("type")
                 while (cursor.moveToNext()) {
                     val epoch = cursor.getLong(epochIndex)
