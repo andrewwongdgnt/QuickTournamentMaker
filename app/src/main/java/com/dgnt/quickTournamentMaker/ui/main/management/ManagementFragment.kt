@@ -1,10 +1,10 @@
 package com.dgnt.quickTournamentMaker.ui.main.management
 
-import androidx.appcompat.app.AlertDialog
 import android.os.Bundle
 import android.view.*
 import android.widget.CheckedTextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.fragment.app.Fragment
@@ -83,7 +83,21 @@ class ManagementFragment : Fragment(), DIAware {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         context?.let { context ->
-            binding.addFab.setOnClickListener { add() }
+            binding.addPersonFab.setOnClickListener {
+                PersonEditorDialogFragment.newInstance(
+                    false, getString(R.string.addingPlayer),
+                    Person("", "", ""),
+                    "",
+                    groups
+                ).show(activity?.supportFragmentManager!!, PersonEditorDialogFragment.TAG)
+            }
+            binding.addGroupFab.setOnClickListener {
+                GroupEditorDialogFragment.newInstance(
+                    false,
+                    getString(R.string.addingGroup),
+                    Group("", "", "", false)
+                ).show(activity?.supportFragmentManager!!, GroupEditorDialogFragment.TAG)
+            }
 
             actionModeCallback = ManagementFragmentActionModeCallBack(
                 selectedPersons,
@@ -185,8 +199,6 @@ class ManagementFragment : Fragment(), DIAware {
         }
 
     }
-
-    private fun add() = AddChoiceDialogFragment.newInstance(groups).show(activity?.supportFragmentManager!!, AddChoiceDialogFragment.TAG)
 
     private fun personClicked(checked: Boolean, person: Person) {
 

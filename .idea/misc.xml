@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Owner/AndroidProjects/QuickTournamentMaker/app/src/main/res/drawable/checkable_list_item_background.xml" value="0.191" />
+        <entry key="..\:/Users/Owner/AndroidProjects/QuickTournamentMaker/app/src/main/res/drawable/ic_add.xml" value="0.2955" />
         <entry key="..\:/Users/Owner/AndroidProjects/QuickTournamentMaker/app/src/main/res/drawable/ic_add_person.xml" value="0.1885" />
         <entry key="..\:/Users/Owner/AndroidProjects/QuickTournamentMaker/app/src/main/res/drawable/ic_arrow_down.xml" value="0.191" />
         <entry key="..\:/Users/Owner/AndroidProjects/QuickTournamentMaker/app/src/main/res/drawable/ic_clear.xml" value="0.1885" />
@@ -26,7 +27,7 @@
         <entry key="..\:/Users/Owner/AndroidProjects/QuickTournamentMaker/app/src/main/res/layout/load_tournament_filter_options_fragment.xml" value="0.365625" />
         <entry key="..\:/Users/Owner/AndroidProjects/QuickTournamentMaker/app/src/main/res/layout/load_tournament_fragment.xml" value="0.5" />
         <entry key="..\:/Users/Owner/AndroidProjects/QuickTournamentMaker/app/src/main/res/layout/main_activity.xml" value="0.1828125" />
-        <entry key="..\:/Users/Owner/AndroidProjects/QuickTournamentMaker/app/src/main/res/layout/management_fragment.xml" value="0.17916666666666667" />
+        <entry key="..\:/Users/Owner/AndroidProjects/QuickTournamentMaker/app/src/main/res/layout/management_fragment.xml" value="0.22" />
         <entry key="..\:/Users/Owner/AndroidProjects/QuickTournamentMaker/app/src/main/res/layout/more_info_fragment.xml" value="0.33" />
         <entry key="..\:/Users/Owner/AndroidProjects/QuickTournamentMaker/app/src/main/res/layout/nested_scroll_view.xml" value="0.1890625" />
         <entry key="..\:/Users/Owner/AndroidProjects/QuickTournamentMaker/app/src/main/res/layout/person_editor_fragment.xml" value="0.1890625" />

@@ -54,15 +54,45 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
         </LinearLayout>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/add_fab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
-                android:layout_margin="@dimen/fab_margin"
-                android:src="@drawable/ic_add_person"
-                android:visibility="invisible" />
+        <!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+        <!--                android:id="@+id/add_fab"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_gravity="bottom|end"-->
+        <!--                android:layout_margin="@dimen/fab_margin"-->
+        <!--                android:src="@drawable/ic_add_person"-->
+        <!--                android:visibility="invisible"-->
+        <!--                tools:visibility="visible" />-->
+        <com.nambimobile.widgets.efab.ExpandableFabLayout
+                android:id="@+id/expandable_fab_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
+            <com.nambimobile.widgets.efab.ExpandableFab
+                    android:id="@+id/add_fab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:layout_margin="@dimen/fab_margin"
+                    app:efab_closingAnticipateTension="0"
+                    app:efab_icon="@drawable/ic_add"
+                    app:efab_iconAnimationRotationDeg="-225" />
+
+            <com.nambimobile.widgets.efab.FabOption
+                    android:id="@+id/add_group_fab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:fab_icon="@drawable/ic_add_person"
+                    app:label_text="@string/addGroup" />
+
+            <com.nambimobile.widgets.efab.FabOption
+                    android:id="@+id/add_person_fab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:fab_icon="@drawable/ic_add_person"
+                    app:label_text="@string/addPlayer" />
+
+        </com.nambimobile.widgets.efab.ExpandableFabLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
