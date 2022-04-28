@@ -1,12 +1,9 @@
 package com.dgnt.quickTournamentMaker.ui.main.home
 
-import android.app.UiModeManager
-import android.content.Context.UI_MODE_SERVICE
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
@@ -92,7 +89,7 @@ class HomeFragment : Fragment(), DIAware {
                 allGroups = (groupExpandableGroupMap + emptyGroupExpandableGroupMap).sorted()
                 groupsExpanded.removeAll(groupsExpanded.minus(groups.map { it.key }.toSet()))
 
-                val adapter = GroupCheckedExpandableRecyclerViewAdapter(allGroups, selectedGroups, ResourcesCompat.getColor(resources, R.color.colorAccent, null), { person: String -> personClicked(person) }, { group: String, checked: Boolean -> groupClicked(group, checked) })
+                val adapter = GroupCheckedExpandableRecyclerViewAdapter(allGroups, selectedGroups, { person: String -> personClicked(person) }, { group: String, checked: Boolean -> groupClicked(group, checked) })
                 adapter.setOnGroupExpandCollapseListener(object : GroupExpandCollapseListener {
                     override fun onGroupExpanded(group: ExpandableGroup<*>) {
                         groupsExpanded.add(group.title)

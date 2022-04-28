@@ -104,33 +104,55 @@
                                     android:layout_height="wrap_content"
                                     android:orientation="horizontal">
 
-                                <Button
-                                        android:layout_width="wrap_content"
+                                <LinearLayout
+                                        android:layout_weight="1"
+                                        android:layout_width="0dp"
                                         android:layout_height="wrap_content"
-                                        android:gravity="center_vertical"
-                                        android:onClick="@{() -> vm.expandAll()}"
-                                        android:text="@string/expandAll" />
+                                        android:orientation="vertical">
 
-                                <Button
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:gravity="center_vertical"
-                                        android:onClick="@{() -> vm.collapseAll()}"
-                                        android:text="@string/collapseAll" />
+                                    <Button
+                                            style="?android:attr/buttonBarButtonStyle"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:gravity="center_vertical"
+                                            android:onClick="@{() -> vm.expandAll()}"
+                                            android:text="@string/expandAll"
+                                            bind:icon="@drawable/ic_expand_all" />
 
-                                <Button
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:gravity="center_vertical"
-                                        android:onClick="@{() -> vm.selectAll()}"
-                                        android:text="@string/selectAll" />
+                                    <Button
+                                            style="?android:attr/buttonBarButtonStyle"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:gravity="center_vertical"
+                                            android:onClick="@{() -> vm.collapseAll()}"
+                                            android:text="@string/collapseAll"
+                                            bind:icon="@drawable/ic_collapse_all" />
+                                </LinearLayout>
 
-                                <Button
-                                        android:layout_width="wrap_content"
+                                <LinearLayout
+                                        android:layout_weight="1"
+                                        android:layout_width="0dp"
                                         android:layout_height="wrap_content"
-                                        android:gravity="center_vertical"
-                                        android:onClick="@{() -> vm.deselectAll()}"
-                                        android:text="@string/deselectAll" />
+                                        android:orientation="vertical">
+
+                                    <Button
+                                            style="?android:attr/buttonBarButtonStyle"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:gravity="center_vertical"
+                                            android:onClick="@{() -> vm.selectAll()}"
+                                            android:text="@string/selectAll"
+                                            bind:icon="@drawable/ic_select_all" />
+
+                                    <Button
+                                            style="?android:attr/buttonBarButtonStyle"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:gravity="center_vertical"
+                                            android:onClick="@{() -> vm.deselectAll()}"
+                                            android:text="@string/deselectAll"
+                                            bind:icon="@drawable/ic_deselect_all" />
+                                </LinearLayout>
                             </LinearLayout>
 
                             <androidx.recyclerview.widget.RecyclerView

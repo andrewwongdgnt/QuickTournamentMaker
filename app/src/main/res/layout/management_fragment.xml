@@ -32,6 +32,8 @@
                     android:orientation="horizontal">
 
                 <Button
+                        style="?android:attr/buttonBarButtonStyle"
+                        app:icon="@drawable/ic_expand_all"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
@@ -39,6 +41,8 @@
                         android:text="@string/expandAll" />
 
                 <Button
+                        style="?android:attr/buttonBarButtonStyle"
+                        app:icon="@drawable/ic_collapse_all"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
