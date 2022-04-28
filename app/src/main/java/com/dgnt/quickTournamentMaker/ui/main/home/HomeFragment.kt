@@ -192,7 +192,7 @@ class HomeFragment : Fragment(), DIAware {
     private fun update() {
         val adapter = binding.personToParticipateRv.adapter as GroupCheckedExpandableRecyclerViewAdapter
         adapter.notifyDataSetChanged()
-        viewModel.numberOfPersonsSelected.value = getString(R.string.numberOfPlayersSelected, adapter.groups.map { it as CheckedExpandableGroup }.fold(0, { acc, e -> e.selectedChildren.filter { it }.size + acc }))
+        viewModel.numberOfPersonsSelected.value = getString(R.string.numberOfPlayersSelected, adapter.groups.map { it as CheckedExpandableGroup }.fold(0) { acc, e -> e.selectedChildren.filter { it }.size + acc })
         viewModel.selectedPersons.value = adapter.groups.flatMap { (it as GroupCheckedExpandableGroup).items.zip(it.selectedChildren.asList()) }.filter { it.second }.map { it.first as Person }
 
     }

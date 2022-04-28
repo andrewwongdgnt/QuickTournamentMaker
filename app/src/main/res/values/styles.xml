@@ -34,5 +34,8 @@
         <item name="windowNoTitle">true</item>
         <item name="windowActionModeOverlay">true</item>
     </style>
-
+    <style name="CustomButtonBarButtonStyle" parent="@style/Widget.AppCompat.Button.Borderless">
+        <item name="android:textColor">@color/barButtonColor</item>
+        <item name="iconTint">@color/barButtonColor</item>
+    </style>
 </resources>

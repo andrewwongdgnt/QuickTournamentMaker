@@ -85,4 +85,6 @@
     <color name="neutralBg">#acacac</color>
 
     <color name="searchHighlight">#C6BD1A</color>
+
+    <color name="barButtonColor">#535353</color>
 </resources>

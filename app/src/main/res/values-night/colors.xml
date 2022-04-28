@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="defaultStroke">#B3B3B3</color>
+
+    <color name="barButtonColor">#E1E1E1</color>
 </resources>
