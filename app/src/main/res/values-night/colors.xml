@@ -1,5 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="md_theme_primary">#E6C429</color>
+    <color name="md_theme_onPrimary">#3A3000</color>
+    <color name="md_theme_primaryContainer">#554600</color>
+    <color name="md_theme_onPrimaryContainer">#FFE15C</color>
+    <color name="md_theme_secondary">#FFB4A7</color>
+    <color name="md_theme_onSecondary">#680000</color>
+    <color name="md_theme_secondaryContainer">#930000</color>
+    <color name="md_theme_onSecondaryContainer">#FFDAD3</color>
+    <color name="md_theme_tertiary">#B0C5FF</color>
+    <color name="md_theme_onTertiary">#002A77</color>
+    <color name="md_theme_tertiaryContainer">#1F428F</color>
+    <color name="md_theme_onTertiaryContainer">#DAE2FF</color>
+    <color name="md_theme_error">#F2B8B5</color>
+    <color name="md_theme_errorContainer">#8C1D18</color>
+    <color name="md_theme_onError">#601410</color>
+    <color name="md_theme_onErrorContainer">#F9DEDC</color>
+    <color name="md_theme_background">#1C1B1F</color>
+    <color name="md_theme_onBackground">#E6E1E5</color>
+    <color name="md_theme_surface">#1C1B1F</color> <!-- this is the action bar background color for some reason -->
+    <color name="md_theme_onSurface">#E6E1E5</color>
+    <color name="md_theme_surfaceVariant">#49454F</color>
+    <color name="md_theme_onSurfaceVariant">#CAC4D0</color>
+    <color name="md_theme_outline">#938F99</color>
+    <color name="md_theme_inverseOnSurface">#1C1B1F</color>
+    <color name="md_theme_inverseSurface">#E6E1E5</color>
+    <color name="md_theme_inversePrimary">#715D00</color>
+    <color name="md_theme_shadow">#000000</color>
+    <color name="md_theme_primaryInverse">#715D00</color>
+
     <color name="defaultStroke">#B3B3B3</color>
 
     <color name="barButtonColor">#E1E1E1</color>
