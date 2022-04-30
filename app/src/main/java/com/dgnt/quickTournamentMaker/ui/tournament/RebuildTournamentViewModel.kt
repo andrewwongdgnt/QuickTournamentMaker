@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dgnt.quickTournamentMaker.model.tournament.*
 import com.dgnt.quickTournamentMaker.service.interfaces.IPreferenceService
+import com.dgnt.quickTournamentMaker.service.interfaces.ISeedService
 import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentInformationCreatorService
 import com.dgnt.quickTournamentMaker.ui.main.common.TournamentEventHolder
 import com.dgnt.quickTournamentMaker.ui.main.common.TournamentTypeEditorViewModel
@@ -14,7 +15,8 @@ import com.dgnt.quickTournamentMaker.util.Event
 
 class RebuildTournamentViewModel(
     override val preferenceService: IPreferenceService,
-    override val tournamentInformationCreatorService: ITournamentInformationCreatorService
+    override val tournamentInformationCreatorService: ITournamentInformationCreatorService,
+    private val seedServices: Map<TournamentType, ISeedService>
 ) : ViewModel(), Observable, TournamentTypeEditorViewModel, TournamentEventHolder {
 
 
@@ -123,18 +125,26 @@ class RebuildTournamentViewModel(
 
         val seedTypeId = seedType.value
 
-        val seedTypeToPersist = when (seedTypeId) {
-            randomSeedingRadioButtonId -> SeedType.RANDOM
-            customSeedingRadioButtonId -> SeedType.CUSTOM
-            else -> oldTournamentInformation.seedType
+        val seedTypeToPersist = if (tournamentType == TournamentType.SURVIVAL) {
+            SeedType.CUSTOM
+        } else {
+            when (seedTypeId) {
+                randomSeedingRadioButtonId -> SeedType.RANDOM
+                customSeedingRadioButtonId -> SeedType.CUSTOM
+                else -> oldTournamentInformation.seedType
+            }
         }
-
-        val newParticipants = when (seedTypeId) {
-            randomSeedingRadioButtonId -> oldParticipants.shuffled()
+        val newParticipants = when {
+            seedTypeId == randomSeedingRadioButtonId && tournamentType != TournamentType.SURVIVAL -> oldParticipants.shuffled()
             else -> oldParticipants
+        }.let { participants ->
+            seedServices
+                .getValue(tournamentType)
+                .seed(participants.filter { it.participantType == ParticipantType.NORMAL })
         }
 
-        val isCustomSeedTournamentEvent = seedTypeId == customSeedingRadioButtonId
+
+        val isCustomSeedTournamentEvent = seedTypeId == customSeedingRadioButtonId && tournamentType != TournamentType.SURVIVAL
 
         val rankConfig = when (rankConfig.value) {
             priorityRankingRadioButtonId -> priorityConfig.value?.let { RankPriorityConfig(it.first, it.second, it.third) } ?: RankPriorityConfig.DEFAULT

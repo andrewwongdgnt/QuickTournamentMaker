@@ -80,7 +80,14 @@ class QTMApplication : Application(), DIAware {
         bind() from provider { PersonEditorViewModelFactory(instance(), instance()) }
         bind() from provider { TournamentViewModelFactory(instance(), instance(), instance(), instance(), instance(), instance(), instance(), instance()) }
         bind() from provider { MoreInfoViewModelFactory() }
-        bind() from provider { RebuildTournamentViewModelFactory(instance(), instance()) }
+        bind() from provider { RebuildTournamentViewModelFactory(instance(), instance(), mapOf(
+            TournamentType.ELIMINATION to instance(POWER_OF_2_TAG),
+            TournamentType.DOUBLE_ELIMINATION to instance(POWER_OF_2_TAG),
+            TournamentType.ROUND_ROBIN to instance(EVEN_NUMBER_TAG),
+            TournamentType.SWISS to instance(EVEN_NUMBER_TAG),
+            TournamentType.SURVIVAL to instance(NULL_POPULATE_TAG),
+        )
+        ) }
         bind() from provider { ParticipantEditorViewModelFactory() }
         bind() from provider { MatchUpEditorViewModelFactory(instance()) }
         bind() from provider { RoundEditorViewModelFactory() }

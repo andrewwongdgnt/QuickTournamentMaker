@@ -16,8 +16,8 @@ import com.dgnt.quickTournamentMaker.service.interfaces.IPreferenceService
 import com.dgnt.quickTournamentMaker.service.interfaces.ISeedService
 import com.dgnt.quickTournamentMaker.service.interfaces.ISelectedPersonsService
 import com.dgnt.quickTournamentMaker.service.interfaces.ITournamentInformationCreatorService
-import com.dgnt.quickTournamentMaker.ui.main.common.TournamentGeneralEditorViewModel
 import com.dgnt.quickTournamentMaker.ui.main.common.TournamentEventHolder
+import com.dgnt.quickTournamentMaker.ui.main.common.TournamentGeneralEditorViewModel
 import com.dgnt.quickTournamentMaker.ui.main.common.TournamentTypeEditorViewModel
 import com.dgnt.quickTournamentMaker.util.Event
 
@@ -187,8 +187,8 @@ class HomeViewModel(
             else -> TournamentType.SURVIVAL
 
         }
-        val seedType = when (seedType.value) {
-            randomSeedingRadioButtonId -> SeedType.RANDOM
+        val seedType = when {
+            seedType.value == randomSeedingRadioButtonId && tournamentType != TournamentType.SURVIVAL -> SeedType.RANDOM
             else -> SeedType.CUSTOM
         }
 
@@ -211,7 +211,7 @@ class HomeViewModel(
                 .getValue(tournamentInformation.tournamentType)
                 .seed(selectedPersonsService.resolve(selectedPersons.value, numberOfParticipants.value?.toIntOrNull(), quickStart.value ?: false, seedType, defaultParticipantNameFunc))
             Event(Pair(tournamentInformation, orderedParticipants)).also {
-                if (seedType == SeedType.RANDOM)
+                if (seedType == SeedType.RANDOM || tournamentType == TournamentType.SURVIVAL)
                     tournamentEvent.value = it
                 else if (seedType == SeedType.CUSTOM)
                     customSeedTournamentEvent.value = it
