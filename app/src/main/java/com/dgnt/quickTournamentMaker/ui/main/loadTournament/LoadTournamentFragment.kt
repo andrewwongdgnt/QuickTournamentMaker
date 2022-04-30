@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.provider.BaseColumns
 import android.view.*
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.SearchView
@@ -26,6 +25,7 @@ import com.dgnt.quickTournamentMaker.ui.tournament.MoreInfoDialogFragment
 import com.dgnt.quickTournamentMaker.ui.tournament.TournamentActivity
 import com.dgnt.quickTournamentMaker.util.SimpleLogger
 import com.dgnt.quickTournamentMaker.util.update
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 import org.kodein.di.instance
@@ -146,7 +146,7 @@ class LoadTournamentFragment : Fragment(), DIAware {
                 context?.let { context ->
                     val choices = Sort.values()
 
-                    AlertDialog.Builder(context)
+                    MaterialAlertDialogBuilder(context, R.style.MyDialogTheme)
                         .setTitle(getString(R.string.sortOptionsTitle))
                         .setSingleChoiceItems(choices.map { getString(it.stringRes) }.toTypedArray(), choices.indexOf(viewModel.getSort())) { dialog, position ->
                             viewModel.setSort(choices[position])
@@ -169,7 +169,7 @@ class LoadTournamentFragment : Fragment(), DIAware {
                 context?.let { context ->
                     val choices = ViewMode.values()
 
-                    AlertDialog.Builder(context)
+                    MaterialAlertDialogBuilder(context, R.style.MyDialogTheme)
                         .setTitle(getString(R.string.sortOptionsTitle))
                         .setSingleChoiceItems(choices.map { getString(it.stringRes) }.toTypedArray(), choices.indexOf(viewModel.getViewMode())) { dialog, position ->
                             viewModel.setViewMode(choices[position])
@@ -307,7 +307,7 @@ class LoadTournamentFragment : Fragment(), DIAware {
             R.id.action_delete -> {
                 if (actionModeCallback.multiSelect) {
                     activity?.let { activity ->
-                        AlertDialog.Builder(activity)
+                        MaterialAlertDialogBuilder(activity, R.style.MyDialogTheme)
                             .setMessage(getString(R.string.deleteTournamentMsg, selectedTournaments.size))
                             .setPositiveButton(android.R.string.ok) { _, _ ->
                                 SimpleLogger.d(this, "Delete ${selectedTournaments.size} tournaments")

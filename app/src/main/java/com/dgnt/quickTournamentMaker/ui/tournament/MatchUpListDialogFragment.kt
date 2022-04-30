@@ -1,6 +1,5 @@
 package com.dgnt.quickTournamentMaker.ui.tournament
 
-import androidx.appcompat.app.AlertDialog
 import android.os.Bundle
 import android.view.WindowManager
 import android.widget.TextView
@@ -14,6 +13,7 @@ import com.dgnt.quickTournamentMaker.model.tournament.MatchUp
 import com.dgnt.quickTournamentMaker.model.tournament.RoundGroup
 import com.dgnt.quickTournamentMaker.service.interfaces.ICreateDefaultTitleService
 import com.dgnt.quickTournamentMaker.ui.main.common.OnEditListener
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 import org.kodein.di.instance
@@ -47,7 +47,8 @@ class MatchUpListDialogFragment : DialogFragment(), DIAware {
         activity?.let { activity ->
 
             binding = NestedScrollViewBinding.inflate(activity.layoutInflater)
-            val alert = AlertDialog.Builder(activity)
+
+            val alert = MaterialAlertDialogBuilder(activity, R.style.MyDialogTheme)
                 .setTitle(getString(R.string.matchUpSelectionHint))
                 .setView(binding.root)
                 .setNegativeButton(android.R.string.cancel, null)

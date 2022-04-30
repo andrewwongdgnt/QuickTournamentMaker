@@ -10,7 +10,6 @@ import android.view.MenuItem
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
@@ -21,6 +20,7 @@ import com.dgnt.quickTournamentMaker.ui.main.common.OnEditListener
 import com.dgnt.quickTournamentMaker.util.AlertUtil
 import com.dgnt.quickTournamentMaker.util.TournamentUtil.Companion.jsonMapper
 import com.dgnt.quickTournamentMaker.util.writeText
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.moagrius.widget.ScalingScrollView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -219,7 +219,7 @@ class TournamentActivity : AppCompatActivity(), DIAware {
                 R.id.action_rebuildTournament -> RebuildTournamentDialogFragment.newInstance(tournamentInformation, orderedParticipants).show(supportFragmentManager, RebuildTournamentDialogFragment.TAG)
                 R.id.action_editAParticipant -> {
                     val sortedParticipants = sortedNormalParticipants
-                    AlertDialog.Builder(this@TournamentActivity)
+                    MaterialAlertDialogBuilder(this@TournamentActivity, R.style.MyDialogTheme)
                         .setAdapter(ParticipantArrayAdapter(this@TournamentActivity, sortedParticipants)) { _, i ->
                             ParticipantEditorDialogFragment.newInstance(sortedParticipants[i], participantEditListener).show(supportFragmentManager, ParticipantEditorDialogFragment.TAG)
                         }
@@ -246,7 +246,7 @@ class TournamentActivity : AppCompatActivity(), DIAware {
 
     override fun onBackPressed() {
         viewModel.hasChanges.value?.takeIf { it }?.run {
-            AlertDialog.Builder(this@TournamentActivity)
+            MaterialAlertDialogBuilder(this@TournamentActivity, R.style.MyDialogTheme)
                 .setMessage(R.string.unSavedChangesWarningMsg)
                 .setPositiveButton(R.string.save) { _, _ ->
                     viewModel.saveTournament(false)

@@ -32,4 +32,5 @@
     <color name="defaultStroke">#B3B3B3</color>
 
     <color name="barButtonColor">#E1E1E1</color>
+    <color name="dialogBackground">#444444</color>
 </resources>

@@ -1,16 +1,16 @@
 package com.dgnt.quickTournamentMaker.ui.main.management
 
-import androidx.appcompat.app.AlertDialog
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.GroupDeleteFragmentBinding
 import com.dgnt.quickTournamentMaker.model.management.Group
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 import org.kodein.di.instance
@@ -62,7 +62,7 @@ class GroupDeleteDialogFragment : DialogFragment(), DIAware {
             binding.groupDeleteMsgTv.text = getString(R.string.deleteGroupMsg, selectedGroups.size)
             binding.spinnerGroup.visibility = if (visibleGroups.isEmpty()) View.GONE else View.VISIBLE
 
-            AlertDialog.Builder(activity)
+            MaterialAlertDialogBuilder(activity, R.style.MyDialogTheme)
                 .setTitle(getString(R.string.deletingGroups, selectedGroups.size))
                 .setView(binding.root)
                 .setPositiveButton(R.string.deleteWithPlayers) { _, _ ->

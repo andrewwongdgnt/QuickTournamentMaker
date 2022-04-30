@@ -1,6 +1,5 @@
 package com.dgnt.quickTournamentMaker.ui.customSeed
 
-import androidx.appcompat.app.AlertDialog
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.core.content.ContextCompat
@@ -16,6 +15,7 @@ import com.dgnt.quickTournamentMaker.service.interfaces.MatchUpInformation
 import com.dgnt.quickTournamentMaker.ui.main.common.OnEditListener
 import com.dgnt.quickTournamentMaker.ui.main.loadTournament.LoadTournamentFilterOptionsDialogFragment
 import com.dgnt.quickTournamentMaker.ui.tournament.TournamentActivity
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 import org.kodein.di.instance
@@ -102,7 +102,7 @@ class CustomSeedDialogFragment : DialogFragment(), DIAware {
                 }
             }
 
-            AlertDialog.Builder(activity)
+            MaterialAlertDialogBuilder(activity, R.style.MyDialogTheme)
                 .setTitle(getString(R.string.customSeed))
                 .setView(binding.root)
                 .setPositiveButton(android.R.string.ok) { _, _ ->

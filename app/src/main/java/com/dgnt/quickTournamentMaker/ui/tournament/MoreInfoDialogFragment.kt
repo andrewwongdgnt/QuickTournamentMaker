@@ -1,6 +1,5 @@
 package com.dgnt.quickTournamentMaker.ui.tournament
 
-import androidx.appcompat.app.AlertDialog
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
@@ -9,10 +8,14 @@ import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.MoreInfoFragmentBinding
 import com.dgnt.quickTournamentMaker.model.tournament.ExtendedTournamentInformation
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
+import com.dgnt.quickTournamentMaker.ui.layout.TitledLinearLayout
 import com.dgnt.quickTournamentMaker.ui.main.common.OnEditListener
+import com.dgnt.quickTournamentMaker.util.getAllViews
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 import org.kodein.di.instance
+
 
 class MoreInfoDialogFragment : DialogFragment(), DIAware {
     override val di by di()
@@ -50,6 +53,10 @@ class MoreInfoDialogFragment : DialogFragment(), DIAware {
             binding.vm = viewModel
             binding.lifecycleOwner = this
 
+            binding.root.getAllViews().mapNotNull { it as? TitledLinearLayout }.forEach {
+                it.setTextBackgroundColor(R.color.dialogBackground)
+            }
+
             extendedTournamentInformation.run {
                 viewModel.setData(
                     basicTournamentInformation.title,
@@ -67,7 +74,7 @@ class MoreInfoDialogFragment : DialogFragment(), DIAware {
                 )
             }
 
-            AlertDialog.Builder(activity)
+            MaterialAlertDialogBuilder(activity, R.style.MyDialogTheme)
                 .setTitle(R.string.moreInfo)
                 .setView(binding.root)
                 .setPositiveButton(android.R.string.ok) { _, _ ->

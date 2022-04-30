@@ -3,7 +3,10 @@ package com.dgnt.quickTournamentMaker.util
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.BackgroundColorSpan
+import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.view.children
 import java.io.OutputStream
 import java.nio.charset.Charset
 import java.util.*
@@ -57,4 +60,13 @@ fun TextView.highlight(input: String, color: Int, caseSensitive: Boolean = false
 
     //Set the final text on TextView
     text = spannableString
+}
+
+fun View.getAllViews(): List<View> {
+    if (this !is ViewGroup || childCount == 0) return listOf(this)
+
+    return children
+        .toList()
+        .flatMap { it.getAllViews() }
+        .plus(this as View)
 }

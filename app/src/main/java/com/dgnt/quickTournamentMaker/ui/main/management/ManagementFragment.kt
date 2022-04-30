@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.*
 import android.widget.CheckedTextView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.fragment.app.Fragment
@@ -14,6 +13,7 @@ import com.dgnt.quickTournamentMaker.databinding.ManagementFragmentBinding
 import com.dgnt.quickTournamentMaker.model.management.Group
 import com.dgnt.quickTournamentMaker.model.management.Person
 import com.dgnt.quickTournamentMaker.util.SimpleLogger
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.thoughtbot.expandablerecyclerview.listeners.GroupExpandCollapseListener
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup
 import org.kodein.di.DIAware
@@ -253,7 +253,7 @@ class ManagementFragment : Fragment(), DIAware {
             R.id.action_delete -> {
                 if (actionModeCallback.multiSelect == ManagementFragmentActionModeCallBack.SelectType.PERSON) {
                     activity?.let { activity ->
-                        AlertDialog.Builder(activity)
+                        MaterialAlertDialogBuilder(activity, R.style.MyDialogTheme)
                             .setTitle(getString(R.string.deletingPlayers, selectedPersons.size))
                             .setMessage(getString(R.string.deletePlayerMsg, selectedPersons.size))
                             .setPositiveButton(android.R.string.ok) { _, _ -> viewModel.delete(selectedPersons.map { it.toEntity(personToGroupNameMap[it]?.name ?: "") }, getString(R.string.deletePlayerSuccessfulMsg, selectedPersons.size)) }

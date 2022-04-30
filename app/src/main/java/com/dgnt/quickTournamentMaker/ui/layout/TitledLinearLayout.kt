@@ -1,14 +1,15 @@
 package com.dgnt.quickTournamentMaker.ui.layout
 
-import androidx.appcompat.app.AlertDialog
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import com.dgnt.quickTournamentMaker.R
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
 class TitledLinearLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : LinearLayout(context, attrs, defStyleAttr) {
@@ -30,8 +31,8 @@ class TitledLinearLayout @JvmOverloads constructor(context: Context, attrs: Attr
         val titleOfGroup = findViewById<TextView>(R.id.titleOfGroup_tv)
         titleOfGroup.text = attributes.getString(R.styleable.TitledLinearLayout_titleText)
         val helpIcon = findViewById<ImageView>(R.id.help_iv)
-        helpIcon.setOnClickListener { _ ->
-            AlertDialog.Builder(context)
+        helpIcon.setOnClickListener {
+            MaterialAlertDialogBuilder(context, R.style.MyDialogTheme)
                 .setMessage(helpText)
                 .setPositiveButton(android.R.string.ok, null)
                 .create().show()
@@ -42,10 +43,14 @@ class TitledLinearLayout @JvmOverloads constructor(context: Context, attrs: Attr
 
     }
 
+    fun setTextBackgroundColor(@ColorRes color: Int){
+        findViewById<LinearLayout>(R.id.titledLayout).setBackgroundResource(color)
+    }
+
     private fun resolveHelp() {
 
         val helpIcon = findViewById<ImageView>(R.id.help_iv)
-        helpIcon.visibility = if (helpText.isNullOrBlank()) View.GONE else View.VISIBLE
+        helpIcon.visibility = if (helpText.isBlank()) View.GONE else View.VISIBLE
     }
 
 }

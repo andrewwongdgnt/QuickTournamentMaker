@@ -1,6 +1,5 @@
 package com.dgnt.quickTournamentMaker.util
 
-import androidx.appcompat.app.AlertDialog
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
@@ -8,6 +7,7 @@ import android.net.Uri
 import android.widget.Toast
 import androidx.annotation.StringRes
 import com.dgnt.quickTournamentMaker.R
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
 object AlertUtil {
@@ -18,7 +18,7 @@ object AlertUtil {
         baseErrorMessageResource: Int?,
         error: Exception
     ) = context.run {
-        AlertDialog.Builder(this)
+        MaterialAlertDialogBuilder(this, R.style.MyDialogTheme)
             .setTitle(getString(R.string.error))
             .setMessage(getString(baseErrorMessageResource ?: R.string.genericErrorMsg, error.localizedMessage))
             .setNegativeButton(R.string.dismiss, null)

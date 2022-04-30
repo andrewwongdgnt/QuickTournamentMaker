@@ -1,6 +1,5 @@
 package com.dgnt.quickTournamentMaker.ui.tournament
 
-import androidx.appcompat.app.AlertDialog
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
@@ -11,7 +10,7 @@ import com.dgnt.quickTournamentMaker.databinding.NestedScrollViewBinding
 import com.dgnt.quickTournamentMaker.model.tournament.Round
 import com.dgnt.quickTournamentMaker.model.tournament.RoundGroup
 import com.dgnt.quickTournamentMaker.ui.main.common.OnEditListener
-import com.dgnt.quickTournamentMaker.ui.main.loadTournament.LoadTournamentFilterOptionsDialogFragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 
@@ -47,7 +46,8 @@ class RoundListDialogFragment : DialogFragment(), DIAware {
             val listener = arguments?.getParcelable<OnEditListener<Round>>(KEY_LISTENER)!!
 
             binding = NestedScrollViewBinding.inflate(activity.layoutInflater)
-            val alert = AlertDialog.Builder(activity)
+
+            val alert = MaterialAlertDialogBuilder(activity, R.style.MyDialogTheme)
                 .setTitle(getString(R.string.roundSelectionHint))
                 .setNegativeButton(android.R.string.cancel, null)
                 .apply {

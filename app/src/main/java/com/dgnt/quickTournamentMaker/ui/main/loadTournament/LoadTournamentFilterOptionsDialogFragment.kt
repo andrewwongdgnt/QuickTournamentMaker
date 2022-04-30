@@ -1,6 +1,5 @@
 package com.dgnt.quickTournamentMaker.ui.main.loadTournament
 
-import androidx.appcompat.app.AlertDialog
 import android.app.DatePickerDialog
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
@@ -11,6 +10,7 @@ import com.dgnt.quickTournamentMaker.databinding.LoadTournamentFilterOptionsFrag
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentType
 import com.dgnt.quickTournamentMaker.ui.main.common.OnEditListener
 import com.dgnt.quickTournamentMaker.util.toIntOr
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.joda.time.LocalDateTime
 import org.joda.time.format.DateTimeFormat
 import org.kodein.di.DIAware
@@ -76,7 +76,8 @@ class LoadTournamentFilterOptionsDialogFragment : DialogFragment(), DIAware {
                 latestModifiedDateEt.setOnClickListener { invokeDatePickerDialog(viewModel.latestModifiedDate, viewModel.latestModifiedDateBacking) }
             }
 
-            return AlertDialog.Builder(activity)
+
+            return MaterialAlertDialogBuilder(activity, R.style.MyDialogTheme)
                 .setTitle(getString(R.string.filter))
                 .setView(binding.root)
                 .setPositiveButton(android.R.string.ok) { _, _ ->

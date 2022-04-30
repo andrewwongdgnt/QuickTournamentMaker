@@ -1,18 +1,18 @@
 package com.dgnt.quickTournamentMaker.ui.main.management
 
-import androidx.appcompat.app.AlertDialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.PersonEditorFragmentBinding
 import com.dgnt.quickTournamentMaker.model.management.Group
 import com.dgnt.quickTournamentMaker.model.management.Person
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 import org.kodein.di.instance
@@ -73,7 +73,7 @@ class PersonEditorDialogFragment : DialogFragment(), DIAware {
 
             viewModel.setData(arguments?.getParcelable(KEY_PERSON), arguments?.getString(KEY_GROUP_NAME), arguments?.getParcelableArrayList(KEY_GROUPS), getString(R.string.defaultGroupName))
             val editing = arguments?.getBoolean(KEY_EDITING) == true
-            AlertDialog.Builder(activity)
+            MaterialAlertDialogBuilder(activity, R.style.MyDialogTheme)
                 .setTitle(arguments?.getString(KEY_TITLE))
                 .setView(binding.root)
                 .setPositiveButton(if (editing) R.string.save else R.string.add, null)

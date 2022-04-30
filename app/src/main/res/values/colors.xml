@@ -59,4 +59,5 @@
     <color name="searchHighlight">#C6BD1A</color>
 
     <color name="barButtonColor">#535353</color>
+    <color name="dialogBackground">#FFFFFF</color>
 </resources>

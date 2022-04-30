@@ -1,6 +1,5 @@
 package com.dgnt.quickTournamentMaker.ui.main.management
 
-import androidx.appcompat.app.AlertDialog
 import android.os.Bundle
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
@@ -9,6 +8,7 @@ import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.MovePersonsFragmentBinding
 import com.dgnt.quickTournamentMaker.model.management.Group
 import com.dgnt.quickTournamentMaker.model.management.Person
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 import org.kodein.di.instance
@@ -60,7 +60,7 @@ class MovePersonsDialogFragment : DialogFragment(), DIAware {
             binding.groupRv.adapter = GroupRecyclerViewAdapter(groups) { g: Group -> handle(g) }
 
 
-            return AlertDialog.Builder(activity)
+            return MaterialAlertDialogBuilder(activity, R.style.MyDialogTheme)
                 .setTitle(getString(R.string.movingPlayers, selectedPersons.size))
                 .setView(binding.root)
                 .setNegativeButton(android.R.string.cancel, null)

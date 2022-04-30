@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.GroupEditorFragmentBinding
 import com.dgnt.quickTournamentMaker.model.management.Group
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 import org.kodein.di.instance
@@ -65,7 +66,7 @@ class GroupEditorDialogFragment : DialogFragment(), DIAware {
 
             viewModel.setData(arguments?.getParcelable(KEY_GROUP))
             val editing = arguments?.getBoolean(KEY_EDITING) == true
-            AlertDialog.Builder(activity)
+            MaterialAlertDialogBuilder(activity, R.style.MyDialogTheme)
                 .setTitle(arguments?.getString(KEY_TITLE))
                 .setView(binding.root)
                 .setPositiveButton(if (editing) R.string.save else R.string.add, null)
