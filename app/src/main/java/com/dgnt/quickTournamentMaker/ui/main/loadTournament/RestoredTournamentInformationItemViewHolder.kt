@@ -34,8 +34,6 @@ class RestoredTournamentInformationItemViewHolder(
 
                     val color = ResourcesCompat.getColor(context.resources, R.color.searchHighlight, context.theme)
 
-                    tournamentCb.visibility = if (selectable) View.VISIBLE else View.GONE
-
                     titleTv.text = basic.title
                     titleTv.highlight(searchText, color)
 
@@ -49,19 +47,23 @@ class RestoredTournamentInformationItemViewHolder(
 
                     createdDateInfoTv.text = context.getString(R.string.createdDateInfo, dateFormat.print(basic.creationDate))
                     lastModifiedDateInfoTv.text = context.getString(R.string.lastModifiedDateInfo, dateFormat.print(basic.lastModifiedDate))
-                }
 
-                listOf(createdDateInfoTv, lastModifiedDateInfoTv, extendedInfoDivider).forEach {
-                    it.visibility = if (viewMode == ViewMode.DETAILED) View.VISIBLE else View.GONE
+                    listOf(createdDateInfoTv, lastModifiedDateInfoTv, extendedInfoDivider).forEach {
+                        it.visibility = if (viewMode == ViewMode.DETAILED) View.VISIBLE else View.GONE
+                    }
+                    moreInfoIv.setOnClickListener { moreInfoListener.invoke(value) }
+                    listOf(loadIv, titleTv, descriptionTv, extendedInfoDivider, lastModifiedDateInfoTv, createdDateInfoTv, baseInfoDivider).forEach {
+                        it.setOnClickListener { if (!selectable) loadListener.invoke(value) }
+                    }
+                    loadIv.visibility = if (selectable) View.GONE else View.VISIBLE
+                    tournamentCb.apply {
+                        visibility = if (selectable) View.VISIBLE else View.INVISIBLE
+                        setOnCheckedChangeListener { _, b ->
+                            clickListener(b, value)
+                        }
+                    }
                 }
             }
-            moreInfoBtn.setOnClickListener { moreInfoListener.invoke(value) }
-            loadBtn.setOnClickListener { loadListener.invoke(value) }
-
-            tournamentCb.setOnCheckedChangeListener { _, b ->
-                clickListener(b, value)
-            }
+            Unit
         }
-
-
 }

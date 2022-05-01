@@ -16,10 +16,32 @@
                 android:id="@+id/tournament_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingEnd="@dimen/tournament_info_gap"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:src="@drawable/ic_elimination" />
+
+        <ImageView
+                android:id="@+id/moreInfo_iv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacer_gap"
+                android:paddingBottom="5dp"
+                android:scaleType="fitCenter"
+                android:scaleX="1.5"
+                android:scaleY="1.5"
+                android:src="@drawable/ic_more_info"
+                app:layout_constraintEnd_toEndOf="@id/tournament_iv"
+                app:layout_constraintStart_toStartOf="@id/tournament_iv"
+                app:layout_constraintTop_toBottomOf="@id/tournament_iv"
+                app:tint="@color/neutralBg" />
+
+        <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="end"
+                app:barrierMargin="@dimen/tournament_info_gap"
+                app:constraint_referenced_ids="tournament_iv, moreInfo_iv" />
 
         <TextView
                 android:id="@+id/title_tv"
@@ -28,8 +50,8 @@
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                app:layout_constraintEnd_toStartOf="@id/tournament_cb"
-                app:layout_constraintStart_toEndOf="@id/tournament_iv"
+                app:layout_constraintEnd_toStartOf="@id/barrier2"
+                app:layout_constraintStart_toEndOf="@id/barrier"
                 app:layout_constraintTop_toTopOf="@id/tournament_iv"
                 tools:text="Elimination Tournament Elimination Tournament Elimination Tournament" />
 
@@ -39,18 +61,39 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="2"
+                tools:visibility=""
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                app:layout_constraintEnd_toStartOf="@id/tournament_cb"
-                app:layout_constraintStart_toEndOf="@id/tournament_iv"
+                app:layout_constraintEnd_toStartOf="@id/barrier2"
+                app:layout_constraintStart_toEndOf="@id/barrier"
                 app:layout_constraintTop_toBottomOf="@id/title_tv"
                 tools:text="My Cool description My Cool description My Cool description My Cool description My Cool description" />
+
+
+        <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="start"
+                app:constraint_referenced_ids="tournament_cb, load_iv" />
 
         <CheckBox
                 android:id="@+id/tournament_cb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                tools:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tournament_iv" />
+
+        <ImageView
+                android:id="@+id/load_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_action_arrow"
+                app:layout_constraintBottom_toBottomOf="@id/tournament_cb"
+                app:layout_constraintEnd_toEndOf="@id/tournament_cb"
+                app:layout_constraintStart_toStartOf="@id/tournament_cb"
+                app:layout_constraintTop_toTopOf="@id/tournament_cb"
+                app:tint="@color/neutralBg" />
 
         <View
                 android:id="@+id/baseInfo_divider"
@@ -59,7 +102,7 @@
                 android:layout_marginTop="@dimen/spacer_gap"
                 android:background="#a3a3a3"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/tournament_iv"
+                app:layout_constraintStart_toEndOf="@id/barrier"
                 app:layout_constraintTop_toBottomOf="@id/description_tv" />
 
 
@@ -69,7 +112,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/tournament_iv"
+                app:layout_constraintStart_toEndOf="@id/barrier"
                 app:layout_constraintTop_toBottomOf="@id/baseInfo_divider"
                 tools:text="Created On: March 27, 1989" />
 
@@ -78,42 +121,20 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/tournament_iv"
+                app:layout_constraintStart_toEndOf="@id/barrier"
                 app:layout_constraintTop_toBottomOf="@id/createdDateInfo_tv"
                 tools:text="Last Modified: March 27, 1989" />
 
         <View
                 android:id="@+id/extendedInfo_divider"
                 android:layout_width="0dp"
-                android:layout_height="1dp"
+                android:layout_height="0.5dp"
                 android:layout_marginTop="@dimen/spacer_gap"
                 android:background="#a3a3a3"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/tournament_iv"
+                app:layout_constraintStart_toEndOf="@id/barrier"
                 app:layout_constraintTop_toBottomOf="@id/lastModifiedDateInfo_tv" />
 
-
-        <Button
-                android:id="@+id/moreInfo_btn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacer_gap"
-                android:gravity="center"
-                android:text="@string/moreInfo"
-                app:layout_constraintEnd_toStartOf="@id/load_btn"
-                app:layout_constraintStart_toEndOf="@id/tournament_iv"
-                app:layout_constraintTop_toBottomOf="@id/extendedInfo_divider" />
-
-        <Button
-                android:id="@+id/load_btn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacer_gap"
-                android:gravity="center"
-                android:text="@string/load"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/moreInfo_btn"
-                app:layout_constraintTop_toBottomOf="@id/extendedInfo_divider" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

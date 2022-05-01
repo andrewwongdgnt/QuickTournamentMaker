@@ -126,7 +126,6 @@
     <string name="saveTournamentSuccessfulMsg">Tournament saved successfully</string>
 
     <string name="title_activity_history">Load a tournament</string>
-    <string name="load">Load</string>
     <string name="createdDateLabel">Created on: </string>
     <string name="lastModifiedDateLabel">Last modified: </string>
     <string name="deleteTournamentSuccessfulMsg">%1$d tournament(s) deleted successfully</string>
