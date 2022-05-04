@@ -4,12 +4,13 @@
         xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+            android:background="@drawable/tournament_list_item_background"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/list_item_horizontal_margin"
-            android:paddingTop="@dimen/list_item_vertical_margin"
-            android:paddingRight="@dimen/list_item_horizontal_margin"
-            android:paddingBottom="@dimen/list_item_vertical_margin">
+            android:layout_marginHorizontal="@dimen/list_item_horizontal_margin"
+            android:layout_marginVertical="@dimen/list_item_vertical_margin"
+            android:paddingHorizontal="@dimen/list_item_horizontal_margin"
+            android:paddingVertical="@dimen/list_item_vertical_margin">
 
 
         <ImageView
@@ -61,7 +62,6 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="2"
-                tools:visibility=""
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 app:layout_constraintEnd_toStartOf="@id/barrier2"
                 app:layout_constraintStart_toEndOf="@id/barrier"
@@ -124,17 +124,6 @@
                 app:layout_constraintStart_toEndOf="@id/barrier"
                 app:layout_constraintTop_toBottomOf="@id/createdDateInfo_tv"
                 tools:text="Last Modified: March 27, 1989" />
-
-        <View
-                android:id="@+id/extendedInfo_divider"
-                android:layout_width="0dp"
-                android:layout_height="0.5dp"
-                android:layout_marginTop="@dimen/spacer_gap"
-                android:background="#a3a3a3"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/barrier"
-                app:layout_constraintTop_toBottomOf="@id/lastModifiedDateInfo_tv" />
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -48,11 +48,11 @@ class RestoredTournamentInformationItemViewHolder(
                     createdDateInfoTv.text = context.getString(R.string.createdDateInfo, dateFormat.print(basic.creationDate))
                     lastModifiedDateInfoTv.text = context.getString(R.string.lastModifiedDateInfo, dateFormat.print(basic.lastModifiedDate))
 
-                    listOf(createdDateInfoTv, lastModifiedDateInfoTv, extendedInfoDivider).forEach {
+                    listOf(createdDateInfoTv, lastModifiedDateInfoTv, baseInfoDivider).forEach {
                         it.visibility = if (viewMode == ViewMode.DETAILED) View.VISIBLE else View.GONE
                     }
                     moreInfoIv.setOnClickListener { moreInfoListener.invoke(value) }
-                    listOf(loadIv, titleTv, descriptionTv, extendedInfoDivider, lastModifiedDateInfoTv, createdDateInfoTv, baseInfoDivider).forEach {
+                    listOf(loadIv, titleTv, descriptionTv, lastModifiedDateInfoTv, createdDateInfoTv, baseInfoDivider).forEach {
                         it.setOnClickListener { if (!selectable) loadListener.invoke(value) }
                     }
                     loadIv.visibility = if (selectable) View.GONE else View.VISIBLE
