@@ -181,6 +181,9 @@ class ManagementFragment : Fragment(), DIAware {
                     }
 
                     binding.addFab.visibility = View.VISIBLE
+
+                    binding.noResultsTv.visibility = if (personGroups.isEmpty()) View.VISIBLE else View.GONE
+                    binding.mainContainer.visibility = if (personGroups.isEmpty()) View.GONE else View.VISIBLE
                 } catch (e: Exception) {
                     SimpleLogger.e(this, "Something happened (Probably groups didn't resolve yet) so just do nothing and hope the next observed event fixes it", e)
                 }

@@ -16,15 +16,20 @@
             android:layout_height="match_parent"
             tools:context=".ui.main.management.ManagementFragment">
 
-        <LinearLayout
+        <TextView
+                android:id="@+id/noResults_tv"
                 android:layout_width="match_parent"
-                android:layout_height="1296dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                tools:visibility="gone"
+                android:text="@string/noResultsMsg" />
+        <LinearLayout
+                android:id="@+id/mainContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingBottom="@dimen/activity_vertical_margin">
-
+                android:paddingHorizontal="@dimen/activity_horizontal_margin"
+                android:paddingVertical="@dimen/activity_vertical_margin">
 
             <LinearLayout
                     android:layout_width="match_parent"
@@ -49,7 +54,6 @@
                         android:onClick="@{() -> vm.collapseAll()}"
                         android:text="@string/collapseAll" />
             </LinearLayout>
-
             <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/person_rv"
 
