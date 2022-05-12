@@ -38,7 +38,7 @@
                     tools:text="Description" />
         </LinearLayout>
 
-        <com.moagrius.widget.ScalingScrollView
+        <com.dgnt.quickTournamentMaker.ui.layout.TouchAdjustedScalingScrollView
                 android:id="@+id/tournamentView_root"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -52,7 +52,7 @@
 
             </com.dgnt.quickTournamentMaker.ui.layout.TournamentLayout>
 
-        </com.moagrius.widget.ScalingScrollView>
+        </com.dgnt.quickTournamentMaker.ui.layout.TouchAdjustedScalingScrollView>
 
     </LinearLayout>
 </layout>
