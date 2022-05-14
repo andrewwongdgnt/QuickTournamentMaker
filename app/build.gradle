@@ -59,6 +59,7 @@ android {
         viewBinding true
         dataBinding = true
     }
+    namespace 'com.dgnt.quickTournamentMaker'
 }
 
 allprojects {
