@@ -125,10 +125,11 @@ class TournamentActivity : AppCompatActivity(), DIAware {
             }
 
             tournament.observe(tournamentActivity) {
-                binding.container.draw(it) { m, p ->
+                val allViews = binding.container.draw(it) { m, p ->
                     updateTournament(m, p)
                     hasChanges.value = true
                 }
+                binding.tournamentViewRoot.allViews = allViews
             }
             hasChanges.observe(tournamentActivity) {
                 invalidateOptionsMenu()

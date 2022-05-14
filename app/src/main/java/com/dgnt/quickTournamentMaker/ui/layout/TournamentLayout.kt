@@ -7,6 +7,7 @@ import android.graphics.Path
 import android.util.AttributeSet
 import android.view.Gravity.CENTER
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
@@ -16,6 +17,7 @@ import com.dgnt.quickTournamentMaker.databinding.SimpleMatchUpLayoutBinding
 import com.dgnt.quickTournamentMaker.databinding.SingleMatchUpLayoutBinding
 import com.dgnt.quickTournamentMaker.model.tournament.*
 import com.dgnt.quickTournamentMaker.ui.tournament.TournamentActivity
+import com.dgnt.quickTournamentMaker.util.TournamentUtil
 
 private const val CURVATURE = 15
 
@@ -46,30 +48,16 @@ class TournamentLayout : LinearLayout {
             else -> context.getString(R.string.byeDefaultName)
         }
 
-    private val staticExtraHeight by lazy {
-        // action bar
-        val styledAttributes = context.theme.obtainStyledAttributes(intArrayOf(android.R.attr.actionBarSize))
-        val actionBarSize = styledAttributes.getDimension(0, 0f).toInt()
-        styledAttributes.recycle()
-
-        //title bar
-        var titleBarSize = 0
-        val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
-        if (resourceId > 0) {
-            titleBarSize = resources.getDimensionPixelSize(resourceId)
-        }
-
-        actionBarSize + titleBarSize
-    }
-
+    private val staticExtraHeight by lazy { TournamentUtil.getStaticExtraHeight(context.theme, resources) }
     private fun dynamicExtraHeight() = (context as? TournamentActivity)?.extraLayoutHeight() ?: 0
     private fun extraHeight() = dynamicExtraHeight() + staticExtraHeight
 
     fun draw(
         tournament: Tournament,
         clickListener: (MatchUp, ParticipantPosition) -> Unit
-    ) {
+    ): List<View> {
         this.tournament = tournament
+        val allViews = mutableListOf<View>()
 
         removeAllViews()
 
@@ -88,11 +76,13 @@ class TournamentLayout : LinearLayout {
                                     mul.player.apply {
                                         text = getName(mu.participant1)
                                         setTextColor(mu.participant1.color)
-                                        setOnClickListener {
-                                            clickListener(mu, ParticipantPosition.P1)
-                                            updateViews(mu, mul)
-                                            updateSingleMatchUps(tournament.matchUps)
-                                        }
+//                                        setOnClickListener {
+//                                            clickListener(mu, ParticipantPosition.P1)
+//                                            updateViews(mu, mul)
+//                                            updateSingleMatchUps(tournament.matchUps)
+//                                        }
+                                    }.also{
+                                        allViews.add(it)
                                     }
                                     updateViews(mu, mul)
                                     singleMatchUpViewMap[mu.key] = mul
@@ -104,23 +94,27 @@ class TournamentLayout : LinearLayout {
                                         text = getName(mu.participant1)
                                         setTextColor(mu.participant1.color)
                                         if (!mu.containsBye()) {
-                                            setOnClickListener {
-                                                clickListener(mu, ParticipantPosition.P1)
-                                                updateViews(mu, mul)
-                                                updateMatchUps(tournament.matchUps)
-                                            }
+//                                            setOnClickListener {
+//                                                clickListener(mu, ParticipantPosition.P1)
+//                                                updateViews(mu, mul)
+//                                                updateMatchUps(tournament.matchUps)
+//                                            }
                                         }
+                                    }.also{
+                                        allViews.add(it)
                                     }
                                     mul.player2.apply {
                                         text = getName(mu.participant2)
                                         setTextColor(mu.participant2.color)
                                         if (!mu.containsBye()) {
-                                            setOnClickListener {
-                                                clickListener(mu, ParticipantPosition.P2)
-                                                updateViews(mu, mul)
-                                                updateMatchUps(tournament.matchUps)
-                                            }
+//                                            setOnClickListener {
+//                                                clickListener(mu, ParticipantPosition.P2)
+//                                                updateViews(mu, mul)
+//                                                updateMatchUps(tournament.matchUps)
+//                                            }
                                         }
+                                    }.also{
+                                        allViews.add(it)
                                     }
                                     updateViews(mu, mul)
                                     matchUpViewMap[mu.key] = mul
@@ -157,6 +151,7 @@ class TournamentLayout : LinearLayout {
             updateMatchUps(tournament.matchUps)
         }
         invalidate()
+        return allViews
     }
 
     private fun updateViews(matchUp: MatchUp, matchUpLayout: SimpleMatchUpLayoutBinding) {

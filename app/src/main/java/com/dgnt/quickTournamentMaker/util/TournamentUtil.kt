@@ -1,6 +1,7 @@
 package com.dgnt.quickTournamentMaker.util
 
 import android.content.Context
+import android.content.res.Resources
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.FragmentManager
@@ -126,5 +127,22 @@ class TournamentUtil {
                 }
             }
         }
+
+        fun getStaticExtraHeight(theme: Resources.Theme, resources: Resources): Int {
+            // action bar
+            val styledAttributes = theme.obtainStyledAttributes(intArrayOf(android.R.attr.actionBarSize))
+            val actionBarSize = styledAttributes.getDimension(0, 0f).toInt()
+            styledAttributes.recycle()
+
+            //title bar
+            var titleBarSize = 0
+            val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
+            if (resourceId > 0) {
+                titleBarSize = resources.getDimensionPixelSize(resourceId)
+            }
+
+            return actionBarSize + titleBarSize
+        }
+
     }
 }
