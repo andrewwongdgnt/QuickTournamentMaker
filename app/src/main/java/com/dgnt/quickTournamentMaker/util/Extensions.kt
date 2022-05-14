@@ -1,8 +1,10 @@
 package com.dgnt.quickTournamentMaker.util
 
+import android.graphics.Point
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.BackgroundColorSpan
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -10,6 +12,8 @@ import androidx.core.view.children
 import java.io.OutputStream
 import java.nio.charset.Charset
 import java.util.*
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 
 fun <E> MutableCollection<E>.update(collection: Collection<E>) {
@@ -70,3 +74,18 @@ fun View.getAllViews(): List<View> {
         .flatMap { it.getAllViews() }
         .plus(this as View)
 }
+
+fun View.isIntercepted(ev: MotionEvent): Boolean {
+    try {
+        val coords = IntArray(2)
+        getLocationOnScreen(coords)
+        if (ev.x >= coords[0].toFloat() && ev.x <= coords[0] + width.toFloat()) {
+            if (ev.y >= coords[1].toFloat() && ev.y <= coords[1] + height.toFloat()) return true
+        }
+    } catch (e: Exception) {
+    }
+    return false
+}
+
+fun Point.distance(other: Point) =
+    sqrt((x - other.x).toDouble().pow(2.0) + (y - other.y).toDouble().pow(2.0))

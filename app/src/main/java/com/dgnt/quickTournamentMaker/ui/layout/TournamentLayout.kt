@@ -7,8 +7,8 @@ import android.graphics.Path
 import android.util.AttributeSet
 import android.view.Gravity.CENTER
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.dgnt.quickTournamentMaker.R
@@ -55,9 +55,9 @@ class TournamentLayout : LinearLayout {
     fun draw(
         tournament: Tournament,
         clickListener: (MatchUp, ParticipantPosition) -> Unit
-    ): List<View> {
+    ): List<Pair<TextView, ()->Unit>> {
         this.tournament = tournament
-        val allViews = mutableListOf<View>()
+        val allViews = mutableListOf<Pair<TextView, ()->Unit>>()
 
         removeAllViews()
 
@@ -76,13 +76,12 @@ class TournamentLayout : LinearLayout {
                                     mul.player.apply {
                                         text = getName(mu.participant1)
                                         setTextColor(mu.participant1.color)
-//                                        setOnClickListener {
-//                                            clickListener(mu, ParticipantPosition.P1)
-//                                            updateViews(mu, mul)
-//                                            updateSingleMatchUps(tournament.matchUps)
-//                                        }
                                     }.also{
-                                        allViews.add(it)
+                                        allViews.add(it to {
+                                            clickListener(mu, ParticipantPosition.P1)
+                                            updateViews(mu, mul)
+                                            updateSingleMatchUps(tournament.matchUps)
+                                        })
                                     }
                                     updateViews(mu, mul)
                                     singleMatchUpViewMap[mu.key] = mul
@@ -93,28 +92,26 @@ class TournamentLayout : LinearLayout {
                                     mul.player1.apply {
                                         text = getName(mu.participant1)
                                         setTextColor(mu.participant1.color)
-                                        if (!mu.containsBye()) {
-//                                            setOnClickListener {
-//                                                clickListener(mu, ParticipantPosition.P1)
-//                                                updateViews(mu, mul)
-//                                                updateMatchUps(tournament.matchUps)
-//                                            }
-                                        }
                                     }.also{
-                                        allViews.add(it)
+                                        allViews.add(it to {
+                                            if (!mu.containsBye()) {
+                                                clickListener(mu, ParticipantPosition.P1)
+                                                updateViews(mu, mul)
+                                                updateMatchUps(tournament.matchUps)
+                                            }
+                                        })
                                     }
                                     mul.player2.apply {
                                         text = getName(mu.participant2)
                                         setTextColor(mu.participant2.color)
-                                        if (!mu.containsBye()) {
-//                                            setOnClickListener {
-//                                                clickListener(mu, ParticipantPosition.P2)
-//                                                updateViews(mu, mul)
-//                                                updateMatchUps(tournament.matchUps)
-//                                            }
-                                        }
                                     }.also{
-                                        allViews.add(it)
+                                        allViews.add(it to {
+                                            if (!mu.containsBye()) {
+                                                clickListener(mu, ParticipantPosition.P2)
+                                                updateViews(mu, mul)
+                                                updateMatchUps(tournament.matchUps)
+                                            }
+                                        })
                                     }
                                     updateViews(mu, mul)
                                     matchUpViewMap[mu.key] = mul
