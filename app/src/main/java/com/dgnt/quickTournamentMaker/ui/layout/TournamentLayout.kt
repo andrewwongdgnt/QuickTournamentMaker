@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
+import android.graphics.Point
 import android.util.AttributeSet
 import android.view.Gravity.CENTER
 import android.view.LayoutInflater
@@ -33,6 +34,7 @@ class TournamentLayout : LinearLayout {
         setWillNotDraw(false)
     }
 
+    var offsetGetter: () -> Point = { Point(0, 0) }
     private val matchUpViewMap = mutableMapOf<Triple<Int, Int, Int>, SimpleMatchUpLayoutBinding>()
     private val singleMatchUpViewMap = mutableMapOf<Triple<Int, Int, Int>, SingleMatchUpLayoutBinding>()
 
@@ -40,6 +42,7 @@ class TournamentLayout : LinearLayout {
     private val roundMargin = context.resources.getDimension(R.dimen.round_margin).toInt()
 
     private var tournament: Tournament? = null
+    private var nextMatchUpKeyFunc: ((Triple<Int, Int, Int>) -> Triple<Int, Int, Int>)? = null
 
     private fun getName(participant: Participant) =
         when (participant.participantType) {
@@ -147,6 +150,39 @@ class TournamentLayout : LinearLayout {
         } else {
             updateMatchUps(tournament.matchUps)
         }
+
+        nextMatchUpKeyFunc = when (tournament.tournamentInformation.tournamentType) {
+            TournamentType.ELIMINATION -> {
+                { current -> Triple(0, current.second + 1, current.third / 2) }
+            }
+            TournamentType.DOUBLE_ELIMINATION -> {
+                { current ->
+                    when (current.first) {
+                        0 -> {
+                            if (current.second == tournament.roundGroups[current.first].rounds.size - 1) {
+                                Triple(current.first + 2, 0, 0)
+                            } else {
+                                Triple(current.first, current.second + 1, current.third / 2)
+                            }
+                        }
+                        1 -> {
+                            if (current.second == tournament.roundGroups[current.first].rounds.size - 1) {
+                                Triple(current.first + 1, 0, 0)
+                            } else {
+                                Triple(current.first, current.second + 1, if (current.second % 2 == 0) current.third else current.third / 2)
+                            }
+                        }
+                        else -> {
+
+                            Triple(current.first, current.second + 1, current.third)
+                        }
+                    }
+
+
+                }
+            }
+            else -> null
+        }
         invalidate()
         return allViews
     }
@@ -210,65 +246,34 @@ class TournamentLayout : LinearLayout {
         strokeWidth = 2f
     }
 
-    override fun dispatchDraw(canvas: Canvas) {
-        super.dispatchDraw(canvas)
+    override fun onDraw(canvas: Canvas) {
+        super.onDraw(canvas)
 
-        canvas.apply {
-            save()
-            tournament?.let { tournament ->
+        nextMatchUpKeyFunc?.let { func ->
+            canvas.apply {
+                save()
 
+                matchUpViewMap.forEach {
+                    matchUpViewMap[func(it.key)]?.let { next ->
+                        val current = it.value
+                        val currentCoordinates = intArrayOf(0, 0)
+                        current.point.getLocationOnScreen(currentCoordinates)
 
-                val nextMatchUpKey: ((Triple<Int, Int, Int>) -> Triple<Int, Int, Int>)? = when (tournament.tournamentInformation.tournamentType) {
-                    TournamentType.ELIMINATION -> {
-                        { current -> Triple(0, current.second + 1, current.third / 2) }
-                    }
-                    TournamentType.DOUBLE_ELIMINATION -> {
-                        { current ->
-                            when (current.first) {
-                                0 -> {
-                                    if (current.second == tournament.roundGroups[current.first].rounds.size - 1) {
-                                        Triple(current.first + 2, 0, 0)
-                                    } else {
-                                        Triple(current.first, current.second + 1, current.third / 2)
-                                    }
-                                }
-                                1 -> {
-                                    if (current.second == tournament.roundGroups[current.first].rounds.size - 1) {
-                                        Triple(current.first + 1, 0, 0)
-                                    } else {
-                                        Triple(current.first, current.second + 1, if (current.second % 2 == 0) current.third else current.third / 2)
-                                    }
-                                }
-                                else -> {
+                        val nextCoordinates = intArrayOf(0, 0)
+                        next.point.getLocationOnScreen(nextCoordinates)
 
-                                    Triple(current.first, current.second + 1, current.third)
-                                }
-                            }
-
-
-                        }
-                    }
-                    else -> null
-                }
-
-                nextMatchUpKey?.let { func ->
-                    matchUpViewMap.map {
-                        matchUpViewMap[func(it.key)]?.let { next ->
-                            val current = it.value
-                            val currentCoordinates = intArrayOf(0, 0)
-                            current.point.getLocationOnScreen(currentCoordinates)
-
-                            val nextCoordinates = intArrayOf(0, 0)
-                            next.point.getLocationOnScreen(nextCoordinates)
-
-                            drawCurve(canvas, (currentCoordinates[0] + current.point.width).toFloat(), currentCoordinates[1].toFloat() - extraHeight(), nextCoordinates[0].toFloat(), nextCoordinates[1].toFloat() - extraHeight())
-                        }
+                        drawCurve(
+                            canvas,
+                            (currentCoordinates[0] + current.point.width).toFloat() + offsetGetter().x,
+                            currentCoordinates[1].toFloat() - extraHeight() + offsetGetter().y,
+                            nextCoordinates[0].toFloat() + offsetGetter().x,
+                            nextCoordinates[1].toFloat() - extraHeight() + offsetGetter().y
+                        )
                     }
                 }
 
+                restore()
             }
-
-            restore()
         }
     }
 

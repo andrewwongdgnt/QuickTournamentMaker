@@ -3,6 +3,7 @@ package com.dgnt.quickTournamentMaker.ui.tournament
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Point
 import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
@@ -92,6 +93,10 @@ class TournamentActivity : AppCompatActivity(), DIAware {
                 it.tournamentViewRoot.apply {
                     setShouldVisuallyScaleContents(true)
                     setMinimumScaleMode(ScalingScrollView.MinimumScaleMode.CONTAIN)
+
+                }
+                it.container.offsetGetter = {
+                    Point(it.tournamentViewRoot.scrollX, it.tournamentViewRoot.scrollY)
                 }
                 extraLayout = it.extraLayout
             }
@@ -148,7 +153,6 @@ class TournamentActivity : AppCompatActivity(), DIAware {
                 }
             }
         }
-
     }
 
     private fun fromRestoration(intent: Intent) = intent.hasExtra(TOURNAMENT_ACTIVITY_RESTORED_INFO)
