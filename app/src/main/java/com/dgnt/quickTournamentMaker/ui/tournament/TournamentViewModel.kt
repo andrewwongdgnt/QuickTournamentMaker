@@ -28,6 +28,7 @@ class TournamentViewModel(
     private val participantRepository: IParticipantRepository,
 ) : ViewModel(), Observable {
 
+    var rootPropertiesAreSet = false
 
     @Bindable
     val title = MutableLiveData<String>()
