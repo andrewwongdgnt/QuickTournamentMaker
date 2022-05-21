@@ -90,17 +90,15 @@ class TournamentActivity : AppCompatActivity(), DIAware {
             val binding = TournamentActivityBinding.inflate(layoutInflater).also {
                 it.vm = this
                 it.lifecycleOwner = tournamentActivity
-                if (!rootPropertiesAreSet) {
-                    it.tournamentViewRoot.apply {
-                        setShouldVisuallyScaleContents(true)
-                        setMinimumScaleMode(ScalingScrollView.MinimumScaleMode.CONTAIN)
-                    }
-                    rootPropertiesAreSet = true
+                it.tournamentViewRoot.apply {
+                    setShouldVisuallyScaleContents(true)
+                    setMinimumScaleMode(ScalingScrollView.MinimumScaleMode.CONTAIN)
                 }
+
                 it.container.offsetGetter = {
                     Point(it.tournamentViewRoot.scrollX, it.tournamentViewRoot.scrollY)
                 }
-                extraLayout = it.extraLayout
+                extraLayout = it.descriptionTv
             }
 
             setContentView(binding.root)

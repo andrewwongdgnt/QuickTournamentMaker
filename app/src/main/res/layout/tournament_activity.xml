@@ -19,24 +19,19 @@
             android:orientation="vertical"
             tools:context=".ui.tournament.TournamentActivity">
 
-        <LinearLayout
-                android:id="@+id/extra_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingHorizontal="@dimen/match_up_padding"
-                android:paddingTop="@dimen/match_up_padding">
 
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:maxLines="3"
-                    android:minLines="1"
-                    android:text="@={vm.description}"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:visibility="@{TextUtils.isEmpty(vm.description) ? View.GONE : View.VISIBLE}"
-                    tools:text="Description" />
-        </LinearLayout>
+        <TextView
+                android:id="@+id/description_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="3"
+                android:minLines="1"
+                android:padding="@dimen/match_up_padding"
+                android:text="@={vm.description}"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:visibility="@{TextUtils.isEmpty(vm.description) ? View.GONE : View.VISIBLE}"
+                tools:text="Description" />
+
 
         <com.dgnt.quickTournamentMaker.ui.layout.TournamentScalingScrollView
                 android:id="@+id/tournamentView_root"
