@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -17,9 +18,12 @@ import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.TournamentActivityBinding
 import com.dgnt.quickTournamentMaker.model.tournament.*
 import com.dgnt.quickTournamentMaker.service.interfaces.ICreateDefaultTitleService
+import com.dgnt.quickTournamentMaker.ui.layout.TournamentLayout
+import com.dgnt.quickTournamentMaker.ui.layout.TournamentScalingScrollView
 import com.dgnt.quickTournamentMaker.ui.main.common.OnEditListener
 import com.dgnt.quickTournamentMaker.util.AlertUtil
 import com.dgnt.quickTournamentMaker.util.TournamentUtil.Companion.jsonMapper
+import com.dgnt.quickTournamentMaker.util.getAllViews
 import com.dgnt.quickTournamentMaker.util.writeText
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.moagrius.widget.ScalingScrollView
@@ -41,6 +45,9 @@ class TournamentActivity : AppCompatActivity(), DIAware {
 
     private var extraLayout: View? = null
     fun extraLayoutHeight() = extraLayout?.height
+
+    private var tournamentViewRoot: TournamentScalingScrollView? = null
+    private var tournamentContainer: TournamentLayout? = null
 
     private lateinit var resultLauncher: ActivityResultLauncher<Intent>
 
@@ -87,21 +94,35 @@ class TournamentActivity : AppCompatActivity(), DIAware {
         val tournamentActivity = this
         viewModel = ViewModelProvider(tournamentActivity, viewModelFactory)[TournamentViewModel::class.java].apply {
 
-            val binding = TournamentActivityBinding.inflate(layoutInflater).also {
+            TournamentActivityBinding.inflate(layoutInflater).also {
                 it.vm = this
                 it.lifecycleOwner = tournamentActivity
-                it.tournamentViewRoot.apply {
-                    setShouldVisuallyScaleContents(true)
-                    setMinimumScaleMode(ScalingScrollView.MinimumScaleMode.CONTAIN)
+                it.rootView.getAllViews().find { view -> view is TournamentScalingScrollView }?.let { scalingView ->
+                    it.rootView.removeView(scalingView)
                 }
 
-                it.container.offsetGetter = {
-                    Point(it.tournamentViewRoot.scrollX, it.tournamentViewRoot.scrollY)
-                }
+                it.rootView.addView(
+                    TournamentScalingScrollView(tournamentActivity).also { tournamentViewRoot ->
+                        tournamentViewRoot.setShouldVisuallyScaleContents(true)
+                        tournamentViewRoot.setMinimumScaleMode(ScalingScrollView.MinimumScaleMode.CONTAIN)
+                        tournamentViewRoot.addView(
+                            TournamentLayout(tournamentActivity).apply {
+                                offsetGetter = {
+                                    Point(tournamentViewRoot.scrollX, tournamentViewRoot.scrollY)
+                                }
+                            }.also { container ->
+                                tournamentContainer = container
+                            },
+                            ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                        )
+                        tournamentActivity.tournamentViewRoot = tournamentViewRoot
+                    },
+                    ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+                )
                 extraLayout = it.descriptionTv
+                setContentView(it.root)
             }
 
-            setContentView(binding.root)
 
             setData(
                 tournamentInformation,
@@ -130,11 +151,13 @@ class TournamentActivity : AppCompatActivity(), DIAware {
             }
 
             tournament.observe(tournamentActivity) {
-                val allViews = binding.container.draw(it) { m, p ->
+                tournamentContainer?.draw(it) { m, p ->
                     updateTournament(m, p)
                     hasChanges.value = true
+                }?.let { allViews ->
+
+                    tournamentViewRoot?.allViews = allViews
                 }
-                binding.tournamentViewRoot.allViews = allViews
             }
             hasChanges.observe(tournamentActivity) {
                 invalidateOptionsMenu()
