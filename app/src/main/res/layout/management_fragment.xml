@@ -81,7 +81,7 @@
                     android:id="@+id/add_group_fab"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:fab_icon="@drawable/ic_add_person"
+                    app:fab_icon="@drawable/ic_add_group"
                     app:label_text="@string/addGroup" />
 
             <com.nambimobile.widgets.efab.FabOption
