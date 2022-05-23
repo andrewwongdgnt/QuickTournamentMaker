@@ -15,7 +15,6 @@ import com.dgnt.quickTournamentMaker.ui.customSeed.CustomSeedDialogFragment
 import com.dgnt.quickTournamentMaker.ui.main.common.*
 import com.dgnt.quickTournamentMaker.ui.tournament.TournamentActivity
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.json.Json
 
 
@@ -36,8 +35,8 @@ class TournamentUtil {
         ) {
 
 
-            viewModel.tournamentType.value = tournamentTypeEditor.eliminationRb.id
-            viewModel.seedType.value = tournamentTypeEditor.randomSeedRb.id
+            viewModel.tournamentType.value = viewModel.tournamentType.value ?: tournamentTypeEditor.eliminationRb.id
+            viewModel.seedType.value = viewModel.seedType.value ?: tournamentTypeEditor.randomSeedRb.id
             tournamentTypeEditor.sameSeedRb.visibility = if (sameSeedAllowed) View.VISIBLE else View.GONE
             viewModel.tournamentType.observe(lifeCycleOwner) {
                 viewModel.showRankConfig.value = when (it) {

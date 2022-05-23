@@ -105,8 +105,6 @@ class HomeFragment : Fragment(), DIAware {
                     if (groupsExpanded.contains(g.title))
                         adapter.toggleGroup(g)
                 }
-
-
             }
 
             viewModel.expandAll.observe(viewLifecycleOwner) {
