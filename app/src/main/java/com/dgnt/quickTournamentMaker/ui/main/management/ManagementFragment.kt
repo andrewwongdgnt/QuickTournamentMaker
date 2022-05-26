@@ -85,9 +85,10 @@ class ManagementFragment : Fragment(), DIAware {
         context?.let { context ->
             binding.addPersonFab.setOnClickListener {
                 PersonEditorDialogFragment.newInstance(
-                    false, getString(R.string.addingPlayer),
-                    Person("", "", ""),
-                    "",
+                    false,
+                    getString(R.string.addingPlayer),
+                    Person(),
+                    Group(),
                     groups
                 ).show(activity?.supportFragmentManager!!, PersonEditorDialogFragment.TAG)
             }
@@ -222,7 +223,7 @@ class ManagementFragment : Fragment(), DIAware {
                 title = selectedPersons.size.toString()
             }
         } else if (actionModeCallback.multiSelect == ManagementFragmentActionModeCallBack.SelectType.NONE)
-            PersonEditorDialogFragment.newInstance(true, getString(R.string.editing, person.name), person, personToGroupNameMap[person]?.name ?: "", groups).show(activity?.supportFragmentManager!!, PersonEditorDialogFragment.TAG)
+            PersonEditorDialogFragment.newInstance(true, getString(R.string.editing, person.name), person, personToGroupNameMap[person] ?: Group(), groups).show(activity?.supportFragmentManager!!, PersonEditorDialogFragment.TAG)
 
     }
 

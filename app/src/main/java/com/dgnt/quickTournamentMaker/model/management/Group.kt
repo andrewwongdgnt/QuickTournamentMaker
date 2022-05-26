@@ -6,7 +6,7 @@ import com.dgnt.quickTournamentMaker.model.IKeyable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Group(var id: String, var name: String, var note: String, var favourite: Boolean) : IKeyable<String>, Comparable<Group>, Parcelable {
+data class Group(var id: String = "", var name: String = "", var note: String = "", var favourite: Boolean = false) : IKeyable<String>, Comparable<Group>, Parcelable {
 
     companion object {
         fun fromEntity(entity: GroupEntity) = Group(entity.id, entity.name, entity.note, entity.favourite)
@@ -26,6 +26,10 @@ data class Group(var id: String, var name: String, var note: String, var favouri
         return super.equals(other)
     }
 
+    override fun toString() = name
+
     override fun hashCode() = id.hashCode()
     fun toEntity() = GroupEntity(id, name, note, favourite)
+
+
 }

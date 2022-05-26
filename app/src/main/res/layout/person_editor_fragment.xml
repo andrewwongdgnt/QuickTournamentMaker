@@ -56,8 +56,8 @@
                     android:id="@+id/group_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:entries="@{vm.groupNames}"
-                    app:selectedValue="@{vm.groupName}"
+                    app:entries="@{vm.groups}"
+                    app:selectedValue="@{vm.group}"
                     app:onItemSelected="@{(selectedValue) -> vm.setNewGroupName(selectedValue)}" />
 
         </LinearLayout>

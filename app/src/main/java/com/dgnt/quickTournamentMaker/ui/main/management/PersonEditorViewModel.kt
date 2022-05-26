@@ -2,11 +2,13 @@ package com.dgnt.quickTournamentMaker.ui.main.management
 
 import androidx.databinding.Bindable
 import androidx.databinding.Observable
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dgnt.quickTournamentMaker.data.management.*
+import com.dgnt.quickTournamentMaker.data.management.GroupEntity
+import com.dgnt.quickTournamentMaker.data.management.IGroupRepository
+import com.dgnt.quickTournamentMaker.data.management.IPersonRepository
+import com.dgnt.quickTournamentMaker.data.management.PersonEntity
 import com.dgnt.quickTournamentMaker.model.management.Group
 import com.dgnt.quickTournamentMaker.model.management.Person
 import com.dgnt.quickTournamentMaker.util.Event
@@ -20,7 +22,6 @@ class PersonEditorViewModel(private val personRepository: IPersonRepository, pri
     //Third = reset fields or not
     val resultEvent = MutableLiveData<Event<Triple<Boolean, String, Boolean>>>()
 
-
     @Bindable
     val name = MutableLiveData<String>()
 
@@ -28,15 +29,17 @@ class PersonEditorViewModel(private val personRepository: IPersonRepository, pri
     val note = MutableLiveData<String>()
 
     @Bindable
-    val groupName = MutableLiveData<String>()
+    val group = MutableLiveData<Group>()
 
     @Bindable
-    val newGroupName = MutableLiveData<String>()
+    val newGroup = MutableLiveData<Group>()
 
     @Bindable
-    val groupNames = MutableLiveData<List<String>>()
+    val groups = MutableLiveData<List<Group>>()
 
-    private lateinit var id: String
+    var personId: String = UUID.randomUUID().toString()
+        private set
+
     private lateinit var defaultGroupName: String
 
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
@@ -45,22 +48,23 @@ class PersonEditorViewModel(private val personRepository: IPersonRepository, pri
     override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
     }
 
-
-    fun setData(person: Person?, groupName: String?, groups: List<Group>?, defaultGroupName: String) {
+    fun setData(person: Person?, group: Group?, groups: List<Group>?, defaultGroupName: String) {
         name.value = person?.name ?: ""
         note.value = person?.note ?: ""
-        id = (person?.id ?: "").ifBlank { UUID.randomUUID().toString() }
+        personId = person?.id ?: run { UUID.randomUUID().toString() }
         this.defaultGroupName = defaultGroupName
-        this.groupNames.value = (groups?.map { it.name } ?: listOf()).ifEmpty { listOf(defaultGroupName) }
-        this.groupName.value = (groupName ?: "")
-        this.newGroupName.value = this.groupName.value
+        this.groups.value = (groups ?: listOf()).ifEmpty { listOf(Group(name = defaultGroupName)) }
+        (group ?: Group()).let {
+            this.group.value = it
+            this.newGroup.value = it
+        }
     }
 
-    fun add(successMsg: String, failMsg: String, forceOpen: Boolean, forceErase: Boolean) = insert(PersonEntity(name = name.value!!, note = note.value!!, groupName = newGroupName.value!!), successMsg, failMsg, forceOpen, forceErase)
+    fun add(successMsg: String, failMsg: String, forceOpen: Boolean, forceErase: Boolean) = insert(PersonEntity(name = name.value!!, note = note.value!!, groupName = newGroup.value!!.name), successMsg, failMsg, forceOpen, forceErase)
 
 
     private fun insert(person: PersonEntity, successMsg: String, failMsg: String, forceOpen: Boolean, forceErase: Boolean) = viewModelScope.launch {
-        if (newGroupName.value == defaultGroupName) {
+        if (newGroup.value?.name == defaultGroupName) {
             groupRepository.insert(GroupEntity(name = defaultGroupName, note = "", favourite = false))
         }
 
@@ -68,12 +72,9 @@ class PersonEditorViewModel(private val personRepository: IPersonRepository, pri
             -1L -> resultEvent.value = Event(Triple(false, failMsg, false))
             else -> resultEvent.value = Event(Triple(!forceOpen, successMsg, forceErase))
         }
-
-
     }
 
-    fun edit(successMsg: String, failMsg: String) = edit(PersonEntity(id, name.value!!, note.value!!, newGroupName.value!!), successMsg, failMsg)
-
+    fun edit(successMsg: String, failMsg: String) = edit(PersonEntity(personId, name.value!!, note.value!!, newGroup.value!!.name), successMsg, failMsg)
 
     private fun edit(person: PersonEntity, successMsg: String, failMsg: String) = viewModelScope.launch {
         when (personRepository.update(person)) {
@@ -83,7 +84,7 @@ class PersonEditorViewModel(private val personRepository: IPersonRepository, pri
     }
 
     fun setNewGroupName(selectedValue: Any) {
-        newGroupName.value = selectedValue as String
+        newGroup.value = selectedValue as Group
     }
 
 }
