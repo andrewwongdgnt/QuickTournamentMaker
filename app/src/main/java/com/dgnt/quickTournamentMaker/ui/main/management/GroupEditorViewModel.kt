@@ -2,11 +2,12 @@ package com.dgnt.quickTournamentMaker.ui.main.management
 
 import androidx.databinding.Bindable
 import androidx.databinding.Observable
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dgnt.quickTournamentMaker.data.management.*
+import com.dgnt.quickTournamentMaker.data.management.GroupEntity
+import com.dgnt.quickTournamentMaker.data.management.IGroupRepository
+import com.dgnt.quickTournamentMaker.data.management.IPersonRepository
 import com.dgnt.quickTournamentMaker.model.management.Group
 import com.dgnt.quickTournamentMaker.util.Event
 import kotlinx.coroutines.launch
@@ -25,7 +26,9 @@ class GroupEditorViewModel(private val personRepository: IPersonRepository, priv
     @Bindable
     val note = MutableLiveData<String>()
 
-    private lateinit var id: String
+    var groupId: String = UUID.randomUUID().toString()
+        private set
+
     private lateinit var oldGroupName: String
 
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
@@ -35,11 +38,11 @@ class GroupEditorViewModel(private val personRepository: IPersonRepository, priv
     }
 
 
-    fun setData(group: Group?) {
-        oldGroupName = group?.name ?: ""
+    fun setData(group: Group?, oldGroup: Group?) {
+        oldGroupName = oldGroup?.name ?: ""
         name.value = group?.name ?: ""
         note.value = group?.note ?: ""
-        id = (group?.id ?: "").ifBlank { UUID.randomUUID().toString() }
+        groupId = group?.id ?: run { UUID.randomUUID().toString() }
     }
 
     fun add(successMsg: String, failMsg: String, forceOpen: Boolean, forceErase: Boolean) = insert(GroupEntity(name = name.value!!, note = note.value!!, favourite = false), successMsg, failMsg, forceOpen, forceErase)
@@ -52,7 +55,7 @@ class GroupEditorViewModel(private val personRepository: IPersonRepository, priv
     }
 
     fun edit(successMsg: String, failMsg: String) {
-        edit(GroupEntity(id, name.value!!, note.value!!, false), oldGroupName, successMsg, failMsg)
+        edit(GroupEntity(groupId, name.value!!, note.value!!, false), oldGroupName, successMsg, failMsg)
     }
 
     private fun edit(group: GroupEntity, oldGroupName: String, successMsg: String, failMsg: String) = viewModelScope.launch {

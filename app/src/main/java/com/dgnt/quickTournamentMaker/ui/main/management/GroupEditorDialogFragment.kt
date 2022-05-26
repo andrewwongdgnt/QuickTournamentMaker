@@ -28,6 +28,7 @@ class GroupEditorDialogFragment : DialogFragment(), DIAware {
         private const val KEY_EDITING = "KEY_EDITING"
         private const val KEY_TITLE = "KEY_TITLE"
         private const val KEY_GROUP = "KEY_GROUP"
+        private const val KEY_OLD_GROUP = "KEY_OLD_GROUP"
 
         fun newInstance(editing: Boolean, title: String, group: Group): GroupEditorDialogFragment =
             GroupEditorDialogFragment().apply {
@@ -35,12 +36,20 @@ class GroupEditorDialogFragment : DialogFragment(), DIAware {
                     putBoolean(KEY_EDITING, editing)
                     putString(KEY_TITLE, title)
                     putParcelable(KEY_GROUP, group)
+                    putParcelable(KEY_OLD_GROUP, group)
                 }
             }
     }
 
     private lateinit var binding: GroupEditorFragmentBinding
     private lateinit var viewModel: GroupEditorViewModel
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.apply {
+            putParcelable(KEY_GROUP, Group(viewModel.groupId, viewModel.name.value!!, viewModel.note.value!!))
+        }
+        super.onSaveInstanceState(outState)
+    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?) =
         activity?.let { activity ->
@@ -64,7 +73,9 @@ class GroupEditorDialogFragment : DialogFragment(), DIAware {
                 }
             }
 
-            viewModel.setData(arguments?.getParcelable(KEY_GROUP))
+            val group = savedInstanceState?.getParcelable<Group>(KEY_GROUP) ?: arguments?.getParcelable(KEY_GROUP)
+
+            viewModel.setData(group, arguments?.getParcelable(KEY_OLD_GROUP))
             val editing = arguments?.getBoolean(KEY_EDITING) == true
             MaterialAlertDialogBuilder(activity, R.style.MyDialogTheme)
                 .setTitle(arguments?.getString(KEY_TITLE))
@@ -72,24 +83,24 @@ class GroupEditorDialogFragment : DialogFragment(), DIAware {
                 .setPositiveButton(if (editing) R.string.save else R.string.add, null)
                 .setNegativeButton(android.R.string.cancel, null)
                 .also {
-                    if (arguments?.getBoolean(KEY_EDITING) != true) {
+                    if (!editing) {
                         it.setNeutralButton(R.string.addAndContinue, null)
                     }
                 }
                 .create()
                 .apply {
-                    setOnShowListener { _ ->
-                        getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener { _ ->
+                    setOnShowListener {
+                        getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener {
                             viewModel.add(getString(R.string.addSuccessfulMsg, viewModel.name.value), getString(R.string.duplicateMsg, viewModel.name.value), forceOpen = true, forceErase = true)
                         }
-                        getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener { _ ->
+                        getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
                             if (editing)
                                 viewModel.edit(getString(R.string.editSuccessfulMsg, viewModel.name.value), getString(R.string.duplicateMsg, viewModel.name.value))
                             else
                                 viewModel.add(getString(R.string.addSuccessfulMsg, viewModel.name.value), getString(R.string.duplicateMsg, viewModel.name.value), forceOpen = false, forceErase = false)
                         }
 
-                        val enabled = !arguments?.getParcelable<Group>(KEY_GROUP)?.name.isNullOrBlank()
+                        val enabled = !group?.name.isNullOrBlank()
                         getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = enabled
                         getButton(AlertDialog.BUTTON_NEUTRAL).isEnabled = enabled
 
