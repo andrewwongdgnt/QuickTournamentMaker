@@ -33,6 +33,9 @@ class HomeFragment : Fragment(), DIAware {
 
     companion object {
         fun newInstance() = HomeFragment()
+
+        private const val KEY_TOURNAMENT_TYPE_ID = "KEY_TOURNAMENT_TYPE_ID"
+        private const val KEY_SEED_TYPE_ID = "KEY_SEED_TYPE_ID"
     }
 
     private val groupsExpanded = mutableSetOf<String>()
@@ -41,6 +44,15 @@ class HomeFragment : Fragment(), DIAware {
     private lateinit var personToGroupNameMap: Map<String, String>
     private lateinit var binding: HomeFragmentBinding
     private lateinit var viewModel: HomeViewModel
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.apply {
+            viewModel.tournamentType.value?.let { putInt(KEY_TOURNAMENT_TYPE_ID, it) }
+            viewModel.seedType.value?.let { putInt(KEY_SEED_TYPE_ID, it) }
+        }
+        super.onSaveInstanceState(outState)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,7 +60,6 @@ class HomeFragment : Fragment(), DIAware {
         binding = HomeFragmentBinding.inflate(inflater)
         return binding.root
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val fragment = this
@@ -63,6 +74,8 @@ class HomeFragment : Fragment(), DIAware {
             TournamentUtil.setUpTournamentTypeUI(
                 viewModel,
                 binding.tournamentTypeEditor,
+                savedInstanceState?.getInt(KEY_TOURNAMENT_TYPE_ID),
+                savedInstanceState?.getInt(KEY_SEED_TYPE_ID),
                 viewLifecycleOwner,
                 this,
                 false

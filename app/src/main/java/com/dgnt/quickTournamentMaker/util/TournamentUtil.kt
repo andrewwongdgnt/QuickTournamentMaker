@@ -29,14 +29,14 @@ class TournamentUtil {
         fun setUpTournamentTypeUI(
             viewModel: TournamentTypeEditorViewModel,
             tournamentTypeEditor: ComponentTournamentTypeEditorBinding,
+            eliminationId: Int?,
+            randomSeedId: Int?,
             lifeCycleOwner: LifecycleOwner,
             context: Context,
             sameSeedAllowed: Boolean
         ) {
-
-
-            viewModel.tournamentType.value = viewModel.tournamentType.value ?: tournamentTypeEditor.eliminationRb.id
-            viewModel.seedType.value = viewModel.seedType.value ?: tournamentTypeEditor.randomSeedRb.id
+            viewModel.tournamentType.value = eliminationId ?: tournamentTypeEditor.eliminationRb.id
+            viewModel.seedType.value = randomSeedId ?: tournamentTypeEditor.randomSeedRb.id
             tournamentTypeEditor.sameSeedRb.visibility = if (sameSeedAllowed) View.VISIBLE else View.GONE
             viewModel.tournamentType.observe(lifeCycleOwner) {
                 viewModel.showRankConfig.value = when (it) {

@@ -27,6 +27,8 @@ class RebuildTournamentDialogFragment : DialogFragment(), DIAware {
         const val TAG = "RebuildTournamentDialogFragment"
         private const val KEY_TOURNAMENT_INFO = "KEY_TOURNAMENT_INFO"
         private const val KEY_ORDERED_PARTICIPANTS = "KEY_ORDERED_PARTICIPANTS"
+        private const val KEY_TOURNAMENT_TYPE_ID = "KEY_TOURNAMENT_TYPE_ID"
+        private const val KEY_SEED_TYPE_ID = "KEY_SEED_TYPE_ID"
 
         fun newInstance(
             tournamentInformation: TournamentInformation,
@@ -40,13 +42,23 @@ class RebuildTournamentDialogFragment : DialogFragment(), DIAware {
             }
     }
 
+    private lateinit var viewModel: RebuildTournamentViewModel
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.apply {
+            viewModel.tournamentType.value?.let { putInt(KEY_TOURNAMENT_TYPE_ID, it) }
+            viewModel.seedType.value?.let { putInt(KEY_SEED_TYPE_ID, it) }
+        }
+        super.onSaveInstanceState(outState)
+    }
+
     override fun onCreateDialog(savedInstanceState: Bundle?) =
 
         activity?.let { activity ->
 
             val binding = RebuildTournamentFragmentBinding.inflate(activity.layoutInflater)
 
-            val viewModel = ViewModelProvider(this, viewModelFactory)[RebuildTournamentViewModel::class.java]
+            viewModel = ViewModelProvider(this, viewModelFactory)[RebuildTournamentViewModel::class.java]
             binding.vm = viewModel
             binding.lifecycleOwner = this
 
@@ -59,6 +71,8 @@ class RebuildTournamentDialogFragment : DialogFragment(), DIAware {
             TournamentUtil.setUpTournamentTypeUI(
                 viewModel,
                 binding.tournamentTypeEditor,
+                savedInstanceState?.getInt(KEY_TOURNAMENT_TYPE_ID),
+                savedInstanceState?.getInt(KEY_SEED_TYPE_ID),
                 this,
                 activity,
                 true
