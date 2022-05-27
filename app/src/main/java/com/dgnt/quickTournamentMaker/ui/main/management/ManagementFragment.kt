@@ -13,6 +13,7 @@ import com.dgnt.quickTournamentMaker.databinding.ManagementFragmentBinding
 import com.dgnt.quickTournamentMaker.model.management.Group
 import com.dgnt.quickTournamentMaker.model.management.Person
 import com.dgnt.quickTournamentMaker.util.SimpleLogger
+import com.dgnt.quickTournamentMaker.util.viewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.thoughtbot.expandablerecyclerview.listeners.GroupExpandCollapseListener
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup
@@ -21,7 +22,7 @@ import org.kodein.di.android.x.di
 import org.kodein.di.instance
 
 
-class ManagementFragment : Fragment(), DIAware {
+class ManagementFragment : Fragment(R.layout.management_fragment), DIAware {
 
     override val di by di()
     private val viewModelFactory: ManagementViewModelFactory by instance()
@@ -38,19 +39,11 @@ class ManagementFragment : Fragment(), DIAware {
     private val selectedPersons = mutableSetOf<Person>()
     private val selectedGroups = mutableSetOf<Group>()
     private lateinit var actionModeCallback: ManagementFragmentActionModeCallBack
-    private lateinit var binding: ManagementFragmentBinding
+    private val binding by viewBinding<ManagementFragmentBinding>()
     private lateinit var viewModel: ManagementViewModel
-    private lateinit var personToGroupNameMap: Map<Person, Group>
+    private var personToGroupNameMap: Map<Person, Group>? = null
     private lateinit var groups: List<Group>
     private var actionMode: ActionMode? = null
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = ManagementFragmentBinding.inflate(inflater)
-        return binding.root;
-    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.actions_management, menu)
@@ -223,7 +216,7 @@ class ManagementFragment : Fragment(), DIAware {
                 title = selectedPersons.size.toString()
             }
         } else if (actionModeCallback.multiSelect == ManagementFragmentActionModeCallBack.SelectType.NONE)
-            PersonEditorDialogFragment.newInstance(true, getString(R.string.editing, person.name), person, personToGroupNameMap[person] ?: Group(), groups).show(activity?.supportFragmentManager!!, PersonEditorDialogFragment.TAG)
+            PersonEditorDialogFragment.newInstance(true, getString(R.string.editing, person.name), person, personToGroupNameMap?.get(person) ?: Group(), groups).show(activity?.supportFragmentManager!!, PersonEditorDialogFragment.TAG)
 
     }
 
@@ -260,7 +253,7 @@ class ManagementFragment : Fragment(), DIAware {
                         MaterialAlertDialogBuilder(activity, R.style.MyDialogTheme)
                             .setTitle(getString(R.string.deletingPlayers, selectedPersons.size))
                             .setMessage(getString(R.string.deletePlayerMsg, selectedPersons.size))
-                            .setPositiveButton(android.R.string.ok) { _, _ -> viewModel.delete(selectedPersons.map { it.toEntity(personToGroupNameMap[it]?.name ?: "") }, getString(R.string.deletePlayerSuccessfulMsg, selectedPersons.size)) }
+                            .setPositiveButton(android.R.string.ok) { _, _ -> viewModel.delete(selectedPersons.map { it.toEntity(personToGroupNameMap?.get(it)?.name ?: "") }, getString(R.string.deletePlayerSuccessfulMsg, selectedPersons.size)) }
                             .setNegativeButton(android.R.string.cancel, null).create().show()
                     }
                 } else {

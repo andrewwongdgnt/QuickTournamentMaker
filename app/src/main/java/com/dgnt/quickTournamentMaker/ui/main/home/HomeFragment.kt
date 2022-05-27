@@ -1,9 +1,7 @@
 package com.dgnt.quickTournamentMaker.ui.main.home
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
@@ -14,6 +12,7 @@ import com.dgnt.quickTournamentMaker.model.tournament.TournamentType
 import com.dgnt.quickTournamentMaker.service.interfaces.ICreateDefaultTitleService
 import com.dgnt.quickTournamentMaker.ui.layout.NonScrollingLinearLayoutManager
 import com.dgnt.quickTournamentMaker.util.TournamentUtil
+import com.dgnt.quickTournamentMaker.util.viewBinding
 import com.thoughtbot.expandablecheckrecyclerview.models.CheckedExpandableGroup
 import com.thoughtbot.expandablerecyclerview.listeners.GroupExpandCollapseListener
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup
@@ -24,7 +23,7 @@ import org.kodein.di.instance
 import java.text.DateFormat
 
 
-class HomeFragment : Fragment(), DIAware {
+class HomeFragment : Fragment(R.layout.home_fragment), DIAware {
 
 
     override val di by di()
@@ -40,9 +39,10 @@ class HomeFragment : Fragment(), DIAware {
 
     private val groupsExpanded = mutableSetOf<String>()
     private val selectedGroups = mutableSetOf<String>()
-    private lateinit var allGroups: List<GroupCheckedExpandableGroup>
-    private lateinit var personToGroupNameMap: Map<String, String>
-    private lateinit var binding: HomeFragmentBinding
+    private var allGroups: List<GroupCheckedExpandableGroup>? = null
+    private var personToGroupNameMap: Map<String, String>? = null
+    private val binding by viewBinding<HomeFragmentBinding>()
+
     private lateinit var viewModel: HomeViewModel
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -51,14 +51,6 @@ class HomeFragment : Fragment(), DIAware {
             viewModel.seedType.value?.let { putInt(KEY_SEED_TYPE_ID, it) }
         }
         super.onSaveInstanceState(outState)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = HomeFragmentBinding.inflate(inflater)
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -95,11 +87,13 @@ class HomeFragment : Fragment(), DIAware {
             viewModel.personAndGroupLiveData.observe(viewLifecycleOwner) { (persons, groupEntities) ->
 
                 val groups = groupEntities.map { Group.fromEntity(it) }.sorted()
-                personToGroupNameMap = persons.map { it.name to it.groupName }.toMap()
+                personToGroupNameMap = persons.associate { it.name to it.groupName }
 
                 val emptyGroupExpandableGroupMap = groups.map { it.name }.subtract(persons.map { it.groupName }.toSet()).map { GroupCheckedExpandableGroup(it, listOf()) }
-                val groupExpandableGroupMap = persons.groupBy { it.groupName }.map { it.key to it.value.map { Person.fromEntity(it) } }.map { GroupCheckedExpandableGroup(it.first, it.second.sorted()) }
-                allGroups = (groupExpandableGroupMap + emptyGroupExpandableGroupMap).sorted()
+                val groupExpandableGroupMap = persons.groupBy { it.groupName }.map { it.key to it.value.map { p -> Person.fromEntity(p) } }.map { GroupCheckedExpandableGroup(it.first, it.second.sorted()) }
+                val allGroups = (groupExpandableGroupMap + emptyGroupExpandableGroupMap).sorted().also {
+                    this@HomeFragment.allGroups = it
+                }
                 groupsExpanded.removeAll(groupsExpanded.minus(groups.map { it.key }.toSet()))
 
                 val adapter = GroupCheckedExpandableRecyclerViewAdapter(allGroups, selectedGroups, { person: String -> personClicked(person) }, { group: String, checked: Boolean -> groupClicked(group, checked) })
@@ -180,18 +174,15 @@ class HomeFragment : Fragment(), DIAware {
     }
 
     private fun groupClicked(group: String, checked: Boolean) {
-        allGroups.find { it.title == group }?.let {
+        allGroups?.find { it.title == group }?.let {
             selectGroup(it, checked)
         }
     }
 
 
     private fun personClicked(person: String) {
-        val groupName = personToGroupNameMap[person]
-        if (groupName != null) {
-            val theGroup = allGroups.find { it.title == groupName }
-
-            if (theGroup?.selectedChildren?.all { it } == true) {
+        personToGroupNameMap?.get(person)?.let { groupName ->
+            if (allGroups?.find { it.title == groupName }?.selectedChildren?.all { it } == true) {
                 selectedGroups.add(groupName)
             } else {
                 selectedGroups.remove(groupName)

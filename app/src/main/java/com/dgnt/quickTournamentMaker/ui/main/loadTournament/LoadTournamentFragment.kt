@@ -5,7 +5,10 @@ import android.database.Cursor
 import android.database.MatrixCursor
 import android.os.Bundle
 import android.provider.BaseColumns
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
@@ -25,12 +28,13 @@ import com.dgnt.quickTournamentMaker.ui.tournament.MoreInfoDialogFragment
 import com.dgnt.quickTournamentMaker.ui.tournament.TournamentActivity
 import com.dgnt.quickTournamentMaker.util.SimpleLogger
 import com.dgnt.quickTournamentMaker.util.update
+import com.dgnt.quickTournamentMaker.util.viewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 import org.kodein.di.instance
 
-class LoadTournamentFragment : Fragment(), DIAware {
+class LoadTournamentFragment : Fragment(R.layout.load_tournament_fragment), DIAware {
     override val di by di()
     private val viewModelFactory: LoadTournamentViewModelFactory by instance()
 
@@ -42,7 +46,7 @@ class LoadTournamentFragment : Fragment(), DIAware {
     private var actionMode: ActionMode? = null
 
     private lateinit var actionModeCallback: LoadTournamentFragmentActionModeCallBack
-    private lateinit var binding: LoadTournamentFragmentBinding
+    private val binding by viewBinding<LoadTournamentFragmentBinding>()
     private lateinit var viewModel: LoadTournamentViewModel
 
     val suggestions = mutableListOf<Pair<String, Int>>()
@@ -50,14 +54,6 @@ class LoadTournamentFragment : Fragment(), DIAware {
     private var mainAdapter: RestoredTournamentInformationRecyclerViewAdapter? = null
     private var suggestionCursorAdapter: SuggestionCursorAdapter? = null
     private var searchView: SearchView? = null
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = LoadTournamentFragmentBinding.inflate(inflater)
-        return binding.root
-    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.actions_load_tournament, menu)
