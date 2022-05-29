@@ -12,6 +12,7 @@ import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.PersonEditorFragmentBinding
 import com.dgnt.quickTournamentMaker.model.management.Group
 import com.dgnt.quickTournamentMaker.model.management.Person
+import com.dgnt.quickTournamentMaker.util.viewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
@@ -44,7 +45,7 @@ class PersonEditorDialogFragment : DialogFragment(), DIAware {
             }
     }
 
-    private lateinit var binding: PersonEditorFragmentBinding
+    private val binding by viewBinding(PersonEditorFragmentBinding::inflate)
     private lateinit var viewModel: PersonEditorViewModel
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -58,8 +59,6 @@ class PersonEditorDialogFragment : DialogFragment(), DIAware {
     override fun onCreateDialog(savedInstanceState: Bundle?) =
 
         activity?.let { activity ->
-
-            binding = PersonEditorFragmentBinding.inflate(activity.layoutInflater)
 
             viewModel = ViewModelProvider(this, viewModelFactory)[PersonEditorViewModel::class.java]
             binding.vm = viewModel

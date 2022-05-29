@@ -13,6 +13,7 @@ import com.dgnt.quickTournamentMaker.model.tournament.MatchUp
 import com.dgnt.quickTournamentMaker.model.tournament.RoundGroup
 import com.dgnt.quickTournamentMaker.service.interfaces.ICreateDefaultTitleService
 import com.dgnt.quickTournamentMaker.ui.main.common.OnEditListener
+import com.dgnt.quickTournamentMaker.util.viewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
@@ -41,12 +42,10 @@ class MatchUpListDialogFragment : DialogFragment(), DIAware {
             }
     }
 
-    private lateinit var binding: NestedScrollViewBinding
+    private val binding by viewBinding(NestedScrollViewBinding::inflate)
 
     override fun onCreateDialog(savedInstanceState: Bundle?) =
         activity?.let { activity ->
-
-            binding = NestedScrollViewBinding.inflate(activity.layoutInflater)
 
             val alert = MaterialAlertDialogBuilder(activity, R.style.MyDialogTheme)
                 .setTitle(getString(R.string.matchUpSelectionHint))

@@ -9,6 +9,7 @@ import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.NestedScrollViewBinding
 import com.dgnt.quickTournamentMaker.model.tournament.Rank
 import com.dgnt.quickTournamentMaker.util.SimpleParcelable
+import com.dgnt.quickTournamentMaker.util.viewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
@@ -32,13 +33,11 @@ class RankDialogFragment : DialogFragment(), DIAware {
 
     }
 
-    private lateinit var binding: NestedScrollViewBinding
+    private val binding by viewBinding(NestedScrollViewBinding::inflate)
 
     override fun onCreateDialog(savedInstanceState: Bundle?) =
         activity?.let { activity ->
             val rank = arguments?.getParcelable<Rank>(KEY_RANK)!!
-
-            binding = NestedScrollViewBinding.inflate(activity.layoutInflater)
 
             val alert = MaterialAlertDialogBuilder(activity, R.style.MyDialogTheme)
                 .setTitle(getString(R.string.currentRanking))

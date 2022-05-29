@@ -10,6 +10,7 @@ import com.dgnt.quickTournamentMaker.databinding.LoadTournamentFilterOptionsFrag
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentType
 import com.dgnt.quickTournamentMaker.ui.main.common.OnEditListener
 import com.dgnt.quickTournamentMaker.util.toIntOr
+import com.dgnt.quickTournamentMaker.util.viewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.joda.time.LocalDateTime
 import org.joda.time.format.DateTimeFormat
@@ -36,7 +37,7 @@ class LoadTournamentFilterOptionsDialogFragment : DialogFragment(), DIAware {
             }
     }
 
-    private lateinit var binding: LoadTournamentFilterOptionsFragmentBinding
+    private val binding by viewBinding(LoadTournamentFilterOptionsFragmentBinding::inflate)
     private lateinit var viewModel: LoadTournamentFilterOptionsViewModel
 
     override fun onCreateDialog(savedInstanceState: Bundle?) =
@@ -44,7 +45,6 @@ class LoadTournamentFilterOptionsDialogFragment : DialogFragment(), DIAware {
         activity?.let { activity ->
 
             val listener = arguments?.getParcelable<OnEditListener<Unit>>(KEY_LISTENER)!!
-            binding = LoadTournamentFilterOptionsFragmentBinding.inflate(activity.layoutInflater)
 
             viewModel = ViewModelProvider(this, viewModelFactory)[LoadTournamentFilterOptionsViewModel::class.java]
             binding.vm = viewModel

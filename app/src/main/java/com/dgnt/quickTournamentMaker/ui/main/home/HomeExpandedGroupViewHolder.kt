@@ -13,7 +13,7 @@ class HomeExpandedGroupViewHolder(private val binding: GroupItemBinding, private
             sectionHeaderIv.visibility = View.GONE
             binding.sectionHeaderCtv.run {
                 isChecked = selectedGroups.contains(title)
-                setOnClickListener { _ ->
+                setOnClickListener {
                     isChecked = !isChecked
                     clickListener(title, isChecked)
                 }

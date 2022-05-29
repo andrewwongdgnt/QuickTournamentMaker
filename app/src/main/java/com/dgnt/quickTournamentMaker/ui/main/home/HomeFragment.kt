@@ -41,7 +41,7 @@ class HomeFragment : Fragment(R.layout.home_fragment), DIAware {
     private val selectedGroups = mutableSetOf<String>()
     private var allGroups: List<GroupCheckedExpandableGroup>? = null
     private var personToGroupNameMap: Map<String, String>? = null
-    private val binding by viewBinding<HomeFragmentBinding>()
+    private val binding by viewBinding(HomeFragmentBinding::bind)
 
     private lateinit var viewModel: HomeViewModel
 

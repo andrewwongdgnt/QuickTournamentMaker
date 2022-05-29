@@ -39,7 +39,7 @@ class ManagementFragment : Fragment(R.layout.management_fragment), DIAware {
     private val selectedPersons = mutableSetOf<Person>()
     private val selectedGroups = mutableSetOf<Group>()
     private lateinit var actionModeCallback: ManagementFragmentActionModeCallBack
-    private val binding by viewBinding<ManagementFragmentBinding>()
+    private val binding by viewBinding(ManagementFragmentBinding::bind)
     private lateinit var viewModel: ManagementViewModel
     private var personToGroupNameMap: Map<Person, Group>? = null
     private lateinit var groups: List<Group>

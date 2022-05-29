@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.GroupEditorFragmentBinding
 import com.dgnt.quickTournamentMaker.model.management.Group
+import com.dgnt.quickTournamentMaker.util.viewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
@@ -41,7 +42,7 @@ class GroupEditorDialogFragment : DialogFragment(), DIAware {
             }
     }
 
-    private lateinit var binding: GroupEditorFragmentBinding
+    private val binding by viewBinding(GroupEditorFragmentBinding::inflate)
     private lateinit var viewModel: GroupEditorViewModel
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -53,8 +54,6 @@ class GroupEditorDialogFragment : DialogFragment(), DIAware {
 
     override fun onCreateDialog(savedInstanceState: Bundle?) =
         activity?.let { activity ->
-
-            binding = GroupEditorFragmentBinding.inflate(activity.layoutInflater)
 
             viewModel = ViewModelProvider(this, viewModelFactory)[GroupEditorViewModel::class.java]
             binding.vm = viewModel

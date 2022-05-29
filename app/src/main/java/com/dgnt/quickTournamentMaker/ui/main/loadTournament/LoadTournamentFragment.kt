@@ -46,7 +46,7 @@ class LoadTournamentFragment : Fragment(R.layout.load_tournament_fragment), DIAw
     private var actionMode: ActionMode? = null
 
     private lateinit var actionModeCallback: LoadTournamentFragmentActionModeCallBack
-    private val binding by viewBinding<LoadTournamentFragmentBinding>()
+    private val binding by viewBinding(LoadTournamentFragmentBinding::bind)
     private lateinit var viewModel: LoadTournamentViewModel
 
     val suggestions = mutableListOf<Pair<String, Int>>()

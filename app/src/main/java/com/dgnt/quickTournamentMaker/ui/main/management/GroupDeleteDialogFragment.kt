@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.GroupDeleteFragmentBinding
 import com.dgnt.quickTournamentMaker.model.management.Group
+import com.dgnt.quickTournamentMaker.util.viewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
@@ -36,13 +37,11 @@ class GroupDeleteDialogFragment : DialogFragment(), DIAware {
             }
     }
 
-    private lateinit var binding: GroupDeleteFragmentBinding
+    private val binding by viewBinding(GroupDeleteFragmentBinding::inflate)
     private lateinit var viewModel: GroupDeleteViewModel
 
     override fun onCreateDialog(savedInstanceState: Bundle?) =
         activity?.let { activity ->
-
-            binding = GroupDeleteFragmentBinding.inflate(activity.layoutInflater)
 
             viewModel = ViewModelProvider(this, viewModelFactory)[GroupDeleteViewModel::class.java]
             binding.vm = viewModel

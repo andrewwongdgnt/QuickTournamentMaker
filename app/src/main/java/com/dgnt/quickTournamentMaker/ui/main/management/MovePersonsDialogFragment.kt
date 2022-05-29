@@ -8,6 +8,7 @@ import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.MovePersonsFragmentBinding
 import com.dgnt.quickTournamentMaker.model.management.Group
 import com.dgnt.quickTournamentMaker.model.management.Person
+import com.dgnt.quickTournamentMaker.util.viewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
@@ -34,15 +35,13 @@ class MovePersonsDialogFragment : DialogFragment(), DIAware {
             }
     }
 
-    private lateinit var binding: MovePersonsFragmentBinding
+    private val binding by viewBinding(MovePersonsFragmentBinding::inflate)
     private lateinit var viewModel: MovePersonsViewModel
-    private lateinit var selectedPersons: List<Person>
+    private var selectedPersons: List<Person>? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?) =
 
         activity?.let { activity ->
-
-            binding = MovePersonsFragmentBinding.inflate(activity.layoutInflater)
 
             viewModel = ViewModelProvider(this, viewModelFactory)[MovePersonsViewModel::class.java]
             binding.vm = viewModel
@@ -54,7 +53,9 @@ class MovePersonsDialogFragment : DialogFragment(), DIAware {
                 }
             }
 
-            selectedPersons = arguments?.getParcelableArrayList(KEY_PERSONS)!!
+            val selectedPersons = arguments?.getParcelableArrayList<Person>(KEY_PERSONS)!!.also {
+                this.selectedPersons = it
+            }
             val groups = arguments?.getParcelableArrayList<Group>(KEY_GROUPS)!!
 
             binding.groupRv.adapter = GroupRecyclerViewAdapter(groups) { g: Group -> handle(g) }
@@ -71,7 +72,9 @@ class MovePersonsDialogFragment : DialogFragment(), DIAware {
         }
 
     private fun handle(group: Group) {
-        viewModel.move(selectedPersons.map { it.toEntity(group.name) }, getString(R.string.movePlayerSuccessfulMsg, selectedPersons.size), getString(R.string.movePlayerFailedMsg))
+        selectedPersons?.let { selectedPersons ->
+            viewModel.move(selectedPersons.map { it.toEntity(group.name) }, getString(R.string.movePlayerSuccessfulMsg, selectedPersons.size), getString(R.string.movePlayerFailedMsg))
+        }
         dismiss()
     }
 }

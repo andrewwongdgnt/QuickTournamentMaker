@@ -10,6 +10,7 @@ import com.dgnt.quickTournamentMaker.databinding.NestedScrollViewBinding
 import com.dgnt.quickTournamentMaker.model.tournament.Round
 import com.dgnt.quickTournamentMaker.model.tournament.RoundGroup
 import com.dgnt.quickTournamentMaker.ui.main.common.OnEditListener
+import com.dgnt.quickTournamentMaker.util.viewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
@@ -38,14 +39,12 @@ class RoundListDialogFragment : DialogFragment(), DIAware {
 
     }
 
-    private lateinit var binding: NestedScrollViewBinding
+    private val binding by viewBinding(NestedScrollViewBinding::inflate)
 
     override fun onCreateDialog(savedInstanceState: Bundle?) =
         activity?.let { activity ->
             val roundGroups = arguments?.getParcelableArrayList<RoundGroup>(KEY_ROUND_GROUPS)!!
             val listener = arguments?.getParcelable<OnEditListener<Round>>(KEY_LISTENER)!!
-
-            binding = NestedScrollViewBinding.inflate(activity.layoutInflater)
 
             val alert = MaterialAlertDialogBuilder(activity, R.style.MyDialogTheme)
                 .setTitle(getString(R.string.roundSelectionHint))
