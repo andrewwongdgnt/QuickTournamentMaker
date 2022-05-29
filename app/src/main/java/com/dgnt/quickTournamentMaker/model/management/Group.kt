@@ -12,7 +12,7 @@ data class Group(var id: String = "", var name: String = "", var note: String = 
         fun fromEntity(entity: GroupEntity) = Group(entity.id, entity.name, entity.note, entity.favourite)
     }
 
-    override val key = name
+    override val key = id + name
     override fun compareTo(other: Group): Int {
         if (favourite && !other.favourite) return -1
         if (!favourite && other.favourite) return 1
@@ -21,7 +21,7 @@ data class Group(var id: String = "", var name: String = "", var note: String = 
 
     override fun equals(other: Any?): Boolean {
         if (other is Group) {
-            return other.id == id
+            return other.key == key
         }
         return super.equals(other)
     }

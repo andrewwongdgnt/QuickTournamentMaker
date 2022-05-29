@@ -94,7 +94,7 @@ class HomeFragment : Fragment(R.layout.home_fragment), DIAware {
                 val allGroups = (groupExpandableGroupMap + emptyGroupExpandableGroupMap).sorted().also {
                     this@HomeFragment.allGroups = it
                 }
-                groupsExpanded.removeAll(groupsExpanded.minus(groups.map { it.key }.toSet()))
+                groupsExpanded.removeAll(groupsExpanded.minus(groups.map { it.name }.toSet()))
 
                 val adapter = GroupCheckedExpandableRecyclerViewAdapter(allGroups, selectedGroups, { person: String -> personClicked(person) }, { group: String, checked: Boolean -> groupClicked(group, checked) })
                 adapter.setOnGroupExpandCollapseListener(object : GroupExpandCollapseListener {
