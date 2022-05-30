@@ -24,10 +24,11 @@ import java.text.DateFormat
 
 
 class HomeFragment : Fragment(R.layout.home_fragment), DIAware {
-
-
     override val di by di()
     private val viewModelFactory: HomeViewModelFactory by instance()
+    private val binding by viewBinding(HomeFragmentBinding::bind)
+    private lateinit var viewModel: HomeViewModel
+
     private val createDefaultTitleService: ICreateDefaultTitleService by instance()
 
     companion object {
@@ -41,9 +42,7 @@ class HomeFragment : Fragment(R.layout.home_fragment), DIAware {
     private val selectedGroups = mutableSetOf<String>()
     private var allGroups: List<GroupCheckedExpandableGroup>? = null
     private var personToGroupNameMap: Map<String, String>? = null
-    private val binding by viewBinding(HomeFragmentBinding::bind)
 
-    private lateinit var viewModel: HomeViewModel
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.apply {

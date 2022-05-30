@@ -22,6 +22,8 @@ import org.kodein.di.instance
 class PersonEditorDialogFragment : DialogFragment(), DIAware {
     override val di by di()
     private val viewModelFactory: PersonEditorViewModelFactory by instance()
+    private val binding by viewBinding(PersonEditorFragmentBinding::inflate)
+    private lateinit var viewModel: PersonEditorViewModel
 
     companion object {
 
@@ -45,8 +47,6 @@ class PersonEditorDialogFragment : DialogFragment(), DIAware {
             }
     }
 
-    private val binding by viewBinding(PersonEditorFragmentBinding::inflate)
-    private lateinit var viewModel: PersonEditorViewModel
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.apply {

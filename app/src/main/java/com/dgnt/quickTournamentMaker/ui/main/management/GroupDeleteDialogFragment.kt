@@ -20,6 +20,8 @@ import org.kodein.di.instance
 class GroupDeleteDialogFragment : DialogFragment(), DIAware {
     override val di by di()
     private val viewModelFactory: GroupDeleteViewModelFactory by instance()
+    private val binding by viewBinding(GroupDeleteFragmentBinding::inflate)
+    private lateinit var viewModel: GroupDeleteViewModel
 
     companion object {
 
@@ -37,8 +39,6 @@ class GroupDeleteDialogFragment : DialogFragment(), DIAware {
             }
     }
 
-    private val binding by viewBinding(GroupDeleteFragmentBinding::inflate)
-    private lateinit var viewModel: GroupDeleteViewModel
 
     override fun onCreateDialog(savedInstanceState: Bundle?) =
         activity?.let { activity ->

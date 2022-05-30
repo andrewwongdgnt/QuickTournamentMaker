@@ -18,6 +18,8 @@ import org.kodein.di.instance
 class MovePersonsDialogFragment : DialogFragment(), DIAware {
     override val di by di()
     private val viewModelFactory: MovePersonsViewModelFactory by instance()
+    private val binding by viewBinding(MovePersonsFragmentBinding::inflate)
+    private lateinit var viewModel: MovePersonsViewModel
 
     companion object {
 
@@ -35,8 +37,6 @@ class MovePersonsDialogFragment : DialogFragment(), DIAware {
             }
     }
 
-    private val binding by viewBinding(MovePersonsFragmentBinding::inflate)
-    private lateinit var viewModel: MovePersonsViewModel
     private var selectedPersons: List<Person>? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?) =

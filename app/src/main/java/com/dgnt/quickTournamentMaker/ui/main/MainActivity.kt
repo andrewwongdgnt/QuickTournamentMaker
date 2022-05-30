@@ -11,6 +11,7 @@ import com.dgnt.quickTournamentMaker.databinding.MainActivityBinding
 import com.dgnt.quickTournamentMaker.ui.main.home.HomeFragment
 import com.dgnt.quickTournamentMaker.ui.main.loadTournament.LoadTournamentFragment
 import com.dgnt.quickTournamentMaker.ui.main.management.ManagementFragment
+import com.dgnt.quickTournamentMaker.util.viewBinding
 
 private const val HOME_FRAGMENT_TAG = "HOME_FRAGMENT_TAG"
 private const val MANAGEMENT_FRAGMENT_TAG = "MANAGEMENT_FRAGMENT_TAG"
@@ -18,9 +19,11 @@ private const val LOAD_TOURNAMENT_FRAGMENT_TAG = "LOAD_TOURNAMENT_FRAGMENT_TAG"
 
 class MainActivity : AppCompatActivity() {
 
+    private val binding by viewBinding(MainActivityBinding::inflate)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        MainActivityBinding.inflate(layoutInflater).run {
+        binding.run {
             setContentView(root)
 
             val homeFragment = supportFragmentManager.findFragmentByTag(HOME_FRAGMENT_TAG) ?: HomeFragment.newInstance()

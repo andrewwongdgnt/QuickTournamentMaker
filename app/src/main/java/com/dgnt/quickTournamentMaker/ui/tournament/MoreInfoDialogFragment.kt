@@ -11,6 +11,7 @@ import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
 import com.dgnt.quickTournamentMaker.ui.layout.TitledLinearLayout
 import com.dgnt.quickTournamentMaker.ui.main.common.OnEditListener
 import com.dgnt.quickTournamentMaker.util.getAllViews
+import com.dgnt.quickTournamentMaker.util.viewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
@@ -20,6 +21,7 @@ import org.kodein.di.instance
 class MoreInfoDialogFragment : DialogFragment(), DIAware {
     override val di by di()
     private val viewModelFactory: MoreInfoViewModelFactory by instance()
+    private val binding by viewBinding(MoreInfoFragmentBinding::inflate)
 
     companion object {
 
@@ -39,15 +41,10 @@ class MoreInfoDialogFragment : DialogFragment(), DIAware {
             }
     }
 
-
     override fun onCreateDialog(savedInstanceState: Bundle?) =
-
-
-        activity?.let { activity ->
-
+        context?.let { context ->
             val extendedTournamentInformation = arguments?.getParcelable<ExtendedTournamentInformation>(KEY_EXTENDED_TOURNAMENT_INFO)!!
             val listener = arguments?.getParcelable<OnEditListener<TournamentInformation>>(KEY_LISTENER)!!
-            val binding = MoreInfoFragmentBinding.inflate(activity.layoutInflater)
 
             val viewModel = ViewModelProvider(this, viewModelFactory)[MoreInfoViewModel::class.java]
             binding.vm = viewModel
@@ -74,7 +71,7 @@ class MoreInfoDialogFragment : DialogFragment(), DIAware {
                 )
             }
 
-            MaterialAlertDialogBuilder(activity, R.style.MyDialogTheme)
+            MaterialAlertDialogBuilder(context, R.style.MyDialogTheme)
                 .setTitle(R.string.moreInfo)
                 .setView(binding.root)
                 .setPositiveButton(android.R.string.ok) { _, _ ->

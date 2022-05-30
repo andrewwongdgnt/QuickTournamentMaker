@@ -22,6 +22,8 @@ import org.kodein.di.instance
 class LoadTournamentFilterOptionsDialogFragment : DialogFragment(), DIAware {
     override val di by di()
     private val viewModelFactory: LoadTournamentFilterOptionsViewModelFactory by instance()
+    private val binding by viewBinding(LoadTournamentFilterOptionsFragmentBinding::inflate)
+    private lateinit var viewModel: LoadTournamentFilterOptionsViewModel
 
     companion object {
 
@@ -37,13 +39,8 @@ class LoadTournamentFilterOptionsDialogFragment : DialogFragment(), DIAware {
             }
     }
 
-    private val binding by viewBinding(LoadTournamentFilterOptionsFragmentBinding::inflate)
-    private lateinit var viewModel: LoadTournamentFilterOptionsViewModel
-
     override fun onCreateDialog(savedInstanceState: Bundle?) =
-
         activity?.let { activity ->
-
             val listener = arguments?.getParcelable<OnEditListener<Unit>>(KEY_LISTENER)!!
 
             viewModel = ViewModelProvider(this, viewModelFactory)[LoadTournamentFilterOptionsViewModel::class.java]

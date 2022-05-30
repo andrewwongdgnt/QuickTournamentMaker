@@ -16,6 +16,7 @@ import org.kodein.di.android.x.di
 
 class RankDialogFragment : DialogFragment(), DIAware {
     override val di by di()
+    private val binding by viewBinding(NestedScrollViewBinding::inflate)
 
     companion object {
 
@@ -30,27 +31,12 @@ class RankDialogFragment : DialogFragment(), DIAware {
                 }
 
             }
-
     }
-
-    private val binding by viewBinding(NestedScrollViewBinding::inflate)
 
     override fun onCreateDialog(savedInstanceState: Bundle?) =
         activity?.let { activity ->
             val rank = arguments?.getParcelable<Rank>(KEY_RANK)!!
-
-            val alert = MaterialAlertDialogBuilder(activity, R.style.MyDialogTheme)
-                .setTitle(getString(R.string.currentRanking))
-                .setNegativeButton(android.R.string.ok, null)
-                .apply {
-                    setView(binding.root)
-
-                }
-                .create()
-
-
             binding.container.apply {
-
                 addView(RecyclerView(activity).apply {
                     val rankList = listOf(
                         Pair(getString(R.string.knownRanking), rank.known.mapIndexed { i, v -> v.map { "${rank.known.size - i}) ${it.name}" }.toList().sortedDescending() }.flatten().reversed()),
@@ -62,17 +48,17 @@ class RankDialogFragment : DialogFragment(), DIAware {
                                 .filter { !isGroupExpanded(it) }
                                 .forEach { g -> toggleGroup(g) }
                         }
-
-
                     layoutManager = LinearLayoutManager(activity)
                 })
             }
+            MaterialAlertDialogBuilder(activity, R.style.MyDialogTheme)
+                .setTitle(getString(R.string.currentRanking))
+                .setNegativeButton(android.R.string.ok, null)
+                .apply {
+                    setView(binding.root)
 
-
-
-
-            alert
-
+                }
+                .create()
         } ?: run {
             super.onCreateDialog(savedInstanceState)
         }

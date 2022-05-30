@@ -10,6 +10,7 @@ import com.dgnt.quickTournamentMaker.model.tournament.ColorInfo
 import com.dgnt.quickTournamentMaker.model.tournament.MatchUp
 import com.dgnt.quickTournamentMaker.ui.main.common.OnEditListener
 import com.dgnt.quickTournamentMaker.util.TournamentUtil
+import com.dgnt.quickTournamentMaker.util.viewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
@@ -18,6 +19,7 @@ import org.kodein.di.instance
 class MatchUpEditorDialogFragment : DialogFragment(), DIAware {
     override val di by di()
     private val viewModelFactory: MatchUpEditorViewModelFactory by instance()
+    private val binding by viewBinding(MatchUpEditorFragmentBinding::inflate)
 
     companion object {
         const val TAG = "MatchUpEditorDialogFragment"
@@ -48,8 +50,7 @@ class MatchUpEditorDialogFragment : DialogFragment(), DIAware {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?) =
-        activity?.let { activity ->
-            val binding = MatchUpEditorFragmentBinding.inflate(activity.layoutInflater)
+        context?.let { context ->
             val viewModel = ViewModelProvider(this, viewModelFactory)[MatchUpEditorViewModel::class.java]
             binding.vm = viewModel
             binding.lifecycleOwner = this
@@ -64,7 +65,7 @@ class MatchUpEditorDialogFragment : DialogFragment(), DIAware {
                 ColorInfo(it.first, it.second)
             })
 
-            MaterialAlertDialogBuilder(activity, R.style.MyDialogTheme)
+            MaterialAlertDialogBuilder(context, R.style.MyDialogTheme)
                 .setTitle(getString(R.string.editingThisMatchUp))
                 .setView(binding.root)
                 .setPositiveButton(android.R.string.ok) { _, _ ->

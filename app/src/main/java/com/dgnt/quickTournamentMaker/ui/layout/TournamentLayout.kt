@@ -7,7 +7,6 @@ import android.graphics.Path
 import android.graphics.Point
 import android.util.AttributeSet
 import android.view.Gravity.CENTER
-import android.view.LayoutInflater
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -19,6 +18,7 @@ import com.dgnt.quickTournamentMaker.databinding.SingleMatchUpLayoutBinding
 import com.dgnt.quickTournamentMaker.model.tournament.*
 import com.dgnt.quickTournamentMaker.ui.tournament.TournamentActivity
 import com.dgnt.quickTournamentMaker.util.TournamentUtil
+import com.dgnt.quickTournamentMaker.util.viewBinding
 
 private const val CURVATURE = 15
 
@@ -74,12 +74,12 @@ class TournamentLayout : LinearLayout {
                         rll.layoutParams = LayoutParams(roundWidth, LayoutParams.MATCH_PARENT).also { it.setMargins(roundMargin, roundMargin, roundMargin, roundMargin) }
                         r.matchUps.forEach { mu ->
                             val view = if (tournament.tournamentInformation.tournamentType == TournamentType.SURVIVAL) {
-                                SingleMatchUpLayoutBinding.inflate(LayoutInflater.from(context)).also { mul ->
+                                viewBinding(SingleMatchUpLayoutBinding::inflate).also { mul ->
                                     mul.layout.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, 0, 1f)
                                     mul.player.apply {
                                         text = getName(mu.participant1)
                                         setTextColor(mu.participant1.color)
-                                    }.also{
+                                    }.also {
                                         allViews.add(it to {
                                             clickListener(mu, ParticipantPosition.P1)
                                             updateViews(mu, mul)
@@ -90,12 +90,12 @@ class TournamentLayout : LinearLayout {
                                     singleMatchUpViewMap[mu.key] = mul
                                 }.root
                             } else {
-                                SimpleMatchUpLayoutBinding.inflate(LayoutInflater.from(context)).also { mul ->
+                                viewBinding(SimpleMatchUpLayoutBinding::inflate).also { mul ->
                                     mul.layout.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, 0, 1f)
                                     mul.player1.apply {
                                         text = getName(mu.participant1)
                                         setTextColor(mu.participant1.color)
-                                    }.also{
+                                    }.also {
                                         allViews.add(it to {
                                             if (!mu.containsBye()) {
                                                 clickListener(mu, ParticipantPosition.P1)
@@ -131,18 +131,12 @@ class TournamentLayout : LinearLayout {
             roundGroupLayouts.forEach {
                 addView(it)
             }
-        } else {
-            (context as? TournamentActivity)?.layoutInflater?.let { layoutInflater ->
-                when (tournament.tournamentInformation.tournamentType) {
-                    TournamentType.DOUBLE_ELIMINATION -> {
-                        addView(DoubleEliminationConfigurationBinding.inflate(layoutInflater).also { binding ->
-                            binding.winnerBracket.addView(roundGroupLayouts[0])
-                            binding.loserBracket.addView(roundGroupLayouts[1])
-                            binding.finalBracket.addView(roundGroupLayouts[2])
-                        }.root)
-                    }
-                }
-            }
+        } else if (tournament.tournamentInformation.tournamentType == TournamentType.DOUBLE_ELIMINATION) {
+            addView(viewBinding(DoubleEliminationConfigurationBinding::inflate).also { binding ->
+                binding.winnerBracket.addView(roundGroupLayouts[0])
+                binding.loserBracket.addView(roundGroupLayouts[1])
+                binding.finalBracket.addView(roundGroupLayouts[2])
+            }.root)
         }
 
         if (tournament.tournamentInformation.tournamentType == TournamentType.SURVIVAL) {

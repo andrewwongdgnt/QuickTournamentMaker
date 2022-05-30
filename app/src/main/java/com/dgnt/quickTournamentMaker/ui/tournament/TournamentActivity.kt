@@ -24,6 +24,7 @@ import com.dgnt.quickTournamentMaker.ui.main.common.OnEditListener
 import com.dgnt.quickTournamentMaker.util.AlertUtil
 import com.dgnt.quickTournamentMaker.util.TournamentUtil.Companion.jsonMapper
 import com.dgnt.quickTournamentMaker.util.getAllViews
+import com.dgnt.quickTournamentMaker.util.viewBinding
 import com.dgnt.quickTournamentMaker.util.writeText
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.moagrius.widget.ScalingScrollView
@@ -41,15 +42,8 @@ import org.kodein.di.instance
 class TournamentActivity : AppCompatActivity(), DIAware {
     override val di by di()
     private val viewModelFactory: TournamentViewModelFactory by instance()
-    private val createDefaultTitleService: ICreateDefaultTitleService by instance()
-
-    private var extraLayout: View? = null
-    fun extraLayoutHeight() = extraLayout?.height
-
-    private var tournamentViewRoot: TournamentScalingScrollView? = null
-    private var tournamentContainer: TournamentLayout? = null
-
-    private lateinit var resultLauncher: ActivityResultLauncher<Intent>
+    private val binding by viewBinding(TournamentActivityBinding::inflate)
+    private lateinit var viewModel: TournamentViewModel
 
     companion object {
 
@@ -75,8 +69,15 @@ class TournamentActivity : AppCompatActivity(), DIAware {
                 putExtra(TOURNAMENT_ACTIVITY_RESTORED_INFO, restoredTournamentInformation)
             }
     }
+    private val createDefaultTitleService: ICreateDefaultTitleService by instance()
 
-    private lateinit var viewModel: TournamentViewModel
+    private var extraLayout: View? = null
+    fun extraLayoutHeight() = extraLayout?.height
+
+    private var tournamentViewRoot: TournamentScalingScrollView? = null
+    private var tournamentContainer: TournamentLayout? = null
+
+    private lateinit var resultLauncher: ActivityResultLauncher<Intent>
 
     @ExperimentalSerializationApi
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -94,7 +95,7 @@ class TournamentActivity : AppCompatActivity(), DIAware {
         val tournamentActivity = this
         viewModel = ViewModelProvider(tournamentActivity, viewModelFactory)[TournamentViewModel::class.java].apply {
 
-            TournamentActivityBinding.inflate(layoutInflater).also {
+            binding.also {
                 it.vm = this
                 it.lifecycleOwner = tournamentActivity
                 it.rootView.getAllViews().find { view -> view is TournamentScalingScrollView }?.let { scalingView ->

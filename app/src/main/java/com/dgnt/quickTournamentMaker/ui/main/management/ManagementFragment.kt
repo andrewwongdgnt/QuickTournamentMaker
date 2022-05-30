@@ -1,7 +1,10 @@
 package com.dgnt.quickTournamentMaker.ui.main.management
 
 import android.os.Bundle
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import android.widget.CheckedTextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -26,6 +29,8 @@ class ManagementFragment : Fragment(R.layout.management_fragment), DIAware {
 
     override val di by di()
     private val viewModelFactory: ManagementViewModelFactory by instance()
+    private val binding by viewBinding(ManagementFragmentBinding::bind)
+    private lateinit var viewModel: ManagementViewModel
 
     companion object {
         fun newInstance() = ManagementFragment()
@@ -39,8 +44,6 @@ class ManagementFragment : Fragment(R.layout.management_fragment), DIAware {
     private val selectedPersons = mutableSetOf<Person>()
     private val selectedGroups = mutableSetOf<Group>()
     private lateinit var actionModeCallback: ManagementFragmentActionModeCallBack
-    private val binding by viewBinding(ManagementFragmentBinding::bind)
-    private lateinit var viewModel: ManagementViewModel
     private var personToGroupNameMap: Map<Person, Group>? = null
     private lateinit var groups: List<Group>
     private var actionMode: ActionMode? = null

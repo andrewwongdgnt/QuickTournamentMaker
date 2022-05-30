@@ -37,6 +37,8 @@ import org.kodein.di.instance
 class LoadTournamentFragment : Fragment(R.layout.load_tournament_fragment), DIAware {
     override val di by di()
     private val viewModelFactory: LoadTournamentViewModelFactory by instance()
+    private val binding by viewBinding(LoadTournamentFragmentBinding::bind)
+    private lateinit var viewModel: LoadTournamentViewModel
 
     companion object {
         fun newInstance() = LoadTournamentFragment()
@@ -46,8 +48,6 @@ class LoadTournamentFragment : Fragment(R.layout.load_tournament_fragment), DIAw
     private var actionMode: ActionMode? = null
 
     private lateinit var actionModeCallback: LoadTournamentFragmentActionModeCallBack
-    private val binding by viewBinding(LoadTournamentFragmentBinding::bind)
-    private lateinit var viewModel: LoadTournamentViewModel
 
     val suggestions = mutableListOf<Pair<String, Int>>()
 

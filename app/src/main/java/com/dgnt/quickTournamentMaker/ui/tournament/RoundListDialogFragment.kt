@@ -17,6 +17,7 @@ import org.kodein.di.android.x.di
 
 class RoundListDialogFragment : DialogFragment(), DIAware {
     override val di by di()
+    private val binding by viewBinding(NestedScrollViewBinding::inflate)
 
     companion object {
 
@@ -39,7 +40,6 @@ class RoundListDialogFragment : DialogFragment(), DIAware {
 
     }
 
-    private val binding by viewBinding(NestedScrollViewBinding::inflate)
 
     override fun onCreateDialog(savedInstanceState: Bundle?) =
         activity?.let { activity ->

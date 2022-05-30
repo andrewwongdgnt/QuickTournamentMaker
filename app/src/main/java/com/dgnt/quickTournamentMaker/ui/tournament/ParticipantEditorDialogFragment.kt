@@ -10,6 +10,7 @@ import com.dgnt.quickTournamentMaker.model.tournament.ColorInfo
 import com.dgnt.quickTournamentMaker.model.tournament.Participant
 import com.dgnt.quickTournamentMaker.ui.main.common.OnEditListener
 import com.dgnt.quickTournamentMaker.util.TournamentUtil
+import com.dgnt.quickTournamentMaker.util.viewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
@@ -18,6 +19,7 @@ import org.kodein.di.instance
 class ParticipantEditorDialogFragment : DialogFragment(), DIAware {
     override val di by di()
     private val viewModelFactory: ParticipantEditorViewModelFactory by instance()
+    private val binding by viewBinding(ParticipantEditorFragmentBinding::inflate)
 
     companion object {
 
@@ -39,9 +41,7 @@ class ParticipantEditorDialogFragment : DialogFragment(), DIAware {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?) =
-        activity?.let { activity ->
-            val binding = ParticipantEditorFragmentBinding.inflate(activity.layoutInflater)
-
+        context?.let { context ->
             val viewModel = ViewModelProvider(this, viewModelFactory)[ParticipantEditorViewModel::class.java]
             binding.vm = viewModel
             binding.lifecycleOwner = this
@@ -53,7 +53,7 @@ class ParticipantEditorDialogFragment : DialogFragment(), DIAware {
                 ColorInfo(it.first, it.second)
             })
 
-            MaterialAlertDialogBuilder(activity, R.style.MyDialogTheme)
+            MaterialAlertDialogBuilder(context, R.style.MyDialogTheme)
                 .setTitle(getString(R.string.editing, participant.name))
                 .setView(binding.root)
                 .setPositiveButton(android.R.string.ok) { _, _ ->

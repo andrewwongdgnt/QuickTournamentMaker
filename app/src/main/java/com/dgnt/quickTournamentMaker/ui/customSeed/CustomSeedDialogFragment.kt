@@ -13,8 +13,8 @@ import com.dgnt.quickTournamentMaker.model.tournament.ParticipantType
 import com.dgnt.quickTournamentMaker.model.tournament.TournamentInformation
 import com.dgnt.quickTournamentMaker.service.interfaces.MatchUpInformation
 import com.dgnt.quickTournamentMaker.ui.main.common.OnEditListener
-import com.dgnt.quickTournamentMaker.ui.main.loadTournament.LoadTournamentFilterOptionsDialogFragment
 import com.dgnt.quickTournamentMaker.ui.tournament.TournamentActivity
+import com.dgnt.quickTournamentMaker.util.viewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
@@ -23,6 +23,7 @@ import org.kodein.di.instance
 class CustomSeedDialogFragment : DialogFragment(), DIAware {
     override val di by di()
     private val viewModelFactory: CustomSeedViewModelFactory by instance()
+    private val binding by viewBinding(CustomSeedFragmentBinding::inflate)
 
     companion object {
         const val TAG = "CustomSeedDialogFragment"
@@ -30,7 +31,6 @@ class CustomSeedDialogFragment : DialogFragment(), DIAware {
         private const val KEY_TOURNAMENT_INFO = "KEY_TOURNAMENT_INFO"
         private const val KEY_ORDERED_PARTICIPANTS = "KEY_ORDERED_PARTICIPANTS"
         private const val KEY_LISTENER = "KEY_LISTENER"
-        private const val KEY_FROM_REBUILD = "KEY_FROM_REBUILD"
 
         fun newInstance(
             tournamentInformation: TournamentInformation,
@@ -47,10 +47,8 @@ class CustomSeedDialogFragment : DialogFragment(), DIAware {
             }
     }
 
-
     override fun onCreateDialog(savedInstanceState: Bundle?) =
-        activity?.let { activity ->
-            val binding = CustomSeedFragmentBinding.inflate(activity.layoutInflater)
+        context?.let { context ->
             val viewModel = ViewModelProvider(this, viewModelFactory)[CustomSeedViewModel::class.java]
             binding.vm = viewModel
             binding.lifecycleOwner = this
@@ -66,22 +64,23 @@ class CustomSeedDialogFragment : DialogFragment(), DIAware {
                     listOf(pair.first, pair.second).forEach { mui ->
 
                         map[mui.matchUp.matchUpIndex]?.player1?.apply {
-                            background = ContextCompat.getDrawable(activity, R.drawable.p1_default)
+                            background = ContextCompat.getDrawable(context, R.drawable.p1_default)
                             text = getName(mui.matchUp.participant1)
                         }
 
                         map[mui.matchUp.matchUpIndex]?.player2?.apply {
-                            background = ContextCompat.getDrawable(activity, R.drawable.p2_default)
+                            background = ContextCompat.getDrawable(context, R.drawable.p2_default)
                             text = getName(mui.matchUp.participant2)
                         }
                         if (mui.isParticipant1Highlighted == true)
-                            map[mui.matchUp.matchUpIndex]?.player1?.background = ContextCompat.getDrawable(activity, R.drawable.p1_win)
+                            map[mui.matchUp.matchUpIndex]?.player1?.background = ContextCompat.getDrawable(context, R.drawable.p1_win)
                         else if (mui.isParticipant1Highlighted == false)
-                            map[mui.matchUp.matchUpIndex]?.player2?.background = ContextCompat.getDrawable(activity, R.drawable.p2_win)
+                            map[mui.matchUp.matchUpIndex]?.player2?.background = ContextCompat.getDrawable(context, R.drawable.p2_win)
                     }
                 }
                 it.forEach {
-                    SimpleMatchUpLayoutBinding.inflate(activity.layoutInflater).apply {
+                    val simpleMatchUpLayoutBinding by viewBinding(SimpleMatchUpLayoutBinding::inflate)
+                    simpleMatchUpLayoutBinding.apply {
                         player1.apply {
                             text = getName(it.participant1)
                             setOnClickListener { _ ->
@@ -102,13 +101,13 @@ class CustomSeedDialogFragment : DialogFragment(), DIAware {
                 }
             }
 
-            MaterialAlertDialogBuilder(activity, R.style.MyDialogTheme)
+            MaterialAlertDialogBuilder(context, R.style.MyDialogTheme)
                 .setTitle(getString(R.string.customSeed))
                 .setView(binding.root)
                 .setPositiveButton(android.R.string.ok) { _, _ ->
                     viewModel.matchUps.value?.apply {
                         startActivity(TournamentActivity.createIntent(
-                            activity,
+                            context,
                             tournamentInformation,
                             flatMap { listOf(it.participant1, it.participant2) }
                         ))

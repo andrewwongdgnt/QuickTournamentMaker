@@ -22,6 +22,7 @@ import org.kodein.di.instance
 class MatchUpListDialogFragment : DialogFragment(), DIAware {
     override val di by di()
     private val createDefaultTitleService: ICreateDefaultTitleService by instance()
+    private val binding by viewBinding(NestedScrollViewBinding::inflate)
 
     companion object {
 
@@ -41,8 +42,6 @@ class MatchUpListDialogFragment : DialogFragment(), DIAware {
                 }
             }
     }
-
-    private val binding by viewBinding(NestedScrollViewBinding::inflate)
 
     override fun onCreateDialog(savedInstanceState: Bundle?) =
         activity?.let { activity ->

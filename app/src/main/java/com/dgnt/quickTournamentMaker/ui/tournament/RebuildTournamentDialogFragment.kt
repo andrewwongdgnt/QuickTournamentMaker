@@ -13,6 +13,7 @@ import com.dgnt.quickTournamentMaker.ui.layout.TitledLinearLayout
 import com.dgnt.quickTournamentMaker.ui.main.common.OnEditListener
 import com.dgnt.quickTournamentMaker.util.TournamentUtil
 import com.dgnt.quickTournamentMaker.util.getAllViews
+import com.dgnt.quickTournamentMaker.util.viewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
@@ -21,6 +22,8 @@ import org.kodein.di.instance
 class RebuildTournamentDialogFragment : DialogFragment(), DIAware {
     override val di by di()
     private val viewModelFactory: RebuildTournamentViewModelFactory by instance()
+    private val binding by viewBinding(RebuildTournamentFragmentBinding::inflate)
+    private lateinit var viewModel: RebuildTournamentViewModel
 
     companion object {
 
@@ -42,8 +45,6 @@ class RebuildTournamentDialogFragment : DialogFragment(), DIAware {
             }
     }
 
-    private lateinit var viewModel: RebuildTournamentViewModel
-
     override fun onSaveInstanceState(outState: Bundle) {
         outState.apply {
             viewModel.tournamentType.value?.let { putInt(KEY_TOURNAMENT_TYPE_ID, it) }
@@ -53,11 +54,7 @@ class RebuildTournamentDialogFragment : DialogFragment(), DIAware {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?) =
-
-        activity?.let { activity ->
-
-            val binding = RebuildTournamentFragmentBinding.inflate(activity.layoutInflater)
-
+        context?.let { context ->
             viewModel = ViewModelProvider(this, viewModelFactory)[RebuildTournamentViewModel::class.java]
             binding.vm = viewModel
             binding.lifecycleOwner = this
@@ -74,23 +71,23 @@ class RebuildTournamentDialogFragment : DialogFragment(), DIAware {
                 savedInstanceState?.getInt(KEY_TOURNAMENT_TYPE_ID),
                 savedInstanceState?.getInt(KEY_SEED_TYPE_ID),
                 this,
-                activity,
+                context,
                 true
             )
 
             TournamentUtil.setUpTournamentEvents(
                 viewModel,
-                activity,
-                activity,
+                this,
+                context,
                 requireActivity().supportFragmentManager,
                 object : OnEditListener<Unit> {
                     override fun onEdit(editedValue: Unit) {
-                        activity.finish()
+                        activity?.finish()
                     }
                 }
             )
 
-            MaterialAlertDialogBuilder(activity, R.style.MyDialogTheme)
+            MaterialAlertDialogBuilder(context, R.style.MyDialogTheme)
                 .setTitle(R.string.rebuildTournament)
                 .setView(binding.root)
                 .setPositiveButton(android.R.string.ok) { _, _ ->

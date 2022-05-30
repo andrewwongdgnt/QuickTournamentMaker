@@ -1,18 +1,18 @@
 package com.dgnt.quickTournamentMaker.ui.main.common
 
 import android.content.Context
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.DraggableListItemBinding
 import com.dgnt.quickTournamentMaker.model.tournament.RankPriorityConfigType
 import com.dgnt.quickTournamentMaker.ui.adapter.IItemTouchHelperAdapter
+import com.dgnt.quickTournamentMaker.util.viewBinding
 import java.util.*
 
 class RankPriorityRecyclerViewAdapter(private val context: Context, private val items: List<RankPriorityConfigType>) : RecyclerView.Adapter<DraggableItemViewHolder>(), IItemTouchHelperAdapter {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DraggableItemViewHolder = DraggableItemViewHolder(context, DraggableListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DraggableItemViewHolder = DraggableItemViewHolder(context, parent.viewBinding(DraggableListItemBinding::inflate))
 
     override fun onBindViewHolder(holder: DraggableItemViewHolder, position: Int) =
 
