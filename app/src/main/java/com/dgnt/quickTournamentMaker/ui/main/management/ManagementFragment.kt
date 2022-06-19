@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.dgnt.quickTournamentMaker.R
 import com.dgnt.quickTournamentMaker.databinding.ManagementFragmentBinding
 import com.dgnt.quickTournamentMaker.model.management.Group
@@ -20,6 +21,8 @@ import com.dgnt.quickTournamentMaker.util.viewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.thoughtbot.expandablerecyclerview.listeners.GroupExpandCollapseListener
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 import org.kodein.di.instance
@@ -40,7 +43,6 @@ class ManagementFragment : Fragment(R.layout.management_fragment), DIAware {
         EDIT, CHECK
     }
 
-    private val groupsExpanded = mutableSetOf<String>()
     private val selectedPersons = mutableSetOf<Person>()
     private val selectedGroups = mutableSetOf<Group>()
     private lateinit var actionModeCallback: ManagementFragmentActionModeCallBack
@@ -138,9 +140,9 @@ class ManagementFragment : Fragment(R.layout.management_fragment), DIAware {
                 try {
                     this.groups = groups.map { Group.fromEntity(it) }.sorted()
 
-                    val groupMap = groups.map { it.name to Group.fromEntity(it) }.toMap()
+                    val groupMap = groups.associate { it.name to Group.fromEntity(it) }
 
-                    personToGroupNameMap = persons.map { Person.fromEntity(it) to groupMap.getValue(it.groupName) }.toMap()
+                    personToGroupNameMap = persons.associate { Person.fromEntity(it) to groupMap.getValue(it.groupName) }
                     val nonEmptyGroups = groups.filter { group -> persons.any { it.groupName == group.name } }.map { Group.fromEntity(it) }.toSet()
 
                     val emptyGroupExpandableGroupMap = this.groups.map { it.name }.subtract(persons.map { it.groupName }.toSet()).map { GroupExpandableGroup(it, listOf()) }
@@ -148,7 +150,8 @@ class ManagementFragment : Fragment(R.layout.management_fragment), DIAware {
 
                     val personGroups = (groupExpandableGroupMap + emptyGroupExpandableGroupMap).sorted()
 
-                    groupsExpanded.removeAll(groupsExpanded.minus(groupMap.map { it.key }))
+                    //remove groups that don't exist anymore
+                    viewModel.groupsExpanded.removeAll(viewModel.groupsExpanded.minus(groupMap.map { it.key }.toSet()))
 
                     val adapter = GroupExpandableRecyclerViewAdapter(
                         setDrawable,
@@ -163,17 +166,17 @@ class ManagementFragment : Fragment(R.layout.management_fragment), DIAware {
                     )
                     adapter.setOnGroupExpandCollapseListener(object : GroupExpandCollapseListener {
                         override fun onGroupExpanded(group: ExpandableGroup<*>) {
-                            groupsExpanded.add(group.title)
+                            viewModel.groupsExpanded.add(group.title)
                         }
 
                         override fun onGroupCollapsed(group: ExpandableGroup<*>) {
-                            groupsExpanded.remove(group.title)
+                            viewModel.groupsExpanded.remove(group.title)
                         }
 
                     })
                     binding.personRv.adapter = adapter
                     adapter.groups.forEach { g ->
-                        if (groupsExpanded.contains(g.title))
+                        if (viewModel.groupsExpanded.contains(g.title))
                             adapter.toggleGroup(g)
                     }
 
@@ -186,18 +189,26 @@ class ManagementFragment : Fragment(R.layout.management_fragment), DIAware {
                 }
             }
 
-            viewModel.expandAll.observe(viewLifecycleOwner) {
-
-                val adapter = binding.personRv.adapter as GroupExpandableRecyclerViewAdapter
-                adapter.groups.forEach { g ->
-                    if ((it && !adapter.isGroupExpanded(g)) || (!it && adapter.isGroupExpanded(g))) {
-                        adapter.toggleGroup(g)
-                    }
+            viewModel.expandAll.observe(viewLifecycleOwner) { expand ->
+                viewLifecycleOwner.lifecycleScope.launch {
+                    tryToToggleAllGroups(expand)
                 }
-
             }
         }
 
+    }
+
+    private suspend fun tryToToggleAllGroups(expand: Boolean, retries: Int = 20) {
+        (binding.personRv.adapter as? GroupExpandableRecyclerViewAdapter)?.let { adapter ->
+            adapter.groups.forEach { g ->
+                if ((expand && !adapter.isGroupExpanded(g)) || (!expand && adapter.isGroupExpanded(g))) {
+                    adapter.toggleGroup(g)
+                }
+            }
+        } ?: retries.takeIf { it > 0 }?.let { retry ->
+            delay(3000)
+            tryToToggleAllGroups(expand, retry - 1)
+        }
     }
 
     private fun personClicked(checked: Boolean, person: Person) {

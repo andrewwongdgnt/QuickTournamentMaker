@@ -14,7 +14,8 @@ class ManagementViewModel(private val personRepository: IPersonRepository, group
 
 
     @Bindable
-    val expandAll = MutableLiveData<Boolean>()
+    val expandAll = MutableLiveData(true)
+    val groupsExpanded = mutableSetOf<String>()
 
     val messageEvent = MutableLiveData<Event<String>>()
 
