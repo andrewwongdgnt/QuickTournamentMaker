@@ -6,10 +6,13 @@ import com.dgnt.quickTournamentMaker.model.management.Person
 import com.thoughtbot.expandablecheckrecyclerview.viewholders.CheckableChildViewHolder
 
 
-class CheckedExpandedPersonViewHolder(private val binding: SingleCheckableListItemBinding, private val clickListener: (String) -> Unit) : CheckableChildViewHolder(binding.root) {
+class CheckedExpandedPersonViewHolder(private val binding: SingleCheckableListItemBinding, private val selectedPersons: List<Person>, private val clickListener: (String) -> Unit) : CheckableChildViewHolder(binding.root) {
     fun bind(person: Person) =
         binding.let  {
-            it.checkableListItemCtv.text = person.name
+            it.checkableListItemCtv.run {
+                text = person.name
+                isChecked = selectedPersons.contains(person)
+            }
             it.root.setOnClickListener {
                 this.onClick(it)
                 clickListener(person.name)

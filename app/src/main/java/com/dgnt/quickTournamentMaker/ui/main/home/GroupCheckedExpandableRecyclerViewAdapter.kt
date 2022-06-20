@@ -10,12 +10,17 @@ import com.thoughtbot.expandablecheckrecyclerview.models.CheckedExpandableGroup
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup
 
 
-class GroupCheckedExpandableRecyclerViewAdapter(personGroups: List<GroupCheckedExpandableGroup>, private val selectedGroups: Set<String>, private val personClickListener: (String) -> Unit, private val groupClickListener: (String, Boolean) -> Unit) : CheckableChildRecyclerViewAdapter<HomeExpandedGroupViewHolder, CheckedExpandedPersonViewHolder>(personGroups) {
-
+class GroupCheckedExpandableRecyclerViewAdapter(
+    personGroups: List<GroupCheckedExpandableGroup>,
+    private val selectedGroups: Set<String>,
+    private val selectedPersons: List<Person>,
+    private val personClickListener: (String) -> Unit,
+    private val groupClickListener: (String, Boolean) -> Unit) : CheckableChildRecyclerViewAdapter<HomeExpandedGroupViewHolder, CheckedExpandedPersonViewHolder>(personGroups
+) {
 
     override fun onCreateGroupViewHolder(parent: ViewGroup, viewType: Int): HomeExpandedGroupViewHolder = HomeExpandedGroupViewHolder(parent.viewBinding(GroupItemBinding::inflate), selectedGroups, groupClickListener)
 
-    override fun onCreateCheckChildViewHolder(parent: ViewGroup, viewType: Int): CheckedExpandedPersonViewHolder = CheckedExpandedPersonViewHolder(parent.viewBinding(SingleCheckableListItemBinding::inflate), personClickListener)
+    override fun onCreateCheckChildViewHolder(parent: ViewGroup, viewType: Int): CheckedExpandedPersonViewHolder = CheckedExpandedPersonViewHolder(parent.viewBinding(SingleCheckableListItemBinding::inflate), selectedPersons, personClickListener)
 
     override fun onBindGroupViewHolder(holder: HomeExpandedGroupViewHolder, flatPosition: Int, group: ExpandableGroup<*>) = holder.bind(group.title)
 

@@ -105,7 +105,7 @@ class HomeViewModel(
     val numberOfPersonsSelected = MutableLiveData<String>()
 
     @Bindable
-    val selectedPersons = MutableLiveData<List<Person>>()
+    val selectedPersons = MutableLiveData(listOf<Person>())
 
     @Bindable
     val expandAll = MutableLiveData<Boolean>()
@@ -144,6 +144,9 @@ class HomeViewModel(
     override var scoreRankingRadioButtonId = 0
 
     private lateinit var defaultParticipantNameFunc: (Int) -> String
+
+    val groupsExpanded = mutableSetOf<String>()
+    val selectedGroups = mutableSetOf<String>()
 
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
     }

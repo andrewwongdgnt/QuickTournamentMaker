@@ -12,8 +12,8 @@ import com.dgnt.quickTournamentMaker.model.tournament.TournamentType
 import com.dgnt.quickTournamentMaker.service.interfaces.ICreateDefaultTitleService
 import com.dgnt.quickTournamentMaker.ui.layout.NonScrollingLinearLayoutManager
 import com.dgnt.quickTournamentMaker.util.TournamentUtil
+import com.dgnt.quickTournamentMaker.util.update
 import com.dgnt.quickTournamentMaker.util.viewBinding
-import com.thoughtbot.expandablecheckrecyclerview.models.CheckedExpandableGroup
 import com.thoughtbot.expandablerecyclerview.listeners.GroupExpandCollapseListener
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup
 import org.joda.time.LocalDateTime
@@ -38,11 +38,9 @@ class HomeFragment : Fragment(R.layout.home_fragment), DIAware {
         private const val KEY_SEED_TYPE_ID = "KEY_SEED_TYPE_ID"
     }
 
-    private val groupsExpanded = mutableSetOf<String>()
-    private val selectedGroups = mutableSetOf<String>()
+    private val selectedPersons = mutableListOf<Person>()
     private var allGroups: List<GroupCheckedExpandableGroup>? = null
     private var personToGroupNameMap: Map<String, String>? = null
-
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.apply {
@@ -79,62 +77,70 @@ class HomeFragment : Fragment(R.layout.home_fragment), DIAware {
                 requireActivity().supportFragmentManager
             )
 
-            viewModel.numberOfPersonsSelected.value = getString(R.string.numberOfPlayersSelected, 0)
-
             binding.personToParticipateRv.layoutManager = NonScrollingLinearLayoutManager(this)
 
-            viewModel.personAndGroupLiveData.observe(viewLifecycleOwner) { (persons, groupEntities) ->
+            viewModel.selectedPersons.observe(viewLifecycleOwner) {
+                viewModel.numberOfPersonsSelected.value = getString(R.string.numberOfPlayersSelected, it.size)
+                selectedPersons.update(it)
+                binding.personToParticipateRv.adapter?.notifyDataSetChanged()
+            }
 
+            viewModel.personAndGroupLiveData.observe(viewLifecycleOwner) { (personEntities, groupEntities) ->
                 val groups = groupEntities.map { Group.fromEntity(it) }.sorted()
-                personToGroupNameMap = persons.associate { it.name to it.groupName }
+                personToGroupNameMap = personEntities.associate { it.name to it.groupName }
 
-                val emptyGroupExpandableGroupMap = groups.map { it.name }.subtract(persons.map { it.groupName }.toSet()).map { GroupCheckedExpandableGroup(it, listOf()) }
-                val groupExpandableGroupMap = persons.groupBy { it.groupName }.map { it.key to it.value.map { p -> Person.fromEntity(p) } }.map { GroupCheckedExpandableGroup(it.first, it.second.sorted()) }
+                val emptyGroupExpandableGroupMap = groups.map { it.name }.subtract(personEntities.map { it.groupName }.toSet()).map { GroupCheckedExpandableGroup(it, listOf()) }
+                val groupExpandableGroupMap = personEntities.groupBy { it.groupName }.map { it.key to it.value.map { p -> Person.fromEntity(p) } }.map { GroupCheckedExpandableGroup(it.first, it.second.sorted()) }
                 val allGroups = (groupExpandableGroupMap + emptyGroupExpandableGroupMap).sorted().also {
                     this@HomeFragment.allGroups = it
                 }
-                groupsExpanded.removeAll(groupsExpanded.minus(groups.map { it.name }.toSet()))
 
-                val adapter = GroupCheckedExpandableRecyclerViewAdapter(allGroups, selectedGroups, { person: String -> personClicked(person) }, { group: String, checked: Boolean -> groupClicked(group, checked) })
+                //remove groups that don't exist anymore
+                viewModel.groupsExpanded.removeAll(viewModel.groupsExpanded.minus(groups.map { it.name }.toSet()))
+                viewModel.selectedGroups.removeAll(viewModel.selectedGroups.minus(groups.map { it.name }.toSet()))
+                //remove persons that don't exist anymore
+                selectedPersons.removeAll(selectedPersons.minus(personEntities.map { p -> Person.fromEntity(p) }.toSet()).toSet())
+
+                val adapter = GroupCheckedExpandableRecyclerViewAdapter(
+                    allGroups,
+                    viewModel.selectedGroups,
+                    selectedPersons,
+                    { person: String -> personClicked(person) },
+                    { group: String, checked: Boolean -> groupClicked(group, checked) }
+                )
                 adapter.setOnGroupExpandCollapseListener(object : GroupExpandCollapseListener {
                     override fun onGroupExpanded(group: ExpandableGroup<*>) {
-                        groupsExpanded.add(group.title)
+                        viewModel.groupsExpanded.add(group.title)
                     }
 
                     override fun onGroupCollapsed(group: ExpandableGroup<*>) {
-                        groupsExpanded.remove(group.title)
+                        viewModel.groupsExpanded.remove(group.title)
                     }
 
                 })
                 binding.personToParticipateRv.adapter = adapter
                 adapter.groups.forEach { g ->
-                    if (groupsExpanded.contains(g.title))
+                    if (viewModel.groupsExpanded.contains(g.title))
                         adapter.toggleGroup(g)
                 }
             }
 
             viewModel.expandAll.observe(viewLifecycleOwner) {
-
                 val adapter = binding.personToParticipateRv.adapter as GroupCheckedExpandableRecyclerViewAdapter
                 adapter.groups.forEach { g ->
                     if ((it && !adapter.isGroupExpanded(g)) || (!it && adapter.isGroupExpanded(g))) {
                         adapter.toggleGroup(g)
                     }
                 }
-
             }
 
             viewModel.selectAll.observe(viewLifecycleOwner) {
-
                 val adapter = binding.personToParticipateRv.adapter as GroupCheckedExpandableRecyclerViewAdapter
                 adapter.groups.forEach { g ->
                     selectGroup(g as GroupCheckedExpandableGroup, it)
                 }
-
             }
         }
-
-
     }
 
     private fun setVMData(viewModel: HomeViewModel) {
@@ -161,41 +167,38 @@ class HomeFragment : Fragment(R.layout.home_fragment), DIAware {
         ) { p: Int -> createDefaultTitleService.forParticipant(resources, p) }
     }
 
-    private fun selectGroup(group: GroupCheckedExpandableGroup, checked: Boolean) {
-        if (checked) {
-            selectedGroups.add(group.title)
-            group.checkSelections()
-        } else {
-            selectedGroups.remove(group.title)
-            group.clearSelections()
-        }
-        update()
-    }
-
     private fun groupClicked(group: String, checked: Boolean) {
         allGroups?.find { it.title == group }?.let {
             selectGroup(it, checked)
         }
     }
 
+    private fun selectGroup(group: GroupCheckedExpandableGroup, checked: Boolean) {
+        if (checked) {
+            viewModel.selectedGroups.add(group.title)
+            group.checkSelections()
+        } else {
+            viewModel.selectedGroups.remove(group.title)
+            group.clearSelections()
+        }
+        update()
+    }
 
     private fun personClicked(person: String) {
         personToGroupNameMap?.get(person)?.let { groupName ->
             if (allGroups?.find { it.title == groupName }?.selectedChildren?.all { it } == true) {
-                selectedGroups.add(groupName)
+                viewModel.selectedGroups.add(groupName)
             } else {
-                selectedGroups.remove(groupName)
+                viewModel.selectedGroups.remove(groupName)
             }
             update()
         }
     }
 
     private fun update() {
-        val adapter = binding.personToParticipateRv.adapter as GroupCheckedExpandableRecyclerViewAdapter
-        adapter.notifyDataSetChanged()
-        viewModel.numberOfPersonsSelected.value = getString(R.string.numberOfPlayersSelected, adapter.groups.map { it as CheckedExpandableGroup }.fold(0) { acc, e -> e.selectedChildren.filter { it }.size + acc })
-        viewModel.selectedPersons.value = adapter.groups.flatMap { (it as GroupCheckedExpandableGroup).items.zip(it.selectedChildren.asList()) }.filter { it.second }.map { it.first as Person }
-
+        (binding.personToParticipateRv.adapter as? GroupCheckedExpandableRecyclerViewAdapter)?.let { adapter ->
+            viewModel.selectedPersons.value = adapter.groups.flatMap { (it as GroupCheckedExpandableGroup).items.zip(it.selectedChildren.asList()) }.filter { it.second }.map { it.first as Person }
+        }
     }
 
 }
