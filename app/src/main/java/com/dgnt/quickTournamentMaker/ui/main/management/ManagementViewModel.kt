@@ -12,7 +12,6 @@ import kotlinx.coroutines.launch
 
 class ManagementViewModel(private val personRepository: IPersonRepository, groupRepository: IGroupRepository) : ViewModel(), Observable {
 
-
     @Bindable
     val expandAll = MutableLiveData(true)
     val groupsExpanded = mutableSetOf<String>()
